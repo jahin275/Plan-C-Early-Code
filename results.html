@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <title>PLAN C Mock Test Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .banner-link {
+            display: block;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .banner-link:hover {
+            transform: translateY(-5px);
+        }
+
+        .banner {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .main-title {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: #fff8e1;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* Search Box Styles */
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .search-title {
+            color: #ff7e5f;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 3px solid #ff7e5f;
+            border-radius: 50px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.2);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: #f9f9f9;
+        }
+
+        .search-button {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-button:hover {
+            background: linear-gradient(135deg, #feb47b 0%, #ff7e5f 100%);
+        }
+
+        .highlight-note {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        /* Result Display Styles */
+        .result-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .result-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .result-title {
+            color: #ff7e5f;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .result-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .result-merit {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: auto;
+            font-size: 1.2rem;
+        }
+
+        /* Result Grid */
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            color: #ff7e5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.3rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .result-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Status Styles */
+        .status-pass {
+            color: #4CAF50;
+            background: #E8F5E9;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .status-fail {
+            color: #F44336;
+            background: #FFEBEE;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+.mcq-merit-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    margin-left: 10px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* For fail status, change badge color */
+.status-fail .mcq-merit-badge {
+    background: linear-gradient(135deg, #F44336 0%, #C62828 100%);
+}
+
+        /* Leaderboard Styles */
+        .leaderboard-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .leaderboard-title {
+            color: #ff7e5f;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .leaderboard-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            border-radius: 2px;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+
+        .leaderboard-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .leaderboard-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .leaderboard-table tr:hover {
+            background: #fff8e1;
+        }
+
+        .merit-badge {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+
+        .merit-1 {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        }
+
+        .merit-2 {
+            background: linear-gradient(135deg, #C0C0C0 0%, #A9A9A9 100%);
+        }
+
+        .merit-3 {
+            background: linear-gradient(135deg, #CD7F32 0%, #A0522D 100%);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .footer-title {
+            color: #ff7e5f;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .mentors-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .mentor-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .mentor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .mentor-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            display: block;
+            border: 4px solid #ff7e5f;
+        }
+
+        .mentor-name {
+            color: #ff7e5f;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .mentor-link {
+            display: inline-block;
+            background: #ff7e5f;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .mentor-link:hover {
+            background: #feb47b;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: inline-block;
+            background: #4267B2;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: #365899;
+            transform: translateY(-3px);
+        }
+
+        .social-link i {
+            margin-right: 8px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .leaderboard-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mentors-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+        }
+
+        .fail-criteria {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .fail-none {
+            color: #4CAF50;
+            background: #E8F5E9;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .fail-fail {
+            color: #F44336;
+            background: #FFEBEE;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+/* ▼▼▼ ADD THIS AT THE END OF YOUR CSS ▼▼▼ */
+
+/* Improved Mobile Interface */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .main-title {
+        font-size: 1.8rem;
+        padding: 0 10px;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        padding: 0 10px;
+    }
+    
+    .search-section {
+        padding: 20px 15px;
+        margin: 0 10px 20px 10px;
+    }
+    
+    .search-box {
+        flex-direction: column;
+        border-radius: 15px;
+    }
+    
+    .search-input {
+        padding: 12px 20px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .search-button {
+        padding: 12px 20px;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .result-container, 
+    .leaderboard-container,
+    .footer {
+        margin: 10px;
+        padding: 20px 15px;
+    }
+    
+    .result-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .result-avatar {
+        margin: 0 auto 15px;
+        width: 70px;
+        height: 70px;
+    }
+    
+    .result-merit {
+        margin: 15px auto 0;
+        width: fit-content;
+    }
+    
+    .result-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .result-card {
+        padding: 15px;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .mentors-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .mentor-card {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .social-link {
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+    }
+    
+    /* Leaderboard improvements for mobile */
+    .leaderboard-table {
+        font-size: 0.85rem;
+    }
+    
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 8px 10px;
+    }
+    
+    /* Reduce fail status size */
+    .fail-none,
+    .fail-fail {
+        font-size: 0.75rem;
+        padding: 2px 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 1.5rem;
+    }
+    
+    .leaderboard-table {
+        font-size: 0.8rem;
+    }
+    
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 6px 8px;
+    }
+    
+    .result-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .result-value {
+        margin-top: 3px;
+    }
+}
+
+/* Improved MCQ Merit Badge */
+.mcq-merit-container {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 3px 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+}
+
+.mcq-merit-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-right: 5px;
+}
+
+.mcq-merit-value {
+    font-weight: bold;
+    color: #ff7e5f;
+    font-size: 0.9rem;
+}
+
+/* Reduce status sizes */
+.status-pass,
+.status-fail {
+    padding: 2px 8px !important;
+    font-size: 0.85rem !important;
+    margin-right: 5px;
+}
+
+/* Better touch targets for mobile */
+button,
+.social-link,
+.mentor-link,
+.search-button,
+.back-button {
+    min-height: 44px; /* Minimum touch target size */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Prevent text zoom on mobile */
+input, select, textarea {
+    font-size: 16px !important;
+}
+
+/* Improve scroll on mobile */
+body {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Better table display on mobile */
+.leaderboard-table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive avatar */
+.result-avatar {
+    width: 80px;
+    height: 80px;
+}
+
+@media (max-width: 480px) {
+    .result-avatar {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* Improve fail criteria display */
+.fail-criteria {
+    font-size: 0.8rem !important;
+}
+
+.fail-none,
+.fail-fail {
+    display: inline-block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 6px !important;
+    font-size: 0.75rem !important;
+}
+/* Fix PC Leaderboard */
+@media (min-width: 769px) {
+    .leaderboard-table {
+        display: table;
+        width: 100%;
+        overflow-x: visible;
+    }
+    
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 15px;
+        white-space: nowrap;
+    }
+    
+    /* Make PC version more spacious */
+    .container {
+        padding: 30px;
+    }
+    
+    .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+}
+
+/* Mobile-only styles */
+@media (max-width: 768px) {
+    .leaderboard-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 10px 12px;
+    }
+    
+    /* Keep mobile improvements */
+    .container {
+        padding: 15px;
+    }
+}
+
+/* Fix MCQ Merit display */
+.mcq-merit-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 4px 10px;
+    border: 1px solid #e9ecef;
+}
+
+.mcq-merit-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-right: 5px;
+}
+
+.mcq-merit-value {
+    font-weight: bold;
+    color: #ff7e5f;
+    font-size: 0.9rem;
+}
+
+/* Fix fail status for both PC and mobile */
+.fail-none,
+.fail-fail {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.fail-none {
+    color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.fail-fail {
+    color: #F44336;
+    background: #FFEBEE;
+}
+
+/* Fix status badges */
+.status-pass,
+.status-fail {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status-pass {
+    color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.status-fail {
+    color: #F44336;
+    background: #FFEBEE;
+}
+
+/* Fix table responsive */
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th {
+    background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.leaderboard-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Fix result grid for PC */
+@media (min-width: 769px) {
+    .result-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+/* Fix merit badges for PC */
+.merit-badge {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.merit-1 {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+.merit-2 {
+    background: linear-gradient(135deg, #C0C0C0 0%, #A9A9A9 100%);
+}
+
+.merit-3 {
+    background: linear-gradient(135deg, #CD7F32 0%, #A0522D 100%);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Banner -->
+        <div class="header">
+            <a href="https://scontent.fdac96-2.fna.fbcdn.net/v/t39.30808-6/572995002_1196499402529402_3143603662294315671_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=2285d6&_nc_eui2=AeGaBBE8Ty2VD8S7Lp5gFGBIavpLGDoFjLNq-ksYOgWMszLjQtvwHUg0HL0nEMScXRfs9nPVdJATKA4KmiaQbDu6&_nc_ohc=ENG3JfpBc60Q7kNvwFL9qco&_nc_oc=AdnVY2j8WkwXwrp6Geyq0JNrWes7ByQ_6cGNgaqe0nMs5z5yd_C9wRJ1QIWzkSiG4hDS3ySIc-TiJboL-rHnsKTK&_nc_zt=23&_nc_ht=scontent.fdac96-2.fna&_nc_gid=9S6j-3bRzQ-y163ULx2A_g&oh=00_Afkc471s4zeK5zde0Up0WizSgub01zkKbycAuc4JBbCqRA&oe=69355A19" class="banner-link" target="_blank">
+                <img src="https://scontent.fdac96-2.fna.fbcdn.net/v/t39.30808-6/572995002_1196499402529402_3143603662294315671_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=2285d6&_nc_eui2=AeGaBBE8Ty2VD8S7Lp5gFGBIavpLGDoFjLNq-ksYOgWMszLjQtvwHUg0HL0nEMScXRfs9nPVdJATKA4KmiaQbDu6&_nc_ohc=ENG3JfpBc60Q7kNvwFL9qco&_nc_oc=AdnVY2j8WkwXwrp6Geyq0JNrWes7ByQ_6cGNgaqe0nMs5z5yd_C9wRJ1QIWzkSiG4hDS3ySIc-TiJboL-rHnsKTK&_nc_zt=23&_nc_ht=scontent.fdac96-2.fna&_nc_gid=9S6j-3bRzQ-y163ULx2A_g&oh=00_Afkc471s4zeK5zde0Up0WizSgub01zkKbycAuc4JBbCqRA&oe=69355A19" alt="PLAN C Mock Test Banner" class="banner">
+            </a>
+            <h1 class="main-title">PLAN C Mock Test Results</h1>
+            <p class="subtitle">Check your detailed performance and see where you stand among peers</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h2 class="search-title">Search Your Detailed Result</h2>
+            <div class="search-box">
+                <input type="email" id="emailInput" class="search-input" placeholder="Enter your email address to see your detailed result...">
+                <button onclick="searchResult()" class="search-button">Search Result</button>
+            </div>
+            <div class="highlight-note">
+                <i class="fas fa-exclamation-circle"></i> Only you can see your detailed result by entering your email
+            </div>
+        </div>
+
+        <!-- Individual Result Display (Hidden by default) -->
+        <div id="resultDisplay" class="result-container">
+            <div class="result-header">
+                <div class="result-avatar" id="avatarLetter">H</div>
+                <div>
+                    <h2 class="result-title" id="resultName">Hasib</h2>
+                    <p class="result-subtitle" id="resultEmail">frhasib65@gmail.com</p>
+                </div>
+                <div class="result-merit" id="resultMerit">Merit: 1</div>
+            </div>
+            
+            <div class="result-grid">
+                <div class="result-card">
+                    <h3 class="card-title">Overall Performance</h3>
+                    <div class="result-item">
+                        <span class="result-label">Total Marks:</span>
+                        <span class="result-value" id="totalMarks">103.59</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Merit Position:</span>
+                        <span class="result-value" id="meritPosition">1</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Overall Status:</span>
+                        <span class="result-value">
+                            <span class="status-pass" id="overallStatus">Pass</span>
+                        </span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Feedback:</span>
+                        <span class="result-value" id="feedbackText">Keep it up! You will Triumph</span>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3 class="card-title">English MCQ</h3>
+                    <div class="result-item">
+                        <span class="result-label">Corrected:</span>
+                        <span class="result-value" id="engCorrected">10</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Negative Marks:</span>
+                        <span class="result-value" id="engNegative">-0.5</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Mark:</span>
+                        <span class="result-value" id="engTotal">9.5</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Pass Status:</span>
+                        <span class="result-value">
+                            <span class="status-pass" id="engStatus">Pass</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3 class="card-title">Total MCQ</h3>
+                    <div class="result-item">
+                        <span class="result-label">Corrected:</span>
+                        <span class="result-value" id="mcqCorrected">53</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Wrong Answers:</span>
+                        <span class="result-value" id="mcqWrong">7</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">MCQ Marks:</span>
+                        <span class="result-value" id="mcqMarks">51.25</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Pass Status:</span>
+                        <span class="result-value">
+                            <span class="status-pass" id="mcqStatus">Pass</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3 class="card-title">Written & Total</h3>
+                    <div class="result-item">
+                        <span class="result-label">Written Marks:</span>
+                        <span class="result-value" id="writtenMarks">34</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Written Status:</span>
+                        <span class="result-value">
+                            <span class="status-pass" id="writtenStatus">Pass</span>
+                        </span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">GPA Marks:</span>
+                        <span class="result-value" id="gpaMarks">18.34</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total (Out of 120):</span>
+                        <span class="result-value" id="totalOutOf120">103.59</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="showLeaderboard()" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Leaderboard
+            </button>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderboardDisplay" class="leaderboard-container">
+            <h2 class="leaderboard-title">Merit Leaderboard</h2>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Merit</th>
+                        <th>Name</th>
+                        <th>Total Marks</th>
+                        <th>Fail Status</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <!-- Leaderboard will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer with Mentors -->
+        <div class="footer">
+            <h2 class="footer-title">Connect with Your Mentors</h2>
+            
+            <div class="mentors-container">
+                <div class="mentor-card">
+                    <img src="https://media.licdn.com/dms/image/v2/D5603AQF7rjHTShXbVA/profile-displayphoto-scale_400_400/B56ZpkdetSHYAg-/0/1762622042638?e=1766016000&v=beta&t=H8LCB9fUdY_RDyvwz4dbGoFTO9bInJLrbGkQFUDfxtE" alt="Mahdi Jahin" class="mentor-img">
+                    <h3 class="mentor-name">Mahdi Jahin</h3>
+                    <a href="https://www.linkedin.com/in/mahdi-jahin/" class="mentor-link" target="_blank">
+                        <i class="fab fa-linkedin"></i> Connect on LinkedIn
+                    </a>
+                </div>
+                
+                <div class="mentor-card">
+                    <img src="https://media.licdn.com/dms/image/v2/D4E03AQFNY8mS3YJKZw/profile-displayphoto-shrink_800_800/B4EZb46SPUHkAc-/0/1747932751209?e=1766016000&v=beta&t=dJgp6wE3XITHvI9bN-UMA1c6c2Bf8t--sbQcn4Vm30E" alt="Tasin Mahmud Asha" class="mentor-img">
+                    <h3 class="mentor-name">Tasin Mahmud Asha</h3>
+                    <a href="https://www.linkedin.com/in/tasin-mahmud-asha-1a731b367/" class="mentor-link" target="_blank">
+                        <i class="fab fa-linkedin"></i> Connect on LinkedIn
+                    </a>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://www.facebook.com/groups/groupchangetocunitbymj/" class="social-link" target="_blank">
+                    <i class="fab fa-facebook-f"></i> Join our Facebook Group
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Student data from the provided spreadsheet - ALL 144 STUDENTS
+        const students = [
+            // First 13 students (all passed)
+            { merit: 1, name: "Hasib", mail: "frhasib65@gmail.com", rightMcq: 53, negativeMarks: -1.75, wrongAnswered: 7, mcqMarks: 51.25, writtenMarks: 34, gpaMarks: 18.34, totalMarks: 103.59, engMcqMark: 10, engNegativeMarks: -0.5, engTotal: 9.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 2, name: "Nasif Labib", mail: "nasiflabib143@gmail.com", rightMcq: 47, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 43.75, writtenMarks: 34, gpaMarks: 20, totalMarks: 97.75, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 3, name: "Irteza Mahmud", mail: "irteza.m4hmud@gmail.com", rightMcq: 46, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 43.75, writtenMarks: 34, gpaMarks: 19.06, totalMarks: 96.81, engMcqMark: 9, engNegativeMarks: -0.75, engTotal: 8.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 4, name: "Peyal", mail: "peyal2006@gmail.com", rightMcq: 49, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 46.75, writtenMarks: 27, gpaMarks: 18.22, totalMarks: 91.97, engMcqMark: 7, engNegativeMarks: -0.5, engTotal: 6.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 5, name: "Wajih Tousif Ahmed Yeamin", mail: "ahmedyeamin617@gmail.com", rightMcq: 42, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 38.25, writtenMarks: 32.5, gpaMarks: 20, totalMarks: 90.75, engMcqMark: 9, engNegativeMarks: -0.75, engTotal: 8.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 6, name: "Koushik Saha", mail: "koushiksahaks2021@gmail.com", rightMcq: 39, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 35.5, writtenMarks: 29.25, gpaMarks: 20, totalMarks: 84.75, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 7, name: "Khandaker Sadique Un Nabi", mail: "jccnabi35@gmail.com", rightMcq: 35, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 31.5, writtenMarks: 31.5, gpaMarks: 20, totalMarks: 83, engMcqMark: 10, engNegativeMarks: -0.5, engTotal: 9.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 8, name: "Afsara Tasnim Proyoti", mail: "tasnimproyoti@gmail.com", rightMcq: 40, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 36, writtenMarks: 25.25, gpaMarks: 20, totalMarks: 81.25, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 9, name: "Manoshi Ghosh", mail: "manoshighosh62@gmail.com", rightMcq: 38, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 34.25, writtenMarks: 26.25, gpaMarks: 20, totalMarks: 80.5, engMcqMark: 7, engNegativeMarks: -1, engTotal: 6, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 10, name: "Samia", mail: "anikadurdana05@gmail.com", rightMcq: 39, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 34.5, writtenMarks: 22.5, gpaMarks: 20, totalMarks: 77, engMcqMark: 9, engNegativeMarks: -0.25, engTotal: 8.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 11, name: "Abrar Al Kabed Ahmed", mail: "abrawsome135@gmail.com", rightMcq: 36, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 32.75, writtenMarks: 22.5, gpaMarks: 20, totalMarks: 75.25, engMcqMark: 9, engNegativeMarks: -0.75, engTotal: 8.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 12, name: "Md. Tafhimul Islam", mail: "ornob3855@gmail.com", rightMcq: 38, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 33.75, writtenMarks: 20.5, gpaMarks: 19.16, totalMarks: 73.41, engMcqMark: 7, engNegativeMarks: -1, engTotal: 6, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 13, name: "Shafayet Iqbal Likhon", mail: "shafayetiqbal26@gmail.com", rightMcq: 34, negativeMarks: -5, wrongAnswered: 20, mcqMarks: 29, writtenMarks: 21.5, gpaMarks: 20, totalMarks: 70.5, engMcqMark: 7, engNegativeMarks: -0.75, engTotal: 6.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Pass", feedback: "Keep it up! You will Triumph" },
+            { merit: 14, name: "Abdullah Al Mahi", mail: "itzmahi1002@gmail.com", rightMcq: 30, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 25.5, writtenMarks: 13.5, gpaMarks: 19.66, totalMarks: 58.66, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Fail", feedback: "Work Harder!" },
+            { merit: 15, name: "Jit", mail: "aniruddhaneogijit6@gmail.com", rightMcq: 28, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 24, writtenMarks: 13, gpaMarks: 19.16, totalMarks: 56.16, engMcqMark: 7, engNegativeMarks: -0.75, engTotal: 6.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Pass", totalStatus: "Fail", feedback: "Work Harder!" },
+            { merit: 16, name: "tazvirul haque pritom", mail: "mojib0856@gmail.com", rightMcq: 43, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 39.75, writtenMarks: 0, gpaMarks: 19.5, totalMarks: 59.25, engMcqMark: 7, engNegativeMarks: -1, engTotal: 6, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 17, name: "Hasnain Wasif", mail: "hasnainwasif73@gmail.con", rightMcq: 43, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 39, writtenMarks: 0, gpaMarks: 20, totalMarks: 59, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 18, name: "Samia Rashid", mail: "samiarashh@gmail.com", rightMcq: 40, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 37.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 57.75, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 19, name: "Amina", mail: "aminakho0121@gmail.com", rightMcq: 40, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 37.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 57.5, engMcqMark: 9, engNegativeMarks: -0.5, engTotal: 8.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 20, name: "Fabiha", mail: "fabiharodelaa@gmail.com", rightMcq: 39, negativeMarks: -1.5, wrongAnswered: 6, mcqMarks: 37.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 57.5, engMcqMark: 7, engNegativeMarks: -0.25, engTotal: 6.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 21, name: "AEISHA", mail: "khaledshamsher@gmail.com", rightMcq: 42, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 38.25, writtenMarks: 0, gpaMarks: 18.94, totalMarks: 57.19, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 22, name: "Farhan Labib", mail: "farhanlab2021@gmail.com", rightMcq: 39, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 36.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 56.75, engMcqMark: 6, engNegativeMarks: -0.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 23, name: "Samia Karim", mail: "samiakarim831@gmail.com", rightMcq: 40, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 37.75, writtenMarks: 0, gpaMarks: 18.5, totalMarks: 56.25, engMcqMark: 7, engNegativeMarks: -1, engTotal: 6, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 24, name: "Jamiya Hossain", mail: "jamiyahossain29@icloud.com", rightMcq: 38, negativeMarks: -1.5, wrongAnswered: 6, mcqMarks: 36.5, writtenMarks: 0, gpaMarks: 19.66, totalMarks: 56.16, engMcqMark: 7, engNegativeMarks: -0.75, engTotal: 6.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 25, name: "alif mustafa", mail: "alifmustafa55@gmail.com", rightMcq: 39, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 36.75, writtenMarks: 0, gpaMarks: 19, totalMarks: 55.75, engMcqMark: 11, engNegativeMarks: -0.25, engTotal: 10.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 26, name: "Ahmad Eftikhar Suhaib", mail: "eftikharsuhaib@gmail.com", rightMcq: 39, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 35, writtenMarks: 0, gpaMarks: 20, totalMarks: 55, engMcqMark: 9, engNegativeMarks: -0.75, engTotal: 8.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 27, name: "Fariha Islam", mail: "farihaislam564564@gmail.com", rightMcq: 40, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 36.25, writtenMarks: 0, gpaMarks: 18.66, totalMarks: 54.91, engMcqMark: 11, engNegativeMarks: 0, engTotal: 11, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 28, name: "subah", mail: "sumaitasubah5@gmail.com", rightMcq: 38, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 34, writtenMarks: 0, gpaMarks: 20, totalMarks: 54, engMcqMark: 6, engNegativeMarks: -0.5, engTotal: 5.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 29, name: "Mahvish Maisarah Rahman", mail: "mahvishrahman4@gmail.com", rightMcq: 36, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 33.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 53.5, engMcqMark: 8, engNegativeMarks: -0.75, engTotal: 7.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 30, name: "Hamza", mail: "hamzauk00000@gmail.com", rightMcq: 37, negativeMarks: -3, wrongAnswered: 12, mcqMarks: 34, writtenMarks: 0, gpaMarks: 19.16, totalMarks: 53.16, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 31, name: "Anisur Rahman", mail: "hubboys2001@gmail.com", rightMcq: 36, negativeMarks: -3, wrongAnswered: 12, mcqMarks: 33, writtenMarks: 0, gpaMarks: 20, totalMarks: 53, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 32, name: "Imran", mail: "imranhossaint5@gmail.com", rightMcq: 34, negativeMarks: -1.75, wrongAnswered: 7, mcqMarks: 32.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 52.25, engMcqMark: 8, engNegativeMarks: -0.5, engTotal: 7.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 33, name: "Mohammad Ali", mail: "mohammad.ali.dhk23@gmail.com", rightMcq: 36, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 32, writtenMarks: 0, gpaMarks: 20, totalMarks: 52, engMcqMark: 6, engNegativeMarks: -1, engTotal: 5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 34, name: "Nasif", mail: "nasiff184@gmail.com", rightMcq: 36, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 32, writtenMarks: 0, gpaMarks: 20, totalMarks: 52, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 35, name: "Humaira", mail: "humairarose7@gmail.com", rightMcq: 36, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 32, writtenMarks: 0, gpaMarks: 20, totalMarks: 52, engMcqMark: 7, engNegativeMarks: -1, engTotal: 6, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 36, name: "Ayan", mail: "rashidshababrahman@gmail.com", rightMcq: 36, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 31.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 51.75, engMcqMark: 7, engNegativeMarks: -1, engTotal: 6, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 37, name: "Ekramul Haque Jahin", mail: "jahin448448@gmail.com", rightMcq: 36, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 31.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 51.75, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 38, name: "Aava Tara", mail: "subahtarannum.2006@gmail.com", rightMcq: 35, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 31.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 51.5, engMcqMark: 8, engNegativeMarks: -0.75, engTotal: 7.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 39, name: "Unlucky one", mail: "dcgelc2024@gmail.com", rightMcq: 36, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 32.5, writtenMarks: 0, gpaMarks: 18.66, totalMarks: 51.16, engMcqMark: 7, engNegativeMarks: -0.25, engTotal: 6.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 40, name: "FARIA", mail: "linamasud41@gmail.com", rightMcq: 36, negativeMarks: -5.25, wrongAnswered: 21, mcqMarks: 30.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 50.75, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 41, name: "Arifa Rahman", mail: "arifarahman830@gmail.com", rightMcq: 32, negativeMarks: -1.5, wrongAnswered: 6, mcqMarks: 30.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 50.5, engMcqMark: 9, engNegativeMarks: -0.5, engTotal: 8.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Do Equally Good in Written and That will do the trick!" },
+            { merit: 42, name: "Israt Jahan", mail: "isratkoj053@gmail.com", rightMcq: 31, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 27.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 47.5, engMcqMark: 8, engNegativeMarks: -0.5, engTotal: 7.5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Increase your Efforts!" },
+            { merit: 43, name: "Arham Abdullah", mail: "mehad4024@gmail.com", rightMcq: 32, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 28.25, writtenMarks: 0, gpaMarks: 18.88, totalMarks: 47.13, engMcqMark: 6, engNegativeMarks: -1, engTotal: 5, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Increase your Efforts!" },
+            { merit: 44, name: "Rajo", mail: "rajoshree326@gmail.com", rightMcq: 31, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 26.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 46.5, engMcqMark: 6, engNegativeMarks: -0.75, engTotal: 5.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Increase your Efforts!" },
+            { merit: 45, name: "Rafi", mail: "fudgebrownie7686@gmail.com", rightMcq: 34, negativeMarks: -5.75, wrongAnswered: 23, mcqMarks: 28.25, writtenMarks: 0, gpaMarks: 16.6, totalMarks: 44.85, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Increase your Efforts!" },
+            { merit: 46, name: "Faiza Zahin", mail: "faizazahin291@gmail.com", rightMcq: 29, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 24.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 44.75, engMcqMark: 7, engNegativeMarks: -1.25, engTotal: 5.75, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Increase your Efforts!" },
+            { merit: 47, name: "Ihfaz Chowdhury", mail: "ihfaz318@gmail.com", rightMcq: 27, negativeMarks: -3, wrongAnswered: 12, mcqMarks: 24, writtenMarks: 0, gpaMarks: 20, totalMarks: 44, engMcqMark: 6, engNegativeMarks: -0.75, engTotal: 5.25, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Increase your Efforts!" },
+            { merit: 48, name: "Shadia", mail: "shadiaafrinshorna280@gmail.com", rightMcq: 29, negativeMarks: -5, wrongAnswered: 20, mcqMarks: 24, writtenMarks: 0, gpaMarks: 20, totalMarks: 44, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Pass", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Increase your Efforts!" },
+            { merit: 49, name: "Prionty", mail: "heheprionty@gmail.com", rightMcq: 25, negativeMarks: -1.75, wrongAnswered: 7, mcqMarks: 23.25, writtenMarks: 17, gpaMarks: 19.34, totalMarks: 59.59, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "So Close yet so far type Shit, anyways do better in MCQs" },
+            { merit: 50, name: "Rodoshe", mail: "rahimaakhter5453@gmail.com", rightMcq: 26, negativeMarks: -5.25, wrongAnswered: 21, mcqMarks: 20.75, writtenMarks: 2.5, gpaMarks: 19.16, totalMarks: 42.41, engMcqMark: 6, engNegativeMarks: -1, engTotal: 5, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 51, name: "Misbah Mahi", mail: "misbahulalam9j23@gmail.com", rightMcq: 26, negativeMarks: -5.75, wrongAnswered: 23, mcqMarks: 20.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 40.25, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 52, name: "Nazifa", mail: "nazifahaque907@gmail.com", rightMcq: 25, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 20.75, writtenMarks: 0, gpaMarks: 19.34, totalMarks: 40.09, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 53, name: "Munkaser Munif", mail: "munkasermunif@gmail.com", rightMcq: 27, negativeMarks: -5.75, wrongAnswered: 23, mcqMarks: 21.25, writtenMarks: 0, gpaMarks: 17.56, totalMarks: 38.81, engMcqMark: 8, engNegativeMarks: -0.75, engTotal: 7.25, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 54, name: "Fardin Muntasir", mail: "whoossfardin@gmail.com", rightMcq: 23, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 18.75, writtenMarks: 0, gpaMarks: 19.78, totalMarks: 38.53, engMcqMark: 6, engNegativeMarks: -1, engTotal: 5, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 55, name: "saad", mail: "salekinahmedsaad0@gmail.com", rightMcq: 24, negativeMarks: -5.5, wrongAnswered: 22, mcqMarks: 18.5, writtenMarks: 0, gpaMarks: 19, totalMarks: 37.5, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 56, name: "Chingwai Mong Marma", mail: "theemmarma@gmail.com", rightMcq: 20, negativeMarks: -2.75, wrongAnswered: 11, mcqMarks: 17.25, writtenMarks: 0, gpaMarks: 18.16, totalMarks: 35.41, engMcqMark: 6, engNegativeMarks: -1, engTotal: 5, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 57, name: "Saakin Ishrak", mail: "saakinchowx069@gmail.com", rightMcq: 17, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 14.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 34.75, engMcqMark: 7, engNegativeMarks: -0.75, engTotal: 6.25, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 58, name: "Anika Maliha Apon", mail: "", rightMcq: 17, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 14.75, writtenMarks: 0, gpaMarks: 19.66, totalMarks: 34.41, engMcqMark: 7, engNegativeMarks: -0.75, engTotal: 6.25, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 59, name: "Zarin Tasnim Mayesha", mail: "zarintasnimmayesha05@gmail.com", rightMcq: 20, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 16.25, writtenMarks: 0, gpaMarks: 17.72, totalMarks: 33.97, engMcqMark: 6, engNegativeMarks: -1, engTotal: 5, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 60, name: "Parvez Mashraphy", mail: "parvezmashraphy@gmail.com", rightMcq: 21, negativeMarks: -5.75, wrongAnswered: 23, mcqMarks: 15.25, writtenMarks: 0, gpaMarks: 18.5, totalMarks: 33.75, engMcqMark: 9, engNegativeMarks: -0.5, engTotal: 8.5, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 61, name: "Tayem", mail: "tayemtaher1234@gmail.com", rightMcq: 13, negativeMarks: -5.25, wrongAnswered: 21, mcqMarks: 7.75, writtenMarks: 0, gpaMarks: 18.5, totalMarks: 26.25, engMcqMark: 11, engNegativeMarks: -0.25, engTotal: 10.75, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 62, name: "Farah Mahzabin", mail: "afroz.del79@gmail.com", rightMcq: 8, negativeMarks: -1.75, wrongAnswered: 7, mcqMarks: 6.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 26.25, engMcqMark: 6, engNegativeMarks: -0.5, engTotal: 5.5, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 63, name: "Sadiul Hasan Sajon", mail: "sadiulhasan100@gmail.com", rightMcq: 9, negativeMarks: -3, wrongAnswered: 12, mcqMarks: 6, writtenMarks: 0, gpaMarks: 19, totalMarks: 25, engMcqMark: 8, engNegativeMarks: -1, engTotal: 7, engStatus: "Pass", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Practice More!!!" },
+            { merit: 64, name: "Fatin Estiak Rajjo", mail: "md.fatinestiakrajjo@gmail.com", rightMcq: 41, negativeMarks: -2.75, wrongAnswered: 11, mcqMarks: 38.25, writtenMarks: 26.5, gpaMarks: 20, totalMarks: 84.75, engMcqMark: 5, engNegativeMarks: -1, engTotal: 4, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 65, name: "Rayat", mail: "hossainirayat@gmail.com", rightMcq: 39, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 35.25, writtenMarks: 27.5, gpaMarks: 20, totalMarks: 82.75, engMcqMark: 3, engNegativeMarks: -1.5, engTotal: 1.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 66, name: "Al Sadaf Bin Nazim", mail: "gihanjoebert@gmail.com", rightMcq: 41, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 37.25, writtenMarks: 25, gpaMarks: 20, totalMarks: 82.25, engMcqMark: 5, engNegativeMarks: -1.5, engTotal: 3.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 67, name: "Farah Hassan", mail: "farahassan154@gmail.com", rightMcq: 37, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 32.75, writtenMarks: 29, gpaMarks: 20, totalMarks: 81.75, engMcqMark: 5, engNegativeMarks: -1.25, engTotal: 3.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 68, name: "Sadman Mahmud Rohan", mail: "sdmnrohan@gmail.com", rightMcq: 40, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 37.75, writtenMarks: 19.5, gpaMarks: 19.34, totalMarks: 76.59, engMcqMark: 4, engNegativeMarks: -1.25, engTotal: 2.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 69, name: "Rifat", mail: "princerifat55555@gmail.com", rightMcq: 38, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 33.75, writtenMarks: 22.5, gpaMarks: 20, totalMarks: 76.25, engMcqMark: 4, engNegativeMarks: -2, engTotal: 2, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 70, name: "Saidur Rahman", mail: "saidurhere@gmail.com", rightMcq: 39, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 34.75, writtenMarks: 20, gpaMarks: 19.5, totalMarks: 74.25, engMcqMark: 2, engNegativeMarks: -0.75, engTotal: 1.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 71, name: "S.M.Muhtasim", mail: "smm1510268@gmail.com", rightMcq: 35, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 30.5, writtenMarks: 22, gpaMarks: 20, totalMarks: 72.5, engMcqMark: 2, engNegativeMarks: -1.25, engTotal: 0.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 72, name: "Maisha Tahia", mail: "maishatahia2007@gmail.com", rightMcq: 34, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 30.25, writtenMarks: 21.5, gpaMarks: 20, totalMarks: 71.75, engMcqMark: 4, engNegativeMarks: -1.25, engTotal: 2.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 73, name: "Labib", mail: "muntarizvi@gmail.com", rightMcq: 36, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 31.5, writtenMarks: 14.5, gpaMarks: 20, totalMarks: 66, engMcqMark: 4, engNegativeMarks: -2, engTotal: 2, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 74, name: "Khandaker ahnaf tahrim", mail: "ahnaftahrim@gmail.com", rightMcq: 31, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 28.5, writtenMarks: 17.25, gpaMarks: 20, totalMarks: 65.75, engMcqMark: 5, engNegativeMarks: -1.25, engTotal: 3.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 75, name: "Lamiya", mail: "lava10855@gmail.com", rightMcq: 30, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 26.25, writtenMarks: 17, gpaMarks: 19.66, totalMarks: 62.91, engMcqMark: 5, engNegativeMarks: -1.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 76, name: "Mushfiqur Rahman Evan", mail: "evanmusfiq@gmail.com", rightMcq: 33, negativeMarks: -6.5, wrongAnswered: 26, mcqMarks: 26.5, writtenMarks: 14, gpaMarks: 20, totalMarks: 60.5, engMcqMark: 2, engNegativeMarks: -1.25, engTotal: 0.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 77, name: "Saiful Islam Safin", mail: "bakolia345@gmail.com", rightMcq: 27, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 24.75, writtenMarks: 15.25, gpaMarks: 18.66, totalMarks: 58.66, engMcqMark: 1, engNegativeMarks: -1.5, engTotal: -0.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 78, name: "Maymuna zaman Sreya", mail: "sreya00sreya@gmail.com", rightMcq: 29, negativeMarks: -5.75, wrongAnswered: 23, mcqMarks: 23.25, writtenMarks: 16, gpaMarks: 19, totalMarks: 58.25, engMcqMark: 4, engNegativeMarks: -2, engTotal: 2, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 79, name: "Urfath Mahadi", mail: "urfathmahadialif@gmail.com", rightMcq: 19, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 15.75, writtenMarks: 20.5, gpaMarks: 20, totalMarks: 56.25, engMcqMark: 3, engNegativeMarks: -1.75, engTotal: 1.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 80, name: "Jannatul Ferdous Niha", mail: "jf5688220@gmail.com", rightMcq: 27, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 22.75, writtenMarks: 12, gpaMarks: 20, totalMarks: 54.75, engMcqMark: 4, engNegativeMarks: -1.25, engTotal: 2.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 81, name: "Rajin", mail: "junayed72546@gmail.com", rightMcq: 27, negativeMarks: -5.5, wrongAnswered: 22, mcqMarks: 21.5, writtenMarks: 13.75, gpaMarks: 16.72, totalMarks: 51.97, engMcqMark: 6, engNegativeMarks: -1.5, engTotal: 4.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 82, name: "Afia Zahin Tamima", mail: "afiazahin.tamima@gmail.com", rightMcq: 22, negativeMarks: -6, wrongAnswered: 24, mcqMarks: 16, writtenMarks: 16.5, gpaMarks: 18.34, totalMarks: 50.84, engMcqMark: 5, engNegativeMarks: -1.5, engTotal: 3.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 83, name: "Mirsida", mail: "ajasmin@gmail.com", rightMcq: 6, negativeMarks: -1.25, wrongAnswered: 5, mcqMarks: 4.75, writtenMarks: 12.25, gpaMarks: 20, totalMarks: 37, engMcqMark: 0, engNegativeMarks: 0, engTotal: 0, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Pass", totalStatus: "Fail", feedback: "All effort will go down water if you can't Pass English MCQ dear" },
+            { merit: 84, name: "Muntakim Waseq", mail: "maksudamahmood001@gmail.com", rightMcq: 46, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 43.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 63.5, engMcqMark: 5, engNegativeMarks: -1.25, engTotal: 3.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 85, name: "Samia Ridi", mail: "samiaridi2003@gmail.com", rightMcq: 46, negativeMarks: -2.75, wrongAnswered: 11, mcqMarks: 43.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 63.25, engMcqMark: 3, engNegativeMarks: -1, engTotal: 2, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 86, name: "AYAT", mail: "news2ayat@gmail.com", rightMcq: 44, negativeMarks: -1.75, wrongAnswered: 7, mcqMarks: 42.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 62.25, engMcqMark: 5, engNegativeMarks: -0.75, engTotal: 4.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 87, name: "Sharaba", mail: "sharaba.prionty22@gmail.com", rightMcq: 44, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 41.75, writtenMarks: 0, gpaMarks: 19.66, totalMarks: 61.41, engMcqMark: 3, engNegativeMarks: -1.75, engTotal: 1.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 88, name: "Yashrif Al Rashid", mail: "yashrif777@gmail.com", rightMcq: 37, negativeMarks: -2.75, wrongAnswered: 11, mcqMarks: 34.25, writtenMarks: 6, gpaMarks: 20, totalMarks: 60.25, engMcqMark: 4, engNegativeMarks: -1, engTotal: 3, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 89, name: "Sabrin", mail: "tanhasabrin853@gmail.com", rightMcq: 42, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 39.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 59.5, engMcqMark: 0, engNegativeMarks: -1, engTotal: -1, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 90, name: "Raiyan Ritom", mail: "insoundbd19@gmail.com", rightMcq: 41, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 37.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 57.75, engMcqMark: 4, engNegativeMarks: -1.5, engTotal: 2.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 91, name: "Turjo", mail: "turjotawsif@gmail.com", rightMcq: 41, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 36.5, writtenMarks: 0, gpaMarks: 18.9, totalMarks: 55.4, engMcqMark: 3, engNegativeMarks: -1.75, engTotal: 1.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 92, name: "Muntasir Marjan", mail: "muntasirmarjan131@gmail.com", rightMcq: 30, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 25.5, writtenMarks: 9.5, gpaMarks: 20, totalMarks: 55, engMcqMark: 6, engNegativeMarks: -1.5, engTotal: 4.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 93, name: "Nobojit Barua", mail: "suparna.soma80@gmail.com", rightMcq: 38, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 34.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 54.75, engMcqMark: 4, engNegativeMarks: -1.5, engTotal: 2.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 94, name: "Shadman Shahid", mail: "shadmanraayan@gmail.com", rightMcq: 38, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 34.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 54.5, engMcqMark: 5, engNegativeMarks: -1.25, engTotal: 3.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 95, name: "Fabiha Bushra", mail: "fabihabushra211@gmail.com", rightMcq: 38, negativeMarks: -4.75, wrongAnswered: 19, mcqMarks: 33.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 53.25, engMcqMark: 6, engNegativeMarks: -1.25, engTotal: 4.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 96, name: "Abu Sayeed Mustofa Mahmud Taj", mail: "asmmtaj26@gmail.com", rightMcq: 36, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 32.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 52.25, engMcqMark: 4, engNegativeMarks: -1.5, engTotal: 2.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 97, name: "Rohan Kabir", mail: "romim2056@gmail.com", rightMcq: 36, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 32.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 52.25, engMcqMark: 5, engNegativeMarks: -1.25, engTotal: 3.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 98, name: "Mashrafi", mail: "mashrafi292007@gmail.com", rightMcq: 35, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 30.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 50.75, engMcqMark: 2, engNegativeMarks: -2, engTotal: 0, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 99, name: "Ramisa anjum simi", mail: "ramisa30simi@gmail.com", rightMcq: 36, negativeMarks: -5.25, wrongAnswered: 21, mcqMarks: 30.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 50.75, engMcqMark: 6, engNegativeMarks: -1.25, engTotal: 4.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 100, name: "Tiana", mail: "tianarahman266@gmail.con", rightMcq: 34, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 30.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 50.75, engMcqMark: 4, engNegativeMarks: -0.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 101, name: "Abiyad Abrar", mail: "abiyadabrar591@gmail.com", rightMcq: 34, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 30.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 50.75, engMcqMark: 6, engNegativeMarks: -1.25, engTotal: 4.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Excellent Marks but it's valueless if you can't Pass English MCQs" },
+            { merit: 102, name: "Habib", mail: "habib101569@gmail.com", rightMcq: 22, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 18, writtenMarks: 11.75, gpaMarks: 20, totalMarks: 49.75, engMcqMark: 1, engNegativeMarks: -2, engTotal: -1, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 103, name: "Labib", mail: "labibfarhan.bd@gmail.com", rightMcq: 35.5, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 31, writtenMarks: 0, gpaMarks: 17.84, totalMarks: 48.84, engMcqMark: 4, engNegativeMarks: -1, engTotal: 3, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 104, name: "Maruf Hasan", mail: "marufhasan2vv@gmail.com", rightMcq: 25, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 21.25, writtenMarks: 7.75, gpaMarks: 19.34, totalMarks: 48.34, engMcqMark: 6, engNegativeMarks: -1.25, engTotal: 4.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 105, name: "Mahib Iqbal", mail: "mahibiqbal20@gmail.com", rightMcq: 31, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 27.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 47.5, engMcqMark: 4, engNegativeMarks: -0.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 106, name: "Suha alam", mail: "alamsuha07@gmail.com", rightMcq: 29, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 26.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 46.75, engMcqMark: 4, engNegativeMarks: -1.5, engTotal: 2.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 107, name: "Rakib Ahmed Moynul", mail: "rakibahmedmoynul5883@gmail.com", rightMcq: 30, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 26.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 46.5, engMcqMark: 6, engNegativeMarks: -1.5, engTotal: 4.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 108, name: "Tamim", mail: "th2105571@gmail.com", rightMcq: 31, negativeMarks: -5.5, wrongAnswered: 22, mcqMarks: 25.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 45.5, engMcqMark: 5, engNegativeMarks: -1.25, engTotal: 3.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 109, name: "Safana", mail: "sharminafroz26@gmail.com", rightMcq: 29, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 25.75, writtenMarks: 0, gpaMarks: 19.66, totalMarks: 45.41, engMcqMark: 5, engNegativeMarks: -1.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 110, name: "Rubayet Islam Soykat", mail: "soykatmcc3064@gmail.com", rightMcq: 30, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 26.25, writtenMarks: 0, gpaMarks: 18.94, totalMarks: 45.19, engMcqMark: 5, engNegativeMarks: -1.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 111, name: "Wasif Hossain Shotto", mail: "taekwondowasif05@gmail.com", rightMcq: 30, negativeMarks: -5.75, wrongAnswered: 23, mcqMarks: 24.25, writtenMarks: 0, gpaMarks: 19.66, totalMarks: 43.91, engMcqMark: 5, engNegativeMarks: -1.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 112, name: "Mustak", mail: "mdm56837235@gmail.com", rightMcq: 30, negativeMarks: -4.25, wrongAnswered: 17, mcqMarks: 25.75, writtenMarks: 0, gpaMarks: 17.66, totalMarks: 43.41, engMcqMark: 5, engNegativeMarks: -1.5, engTotal: 3.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 113, name: "Tajoar Rashid Tashin", mail: "tajoarrashidtashin@gmail.com", rightMcq: 22, negativeMarks: -3.5, wrongAnswered: 14, mcqMarks: 18.5, writtenMarks: 8, gpaMarks: 16.62, totalMarks: 43.12, engMcqMark: 5, engNegativeMarks: -1.5, engTotal: 3.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 114, name: "Masha", mail: "green.alien.9144@gmail.com", rightMcq: 26, negativeMarks: -3, wrongAnswered: 12, mcqMarks: 23, writtenMarks: 0, gpaMarks: 20, totalMarks: 43, engMcqMark: 6, engNegativeMarks: -1.25, engTotal: 4.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 115, name: "Tajrib Islam Namid", mail: "tajriblm10@gmail.com", rightMcq: 29, negativeMarks: -6, wrongAnswered: 24, mcqMarks: 23, writtenMarks: 0, gpaMarks: 20, totalMarks: 43, engMcqMark: 5, engNegativeMarks: -1, engTotal: 4, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 116, name: "Humayan", mail: "mdhumayanrashid65@gmail.com", rightMcq: 28, negativeMarks: -5.25, wrongAnswered: 21, mcqMarks: 22.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 42.75, engMcqMark: 3, engNegativeMarks: -1.25, engTotal: 1.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 117, name: "Musfik", mail: "hossainmalek17@gmail.com", rightMcq: 30, negativeMarks: -5.75, wrongAnswered: 23, mcqMarks: 24.25, writtenMarks: 0, gpaMarks: 18.28, totalMarks: 42.53, engMcqMark: 4, engNegativeMarks: -2, engTotal: 2, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 118, name: "Oishi Debnath", mail: "oishidebnath123@gmail.com", rightMcq: 28, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 23.5, writtenMarks: 0, gpaMarks: 18.34, totalMarks: 41.84, engMcqMark: 2, engNegativeMarks: -2, engTotal: 0, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 119, name: "Toukidur Rahman Nahid", mail: "toukidurrahman@gmail.com", rightMcq: 25, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 21.75, writtenMarks: 0, gpaMarks: 19.66, totalMarks: 41.41, engMcqMark: 4, engNegativeMarks: -1.5, engTotal: 2.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 120, name: "A.T.M. Tanjib", mail: "tanjibjayad@gmail.com", rightMcq: 25, negativeMarks: -3, wrongAnswered: 12, mcqMarks: 22, writtenMarks: 0, gpaMarks: 19, totalMarks: 41, engMcqMark: 3, engNegativeMarks: -1.5, engTotal: 1.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 121, name: "Tahmin", mail: "tahminkhan73@gmail.com", rightMcq: 25, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 21, writtenMarks: 0, gpaMarks: 20, totalMarks: 41, engMcqMark: 0, engNegativeMarks: 0, engTotal: 0, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 122, name: "Abrar", mail: "azr88311@gmail.com", rightMcq: 23, negativeMarks: -3.75, wrongAnswered: 15, mcqMarks: 19.25, writtenMarks: 0, gpaMarks: 20, totalMarks: 39.25, engMcqMark: 3, engNegativeMarks: -1.75, engTotal: 1.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 123, name: "Yasin", mail: "ara31405@gmail.com", rightMcq: 23, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 19, writtenMarks: 0, gpaMarks: 19.88, totalMarks: 38.88, engMcqMark: 5, engNegativeMarks: -1.5, engTotal: 3.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 124, name: "Sajid Hassan", mail: "sajidhassan123e@gmail.com", rightMcq: 23, negativeMarks: -5, wrongAnswered: 20, mcqMarks: 18, writtenMarks: 0, gpaMarks: 20, totalMarks: 38, engMcqMark: 6, engNegativeMarks: -1.25, engTotal: 4.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 125, name: "Cat", mail: "s7705212@gmail.com", rightMcq: 20, negativeMarks: -2, wrongAnswered: 8, mcqMarks: 18, writtenMarks: 0, gpaMarks: 20, totalMarks: 38, engMcqMark: 5, engNegativeMarks: -1, engTotal: 4, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 126, name: "Kazi Sadman Sakib", mail: "kazisadmanshakib143@gmail.com", rightMcq: 23, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 18.5, writtenMarks: 0, gpaMarks: 19.34, totalMarks: 37.84, engMcqMark: 3, engNegativeMarks: -1.25, engTotal: 1.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 127, name: "israt karim ahona", mail: "arianaipsheta@gmail.com", rightMcq: 20, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 17.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 37.5, engMcqMark: 3, engNegativeMarks: -1.25, engTotal: 1.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 128, name: "Towa", mail: "humaira.777towa@gmail.com", rightMcq: 23, negativeMarks: -5, wrongAnswered: 20, mcqMarks: 18, writtenMarks: 0, gpaMarks: 19.34, totalMarks: 37.34, engMcqMark: 5, engNegativeMarks: -1.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 129, name: "Fahia", mail: "saniurahmanfrnk@gmail.com", rightMcq: 27, negativeMarks: -8, wrongAnswered: 32, mcqMarks: 19, writtenMarks: 0, gpaMarks: 18, totalMarks: 37, engMcqMark: 5, engNegativeMarks: -1.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 130, name: "Saada R", mail: "sahadarahman120@gmail.com", rightMcq: 25, negativeMarks: -6, wrongAnswered: 24, mcqMarks: 19, writtenMarks: 0, gpaMarks: 18, totalMarks: 37, engMcqMark: 5, engNegativeMarks: -1, engTotal: 4, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 131, name: "Lubabah Alam", mail: "lubabahalam593@gmail.com", rightMcq: 20, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 16.75, writtenMarks: 0, gpaMarks: 19.84, totalMarks: 36.59, engMcqMark: 4, engNegativeMarks: -1, engTotal: 3, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 132, name: "Mahbuba", mail: "mahbusultana@gmail.com", rightMcq: 20, negativeMarks: -5.5, wrongAnswered: 22, mcqMarks: 14.5, writtenMarks: 2, gpaMarks: 18.72, totalMarks: 35.22, engMcqMark: 3, engNegativeMarks: -1.75, engTotal: 1.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 133, name: "Sadat", mail: "sadathabib420@gmail.com", rightMcq: 21, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 18.5, writtenMarks: 0, gpaMarks: 16.28, totalMarks: 34.78, engMcqMark: 0, engNegativeMarks: 0, engTotal: 0, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 134, name: "jerin Fatema", mail: "jerinfatema405@gmail.com", rightMcq: 17, negativeMarks: -2.25, wrongAnswered: 9, mcqMarks: 14.75, writtenMarks: 0, gpaMarks: 20, totalMarks: 34.75, engMcqMark: 5, engNegativeMarks: -1, engTotal: 4, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 135, name: "Tayeba Prome", mail: "ismatayeba21@gmail.com", rightMcq: 13, negativeMarks: -3.25, wrongAnswered: 13, mcqMarks: 9.75, writtenMarks: 6, gpaMarks: 18.84, totalMarks: 34.59, engMcqMark: 3, engNegativeMarks: -1.25, engTotal: 1.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 136, name: "Tasauf Ibtesham", mail: "ibteshamtasaug@gmail.com", rightMcq: 23, negativeMarks: -8, wrongAnswered: 32, mcqMarks: 15, writtenMarks: 0, gpaMarks: 19, totalMarks: 34, engMcqMark: 5, engNegativeMarks: -1.5, engTotal: 3.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 137, name: "abdul aziz", mail: "chowdhuryrepon5@gmail.com", rightMcq: 21, negativeMarks: -6.25, wrongAnswered: 25, mcqMarks: 14.75, writtenMarks: 0, gpaMarks: 18, totalMarks: 32.75, engMcqMark: 5, engNegativeMarks: -1.5, engTotal: 3.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 138, name: "Arif Bari Siam", mail: "arifbarisiam23@gmail.com", rightMcq: 14, negativeMarks: -4, wrongAnswered: 16, mcqMarks: 10, writtenMarks: 0, gpaMarks: 20, totalMarks: 30, engMcqMark: 0, engNegativeMarks: -2.25, engTotal: -2.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 139, name: "Ayantika Guha Thakurta", mail: "ayantikadiya123@gmail.com", rightMcq: 35, negativeMarks: -5.25, wrongAnswered: 21, mcqMarks: 29.75, writtenMarks: 0, gpaMarks: 0, totalMarks: 29.75, engMcqMark: 3, engNegativeMarks: -2.25, engTotal: 0.75, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 140, name: "Tasmia", mail: "tasmiahridita244@gmail.com", rightMcq: 11, negativeMarks: -2.5, wrongAnswered: 10, mcqMarks: 8.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 28.5, engMcqMark: 2, engNegativeMarks: -1, engTotal: 1, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 141, name: "Simi", mail: "nabilatasnim459@gmail.com", rightMcq: 12, negativeMarks: -4.5, wrongAnswered: 18, mcqMarks: 7.5, writtenMarks: 0, gpaMarks: 20, totalMarks: 27.5, engMcqMark: 2, engNegativeMarks: -1.75, engTotal: 0.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 142, name: "Tahsin", mail: "monowarsahed76@gmail.com", rightMcq: 9, negativeMarks: -1, wrongAnswered: 4, mcqMarks: 8, writtenMarks: 0, gpaMarks: 19.34, totalMarks: 27.34, engMcqMark: 5, engNegativeMarks: -0.75, engTotal: 4.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 143, name: "Tahsin", mail: "mo.azmirsarkar@gmail.com", rightMcq: 10.25, negativeMarks: -1, wrongAnswered: 4, mcqMarks: 9.25, writtenMarks: 0, gpaMarks: 18, totalMarks: 27.25, engMcqMark: 2, engNegativeMarks: -1.5, engTotal: 0.5, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" },
+            { merit: 144, name: "Junayet Hasan", mail: "hasanjx4ff@gmail.com", rightMcq: 9, negativeMarks: -1.25, wrongAnswered: 5, mcqMarks: 7.75, writtenMarks: 0, gpaMarks: 18.78, totalMarks: 26.53, engMcqMark: 4, engNegativeMarks: -0.75, engTotal: 3.25, engStatus: "Fail English MCQ", mcqStatus: "Fail MCQ", writtenStatus: "Fail Written", totalStatus: "Fail", feedback: "Please Be more Serious!" }
+        ];
+
+// MCQ Merit mapping - CORRECTED VERSION
+const mcqMeritMapping = {
+    1: 1, 2: 3, 3: 4, 4: 2, 5: 11, 6: 24, 7: 58, 8: 18, 9: 32, 10: 24,
+    11: 43, 12: 32, 13: 63, 14: 77, 15: 91, 16: 9, 17: 9, 18: 18, 19: 18, 20: 24,
+    21: 11, 22: 24, 23: 18, 24: 32, 25: 24, 26: 24, 27: 18, 28: 32, 29: 43, 30: 40,
+    31: 43, 32: 63, 33: 43, 34: 43, 35: 43, 36: 43, 37: 43, 38: 58, 39: 43, 40: 43,
+    41: 70, 42: 72, 43: 70, 44: 72, 45: 63, 46: 85, 47: 94, 48: 85, 49: 103, 50: 100,
+    51: 100, 52: 103, 53: 94, 54: 111, 55: 110, 56: 124, 57: 131, 58: 131, 59: 124, 60: 121,
+    61: 135, 62: 143, 63: 140, 64: 14, 65: 24, 66: 14, 67: 40, 68: 18, 69: 32, 70: 24,
+    71: 58, 72: 63, 73: 43, 74: 72, 75: 77, 76: 69, 77: 94, 78: 85, 79: 130, 80: 94,
+    81: 94, 82: 118, 83: 144, 84: 4, 85: 4, 86: 7, 87: 7, 88: 40, 89: 11, 90: 14,
+    91: 14, 92: 77, 93: 32, 94: 32, 95: 32, 96: 43, 97: 43, 98: 58, 99: 43, 100: 63,
+    101: 63, 102: 118, 103: 57, 104: 103, 105: 72, 106: 85, 107: 77, 108: 72, 109: 85, 110: 77,
+    111: 77, 112: 77, 113: 118, 114: 100, 115: 85, 116: 91, 117: 77, 118: 91, 119: 103, 120: 103,
+    121: 103, 122: 111, 123: 111, 124: 111, 125: 124, 126: 111, 127: 124, 128: 111, 129: 94, 130: 103,
+    131: 124, 132: 124, 133: 121, 134: 131, 135: 135, 136: 111, 137: 121, 138: 134, 139: 58, 140: 138,
+    141: 137, 142: 140, 143: 139, 144: 140
+};
+
+        // Function to get fail criteria
+        function getFailCriteria(student) {
+            let criteria = [];
+            if (student.engStatus !== "Pass") criteria.push("English MCQ Fail");
+            if (student.mcqStatus !== "Pass") criteria.push("MCQ Fail");
+            if (student.writtenStatus !== "Pass") criteria.push("Written Fail");
+            if (student.totalStatus !== "Pass") criteria.push("Fail");
+            return criteria.length > 0 ? criteria.join(", ") : "Pass";
+        }
+
+function getAvatarInitials(name) {
+    return name.charAt(0).toUpperCase();
+}
+
+
+        // Function to get fail status class
+        function getFailStatusClass(student) {
+            const criteria = getFailCriteria(student);
+            return criteria === "Pass" ? "fail-none" : "fail-fail";
+        }
+
+        // Populate leaderboard on page load
+        function populateLeaderboard() {
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            leaderboardBody.innerHTML = '';
+            
+            // Sort students by merit (just in case)
+            const sortedStudents = [...students].sort((a, b) => a.merit - b.merit);
+            
+            sortedStudents.forEach(student => {
+                const row = document.createElement('tr');
+                let meritClass = '';
+                if (student.merit === 1) meritClass = 'merit-1';
+                else if (student.merit === 2) meritClass = 'merit-2';
+                else if (student.merit === 3) meritClass = 'merit-3';
+                
+                row.innerHTML = `
+                    <td><span class="merit-badge ${meritClass}">${student.merit}</span></td>
+                    <td>${student.name}</td>
+                    <td>${student.totalMarks}</td>
+                    <td><span class="${getFailStatusClass(student)}">${getFailCriteria(student)}</span></td>
+                `;
+                leaderboardBody.appendChild(row);
+            });
+        }
+
+        // Search for student result
+        function searchResult() {
+            const emailInput = document.getElementById('emailInput').value.trim().toLowerCase();
+            const student = students.find(s => s.mail.toLowerCase() === emailInput);
+            
+            if (student) {
+                // Hide leaderboard, show result
+                document.getElementById('leaderboardDisplay').style.display = 'none';
+                document.getElementById('resultDisplay').style.display = 'block';
+                
+                // Scroll to result
+                document.getElementById('resultDisplay').scrollIntoView({ behavior: 'smooth' });
+                
+                // Populate result data
+                // Populate result data with anime avatar
+const avatarDiv = document.getElementById('avatarLetter');
+avatarDiv.textContent = getAvatarInitials(student.name);
+avatarDiv.style.background = 'linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)';
+avatarDiv.style.display = 'flex';
+avatarDiv.style.alignItems = 'center';
+avatarDiv.style.justifyContent = 'center';
+avatarDiv.style.color = 'white';
+avatarDiv.style.fontSize = '2rem';
+avatarDiv.style.fontWeight = 'bold';
+
+                document.getElementById('resultName').textContent = student.name;
+                document.getElementById('resultEmail').textContent = student.mail;
+                document.getElementById('resultMerit').textContent = `Merit: ${student.merit}`;
+                document.getElementById('totalMarks').textContent = student.totalMarks;
+                document.getElementById('meritPosition').textContent = student.merit;
+                document.getElementById('feedbackText').textContent = student.feedback;
+                
+                // English MCQ
+                document.getElementById('engCorrected').textContent = student.engMcqMark;
+                document.getElementById('engNegative').textContent = student.engNegativeMarks;
+                document.getElementById('engTotal').textContent = student.engTotal;
+                document.getElementById('engStatus').textContent = student.engStatus;
+                document.getElementById('engStatus').className = student.engStatus === "Pass" ? "status-pass" : "status-fail";
+              // Total MCQ - UPDATED TO INCLUDE MCQ MERIT
+document.getElementById('mcqCorrected').textContent = student.rightMcq;
+document.getElementById('mcqWrong').textContent = student.wrongAnswered;
+document.getElementById('mcqMarks').textContent = student.mcqMarks;
+
+// Get MCQ Merit from mapping
+const mcqMerit = mcqMeritMapping[student.merit] || "N/A";
+document.getElementById('mcqStatus').innerHTML = `
+    <span>${student.mcqStatus}</span>
+    <div class="mcq-merit-container">
+        <span class="mcq-merit-label">MCQ Merit:</span>
+        <span class="mcq-merit-value">${mcqMerit}</span>
+    </div>
+`;
+document.getElementById('mcqStatus').className = student.mcqStatus === "Pass" ? "status-pass" : "status-fail";
+                // Written & Total
+                document.getElementById('writtenMarks').textContent = student.writtenMarks;
+                document.getElementById('writtenStatus').textContent = student.writtenStatus;
+                document.getElementById('writtenStatus').className = student.writtenStatus === "Pass" ? "status-pass" : "status-fail";
+                document.getElementById('gpaMarks').textContent = student.gpaMarks;
+                document.getElementById('totalOutOf120').textContent = student.totalMarks;
+                
+                // Overall status
+                document.getElementById('overallStatus').textContent = student.totalStatus;
+                document.getElementById('overallStatus').className = student.totalStatus === "Pass" ? "status-pass" : "status-fail";
+                
+                // Clear search input
+                document.getElementById('emailInput').value = '';
+            } else {
+                alert('No result found for this email. Please check the email address and try again.');
+                document.getElementById('emailInput').focus();
+            }
+        }
+
+        // Show leaderboard and hide result
+     function showLeaderboard() {
+    document.getElementById('leaderboardDisplay').style.display = 'block';
+    document.getElementById('resultDisplay').style.display = 'none';
+    
+    // Reset avatar is not needed since we're using simple letter avatars
+    
+    document.getElementById('leaderboardDisplay').scrollIntoView({ behavior: 'smooth' });
+}
+        // Allow pressing Enter to search
+        document.getElementById('emailInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchResult();
+            }
+        });
+
+        // Initialize leaderboard on page load
+        window.onload = function() {
+            populateLeaderboard();
+        };
+    </script>
+</body>
+</html>
