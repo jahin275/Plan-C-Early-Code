@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="C.png">
+<link rel="icon" type="image/png" href="C.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan C DU C Group Change Mock - 01 Results</title>
@@ -57,7 +57,6 @@
 
         .see-results-btn {
             display: block;
-            background: #ff6b6b;
             color: white;
             padding: 15px 30px;
             border-radius: 25px;
@@ -67,11 +66,26 @@
             margin: 20px auto;
             width: 250px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(255,107,107,0.3);
             transition: all 0.3s;
         }
 
-        .see-results-btn:hover {
+        .english-btn {
+            background: #4a6fa5;
+            box-shadow: 0 4px 8px rgba(74, 111, 165, 0.3);
+        }
+
+        .english-btn:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 111, 165, 0.4);
+        }
+
+        .gc-btn {
+            background: #ff6b6b;
+            box-shadow: 0 4px 8px rgba(255,107,107,0.3);
+        }
+
+        .gc-btn:hover {
             background: #ff5252;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(255,107,107,0.4);
@@ -79,6 +93,14 @@
 
         .see-results-btn i {
             margin-right: 10px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
         }
 
         /* Mentor Section */
@@ -182,16 +204,31 @@
              alt="Plan C Banner" 
              class="banner">
 
-        <!-- Thumbnail with Result Link -->
+        <!-- English Medium Mock Test Results -->
         <div class="thumbnail-section">
+            <h2 class="section-title">DU C Unit English Medium Mock Test-01 Result 25-26</h2>
+            <a href="emmock.html" class="thumbnail-link">
+                <img src="https://scontent.fdac96-2.fna.fbcdn.net/v/t39.30808-6/592966190_1223922069787135_6894787493599833072_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=-6_Oeoc_eMkQ7kNvwF-T4EN&_nc_oc=AdmR7AUsnug_lhUKs9zr1cHgkPNwJsLiGpeas874YS4sC8GQdfFZ9yZzTU8UcWFhC1rXwlVRjfqBqcAUWDOIRCuL&_nc_zt=23&_nc_ht=scontent.fdac96-2.fna&_nc_gid=ZXbicseyzpFDuuAuxHTyzA&oh=00_AfmUg4PWvri624QJGnrNjHhjMgtBp6sIgNKvcvgmCSHu_w&oe=6937905E" 
+                     alt="English Medium Mock Test Results" 
+                     class="thumbnail">
+            </a>
+            
+            <a href="emmock.html" class="see-results-btn english-btn">
+                <i class="fas fa-chart-bar"></i> See English Medium Results
+            </a>
+        </div>
+
+        <!-- Plan C DU C Group Change Mock Results -->
+        <div class="thumbnail-section">
+            <h2 class="section-title">Plan C DU C Group Change Mock - 01 Results</h2>
             <a href="results.html" class="thumbnail-link">
                 <img src="https://scontent.fdac96-2.fna.fbcdn.net/v/t39.30808-6/593297272_1223686043144071_1005292545850096199_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeHJwjEl6cqkVMNaAAdSl1sf8qHSajiMea_yodJqOIx5r2GPsiF9for-OEC3-I1aTz_BPDimVNY9k8oAUr3Mh-uN&_nc_ohc=wOCsVHA9nAYQ7kNvwEgiYUS&_nc_oc=AdlUveyS1FMlBAWtpxf4p2XPYioNBEi4xvOtWtM2DcD7lH7ESYlcg35jU3YuYaYMdB1PsB2MT2fyDgIdtdtBVLsZ&_nc_zt=23&_nc_ht=scontent.fdac96-2.fna&_nc_gid=kjcCMBNM_84D1yuP9MmuuQ&oh=00_AfmzTKq7YKMOX8qxQ2ocFFtddXTpbG1gLcPaJxIqu5s4aA&oe=69355CBE" 
                      alt="Mock Test Results" 
                      class="thumbnail">
             </a>
             
-            <a href="results.html" class="see-results-btn">
-                <i class="fas fa-chart-bar"></i> See Your Results
+            <a href="results.html" class="see-results-btn gc-btn">
+                <i class="fas fa-chart-bar"></i> See DU GC Results
             </a>
         </div>
 
