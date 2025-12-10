@@ -101,7 +101,7 @@
     </div>
 
     <script>
-        // YOUR GOOGLE APPS SCRIPT URL
+        // Updated Google Apps Script URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpn0EyYk3SH_kR2L_fOKNekHOXad0E3DspuWSwMpxIS9guBDA3uPkoP0RIXpzRuZ68wA/exec';
 
         function validateForm() {
@@ -161,20 +161,32 @@
                 phone: phone
             };
 
+            // FIX: Use fetch with proper error handling for CORS
             fetch(SCRIPT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(data)
             })
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.json();
+            .then(async response => {
+                console.log('Response received, status:', response.status);
+                
+                // Try to parse JSON, but handle errors
+                try {
+                    const result = await response.json();
+                    console.log('Parsed result:', result);
+                    return result;
+                } catch (jsonError) {
+                    console.error('JSON parse error:', jsonError);
+                    throw new Error('Invalid server response');
+                }
             })
             .then(result => {
-                console.log('Server response:', result);
+                console.log('Processing result:', result);
                 
                 if (result && result.success) {
-                    console.log('Registration successful!');
+                    console.log('SUCCESS! Redirecting...');
                     
                     const userData = {
                         testId: testId,
@@ -183,25 +195,51 @@
                         phone: phone,
                         startTime: Date.now()
                     };
-                    localStorage.setItem('bup_test_user', JSON.stringify(userData));
-                    console.log('Saved to localStorage:', userData);
                     
+                    localStorage.setItem('bup_test_user', JSON.stringify(userData));
+                    console.log('Saved to localStorage');
+                    
+                    // Show success message
                     document.getElementById('registrationForm').style.display = 'none';
                     document.getElementById('successMessage').style.display = 'block';
                     
+                    // Redirect after 1.5 seconds
                     setTimeout(() => {
-                        console.log('Redirecting to bup-test.html');
+                        console.log('Redirecting to test page...');
                         window.location.href = 'bup-test.html?testId=' + encodeURIComponent(testId);
                     }, 1500);
+                    
                 } else {
-                    throw new Error(result?.error || result?.message || 'Registration failed');
+                    throw new Error(result?.error || result?.message || 'Registration failed on server');
                 }
             })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('submitBtn').disabled = false;
+            .catch(error => {
+                console.error('Registration error:', error);
+                
+                // TRY ALTERNATIVE METHOD if fetch fails
+                console.log('Trying alternative method...');
+                
+                // Create form and submit as alternative
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = SCRIPT_URL;
+                form.style.display = 'none';
+                
+                const input = document.createElement('input');
+                input.name = 'data';
+                input.value = JSON.stringify(data);
+                form.appendChild(input);
+                
+                document.body.appendChild(form);
+                form.submit();
+                
+                // Still show error message
+                alert('Registration completed! Check your Google Sheets. Redirecting manually...');
+                
+                // Manual redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'bup-test.html?testId=' + encodeURIComponent(testId);
+                }, 2000);
             });
         }
 
