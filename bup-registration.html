@@ -149,7 +149,7 @@
         // Generate test ID
         const testId = 'BUP_' + Date.now();
 
-        // 1. SAVE TO LOCALSTORAGE FIRST (MOST IMPORTANT!)
+        // 1. SAVE TO LOCALSTORAGE FIRST - ALWAYS
         const userData = {
             testId: testId,
             name: name,
@@ -159,7 +159,7 @@
         };
         
         localStorage.setItem('bup_test_user', JSON.stringify(userData));
-        console.log('SAVED to localStorage:', userData);
+        console.log('✅ SAVED to localStorage:', userData);
 
         // 2. Show loading state
         document.getElementById('loading').style.display = 'block';
@@ -175,54 +175,42 @@
             phone: phone
         };
 
-        try {
-            console.log('Sending to Google Sheets...');
-            
-            // Send to Google Sheets
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
+        console.log('📤 Sending to Google Sheets...');
+        console.log('Data:', formData);
 
-            console.log('Response status:', response.status);
-            
-            // Try to get JSON response
-            let result;
-            try {
-                result = await response.json();
-                console.log('Server response:', result);
-            } catch (parseError) {
-                console.log('Could not parse JSON response, but continuing...');
-                result = { success: true }; // Assume success
-            }
-
-            // 4. Show success and redirect
-            showSuccessAndRedirect(testId);
-
-        } catch (error) {
-            console.error('Error sending to Google Sheets:', error);
-            
-            // EVEN IF GOOGLE SHEETS FAILS, STILL REDIRECT
-            // localStorage already has the data
-            alert('Note: Could not save to server, but test will start locally.');
-            
-            showSuccessAndRedirect(testId);
-        }
-    }
-
-    function showSuccessAndRedirect(testId) {
-        // Show success message
+        // FIX: Use a DIFFERENT approach to send data
+        // Create a hidden form and submit it
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = SCRIPT_URL;
+        form.style.display = 'none';
+        
+        // Add the data as a hidden input
+        const dataInput = document.createElement('input');
+        dataInput.name = 'data';
+        dataInput.value = JSON.stringify(formData);
+        form.appendChild(dataInput);
+        
+        document.body.appendChild(form);
+        
+        // Submit the form (this will navigate away from the page)
+        form.submit();
+        
+        // Note: We won't see the response because the page navigates
+        // But localStorage is already saved, so test will work
+        
+        // Show success message (will show briefly before redirect)
         document.getElementById('registrationForm').style.display = 'none';
         document.getElementById('successMessage').style.display = 'block';
         
-        // Redirect after 1 second
+        // The form submission above will handle the redirect
+        // But add a backup redirect just in case
         setTimeout(() => {
-            console.log('Redirecting to test page...');
             window.location.href = 'bup-test.html?testId=' + testId;
-        }, 1000);
+        }, 2000);
+
+        // Don't use fetch - it has CORS issues with Google Apps Script
+        return false;
     }
 
     document.addEventListener('keypress', function(e) {
