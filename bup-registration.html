@@ -100,152 +100,134 @@
         </div>
     </div>
 
-    <script>
-        // Updated Google Apps Script URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpn0EyYk3SH_kR2L_fOKNekHOXad0E3DspuWSwMpxIS9guBDA3uPkoP0RIXpzRuZ68wA/exec';
+<script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpn0EyYk3SH_kR2L_fOKNekHOXad0E3DspuWSwMpxIS9guBDA3uPkoP0RIXpzRuZ68wA/exec';
 
-        function validateForm() {
-            let isValid = true;
-            
-            const name = document.getElementById('name').value.trim();
-            if (name.length < 2) {
-                document.getElementById('nameError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('nameError').style.display = 'none';
-            }
-
-            const email = document.getElementById('email').value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                document.getElementById('emailError').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('emailError').style.display = 'none';
-            }
-
-            const phone = document.getElementById('phone').value.trim();
-            const phoneRegex = /^[\d\s\+\-\(\)]{10,15}$/;
-            const digitsOnly = phone.replace(/\D/g, '');
-            
-            if (digitsOnly.length < 10 || digitsOnly.length > 15) {
-                document.getElementById('phoneError').style.display = 'block';
-                document.getElementById('phoneError').textContent = 'Please enter 10-15 digit phone number';
-                isValid = false;
-            } else {
-                document.getElementById('phoneError').style.display = 'none';
-            }
-
-            return isValid;
+    function validateForm() {
+        let isValid = true;
+        
+        const name = document.getElementById('name').value.trim();
+        if (name.length < 2) {
+            document.getElementById('nameError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('nameError').style.display = 'none';
         }
 
-        function registerUser() {
-            if (!validateForm()) return;
+        const email = document.getElementById('email').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            document.getElementById('emailError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('emailError').style.display = 'none';
+        }
 
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const digitsOnly = phone.replace(/\D/g, '');
+        
+        if (digitsOnly.length < 10 || digitsOnly.length > 15) {
+            document.getElementById('phoneError').style.display = 'block';
+            document.getElementById('phoneError').textContent = 'Please enter 10-15 digit phone number';
+            isValid = false;
+        } else {
+            document.getElementById('phoneError').style.display = 'none';
+        }
 
-            console.log('Submitting:', { name, email, phone });
+        return isValid;
+    }
 
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('submitBtn').disabled = true;
+    async function registerUser() {
+        if (!validateForm()) return;
 
-            const testId = 'BUP_' + Date.now();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
 
-            const data = {
-                action: 'register',
-                testId: testId,
-                name: name,
-                email: email,
-                phone: phone
-            };
+        console.log('Starting registration...');
 
-            // FIX: Use fetch with proper error handling for CORS
-            fetch(SCRIPT_URL, {
+        // Generate test ID
+        const testId = 'BUP_' + Date.now();
+
+        // 1. SAVE TO LOCALSTORAGE FIRST (MOST IMPORTANT!)
+        const userData = {
+            testId: testId,
+            name: name,
+            email: email,
+            phone: phone,
+            startTime: Date.now()
+        };
+        
+        localStorage.setItem('bup_test_user', JSON.stringify(userData));
+        console.log('SAVED to localStorage:', userData);
+
+        // 2. Show loading state
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submitBtn').innerText = 'Registering...';
+
+        // 3. Prepare data for Google Sheets
+        const formData = {
+            action: 'register',
+            testId: testId,
+            name: name,
+            email: email,
+            phone: phone
+        };
+
+        try {
+            console.log('Sending to Google Sheets...');
+            
+            // Send to Google Sheets
+            const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
-            })
-            .then(async response => {
-                console.log('Response received, status:', response.status);
-                
-                // Try to parse JSON, but handle errors
-                try {
-                    const result = await response.json();
-                    console.log('Parsed result:', result);
-                    return result;
-                } catch (jsonError) {
-                    console.error('JSON parse error:', jsonError);
-                    throw new Error('Invalid server response');
-                }
-            })
-            .then(result => {
-                console.log('Processing result:', result);
-                
-                if (result && result.success) {
-                    console.log('SUCCESS! Redirecting...');
-                    
-                    const userData = {
-                        testId: testId,
-                        name: name,
-                        email: email,
-                        phone: phone,
-                        startTime: Date.now()
-                    };
-                    
-                    localStorage.setItem('bup_test_user', JSON.stringify(userData));
-                    console.log('Saved to localStorage');
-                    
-                    // Show success message
-                    document.getElementById('registrationForm').style.display = 'none';
-                    document.getElementById('successMessage').style.display = 'block';
-                    
-                    // Redirect after 1.5 seconds
-                    setTimeout(() => {
-                        console.log('Redirecting to test page...');
-                        window.location.href = 'bup-test.html?testId=' + encodeURIComponent(testId);
-                    }, 1500);
-                    
-                } else {
-                    throw new Error(result?.error || result?.message || 'Registration failed on server');
-                }
-            })
-            .catch(error => {
-                console.error('Registration error:', error);
-                
-                // TRY ALTERNATIVE METHOD if fetch fails
-                console.log('Trying alternative method...');
-                
-                // Create form and submit as alternative
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = SCRIPT_URL;
-                form.style.display = 'none';
-                
-                const input = document.createElement('input');
-                input.name = 'data';
-                input.value = JSON.stringify(data);
-                form.appendChild(input);
-                
-                document.body.appendChild(form);
-                form.submit();
-                
-                // Still show error message
-                alert('Registration completed! Check your Google Sheets. Redirecting manually...');
-                
-                // Manual redirect after 2 seconds
-                setTimeout(() => {
-                    window.location.href = 'bup-test.html?testId=' + encodeURIComponent(testId);
-                }, 2000);
+                body: JSON.stringify(formData)
             });
-        }
 
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') registerUser();
-        });
-    </script>
+            console.log('Response status:', response.status);
+            
+            // Try to get JSON response
+            let result;
+            try {
+                result = await response.json();
+                console.log('Server response:', result);
+            } catch (parseError) {
+                console.log('Could not parse JSON response, but continuing...');
+                result = { success: true }; // Assume success
+            }
+
+            // 4. Show success and redirect
+            showSuccessAndRedirect(testId);
+
+        } catch (error) {
+            console.error('Error sending to Google Sheets:', error);
+            
+            // EVEN IF GOOGLE SHEETS FAILS, STILL REDIRECT
+            // localStorage already has the data
+            alert('Note: Could not save to server, but test will start locally.');
+            
+            showSuccessAndRedirect(testId);
+        }
+    }
+
+    function showSuccessAndRedirect(testId) {
+        // Show success message
+        document.getElementById('registrationForm').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+        
+        // Redirect after 1 second
+        setTimeout(() => {
+            console.log('Redirecting to test page...');
+            window.location.href = 'bup-test.html?testId=' + testId;
+        }, 1000);
+    }
+
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') registerUser();
+    });
+</script>
 </body>
 </html>
