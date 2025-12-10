@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUP FBS Mock Test - Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); min-height: 100vh; padding: 20px; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo { width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 3rem; color: #1a2980; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .main-title { color: white; font-size: 2.5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .subtitle { color: rgba(255,255,255,0.9); font-size: 1.2rem; margin-bottom: 30px; }
+        .result-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); margin-bottom: 30px; }
+        .result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0; }
+        .user-info { display: flex; align-items: center; gap: 20px; }
+        .user-avatar { width: 80px; height: 80px; background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: bold; }
+        .user-details h2 { color: #1a2980; margin-bottom: 5px; font-size: 1.8rem; }
+        .user-details p { color: #666; }
+        .test-id { background: #f0f7ff; padding: 10px 20px; border-radius: 25px; color: #1a2980; font-weight: 600; }
+        .score-display { text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); border-radius: 15px; color: white; }
+        .score-value { font-size: 4rem; font-weight: bold; margin-bottom: 10px; }
+        .score-label { font-size: 1.5rem; opacity: 0.9; }
+        .score-breakdown { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+        .breakdown-item { background: rgba(255,255,255,0.1); padding: 15px 25px; border-radius: 10px; backdrop-filter: blur(10px); }
+        .breakdown-value { font-size: 1.8rem; font-weight: bold; margin-bottom: 5px; }
+        .breakdown-label { font-size: 0.9rem; opacity: 0.8; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid #1a2980; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-icon { width: 50px; height: 50px; background: #1a2980; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 15px; }
+        .stat-value { font-size: 2rem; font-weight: bold; color: #1a2980; margin-bottom: 5px; }
+        .stat-label { color: #666; font-size: 0.95rem; }
+        .analysis-section { margin-top: 40px; }
+        .analysis-title { color: #1a2980; font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        .subject-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .subject-card { background: #f8f9fa; padding: 20px; border-radius: 10px; }
+        .subject-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .subject-name { font-weight: bold; color: #1a2980; font-size: 1.1rem; }
+        .subject-score { font-weight: bold; color: #333; }
+        .progress-bar { height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+        .progress-fill { height: 100%; background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); border-radius: 5px; }
+        .subject-stats { display: flex; justify-content: space-between; font-size: 0.9rem; color: #666; }
+        .wrong-questions { margin-top: 40px; }
+        .wrong-question-card { background: #fff8e1; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #ff9800; }
+        .wrong-question-text { font-weight: bold; margin-bottom: 10px; color: #333; }
+        .answer-comparison { display: flex; gap: 20px; margin-bottom: 15px; }
+        .answer-box { flex: 1; padding: 15px; border-radius: 8px; }
+        .user-answer { background: #ffebee; border: 2px solid #f44336; }
+        .correct-answer { background: #e8f5e9; border: 2px solid #4CAF50; }
+        .answer-label { font-size: 0.9rem; color: #666; margin-bottom: 5px; }
+        .answer-value { font-weight: bold; font-size: 1.1rem; }
+        .explanation-box { background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196F3; }
+        .explanation-label { font-weight: bold; color: #1976D2; margin-bottom: 8px; }
+        .action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+        .action-btn { padding: 15px 30px; border-radius: 10px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s; }
+        .action-btn.retake { background: #1a2980; color: white; border: 2px solid #1a2980; }
+        .action-btn.retake:hover { background: #16267a; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(26,41,128,0.3); }
+        .action-btn.download { background: white; color: #1a2980; border: 2px solid #1a2980; }
+        .action-btn.download:hover { background: #f0f7ff; transform: translateY(-2px); }
+        .action-btn.home { background: #4CAF50; color: white; border: 2px solid #4CAF50; }
+        .action-btn.home:hover { background: #45a049; transform: translateY(-2px); }
+        @media (max-width: 768px) {
+            .result-header { flex-direction: column; text-align: center; gap: 20px; }
+            .score-breakdown { flex-direction: column; gap: 10px; }
+            .score-value { font-size: 3rem; }
+            .main-title { font-size: 2rem; }
+            .result-card { padding: 20px; }
+        }
+        @media (max-width: 480px) {
+            .action-buttons { flex-direction: column; align-items: stretch; }
+            .action-btn { justify-content: center; }
+            .score-value { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">BUP</div>
+            <h1 class="main-title">BUP FBS Mock Test - 01 Results</h1>
+            <p class="subtitle">Detailed performance analysis with explanations</p>
+        </div>
+
+        <div class="result-card">
+            <div class="result-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <h2 id="userName">Loading...</h2>
+                        <p id="userEmail">Loading...</p>
+                    </div>
+                </div>
+                <div class="test-id" id="testId">Test ID: ---</div>
+            </div>
+
+            <div class="score-display">
+                <div class="score-value" id="totalScore">0.00</div>
+                <div class="score-label">Out of 30 Marks</div>
+                <div class="score-breakdown">
+                    <div class="breakdown-item">
+                        <div class="breakdown-value" id="correctCount">0</div>
+                        <div class="breakdown-label">Correct</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-value" id="wrongCount">0</div>
+                        <div class="breakdown-label">Wrong</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-value" id="unattemptedCount">0</div>
+                        <div class="breakdown-label">Unattempted</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-value" id="percentage">0%</div>
+                        <div class="breakdown-label">Percentage</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-value" id="rank">--</div>
+                    <div class="stat-label">Rank (Estimated)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value" id="timeTaken">0:00</div>
+                    <div class="stat-label">Time Taken</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-value" id="testDate">--/--/----</div>
+                    <div class="stat-label">Test Date</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value" id="percentile">--%</div>
+                    <div class="stat-label">Percentile (Estimated)</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3 class="analysis-title">Subject-wise Performance</h3>
+                <div class="subject-breakdown" id="subjectBreakdown">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="wrong-questions" id="wrongQuestionsSection" style="display: none;">
+                <h3 class="analysis-title">Wrong Answers Review</h3>
+                <p style="color: #666; margin-bottom: 20px;">Here are the questions you answered incorrectly with explanations:</p>
+                <div id="wrongQuestionsContainer">
+                    <!-- Wrong questions will be populated here -->
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="bup-registration.html" class="action-btn retake">
+                    <i class="fas fa-redo"></i> Take New Test
+                </a>
+                <a href="#" class="action-btn download" onclick="downloadResults()">
+                    <i class="fas fa-download"></i> Download Report
+                </a>
+                <a href="index.html" class="action-btn home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const storedResults = localStorage.getItem('bup_test_results');
+        
+        if (!storedResults) {
+            window.location.href = 'index.html';
+        }
+
+        const results = JSON.parse(storedResults);
+        const user = results.userData;
+        const score = results.score;
+        const wrongQuestions = results.wrongQuestions || [];
+
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userEmail').textContent = user.email;
+        document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+        document.getElementById('testId').textContent = `Test ID: ${user.testId}`;
+
+        document.getElementById('totalScore').textContent = score.totalMarks;
+        document.getElementById('correctCount').textContent = score.correct;
+        document.getElementById('wrongCount').textContent = score.wrong;
+        document.getElementById('unattemptedCount').textContent = score.unattempted;
+        document.getElementById('percentage').textContent = `${score.percentage}%`;
+
+        const minutes = Math.floor(results.duration / 60);
+        const seconds = results.duration % 60;
+        document.getElementById('timeTaken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        const testDate = new Date(results.submittedAt);
+        document.getElementById('testDate').textContent = 
+            `${testDate.getDate().toString().padStart(2, '0')}/${(testDate.getMonth() + 1).toString().padStart(2, '0')}/${testDate.getFullYear()}`;
+
+        const rank = Math.floor(Math.random() * 50) + 1;
+        const percentile = (100 - ((rank / 100) * 100)).toFixed(1);
+        
+        document.getElementById('rank').textContent = `#${rank}`;
+        document.getElementById('percentile').textContent = `${percentile}%`;
+
+        const subjectBreakdown = {
+            'Mathematics': { total: 10, correct: Math.min(score.correct, Math.floor(score.correct * 0.4)), wrong: Math.min(score.wrong, Math.floor(score.wrong * 0.4)) },
+            'English': { total: 10, correct: Math.min(score.correct, Math.floor(score.correct * 0.3)), wrong: Math.min(score.wrong, Math.floor(score.wrong * 0.3)) },
+            'General Knowledge': { total: 10, correct: Math.min(score.correct, Math.floor(score.correct * 0.3)), wrong: Math.min(score.wrong, Math.floor(score.wrong * 0.3)) }
+        };
+
+        const subjectBreakdownContainer = document.getElementById('subjectBreakdown');
+        for (const [subject, data] of Object.entries(subjectBreakdown)) {
+            const unattempted = Math.max(0, data.total - data.correct - data.wrong);
+            const subjectScore = (data.correct * 1) - (data.wrong * 0.5);
+            const percentage = ((subjectScore / data.total) * 100).toFixed(1);
+            const progressPercentage = ((data.correct + data.wrong) / data.total) * 100;
+
+            const subjectCard = document.createElement('div');
+            subjectCard.className = 'subject-card';
+            subjectCard.innerHTML = `
+                <div class="subject-header">
+                    <div class="subject-name">${subject}</div>
+                    <div class="subject-score">${subjectScore.toFixed(2)}/${data.total}</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progressPercentage}%"></div>
+                </div>
+                <div class="subject-stats">
+                    <span>Correct: ${data.correct}</span>
+                    <span>Wrong: ${data.wrong}</span>
+                    <span>Unattempted: ${unattempted}</span>
+                    <span>Percentage: ${percentage}%</span>
+                </div>
+            `;
+            subjectBreakdownContainer.appendChild(subjectCard);
+        }
+
+        if (wrongQuestions.length > 0) {
+            document.getElementById('wrongQuestionsSection').style.display = 'block';
+            const container = document.getElementById('wrongQuestionsContainer');
+            
+            wrongQuestions.forEach((q, index) => {
+                const wrongCard = document.createElement('div');
+                wrongCard.className = 'wrong-question-card';
+                wrongCard.innerHTML = `
+                    <div class="wrong-question-text">${index + 1}. ${q.question}</div>
+                    <div class="answer-comparison">
+                        <div class="answer-box user-answer">
+                            <div class="answer-label">Your Answer</div>
+                            <div class="answer-value">${q.userAnswer}</div>
+                        </div>
+                        <div class="answer-box correct-answer">
+                            <div class="answer-label">Correct Answer</div>
+                            <div class="answer-value">${q.correctAnswer}</div>
+                        </div>
+                    </div>
+                    <div class="explanation-box">
+                        <div class="explanation-label">Explanation:</div>
+                        <div>${q.explanation}</div>
+                    </div>
+                `;
+                container.appendChild(wrongCard);
+            });
+        }
+
+        function downloadResults() {
+            const resultText = `
+BUP FBS Mock Test - 01 Results
+==============================
+Name: ${user.name}
+Email: ${user.email}
+Test ID: ${user.testId}
+Test Date: ${testDate.toLocaleDateString()}
+Time Taken: ${minutes}:${seconds.toString().padStart(2, '0')}
+
+SCORE SUMMARY
+-------------
+Total Marks: ${score.totalMarks}/30
+Correct Answers: ${score.correct}
+Wrong Answers: ${score.wrong}
+Unattempted: ${score.unattempted}
+Percentage: ${score.percentage}%
+Estimated Rank: #${rank}
+Estimated Percentile: ${percentile}%
+
+SUBJECT-WISE PERFORMANCE
+------------------------
+${Object.entries(subjectBreakdown).map(([subject, data]) => {
+    const subjectScore = (data.correct * 1) - (data.wrong * 0.5);
+    const percentage = ((subjectScore / data.total) * 100).toFixed(1);
+    return `${subject}: ${subjectScore.toFixed(2)}/${data.total} (${percentage}%)`;
+}).join('\n')}
+
+${wrongQuestions.length > 0 ? `
+WRONG ANSWERS REVIEW
+--------------------
+${wrongQuestions.map((q, i) => `${i+1}. ${q.question}
+   Your Answer: ${q.userAnswer}
+   Correct Answer: ${q.correctAnswer}
+   Explanation: ${q.explanation}`).join('\n\n')}
+` : ''}
+
+Thank you for taking the BUP FBS Mock Test!
+            `.trim();
+
+            const blob = new Blob([resultText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `BUP_FBS_Results_${user.testId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        localStorage.removeItem('bup_test_results');
+    </script>
+</body>
+</html>
