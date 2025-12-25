@@ -205,6 +205,16 @@
                 padding: 20px;
             }
         }
+        .ju-iba-btn {
+    background: linear-gradient(135deg, #002147, #003366);
+    box-shadow: 0 4px 8px rgba(0, 33, 71, 0.3);
+}
+
+.ju-iba-btn:hover {
+    background: linear-gradient(135deg, #001f3f, #002a56);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 33, 71, 0.4);
+}
     </style>
 </head>
 <body>
@@ -226,6 +236,20 @@
             
             <a href="buptest/buptest1.html" class="see-results-btn" style="background: #e67e22; box-shadow: 0 4px 8px rgba(230, 126, 34, 0.3);">
                 <i class="fas fa-file-alt"></i> Take BUP FBS Mock Test
+            </a>
+        </div>
+                <!-- JU IBA Mock Test -->
+        <div class="thumbnail-section">
+            <h2 class="section-title">JU IBA Mock Test by Plan C</h2>
+            <a href="jumock/jumock.html" class="thumbnail-link">
+                <img src="jumock.jpg" 
+                     onerror="this.onerror=null; this.src='C.png'; this.className='thumbnail fallback-img'; this.alt='Fallback Thumbnail'; this.title='Image not loaded, using fallback'"
+                     alt="JU IBA Mock Test" 
+                     class="thumbnail">
+            </a>
+            
+            <a href="jumock/jumock.html" class="see-results-btn ju-iba-btn">
+                <i class="fas fa-university"></i> Take JU IBA Mock Test
             </a>
         </div>
         <!-- English Medium Mock Test Results -->
