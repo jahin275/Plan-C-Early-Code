@@ -38,7 +38,7 @@
         .brand-header {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -60,6 +60,13 @@
             justify-content: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .logo img {
@@ -81,6 +88,40 @@
         .brand-tagline {
             font-size: 0.9rem;
             opacity: 0.9;
+        }
+
+        /* AI Assistant Badge */
+        .ai-assistant {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: default;
+            transition: all 0.3s ease;
+        }
+
+        .ai-assistant:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .ai-icon {
+            color: #10a37f;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         /* Header Styles */
@@ -508,7 +549,7 @@
             }
             
             .brand-header {
-                justify-content: flex-start;
+                justify-content: space-between;
                 margin-bottom: 30px;
             }
             
@@ -589,6 +630,21 @@
                 justify-content: center;
             }
         }
+
+        @media (max-width: 768px) {
+            .ai-assistant {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .brand-header {
+                padding-top: 40px;
+                position: relative;
+            }
+        }
     </style>
 </head>
 <body>
@@ -601,13 +657,19 @@
             <!-- Branding Header -->
             <div class="brand-header">
                 <div class="logo-container">
-                    <div class="logo">
+                    <div class="logo" onclick="window.open('https://facebook.com/plancbymj', '_blank')">
                         <img src="https://via.placeholder.com/60/ff7e5f/ffffff?text=C" alt="Plan C Logo" id="logoImage">
                     </div>
                     <div class="brand-text">
                         <div class="brand-name">Plan C Academy</div>
                         <div class="brand-tagline">JU IBA Test Preparation Experts</div>
                     </div>
+                </div>
+                
+                <!-- AI Assistant Badge -->
+                <div class="ai-assistant" onclick="showAIChat()" title="Click to chat with AI Assistant">
+                    <i class="fas fa-robot ai-icon"></i>
+                    <span>AI Assistant</span>
                 </div>
             </div>
 
@@ -668,6 +730,9 @@
             <div class="footer">
                 <p>© 2024 Plan C Academy. All rights reserved.</p>
                 <p>JU IBA Mock Test Results Portal v1.0</p>
+                <p style="margin-top: 10px; opacity: 0.7;">
+                    <i class="fas fa-robot"></i> Powered by AI Assistant
+                </p>
             </div>
         </div>
     </div>
@@ -684,6 +749,15 @@
 
         // Update logo source
         document.getElementById('logoImage').src = 'C.png';
+
+        // AI Assistant Function
+        function showAIChat() {
+            const message = "Hello! I'm your AI Assistant for the JU IBA Mock Test Results Portal. How can I help you today?\n\n• Need help interpreting your scores?\n• Want tips for improvement?\n• Questions about the test format?\n\nPlease contact your instructor for detailed academic guidance.";
+            alert(message);
+            
+            // Optional: You can replace this with a more sophisticated chat interface
+            // For now, using alert for simplicity
+        }
 
         // Load cached data immediately
         function loadCachedData() {
@@ -926,6 +1000,9 @@
                     <button onclick="viewSolution()" class="solution-button">
                         <i class="fas fa-file-alt"></i> View Mock Test Solution
                     </button>
+                    <button onclick="showAIChat()" class="back-button" style="background: #10a37f;">
+                        <i class="fas fa-robot"></i> Ask AI Assistant
+                    </button>
                 </div>
                 
                 <div style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9rem;">
@@ -1057,6 +1134,7 @@
                         </div>
                         <div style="text-align: center; margin-top: 30px; color: #666;">
                             <p>© 2024 Plan C Academy | Generated from JU IBA Mock Test Portal</p>
+                            <p><i class="fas fa-robot"></i> Powered by AI Assistant</p>
                         </div>
                     </body>
                 </html>
