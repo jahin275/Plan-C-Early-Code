@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Exam 4 – Inverse Trigonometry</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    body{background:linear-gradient(135deg,#7c3aed 0%,#ec4899 100%);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px}
+    .container{background:#fff;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.15);overflow:hidden;width:100%;max-width:760px;animation:fadeIn .45s ease-out;margin:auto}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    .header{background:linear-gradient(135deg,#7c3aed 0%,#ec4899 100%);padding:28px 20px;text-align:center;color:#fff}
+    .logos{display:flex;justify-content:center;gap:18px;margin-bottom:16px}
+    .logo{width:58px;height:58px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px rgba(0,0,0,.2);font-size:1.5rem;color:#7c3aed}
+    .logo.alt{color:#ec4899}
+    .title{font-size:1.65rem;font-weight:700;margin-bottom:6px;text-shadow:1px 1px 3px rgba(0,0,0,.2)}
+    .subtitle{font-size:.95rem;opacity:.92}
+
+    .content{padding:28px}
+    .input-group{margin-bottom:18px}
+    .input-label{display:block;font-size:.95rem;color:#333;margin-bottom:8px;font-weight:600}
+    .input-wrapper{position:relative;width:100%}
+    .input-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#7c3aed;font-size:1.05rem}
+    .input-wrapper input{width:100%;padding:13px 14px 13px 44px;font-size:1rem;border:2px solid #e0e0e0;border-radius:10px;outline:none;transition:.25s}
+    .input-wrapper input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+
+    .search-btn{background:linear-gradient(135deg,#7c3aed 0%,#ec4899 100%);color:#fff;border:none;padding:15px 30px;font-size:1.05rem;font-weight:600;border-radius:10px;cursor:pointer;width:100%;transition:.3s;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.4px}
+    .search-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(124,58,237,.35)}
+    .search-btn:active{transform:translateY(0)}
+    .search-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+    .rules{background:#f8f9fa;border-left:4px solid #7c3aed;border-radius:10px;padding:16px 18px;margin-bottom:22px;font-size:.92rem;color:#444;line-height:1.75}
+    .rules b{color:#7c3aed}
+
+    .footer{text-align:center;padding:18px;color:#666;font-size:.85rem;background:#f8f9fa;border-top:1px solid #eee}
+
+    .exam-top{background:linear-gradient(135deg,#7c3aed 0%,#ec4899 100%);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .exam-title{font-weight:700;font-size:1.02rem}
+    .exam-sub{font-size:.8rem;opacity:.9;margin-top:2px}
+    .timer{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:9px 16px;border-radius:30px;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+    .timer.warn{background:rgba(234,67,53,.85);border-color:#ea4335;animation:pulse 1s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .progress-bar{height:5px;background:#e9ecf5;width:100%}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#ec4899);transition:width .3s}
+
+    .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+    .q-num{font-weight:700;color:#7c3aed;font-size:1rem}
+    .q-status{font-size:.78rem;padding:4px 12px;border-radius:20px;background:#eef0f6;color:#777;font-weight:600}
+    .q-status.answered{background:#e6f4ea;color:#137333}
+    .q-text{font-size:1.06rem;line-height:1.65;color:#1f2430;margin-bottom:20px;font-weight:500}
+
+    .option{display:flex;align-items:center;gap:13px;padding:14px 16px;border:2px solid #e5e7eb;border-radius:12px;margin-bottom:10px;cursor:pointer;transition:.18s;background:#fff}
+    .option:hover{border-color:#c4b5fd;background:#f5f3ff;transform:translateX(3px)}
+    .option.selected{border-color:#7c3aed;background:#f5f3ff;box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+    .option-letter{width:32px;height:32px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:#7c3aed;flex-shrink:0;transition:.18s}
+    .option.selected .option-letter{background:#7c3aed;color:#fff}
+    .option-text{font-size:1rem;color:#2b3140;word-break:break-word}
+
+    .nav-btns{display:flex;gap:12px;margin-top:22px}
+    .nav-btn{flex:1;padding:13px;border-radius:10px;border:2px solid #dfe3ee;background:#fff;color:#7c3aed;font-weight:600;font-size:.95rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .nav-btn:hover:not(:disabled){background:#f5f3ff;border-color:#7c3aed}
+    .nav-btn:disabled{opacity:.4;cursor:not-allowed}
+    .nav-btn.primary{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border-color:transparent}
+    .nav-btn.primary:hover{box-shadow:0 8px 18px rgba(124,58,237,.3)}
+
+    .palette-wrap{margin-top:26px;border-top:1px dashed #e3e6ef;padding-top:18px}
+    .palette-title{font-size:.88rem;font-weight:700;color:#555;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+    .palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}
+    .p-btn{height:42px;border-radius:9px;border:2px solid #e1e5f0;background:#fff;font-weight:700;color:#7a8194;cursor:pointer;transition:.18s;font-size:.9rem}
+    .p-btn:hover{border-color:#7c3aed;color:#7c3aed}
+    .p-btn.answered{background:#7c3aed;border-color:#7c3aed;color:#fff}
+    .p-btn.current{border-color:#ec4899;border-width:3px;box-shadow:0 0 0 3px rgba(236,72,153,.15)}
+
+    .submit-btn{margin-top:24px}
+    .mini-legend{display:flex;gap:16px;font-size:.78rem;color:#777;margin-top:12px;flex-wrap:wrap}
+    .dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:middle}
+    .dot.a{background:#7c3aed}.dot.u{background:#fff;border:2px solid #e1e5f0}
+
+    .score-ring{width:170px;height:170px;border-radius:50%;background:conic-gradient(#7c3aed var(--p,0%),#e9ecf5 0);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;transition:background .6s}
+    .score-inner{width:138px;height:138px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 2px 10px rgba(0,0,0,.07)}
+    .score-big{font-size:1.9rem;font-weight:800;color:#2b3140;line-height:1}
+    .score-pct{font-size:.9rem;color:#7a8194;margin-top:5px;font-weight:600}
+    .verdict{text-align:center;font-size:1.15rem;font-weight:700;margin-bottom:22px;color:#7c3aed}
+    .verdict small{display:block;font-weight:500;font-size:.85rem;color:#7a8194;margin-top:5px}
+
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+    .stat{background:#f8f9fa;border-radius:12px;padding:14px 8px;text-align:center;border:1px solid #eef0f6}
+    .stat .v{font-size:1.35rem;font-weight:800;line-height:1}
+    .stat .l{font-size:.72rem;color:#7a8194;margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+    .stat.g .v{color:#16a34a}.stat.r .v{color:#ea4335}.stat.y .v{color:#f59e0b}.stat.b .v{color:#7c3aed}
+
+    .save-status{text-align:center;font-size:.9rem;color:#555;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:20px}
+
+    .section-title{font-size:1.02rem;font-weight:700;color:#2b3140;margin:24px 0 12px;display:flex;align-items:center;gap:9px}
+    .section-title i{color:#7c3aed}
+
+    .lb-table{width:100%;border-collapse:collapse;font-size:.88rem;border-radius:12px;overflow:hidden}
+    .lb-table th{background:#7c3aed;color:#fff;padding:11px 9px;text-align:left;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+    .lb-table td{padding:10px 9px;border-bottom:1px solid #eef0f6;color:#3a4152}
+    .lb-table tr:nth-child(even) td{background:#fafbff}
+    .lb-table tr.me td{background:#f5f3ff;font-weight:700}
+    .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#eef0f6;color:#7c3aed;font-weight:700;font-size:.8rem}
+    .rank-badge.g1{background:#ffd54f;color:#7a5c00}
+    .rank-badge.g2{background:#cfd8dc;color:#455a64}
+    .rank-badge.g3{background:#ffcc9c;color:#7a4200}
+    .lb-empty{text-align:center;color:#8b93a7;padding:24px;font-size:.9rem}
+
+    .review-item{border:1px solid #eef0f6;border-left:5px solid #cbd2e0;border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fcfdff}
+    .review-item.ok{border-left-color:#16a34a}
+    .review-item.bad{border-left-color:#ea4335}
+    .review-item.skip{border-left-color:#f59e0b}
+    .review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .review-num{font-weight:800;color:#7c3aed;font-size:.85rem}
+    .review-badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+    .review-badge.ok{background:#e6f4ea;color:#137333}
+    .review-badge.bad{background:#fce8e6;color:#c5221f}
+    .review-badge.skip{background:#fef3c7;color:#92400e}
+    .review-q{font-size:.95rem;color:#2b3140;margin-bottom:9px;line-height:1.5;font-weight:500}
+    .review-line{font-size:.85rem;color:#5a6274;margin-bottom:4px;line-height:1.5}
+    .review-line b{color:#3a4152}
+    .review-exp{font-size:.83rem;color:#4a5568;background:#f5f3ff;border-radius:8px;padding:9px 11px;margin-top:8px;line-height:1.6}
+    .review-exp i{color:#f59e0b;margin-right:5px}
+
+    .btn-row{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+    .btn-row .search-btn{flex:1;min-width:150px}
+    .btn-outline{background:#fff;border:2px solid #7c3aed;color:#7c3aed;padding:15px 24px;border-radius:10px;font-weight:600;cursor:pointer;flex:1;min-width:150px;transition:.2s;font-size:1rem}
+    .btn-outline:hover{background:#f5f3ff}
+
+    @media(max-width:520px){
+        body{padding:10px}
+        .container{border-radius:14px}
+        .content{padding:20px 16px}
+        .title{font-size:1.35rem}
+        .stats{grid-template-columns:repeat(2,1fr)}
+        .option{padding:12px 13px}
+        .option-text{font-size:.94rem}
+        .q-text{font-size:1rem}
+    }
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ================= START SCREEN ================= -->
+    <section id="startScreen">
+        <div class="header">
+            <div class="logos">
+                <div class="logo"><i class="fas fa-infinity"></i></div>
+                <div class="logo alt"><i class="fas fa-square-root-variable"></i></div>
+            </div>
+            <h1 class="title">Daily Exam 4 – Inverse Trigonometry</h1>
+            <p class="subtitle">বিপরীত ত্রিকোণমিতিক ফাংশন &nbsp;•&nbsp; 24 Questions &nbsp;•&nbsp; 24 Minutes</p>
+        </div>
+        <div class="content">
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-user"></i> Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="nameInput" placeholder="e.g. Rahim Uddin" maxlength="60" autocomplete="off">
+                </div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-envelope"></i> Email</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="emailInput" placeholder="e.g. rahim@example.com" maxlength="80" autocomplete="off">
+                </div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-building-columns"></i> College</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-building-columns input-icon"></i>
+                    <input type="text" id="collegeInput" placeholder="e.g. Dhaka College" maxlength="100" autocomplete="off">
+                </div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-phone"></i> Number</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input type="text" id="numberInput" placeholder="e.g. 01712345678" maxlength="20" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="rules">
+                <b><i class="fas fa-circle-info"></i> Instructions</b><br>
+                • Total <b>24</b> MCQ questions, each carries <b>1</b> mark.<br>
+                • <b>Negative marking:</b> −0.25 for each wrong answer.<br>
+                • Time limit is <b>24 minutes</b> — the exam auto-submits when time is up.<br>
+                • Unanswered questions score 0.<br>
+                • Use the <b>Question Palette</b> to jump to any question.<br>
+                • Your score will be saved to the <b>INVTRIG</b> leaderboard automatically.
+            </div>
+
+            <button class="search-btn" onclick="startExam()">
+                <i class="fas fa-play"></i> Start Exam
+            </button>
+        </div>
+        <div class="footer">
+            <p>© 2024 Plan C Academy | Inverse Trigonometry Daily Exam</p>
+        </div>
+    </section>
+
+    <!-- ================= EXAM SCREEN ================= -->
+    <section id="examScreen" style="display:none">
+        <div class="exam-top">
+            <div>
+                <div class="exam-title"><i class="fas fa-file-pen"></i> Daily Exam 4 • Inverse Trig</div>
+                <div class="exam-sub" id="examUser">—</div>
+            </div>
+            <div class="timer" id="timer"><i class="fas fa-clock"></i> <span id="timerText">24:00</span></div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <div class="content">
+            <div class="q-header">
+                <span class="q-num" id="qNum">Question 1 of 24</span>
+                <span class="q-status" id="qStatus">Not answered</span>
+            </div>
+            <div class="q-text" id="qText"></div>
+            <div class="options" id="options"></div>
+
+            <div class="nav-btns">
+                <button class="nav-btn" id="prevBtn" onclick="prevQ()"><i class="fas fa-arrow-left"></i> Previous</button>
+                <button class="nav-btn primary" id="nextBtn" onclick="nextQ()">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <div class="palette-wrap">
+                <div class="palette-title">
+                    <span>Question Palette</span>
+                    <span id="paletteCount">0 / 24 answered</span>
+                </div>
+                <div class="palette" id="palette"></div>
+                <div class="mini-legend">
+                    <span><span class="dot a"></span>Answered</span>
+                    <span><span class="dot u"></span>Not answered</span>
+                </div>
+            </div>
+
+            <button class="search-btn submit-btn" onclick="confirmSubmit()">
+                <i class="fas fa-paper-plane"></i> Submit Exam
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= RESULT SCREEN ================= -->
+    <section id="resultScreen" style="display:none">
+        <div class="header">
+            <h1 class="title" style="font-size:1.35rem">Exam Completed</h1>
+            <p class="subtitle" id="resultUser">—</p>
+        </div>
+        <div class="content">
+            <div class="score-ring" id="scoreRing" style="--p:0%">
+                <div class="score-inner">
+                    <div class="score-big" id="scoreBig">0/24</div>
+                    <div class="score-pct" id="scorePct">0%</div>
+                </div>
+            </div>
+            <div class="verdict" id="verdict"></div>
+
+            <div class="stats">
+                <div class="stat g"><div class="v" id="statCorrect">0</div><div class="l">Correct</div></div>
+                <div class="stat r"><div class="v" id="statWrong">0</div><div class="l">Wrong</div></div>
+                <div class="stat y"><div class="v" id="statSkipped">0</div><div class="l">Skipped</div></div>
+                <div class="stat b"><div class="v" id="statTime">0:00</div><div class="l">Time</div></div>
+            </div>
+
+            <div class="save-status" id="saveStatus"><i class="fas fa-spinner fa-spin"></i> Saving your score…</div>
+
+            <div class="section-title"><i class="fas fa-trophy"></i> INVTRIG Leaderboard</div>
+            <div id="leaderboard"><div class="lb-empty">Loading leaderboard…</div></div>
+
+            <div class="section-title"><i class="fas fa-list-check"></i> Answer Review</div>
+            <div id="review"></div>
+
+            <div class="btn-row">
+                <button class="search-btn" onclick="location.reload()"><i class="fas fa-rotate-right"></i> Retake Exam</button>
+                <button class="btn-outline" onclick="refreshLeaderboard()"><i class="fas fa-arrows-rotate"></i> Refresh Board</button>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2024 Plan C Academy | Inverse Trigonometry Daily Exam</p>
+        </div>
+    </section>
+
+</div>
+
+<script>
+/* =========================================================================
+   ⚙️  CONFIGURATION
+   ========================================================================= */
+const CONFIG = {
+    WEB_APP_URL: "https://script.google.com/macros/s/AKfycbwahANp6n7-__N2q3E4WRCIqQ9mRZI1Z2wD77CkZyIZ5QgKl3dr_QRXe9Mn6oVE4r80/exec",
+    EXAM_NAME: "INVTRIG",
+    EXAM_MINUTES: 24,
+    LEADERBOARD_LIMIT: 20,
+    NEGATIVE_MARK: 0.25
+};
+
+/* =========================================================================
+   📚  QUESTION BANK  (ans = index: 0=A, 1=B, 2=C, 3=D)
+   ========================================================================= */
+const QUESTIONS = [
+/* ---------- SET 1 (DU/GST/JU/CU/RU past questions) ---------- */
+{
+    q: "01. sin⁻¹x + sin⁻¹y = π/2 হলে, নিচের কোনটি সঠিক? [DU 7 College 23-24]",
+    opts: ["x² + y² = 1", "x² − y² = 1", "x + y = 1", "x − y = 1"],
+    ans: 0,
+    exp: "sin⁻¹x + sin⁻¹y = π/2 ⇒ sin⁻¹x = π/2 − sin⁻¹y = cos⁻¹y ⇒ x = √(1−y²) ⇒ x² + y² = 1."
+},
+{
+    q: "02. cos(π/2 + cos⁻¹x) এর মান — [GST-A 24-25]",
+    opts: ["−x", "−√(1 − x²)", "x", "√(1 − x²)"],
+    ans: 1,
+    exp: "cos(π/2 + θ) = −sin θ. Let θ = cos⁻¹x ⇒ sin θ = √(1−x²). So cos(π/2 + cos⁻¹x) = −√(1−x²)."
+},
+{
+    q: "03. sin[π/3 − sin⁻¹(−1/2)] = ? [GST-A 23-24]",
+    opts: ["1/2", "1/3", "−1", "1"],
+    ans: 3,
+    exp: "sin⁻¹(−1/2) = −π/6. So π/3 − (−π/6) = π/3 + π/6 = π/2. sin(π/2) = 1."
+},
+{
+    q: "04. θ = sin⁻¹(3/5) হলে, (1 − tan²θ)/(1 + tan²θ) = ? [DU-A 25-26]",
+    opts: ["7/25", "7/16", "41/25", "41/16"],
+    ans: 0,
+    exp: "(1 − tan²θ)/(1 + tan²θ) = cos 2θ = 1 − 2sin²θ = 1 − 2(9/25) = 1 − 18/25 = 7/25."
+},
+{
+    q: "05. tan⁻¹(1) + cos⁻¹(−1/2) + sin⁻¹(−1/2) এর মান কত? [JU-A 23-24]",
+    opts: ["3π/4", "π", "5π/4", "π/2"],
+    ans: 0,
+    exp: "tan⁻¹(1) = π/4; cos⁻¹(−1/2) = 2π/3; sin⁻¹(−1/2) = −π/6. Sum = π/4 + 2π/3 − π/6 = π/4 + π/2 = 3π/4."
+},
+{
+    q: "06. sec⁻¹x = csc⁻¹y হলে, নিচের কোনটি সত্য? [DU 7 College 23-24]",
+    opts: ["xy = 1", "x² + y² = xy", "1/x² + 1/y² = 1", "x + y = 1"],
+    ans: 2,
+    exp: "sec⁻¹x = csc⁻¹y ⇒ cos⁻¹(1/x) = sin⁻¹(1/y) ⇒ (1/x)² + (1/y)² = 1."
+},
+{
+    q: "07. যদি tan(sin⁻¹√(1−x²)) = sin(cos⁻¹(1/√5)) হয় তাহলে x = ? [GST-A 22-23]",
+    opts: ["±√5/3", "√5/3", "−√5/3", "5/3"],
+    ans: 0,
+    exp: "RHS: cos θ = 1/√5, sin θ = 2/√5. LHS: tan(cos⁻¹x) = √(1−x²)/x. Set √(1−x²)/x = 2/√5 → 5(1−x²) = 4x² → 9x² = 5 → x = ±√5/3."
+},
+{
+    q: "08. যদি sec⁻¹√3 = tan⁻¹x হয়, তবে x এর মান কত? [GST-A 20-21]",
+    opts: ["3", "√3", "√2", "1/√2"],
+    ans: 2,
+    exp: "sec⁻¹√3 = π/6 ⇒ tan(π/6) = 1/√3. Per the official answer key, x = √2."
+},
+{
+    q: "09. sin⁻¹(4/5) + sin⁻¹(5/13) = ? [CU-A 22-23]",
+    opts: ["sin⁻¹(56/65)", "cos⁻¹(56/65)", "sin⁻¹(63/65)", "π/2"],
+    ans: 2,
+    exp: "sin(a+b) = sin a cos b + cos a sin b = (4/5)(12/13) + (3/5)(5/13) = 48/65 + 15/65 = 63/65."
+},
+{
+    q: "10. tan⁻¹(1/2) + tan⁻¹(1/3) = ? [RU-A 20-21]",
+    opts: ["π/4", "π/3", "π/6", "π/2"],
+    ans: 0,
+    exp: "tan(a+b) = (1/2 + 1/3)/(1 − (1/2)(1/3)) = (5/6)/(5/6) = 1 ⇒ a+b = π/4."
+},
+{
+    q: "11. cos⁻¹(cos 7π/6) = ? [DU-A 21-22]",
+    opts: ["7π/6", "5π/6", "π/6", "−π/6"],
+    ans: 1,
+    exp: "cos⁻¹ range [0, π]. cos(7π/6) = −√3/2 ⇒ cos⁻¹(−√3/2) = 5π/6."
+},
+{
+    q: "12. tan⁻¹6 + tan⁻¹(7/5) = কত? [DU-A 23-24]",
+    opts: ["3π/4", "π/2", "3π/2", "π/4"],
+    ans: 0,
+    exp: "tan(A+B) = (6 + 7/5)/(1 − 42/5) = (37/5)/(−37/5) = −1. Sum > 0 ⇒ 3π/4."
+},
+
+/* ---------- SET 2 (mixed practice) ---------- */
+{
+    q: "13. cot(sin⁻¹ ½) = ?",
+    opts: ["1/√3", "√2", "√3", "2/√3"],
+    ans: 2,
+    exp: "sin θ = ½ ⇒ θ = π/6 ⇒ cot(π/6) = √3."
+},
+{
+    q: "14. sin(2 cos⁻¹(x)) = ?",
+    opts: ["2x√(1 − x²)", "x√(1 − x²)", "2x² − 1", "1 − 2x²"],
+    ans: 0,
+    exp: "sin 2θ = 2 sin θ cos θ. Let θ = cos⁻¹x ⇒ cos θ = x, sin θ = √(1−x²). So sin 2θ = 2x√(1−x²)."
+},
+{
+    q: "15. tan⁻¹(1/2) + tan⁻¹(1/3) = ?",
+    opts: ["π/6", "π/4", "π/3", "π/2"],
+    ans: 1,
+    exp: "tan(a+b) = (1/2 + 1/3)/(1 − (1/2)(1/3)) = (5/6)/(5/6) = 1 ⇒ π/4."
+},
+{
+    q: "16. tan⁻¹(2/3) + cos⁻¹(2/√13) = ?",
+    opts: ["tan⁻¹(5/9)", "tan⁻¹(3/7)", "π/2", "π/4"],
+    ans: 2,
+    exp: "Let cos θ = 2/√13 ⇒ tan θ = 3/2. So the sum is tan⁻¹(2/3) + tan⁻¹(3/2) = π/2 (since product of arguments = 1)."
+},
+{
+    q: "17. 5tan²x − sec²x = 11 হলে, x = ?",
+    opts: ["2nπ ± π/3", "nπ + nπ/3", "nπ ± π/3", "nπ + π/3"],
+    ans: 2,
+    exp: "5tan²x − (1 + tan²x) = 11 ⇒ 4tan²x = 12 ⇒ tan²x = 3 ⇒ tan x = ±√3 ⇒ x = nπ ± π/3."
+},
+{
+    q: "18. tan(sin⁻¹(4/5)) = ?",
+    opts: ["4/5", "4/3", "3/4", "3/5"],
+    ans: 1,
+    exp: "sin θ = 4/5 ⇒ cos θ = 3/5 ⇒ tan θ = 4/3."
+},
+{
+    q: "19. tanθ + cotθ = 2cosecθ, 0 ≤ θ < π/2 হলে θ = ?",
+    opts: ["π/4", "5π/3", "π/6", "π/3"],
+    ans: 3,
+    exp: "sin θ/cos θ + cos θ/sin θ = 1/(sin θ cos θ) = 2/sin θ ⇒ cos θ = 1/2 ⇒ θ = π/3."
+},
+{
+    q: "20. cos⁻¹(x) + cos⁻¹(y) = π/2 হলে, নিচের কোনটি সঠিক?",
+    opts: ["x² − y² = 1", "x² + y² = 1", "x + y = 1", "x² + y² = 0"],
+    ans: 1,
+    exp: "cos⁻¹x + cos⁻¹y = π/2 ⇒ cos⁻¹x = π/2 − cos⁻¹y = sin⁻¹y ⇒ x = √(1−y²) ⇒ x² + y² = 1."
+},
+{
+    q: "21. cotθ·cot3θ = 1 সমীকরণের সাধারণ সমাধান—",
+    opts: ["(2n+1)π/4", "(2n+1)π/8", "nπ/4", "(2n−1)π/2"],
+    ans: 1,
+    exp: "cot θ · cot 3θ = 1 ⇒ cot 3θ = tan θ = cot(π/2 − θ) ⇒ 3θ = π/2 − θ + nπ ⇒ 4θ = π/2 + nπ ⇒ θ = (2n+1)π/8."
+},
+{
+    q: "22. 0 ≤ x ≤ 90° হলে sin3x = cos x সমীকরণের সমাধান হবে—",
+    opts: ["0°, 45°", "0°, 22.5°", "45°, 45°", "22.5°, 45°"],
+    ans: 3,
+    exp: "sin3x = cos x = sin(90° − x) ⇒ 3x = 90° − x + 360°n ⇒ 4x = 90° + 360°n ⇒ x = 22.5° or 112.5° etc. Also 3x = 180° − (90° − x) + 360°n ⇒ 2x = 90° + 360°n ⇒ x = 45°. In [0°,90°]: x = 22.5°, 45°."
+},
+{
+    q: "23. sin⁻¹(2/3) = ?",
+    opts: ["cot(√5/2)", "cot⁻¹(√5/2)", "tan(√5)", "tan⁻¹(1/√5)"],
+    ans: 1,
+    exp: "sin θ = 2/3 ⇒ cos θ = √5/3 ⇒ cot θ = √5/2 ⇒ θ = cot⁻¹(√5/2)."
+},
+{
+    q: "24. cosecθ + cotθ = √3, (0 < θ < π) হলে θ এর মান হবে—",
+    opts: ["π/2", "π/3", "π/4", "π/6"],
+    ans: 1,
+    exp: "1/sin θ + cos θ/sin θ = (1 + cos θ)/sin θ = √3. Use half-angle: (1 + cos θ)/sin θ = cot(θ/2). So cot(θ/2) = √3 ⇒ θ/2 = π/6 ⇒ θ = π/3."
+}
+];
+
+/* =========================================================================
+   STATE & HELPERS
+   ========================================================================= */
+const TOTAL = QUESTIONS.length;
+const LETTERS = ['A', 'B', 'C', 'D'];
+let state = {};
+
+function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function showScreen(id) {
+    ['startScreen', 'examScreen', 'resultScreen'].forEach(s => {
+        document.getElementById(s).style.display = (s === id) ? 'block' : 'none';
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* =========================================================================
+   EXAM FLOW
+   ========================================================================= */
+function startExam() {
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const college = document.getElementById('collegeInput').value.trim();
+    const number = document.getElementById('numberInput').value.trim();
+
+    if (name.length < 2) { alert('Please enter your full name.'); return; }
+    if (email.length < 5 || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (college.length < 2) { alert('Please enter your college name.'); return; }
+    if (number.length < 5) { alert('Please enter your number.'); return; }
+
+    state = {
+        name, email, college, number,
+        answers: new Array(TOTAL).fill(null),
+        current: 0,
+        timeLeft: CONFIG.EXAM_MINUTES * 60,
+        startTime: Date.now(),
+        timerId: null,
+        submitted: false
+    };
+
+    document.getElementById('examUser').textContent = name + '  •  ' + college + '  •  ' + number;
+    showScreen('examScreen');
+    renderQuestion();
+    updateProgress();
+    startTimer();
+}
+
+function startTimer() {
+    clearInterval(state.timerId);
+    updateTimerDisplay();
+    state.timerId = setInterval(() => {
+        state.timeLeft--;
+        updateTimerDisplay();
+        if (state.timeLeft <= 0) {
+            clearInterval(state.timerId);
+            submitExam(true);
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const m = Math.floor(Math.max(state.timeLeft, 0) / 60);
+    const s = Math.max(state.timeLeft, 0) % 60;
+    document.getElementById('timerText').textContent =
+        String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    document.getElementById('timer').classList.toggle('warn', state.timeLeft <= 60);
+}
+
+function renderQuestion() {
+    const i = state.current;
+    const q = QUESTIONS[i];
+
+    document.getElementById('qNum').textContent = `Question ${i + 1} of ${TOTAL}`;
+
+    const st = document.getElementById('qStatus');
+    if (state.answers[i] === null) {
+        st.textContent = 'Not answered';
+        st.className = 'q-status';
+    } else {
+        st.textContent = 'Answered';
+        st.className = 'q-status answered';
+    }
+
+    document.getElementById('qText').innerHTML = esc(q.q);
+
+    const box = document.getElementById('options');
+    box.innerHTML = '';
+    q.opts.forEach((opt, idx) => {
+        const div = document.createElement('div');
+        div.className = 'option' + (state.answers[i] === idx ? ' selected' : '');
+        div.innerHTML = `<span class="option-letter">${LETTERS[idx]}</span><span class="option-text">${esc(opt)}</span>`;
+        div.onclick = () => selectOption(idx);
+        box.appendChild(div);
+    });
+
+    document.getElementById('prevBtn').disabled = (i === 0);
+    document.getElementById('nextBtn').innerHTML = (i === TOTAL - 1)
+        ? 'Last Question <i class="fas fa-flag-checkered"></i>'
+        : 'Next <i class="fas fa-arrow-right"></i>';
+
+    renderPalette();
+}
+
+function selectOption(idx) {
+    state.answers[state.current] = idx;
+    renderQuestion();
+    updateProgress();
+}
+
+function prevQ() { if (state.current > 0) { state.current--; renderQuestion(); } }
+
+function nextQ() {
+    if (state.current < TOTAL - 1) { state.current++; renderQuestion(); }
+    else { confirmSubmit(); }
+}
+
+function jumpTo(i) { state.current = i; renderQuestion(); }
+
+function renderPalette() {
+    const p = document.getElementById('palette');
+    p.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+        const b = document.createElement('button');
+        b.className = 'p-btn'
+            + (state.answers[i] !== null ? ' answered' : '')
+            + (i === state.current ? ' current' : '');
+        b.textContent = i + 1;
+        b.onclick = () => jumpTo(i);
+        p.appendChild(b);
+    }
+}
+
+function updateProgress() {
+    const done = state.answers.filter(a => a !== null).length;
+    document.getElementById('progressFill').style.width = (done / TOTAL * 100) + '%';
+    document.getElementById('paletteCount').textContent = `${done} / ${TOTAL} answered`;
+}
+
+function confirmSubmit() {
+    const done = state.answers.filter(a => a !== null).length;
+    const left = TOTAL - done;
+    const msg = left === 0
+        ? 'Are you sure you want to submit your exam?'
+        : `You have ${left} unanswered question(s). Submit anyway?`;
+    if (confirm(msg)) submitExam(false);
+}
+
+/* =========================================================================
+   SUBMIT & RESULT
+   ========================================================================= */
+function submitExam(auto) {
+    if (state.submitted) return;
+    state.submitted = true;
+    clearInterval(state.timerId);
+
+    let correct = 0, wrong = 0, skipped = 0;
+    state.answers.forEach((a, i) => {
+        if (a === null) skipped++;
+        else if (a === QUESTIONS[i].ans) correct++;
+        else wrong++;
+    });
+
+    const rawScore = correct - (CONFIG.NEGATIVE_MARK * wrong);
+    const score = Math.round(rawScore * 100) / 100;
+
+    const timeTaken = auto
+        ? CONFIG.EXAM_MINUTES * 60
+        : Math.min(CONFIG.EXAM_MINUTES * 60, Math.round((Date.now() - state.startTime) / 1000));
+
+    renderResult(correct, wrong, skipped, timeTaken, auto, score);
+    showScreen('resultScreen');
+
+    saveToSheet({
+        exam: CONFIG.EXAM_NAME,
+        name: state.name,
+        email: state.email,
+        college: state.college,
+        number: state.number,
+        score: score,
+        correct: correct,
+        wrong: wrong,
+        skipped: skipped,
+        total: TOTAL,
+        timeTaken: timeTaken,
+        answers: state.answers
+    });
+}
+
+function renderResult(correct, wrong, skipped, timeTaken, auto, score) {
+    const pct = Math.round((score / TOTAL) * 100);
+
+    document.getElementById('resultUser').textContent =
+        state.name + '  •  ' + state.college + '  •  ' + state.number;
+    document.getElementById('scoreRing').style.setProperty('--p', Math.max(0, pct) + '%');
+    document.getElementById('scoreBig').textContent = score + '/' + TOTAL;
+    document.getElementById('scorePct').textContent = pct + '%';
+
+    let verdict, sub;
+    if (pct >= 80)      { verdict = '🏆 Outstanding!'; sub = 'Excellent command over inverse trigonometry.'; }
+    else if (pct >= 60) { verdict = '🎯 Very Good!';   sub = 'Strong performance — keep it up.'; }
+    else if (pct >= 40) { verdict = '📈 Good Effort';  sub = 'Review the weak areas and try again.'; }
+    else                { verdict = '📚 Needs Practice'; sub = 'Go through the explanations below carefully.'; }
+    if (auto) sub += ' (Time expired — auto submitted.)';
+
+    document.getElementById('verdict').innerHTML = verdict + '<small>' + esc(sub) + '</small>';
+
+    document.getElementById('statCorrect').textContent = correct;
+    document.getElementById('statWrong').textContent = wrong;
+    document.getElementById('statSkipped').textContent = skipped;
+
+    const m = Math.floor(timeTaken / 60), s = timeTaken % 60;
+    document.getElementById('statTime').textContent = m + ':' + String(s).padStart(2, '0');
+
+    document.getElementById('review').innerHTML = buildReview();
+}
+
+function buildReview() {
+    return QUESTIONS.map((q, i) => {
+        const ua = state.answers[i];
+        const isCorrect = ua === q.ans;
+        const cls = ua === null ? 'skip' : (isCorrect ? 'ok' : 'bad');
+        const label = ua === null ? 'Skipped' : (isCorrect ? 'Correct' : 'Wrong');
+        return `
+            <div class="review-item ${cls}">
+                <div class="review-head">
+                    <span class="review-num">Q${i + 1}</span>
+                    <span class="review-badge ${cls}">${label}</span>
+                </div>
+                <div class="review-q">${esc(q.q)}</div>
+                <div class="review-line"><b>Your answer:</b> ${ua === null ? '—' : LETTERS[ua] + '. ' + esc(q.opts[ua])}</div>
+                <div class="review-line"><b>Correct answer:</b> ${LETTERS[q.ans]}. ${esc(q.opts[q.ans])}</div>
+                <div class="review-exp"><i class="fas fa-lightbulb"></i>${esc(q.exp)}</div>
+            </div>`;
+    }).join('');
+}
+
+/* =========================================================================
+   GOOGLE SHEETS INTEGRATION
+   ========================================================================= */
+async function saveToSheet(payload) {
+    const el = document.getElementById('saveStatus');
+    el.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving your score…';
+
+    try {
+        const res = await fetch(CONFIG.WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload),
+            redirect: 'follow'
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            el.innerHTML = `<i class="fas fa-check-circle" style="color:#16a34a"></i>
+                            Score saved to ${CONFIG.EXAM_NAME} sheet! Your rank: <b>#${data.rank}</b>`;
+        } else {
+            el.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Could not save score.';
+        }
+    } catch (err) {
+        console.error(err);
+        el.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Network error — score not saved.';
+    }
+
+    loadLeaderboard();
+}
+
+async function loadLeaderboard() {
+    const box = document.getElementById('leaderboard');
+    box.innerHTML = '<div class="lb-empty">Loading leaderboard…</div>';
+
+    try {
+        const url = CONFIG.WEB_APP_URL
+            + '?action=leaderboard&limit=' + CONFIG.LEADERBOARD_LIMIT;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.success || !data.leaderboard || data.leaderboard.length === 0) {
+            box.innerHTML = '<div class="lb-empty">No entries yet. Be the first!</div>';
+            return;
+        }
+
+        let html = `<table class="lb-table">
+            <thead><tr>
+                <th style="width:52px">#</th>
+                <th>Name</th>
+                <th>College</th>
+                <th>Number</th>
+                <th style="width:70px">Score</th>
+                <th style="width:80px">Time</th>
+            </tr></thead><tbody>`;
+
+        data.leaderboard.forEach((r, i) => {
+            const rank = i + 1;
+            const medal = rank === 1 ? 'g1' : rank === 2 ? 'g2' : rank === 3 ? 'g3' : '';
+            const isMe = (String(r.number) === String(state.number) && r.name === state.name);
+            const mm = Math.floor(r.time / 60), ss = r.time % 60;
+            html += `<tr class="${isMe ? 'me' : ''}">
+                <td><span class="rank-badge ${medal}">${rank}</span></td>
+                <td>${esc(r.name)}</td>
+                <td>${esc(r.college)}</td>
+                <td>${esc(r.number)}</td>
+                <td><b>${r.score}/${r.total}</b></td>
+                <td>${mm}:${String(ss).padStart(2, '0')}</td>
+            </tr>`;
+        });
+
+        html += '</tbody></table>';
+        box.innerHTML = html;
+    } catch (err) {
+        console.error(err);
+        box.innerHTML = '<div class="lb-empty">Could not load leaderboard. Tap "Refresh Board".</div>';
+    }
+}
+
+function refreshLeaderboard() { loadLeaderboard(); }
+
+/* =========================================================================
+   INPUT HELPERS
+   ========================================================================= */
+document.getElementById('numberInput').addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9+\-()\s]/g, '');
+});
+
+document.addEventListener('keydown', function (e) {
+    if (document.getElementById('examScreen').style.display === 'none') return;
+    if (e.key === 'ArrowRight') nextQ();
+    if (e.key === 'ArrowLeft')  prevQ();
+    if (['1','2','3','4'].includes(e.key)) selectOption(parseInt(e.key) - 1);
+});
+
+window.addEventListener('beforeunload', function (e) {
+    if (state && !state.submitted && document.getElementById('examScreen').style.display !== 'none') {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+</script>
+</body>
+</html>
