@@ -19,7 +19,7 @@
   --bg-card-alt: #1a1a3a;
   --text: #e0e0ff;
   --border: #2a2a5a;
-  --exam-header-h: 140px; /* updated dynamically */
+  --exam-header-h: 140px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -135,12 +135,8 @@ body::after {
 }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* ============================================================
-   EXAM — FROZEN HEADER (position: fixed)
-   ============================================================ */
 #examScreen { min-height: 100vh; }
 
-/* Frozen top pane — always visible like a frozen sheet row */
 .exam-sticky {
   position: fixed;
   top: 0;
@@ -244,7 +240,6 @@ body::after {
 .pill.optional { border-color: var(--neon-purple); }
 .pill.optional.active { border-color: var(--neon-purple); background: rgba(176,38,255,0.2); color: var(--neon-purple); }
 
-/* Content: padding-top set dynamically to match header height */
 .exam-content {
   padding: 1rem;
   padding-top: calc(var(--exam-header-h) + 0.75rem);
@@ -314,9 +309,6 @@ body::after {
 .option.selected .option-letter { color: var(--neon-green); }
 .option-text { font-size: 0.62rem; line-height: 1.5; flex: 1; word-break: break-word; }
 
-/* ============================================================
-   LOADING SCREEN
-   ============================================================ */
 #loadingScreen {
   min-height: 100vh;
   display: flex;
@@ -454,9 +446,6 @@ body::after {
 .rule-row .k { color: var(--neon-cyan); flex-shrink: 0; }
 .rule-row .v { color: var(--text); text-align: right; }
 
-/* ============================================================
-   RESULT SCREEN
-   ============================================================ */
 #resultScreen { min-height: 100vh; padding-bottom: 3rem; }
 
 .result-top { max-width: 900px; margin: 0 auto; padding: 1rem; }
@@ -527,6 +516,49 @@ body::after {
 }
 .stat-item .label { font-size: 0.45rem; color: var(--neon-cyan); margin-bottom: 0.35rem; letter-spacing: 0.1em; }
 .stat-item .value { font-size: 0.95rem; color: #fff; }
+
+/* Time taken highlight row */
+.time-taken-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(90deg, rgba(0,240,255,0.08), rgba(176,38,255,0.08));
+  border: 2px solid var(--neon-cyan);
+  border-radius: 6px;
+  box-shadow: 0 0 15px rgba(0,240,255,0.2);
+}
+.time-taken-row .label {
+  font-size: 0.5rem;
+  color: var(--neon-cyan);
+  letter-spacing: 0.1em;
+}
+.time-taken-row .value {
+  font-size: 1.1rem;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px var(--neon-cyan);
+  letter-spacing: 0.05em;
+}
+.time-taken-row.fast {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 20px rgba(57,255,20,0.3);
+}
+.time-taken-row.fast .label,
+.time-taken-row.fast .value {
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green);
+}
+.time-taken-row.slow {
+  border-color: var(--neon-yellow);
+  box-shadow: 0 0 20px rgba(255,230,0,0.3);
+}
+.time-taken-row.slow .label,
+.time-taken-row.slow .value {
+  color: var(--neon-yellow);
+  text-shadow: 0 0 10px var(--neon-yellow);
+}
 
 .disq-warning {
   border: 2px solid var(--neon-red);
@@ -691,6 +723,8 @@ body::after {
   .review-opt { font-size: 0.54rem; padding: 0.45rem 0.55rem; }
   .game-card { padding: 0.8rem; }
   .game-title { font-size: 0.55rem; }
+  .time-taken-row .value { font-size: 0.95rem; }
+  .time-taken-row .label { font-size: 0.42rem; }
 }
 </style>
 </head>
@@ -807,7 +841,6 @@ body::after {
 <!-- ============ EXAM ============ -->
 <div id="examScreen" class="hidden">
 
-  <!-- Frozen top pane (position: fixed) -->
   <div class="exam-sticky" id="examSticky">
     <div class="exam-header">
       <div class="timer-box">
@@ -854,6 +887,12 @@ body::after {
         <div class="stat-item"><div class="label">SKIPPED</div><div class="value" id="rSkipped">0</div></div>
         <div class="stat-item"><div class="label">TAB SWITCHES</div><div class="value" id="rTabs">0</div></div>
       </div>
+
+      <!-- ⏱ TIME TAKEN -->
+      <div class="time-taken-row" id="timeTakenRow">
+        <span class="label">⏱ TIME TAKEN</span>
+        <span class="value" id="rTimeTaken">00:00</span>
+      </div>
     </div>
 
     <div class="section-breakdown" id="sectionBreakdown"></div>
@@ -893,6 +932,10 @@ let timeLeft = 45 * 60;
 let timerInterval = null;
 let examActive = false;
 let studentInfo = {};
+
+let examStartTime = null;   // Date.now() when exam began
+let examEndTime = null;     // Date.now() when exam submitted
+let timeTakenSeconds = 0;   // total seconds taken
 
 let MANDATORY = ['Bangla', 'English', 'ICT'];
 let OPTIONAL  = ['HM', 'Stat', 'Econ'];
@@ -967,7 +1010,7 @@ async function apiSubmit(payload) {
 }
 
 /* ============================================================
-   LOCAL SCORING (instant feedback)
+   LOCAL SCORING
    ============================================================ */
 function computeLocalResult() {
   let correct = 0, wrong = 0, skipped = 0;
@@ -1003,6 +1046,7 @@ function computeLocalResult() {
     totalScore: Number(totalScore.toFixed(2)),
     correct, wrong, skipped,
     tabSwitches,
+    timeTakenSeconds,
     status,
     disqualified,
     attemptedOptional: Array.from(attemptedOptional),
@@ -1011,8 +1055,15 @@ function computeLocalResult() {
 }
 
 /* ============================================================
-   HEADER HEIGHT MANAGEMENT (for fixed positioning)
+   HELPERS
    ============================================================ */
+function formatDuration(seconds) {
+  seconds = Math.max(0, Math.floor(seconds));
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
 function updateHeaderHeight() {
   const header = document.getElementById('examSticky');
   if (!header) return;
@@ -1120,6 +1171,11 @@ function onQuestionsLoaded(questions) {
   answers = new Array(QUESTIONS.length).fill(null);
   timeLeft = DURATION_MIN * 60;
 
+  // ⏱ Mark the exact moment the exam begins
+  examStartTime = Date.now();
+  examEndTime = null;
+  timeTakenSeconds = 0;
+
   SECTION_RANGES = {};
   QUESTIONS.forEach((q, i) => {
     if (!q.subject) return;
@@ -1140,7 +1196,6 @@ function onQuestionsLoaded(questions) {
   updateProgress();
   startTimer();
 
-  // Measure header AFTER render (fonts loaded, pills built)
   updateHeaderHeight();
   requestAnimationFrame(updateHeaderHeight);
   setTimeout(updateHeaderHeight, 200);
@@ -1176,7 +1231,7 @@ function autoSubmit() {
 }
 
 /* ============================================================
-   SECTION PILLS — scroll so target lands just below the fixed header
+   SECTION PILLS
    ============================================================ */
 function buildSectionPills() {
   const container = document.getElementById('sectionPills');
@@ -1304,6 +1359,16 @@ function confirmSubmit() {
 }
 
 async function doSubmit(auto) {
+  // ⏱ Capture end time and compute total duration
+  examEndTime = Date.now();
+  if (examStartTime) {
+    timeTakenSeconds = Math.floor((examEndTime - examStartTime) / 1000);
+    // Clamp to exam duration in case of weird clock drift
+    const maxSec = DURATION_MIN * 60;
+    if (timeTakenSeconds < 0) timeTakenSeconds = 0;
+    if (timeTakenSeconds > maxSec) timeTakenSeconds = maxSec;
+  }
+
   const localResult = computeLocalResult();
   showResult(localResult, auto);
   document.getElementById('syncBadge').className = 'sync-badge';
@@ -1315,11 +1380,16 @@ async function doSubmit(auto) {
     email: studentInfo.email,
     phone: studentInfo.phone,
     answers: answers,
-    tabSwitches: tabSwitches
+    tabSwitches: tabSwitches,
+    timeTakenSeconds: timeTakenSeconds
   };
 
   try {
     const result = await apiSubmit(payload);
+    // Preserve client-side time taken if server didn't return it
+    if (result && (result.timeTakenSeconds === undefined || result.timeTakenSeconds === null)) {
+      result.timeTakenSeconds = timeTakenSeconds;
+    }
     showResult(result, auto, true);
     const badge = document.getElementById('syncBadge');
     badge.className = 'sync-badge synced';
@@ -1357,6 +1427,21 @@ function showResult(result, auto, isSynced) {
   document.getElementById('rSkipped').textContent = result.skipped;
   document.getElementById('rTabs').textContent    = result.tabSwitches;
 
+  // ⏱ TIME TAKEN
+  const tSec = (result.timeTakenSeconds !== undefined && result.timeTakenSeconds !== null)
+    ? result.timeTakenSeconds
+    : timeTakenSeconds;
+  document.getElementById('rTimeTaken').textContent = formatDuration(tSec);
+
+  // Colour-code the time-taken row
+  const tRow = document.getElementById('timeTakenRow');
+  tRow.classList.remove('fast', 'slow');
+  const maxSec = DURATION_MIN * 60;
+  const ratio = maxSec ? tSec / maxSec : 0;
+  if (ratio <= 0.5) tRow.classList.add('fast');        // finished in first half
+  else if (ratio >= 0.9) tRow.classList.add('slow');   // used last 10%
+
+  // Section breakdown
   const secDiv = document.getElementById('sectionBreakdown');
   let secHtml = '<strong>◤ SECTION BREAKDOWN ◢</strong><br>';
   Object.entries(result.sectionScores).forEach(([sec, score]) => {
