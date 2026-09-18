@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>The C Unit Arc Weekly Exam -1</title>
+<style>
+/* ============ ARCADE THEME ============ */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  --neon-pink: #ff2d95;
+  --neon-cyan: #00f0ff;
+  --neon-yellow: #ffe600;
+  --neon-green: #39ff14;
+  --neon-purple: #b026ff;
+  --bg-dark: #0a0a1a;
+  --bg-card: #12122a;
+  --bg-card-alt: #1a1a3a;
+  --text: #e0e0ff;
+  --border: #2a2a5a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  font-family: 'Press Start 2P', monospace, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.15) 0px,
+    rgba(0,0,0,0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ============ FLICKERING "Plan C" ============ */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+  }
+  20%, 24%, 55% { opacity: 0.4; text-shadow: none; }
+}
+
+.neon-title {
+  font-size: clamp(2rem, 8vw, 4rem);
+  text-align: center;
+  color: var(--neon-pink);
+  animation: flicker 3s infinite;
+  letter-spacing: 0.2em;
+  margin: 0.5rem 0;
+  user-select: none;
+}
+
+/* ============ CONTAINERS ============ */
+.container { max-width: 900px; margin: 0 auto; padding: 1rem; }
+
+.card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 20px rgba(0,240,255,0.1);
+}
+
+/* ============ FORM ============ */
+.form-group { margin-bottom: 1rem; }
+.form-group label {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--neon-cyan);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.1em;
+}
+.form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0,240,255,0.3);
+}
+
+/* ============ BUTTONS ============ */
+.btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  padding: 0.9rem 1.5rem;
+  border: 2px solid var(--neon-cyan);
+  background: transparent;
+  color: var(--neon-cyan);
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.btn:hover, .btn:active {
+  background: var(--neon-cyan);
+  color: var(--bg-dark);
+  box-shadow: 0 0 20px var(--neon-cyan);
+}
+.btn-primary {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  width: 100%;
+}
+.btn-primary:hover, .btn-primary:active {
+  background: var(--neon-green);
+  color: var(--bg-dark);
+  box-shadow: 0 0 20px var(--neon-green);
+}
+.btn-danger {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+}
+.btn-danger:hover, .btn-danger:active {
+  background: var(--neon-pink);
+  color: var(--bg-dark);
+  box-shadow: 0 0 20px var(--neon-pink);
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ============ EXAM HEADER ============ */
+.exam-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,10,26,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--border);
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.timer {
+  font-size: 1.2rem;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 10px var(--neon-yellow);
+}
+.timer.warning { color: #ff4444; text-shadow: 0 0 15px #ff4444; animation: pulse 0.5s infinite; }
+
+@keyframes pulse { 50% { opacity: 0.6; } }
+
+.tab-counter { font-size: 0.6rem; color: var(--neon-pink); }
+.tab-counter span { color: #ff4444; font-size: 0.9rem; }
+
+/* ============ QUESTION ============ */
+.question-number { font-size: 0.65rem; color: var(--neon-purple); margin-bottom: 0.5rem; }
+.question-text { font-size: 0.75rem; line-height: 1.6; margin-bottom: 1.2rem; color: #ffffff; }
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.8rem;
+  margin-bottom: 0.6rem;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.option:hover { border-color: var(--neon-cyan); background: rgba(0,240,255,0.05); }
+.option.selected {
+  border-color: var(--neon-green);
+  background: rgba(57,255,20,0.1);
+  box-shadow: 0 0 10px rgba(57,255,20,0.2);
+}
+.option-letter { font-size: 0.7rem; color: var(--neon-cyan); min-width: 1.5rem; }
+.option.selected .option-letter { color: var(--neon-green); }
+.option-text { font-size: 0.65rem; line-height: 1.5; flex: 1; }
+
+/* ============ NAV ============ */
+.nav-bar { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1rem; }
+.nav-bar .btn { flex: 1; text-align: center; }
+
+/* ============ PROGRESS ============ */
+.progress-bar {
+  width: 100%; height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+  transition: width 0.3s;
+  border-radius: 3px;
+}
+
+/* ============ SECTION PILLS ============ */
+.section-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0; }
+.pill {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.55rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.pill.active { border-color: var(--neon-cyan); background: rgba(0,240,255,0.15); color: var(--neon-cyan); }
+.pill.optional { border-color: var(--neon-purple); }
+.pill.optional.active { border-color: var(--neon-purple); background: rgba(176,38,255,0.2); color: var(--neon-purple); }
+
+/* ============ RESULT ============ */
+.result-panel { display: none; text-align: center; padding: 2rem 1rem; }
+.result-panel.show { display: block; }
+
+.score-big { font-size: clamp(2.5rem, 10vw, 4rem); margin: 1rem 0; }
+.score-big.pass { color: var(--neon-green); text-shadow: 0 0 20px var(--neon-green); }
+.score-big.mid  { color: var(--neon-yellow); text-shadow: 0 0 20px var(--neon-yellow); }
+.score-big.fail { color: #ff4444; text-shadow: 0 0 20px #ff4444; }
+
+.result-status { font-size: 0.8rem; line-height: 1.8; margin: 1rem 0; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin: 1.5rem 0; }
+.stat-item {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.8rem;
+  text-align: center;
+}
+.stat-item .label { font-size: 0.5rem; color: var(--neon-cyan); margin-bottom: 0.3rem; }
+.stat-item .value { font-size: 1rem; color: #fff; }
+
+.disq-warning {
+  border: 2px solid #ff4444;
+  background: rgba(255,68,68,0.1);
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  font-size: 0.6rem;
+  color: #ff4444;
+  line-height: 1.6;
+}
+
+/* ============ UTIL ============ */
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.mt-1 { margin-top: 1rem; }
+
+.loader {
+  text-align: center;
+  padding: 3rem;
+  color: var(--neon-cyan);
+  font-size: 0.7rem;
+  animation: pulse 1s infinite;
+}
+
+.noselect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 0.6rem; }
+  .card { padding: 1rem; }
+  .neon-title { font-size: 1.4rem; }
+  .question-text { font-size: 0.7rem; }
+  .option-text { font-size: 0.6rem; }
+  .btn { font-size: 0.65rem; padding: 0.7rem 1rem; }
+  .timer { font-size: 1rem; }
+}
+</style>
+</head>
+<body class="noselect">
+
+<!-- ============ START ============ -->
+<div id="startScreen" class="container">
+  <h1 class="neon-title">Plan C</h1>
+  <p class="text-center" style="font-size:0.6rem; color:var(--neon-cyan); margin-bottom:1.5rem;">
+    THE C UNIT ARC WEEKLY EXAM -1
+  </p>
+
+  <div class="card">
+    <p style="font-size:0.6rem; line-height:1.8; margin-bottom:1rem; color:var(--neon-yellow);">⚠ RULES:</p>
+    <ul style="font-size:0.55rem; line-height:2; padding-left:1rem; color:var(--text);">
+      <li>45 Minutes | 60 Marks | Full Syllabus</li>
+      <li>+1 for correct | −0.25 for wrong | 0 for skipped</li>
+      <li>Mandatory: Bangla, English, ICT</li>
+      <li>Choose ONLY ONE optional: HM / STAT / ECON</li>
+      <li>Multiple optionals = DISQUALIFIED</li>
+      <li>Tab switches are counted and reported</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="Enter your name" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label for="college">College</label>
+      <input type="text" id="college" placeholder="Enter college name">
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter email" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" placeholder="Enter phone number" autocomplete="tel">
+    </div>
+    <button class="btn btn-primary" id="startBtn" onclick="startExam()">▶ START EXAM</button>
+  </div>
+</div>
+
+<!-- ============ EXAM ============ -->
+<div id="examScreen" class="hidden">
+  <div class="exam-header">
+    <div>
+      <div class="timer" id="timerDisplay">45:00</div>
+      <div class="tab-counter">TAB SWITCHES: <span id="tabCount">0</span></div>
+    </div>
+    <div style="font-size:0.5rem; color:var(--neon-purple);" id="questionCounter">Q 1/0</div>
+  </div>
+
+  <div class="container">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+    <div class="section-pills" id="sectionPills"></div>
+
+    <div class="card" id="questionCard">
+      <div class="question-number" id="qNumber"></div>
+      <div class="question-text" id="qText"></div>
+      <div id="optionsContainer"></div>
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn" onclick="prevQuestion()">◀ PREV</button>
+      <button class="btn" onclick="skipQuestion()">SKIP</button>
+      <button class="btn" onclick="nextQuestion()">NEXT ▶</button>
+    </div>
+
+    <button class="btn btn-danger mt-1" style="width:100%" onclick="confirmSubmit()">■ SUBMIT EXAM</button>
+  </div>
+</div>
+
+<!-- ============ RESULT ============ -->
+<div id="resultScreen" class="container hidden">
+  <h1 class="neon-title" style="font-size:2rem;">RESULT</h1>
+
+  <div class="card result-panel show" id="resultPanel">
+    <div class="score-big" id="finalScore">0</div>
+    <div class="result-status" id="finalStatus"></div>
+
+    <div class="stat-grid">
+      <div class="stat-item"><div class="label">CORRECT</div><div class="value" id="rCorrect">0</div></div>
+      <div class="stat-item"><div class="label">WRONG</div><div class="value" id="rWrong">0</div></div>
+      <div class="stat-item"><div class="label">SKIPPED</div><div class="value" id="rSkipped">0</div></div>
+      <div class="stat-item"><div class="label">TAB SWITCHES</div><div class="value" id="rTabs">0</div></div>
+    </div>
+
+    <div id="sectionBreakdown" style="font-size:0.55rem; line-height:2; margin:1rem 0;"></div>
+
+    <div class="disq-warning hidden" id="disqWarning">
+      ⚠ DISQUALIFIED: You answered multiple optional sections (HM / STAT / ECON).
+      Your scores are still shown, but this paper is marked as disqualified.
+    </div>
+  </div>
+</div>
+
+<!-- ============ LOADER ============ -->
+<div id="loading" class="loader hidden">LOADING QUESTIONS...</div>
+
+<script>
+/* ============================================================
+   STATE
+   ============================================================ */
+let QUESTIONS = [];
+let answers = [];
+let currentQ = 0;
+let tabSwitches = 0;
+let timeLeft = 45 * 60;
+let timerInterval = null;
+let examActive = false;
+let studentInfo = {};
+
+let MANDATORY = ['Bangla', 'English', 'ICT'];
+let OPTIONAL  = ['HM', 'Stat', 'Econ'];
+
+let SECTION_RANGES = {};
+const SECTION_LABELS = { Bangla: 'বাংলা', English: 'English', ICT: 'ICT', HM: 'HM', Stat: 'STAT', Econ: 'ECON' };
+
+/* ============================================================
+   ANTI-CHEAT
+   ============================================================ */
+['contextmenu','copy','paste','cut','dragstart'].forEach(evt => {
+  document.addEventListener(evt, e => { e.preventDefault(); return false; });
+});
+
+document.addEventListener('keydown', e => {
+  if (
+    e.key === 'F12' ||
+    (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) ||
+    (e.ctrlKey && ['U','S','P','A'].includes(e.key))
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (!examActive) return;
+  if (document.hidden) {
+    tabSwitches++;
+    document.getElementById('tabCount').textContent = tabSwitches;
+  }
+});
+
+let blurDebounce = null;
+window.addEventListener('blur', () => {
+  if (!examActive) return;
+  clearTimeout(blurDebounce);
+  blurDebounce = setTimeout(() => {
+    if (!document.hasFocus() && !document.hidden) {
+      tabSwitches++;
+      document.getElementById('tabCount').textContent = tabSwitches;
+    }
+  }, 120);
+});
+
+/* ============================================================
+   START
+   ============================================================ */
+function startExam() {
+  const name    = document.getElementById('name').value.trim();
+  const college = document.getElementById('college').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const phone   = document.getElementById('phone').value.trim();
+
+  if (!name || !college || !email || !phone) {
+    alert('Please fill in all fields.');
+    return;
+  }
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    alert('Please enter a valid email.');
+    return;
+  }
+
+  studentInfo = { name, college, email, phone };
+
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('loading').classList.remove('hidden');
+
+  google.script.run
+    .withSuccessHandler(cfg => { MANDATORY = cfg.mandatory; OPTIONAL = cfg.optional; })
+    .getExamConfig();
+
+  google.script.run
+    .withSuccessHandler(onQuestionsLoaded)
+    .withFailureHandler(err => {
+      alert('Failed to load questions: ' + err.message);
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('startScreen').classList.remove('hidden');
+    })
+    .getQuestions();
+}
+
+function onQuestionsLoaded(questions) {
+  QUESTIONS = questions;
+  answers = new Array(QUESTIONS.length).fill(null);
+  currentQ = 0;
+
+  SECTION_RANGES = {};
+  QUESTIONS.forEach((q, i) => {
+    if (!q.subject) return;
+    if (!SECTION_RANGES[q.subject]) SECTION_RANGES[q.subject] = { start: i, end: i };
+    else SECTION_RANGES[q.subject].end = i;
+  });
+
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('examScreen').classList.remove('hidden');
+
+  examActive = true;
+  buildSectionPills();
+  renderQuestion();
+  startTimer();
+}
+
+/* ============================================================
+   TIMER
+   ============================================================ */
+function startTimer() {
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+
+    if (timeLeft <= 300) document.getElementById('timerDisplay').classList.add('warning');
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      autoSubmit();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.max(0, Math.floor(timeLeft / 60)).toString().padStart(2, '0');
+  const s = Math.max(0, timeLeft % 60).toString().padStart(2, '0');
+  document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+}
+
+function autoSubmit() {
+  examActive = false;
+  clearInterval(timerInterval);
+  doSubmit();
+}
+
+/* ============================================================
+   SECTION PILLS
+   ============================================================ */
+function buildSectionPills() {
+  const container = document.getElementById('sectionPills');
+  container.innerHTML = '';
+
+  Object.keys(SECTION_RANGES).forEach(sec => {
+    const pill = document.createElement('div');
+    pill.className = 'pill' + (OPTIONAL.includes(sec) ? ' optional' : '');
+    pill.textContent = SECTION_LABELS[sec] || sec;
+    pill.dataset.section = sec;
+
+    pill.onclick = () => {
+      const r = SECTION_RANGES[sec];
+      if (!r) return;
+      currentQ = r.start;
+      renderQuestion();
+    };
+
+    container.appendChild(pill);
+  });
+}
+
+function updateActivePill(section) {
+  document.querySelectorAll('.pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.section === section);
+  });
+}
+
+/* ============================================================
+   RENDER QUESTION
+   ============================================================ */
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  if (!q) return;
+
+  document.getElementById('qNumber').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length} [${q.subject}]`;
+  document.getElementById('qText').textContent = q.question;
+  document.getElementById('questionCounter').textContent = `Q ${currentQ + 1}/${QUESTIONS.length}`;
+
+  const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+
+  ['A', 'B', 'C', 'D'].forEach(letter => {
+    if (!q[letter]) return;
+    const div = document.createElement('div');
+    div.className = 'option' + (answers[currentQ] === letter ? ' selected' : '');
+    div.innerHTML = `
+      <div class="option-letter">${letter}</div>
+      <div class="option-text">${escapeHtml(q[letter])}</div>
+    `;
+    div.onclick = () => selectOption(letter);
+    container.appendChild(div);
+  });
+
+  updateActivePill(q.subject);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function selectOption(letter) { answers[currentQ] = letter; renderQuestion(); }
+function nextQuestion() { if (currentQ < QUESTIONS.length - 1) { currentQ++; renderQuestion(); } }
+function prevQuestion() { if (currentQ > 0) { currentQ--; renderQuestion(); } }
+function skipQuestion() {
+  answers[currentQ] = null;
+  if (currentQ < QUESTIONS.length - 1) { currentQ++; renderQuestion(); }
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+function confirmSubmit() {
+  const answered = answers.filter(a => a !== null).length;
+  if (confirm(`You have answered ${answered}/${QUESTIONS.length} questions.\n\nSubmit now?`)) {
+    examActive = false;
+    clearInterval(timerInterval);
+    doSubmit();
+  }
+}
+
+function doSubmit() {
+  document.getElementById('examScreen').classList.add('hidden');
+  document.getElementById('loading').classList.remove('hidden');
+  document.getElementById('loading').textContent = 'SUBMITTING...';
+
+  const payload = {
+    name: studentInfo.name,
+    college: studentInfo.college,
+    email: studentInfo.email,
+    phone: studentInfo.phone,
+    answers: answers,
+    tabSwitches: tabSwitches
+  };
+
+  google.script.run
+    .withSuccessHandler(onSubmitSuccess)
+    .withFailureHandler(err => {
+      alert('Submission failed: ' + err.message);
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('examScreen').classList.remove('hidden');
+      examActive = true;
+    })
+    .submitExam(payload);
+}
+
+function onSubmitSuccess(result) {
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+
+  const scoreEl = document.getElementById('finalScore');
+  scoreEl.textContent = result.totalScore;
+
+  scoreEl.className = 'score-big';
+  if (result.totalScore >= 35) scoreEl.classList.add('pass');
+  else if (result.totalScore >= 24) scoreEl.classList.add('mid');
+  else scoreEl.classList.add('fail');
+
+  const color = result.totalScore >= 35 ? 'var(--neon-green)'
+              : result.totalScore >= 24 ? 'var(--neon-yellow)'
+              : '#ff4444';
+  document.getElementById('finalStatus').innerHTML =
+    `<span style="color:${color}; font-size:0.7rem;">${result.status}</span>`;
+
+  document.getElementById('rCorrect').textContent = result.correct;
+  document.getElementById('rWrong').textContent   = result.wrong;
+  document.getElementById('rSkipped').textContent = result.skipped;
+  document.getElementById('rTabs').textContent    = result.tabSwitches;
+
+  const secDiv = document.getElementById('sectionBreakdown');
+  secDiv.innerHTML = '<strong style="color:var(--neon-cyan);">SECTION BREAKDOWN</strong><br>';
+  Object.entries(result.sectionScores).forEach(([sec, score]) => {
+    secDiv.innerHTML += `${SECTION_LABELS[sec] || sec}: ${score} correct<br>`;
+  });
+
+  if (result.disqualified) {
+    document.getElementById('disqWarning').classList.remove('hidden');
+  }
+}
+</script>
+</body>
+</html>
