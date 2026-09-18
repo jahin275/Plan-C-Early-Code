@@ -134,10 +134,20 @@ body::after {
 }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+/* ============================================================
+   EXAM SCREEN — fixed-height flex layout
+   ============================================================ */
+#examScreen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+#examScreen.hidden { display: none !important; }
+
 .exam-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  flex-shrink: 0;
   background: rgba(10,10,26,0.95);
   backdrop-filter: blur(8px);
   border-bottom: 2px solid var(--border);
@@ -147,6 +157,7 @@ body::after {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
+  z-index: 10;
 }
 .timer {
   font-size: 1.2rem;
@@ -158,6 +169,72 @@ body::after {
 
 .tab-counter { font-size: 0.6rem; color: var(--neon-pink); }
 .tab-counter span { color: #ff4444; font-size: 0.9rem; }
+
+.exam-top {
+  flex-shrink: 0;
+  padding: 0.6rem 1rem 0.4rem;
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border);
+}
+
+.progress-bar {
+  width: 100%; height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+  transition: width 0.3s;
+  border-radius: 3px;
+}
+
+.section-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.pill {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.pill.active { border-color: var(--neon-cyan); background: rgba(0,240,255,0.15); color: var(--neon-cyan); }
+.pill.optional { border-color: var(--neon-purple); }
+.pill.optional.active { border-color: var(--neon-purple); background: rgba(176,38,255,0.2); color: var(--neon-purple); }
+
+.exam-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neon-cyan) var(--bg-dark);
+}
+.exam-body::-webkit-scrollbar { width: 8px; }
+.exam-body::-webkit-scrollbar-track { background: var(--bg-dark); }
+.exam-body::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 4px;
+  box-shadow: 0 0 8px var(--neon-cyan);
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 0 auto;
+  max-width: 900px;
+  box-shadow: 0 0 20px rgba(0,240,255,0.1);
+}
 
 .question-number { font-size: 0.65rem; color: var(--neon-purple); margin-bottom: 0.5rem; }
 .question-text { font-size: 0.75rem; line-height: 1.6; margin-bottom: 1.2rem; color: #ffffff; }
@@ -184,37 +261,140 @@ body::after {
 .option.selected .option-letter { color: var(--neon-green); }
 .option-text { font-size: 0.65rem; line-height: 1.5; flex: 1; }
 
-.nav-bar { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1rem; }
-.nav-bar .btn { flex: 1; text-align: center; }
-
-.progress-bar {
-  width: 100%; height: 6px;
-  background: var(--border);
-  border-radius: 3px;
-  overflow: hidden;
-  margin: 0.5rem 0;
+.exam-footer {
+  flex-shrink: 0;
+  padding: 0.7rem 1rem 0.9rem;
+  background: rgba(10,10,26,0.98);
+  border-top: 2px solid var(--border);
+  backdrop-filter: blur(8px);
 }
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
-  transition: width 0.3s;
-  border-radius: 3px;
+.exam-footer-inner { max-width: 900px; margin: 0 auto; }
+.nav-bar { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+.nav-bar .btn { flex: 1; text-align: center; padding: 0.75rem 0.5rem; font-size: 0.65rem; }
+.btn-submit { width: 100%; padding: 0.75rem 0.5rem; font-size: 0.65rem; }
+
+/* ============================================================
+   LOADING SCREEN (with instructions)
+   ============================================================ */
+#loadingScreen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+#loadingScreen.hidden { display: none !important; }
+
+.loading-container {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
 }
 
-.section-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0; }
-.pill {
-  padding: 0.4rem 0.7rem;
-  border: 1px solid var(--border);
-  border-radius: 20px;
+.loading-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.9rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.65rem;
+  color: var(--neon-cyan);
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--neon-cyan);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-status.ready {
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(57,255,20,0.3);
+}
+.loading-status.ready .spinner {
+  border-color: var(--neon-green);
+  border-top-color: transparent;
+  animation: none;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+}
+
+.instruction-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(0,240,255,0.1);
+}
+
+.instruction-card h2 {
+  font-size: 0.85rem;
+  color: var(--neon-yellow);
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+.instruction-card h3 {
+  font-size: 0.6rem;
+  color: var(--neon-cyan);
+  margin: 1.2rem 0 0.6rem;
+  letter-spacing: 0.08em;
+}
+
+.instruction-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.instruction-card li {
   font-size: 0.55rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  user-select: none;
+  line-height: 1.9;
+  padding-left: 1rem;
+  position: relative;
+  color: var(--text);
+  margin-bottom: 0.4rem;
 }
-.pill.active { border-color: var(--neon-cyan); background: rgba(0,240,255,0.15); color: var(--neon-cyan); }
-.pill.optional { border-color: var(--neon-purple); }
-.pill.optional.active { border-color: var(--neon-purple); background: rgba(176,38,255,0.2); color: var(--neon-purple); }
+.instruction-card li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--neon-pink);
+}
 
+.instruction-card .highlight { color: var(--neon-green); }
+.instruction-card .warn { color: #ff4444; }
+.instruction-card .em { color: var(--neon-yellow); }
+
+.rule-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.55rem;
+  line-height: 1.7;
+}
+.rule-row:last-child { border-bottom: none; }
+.rule-row .k { color: var(--neon-cyan); flex-shrink: 0; }
+.rule-row .v { color: var(--text); text-align: right; }
+
+/* ============================================================
+   RESULT
+   ============================================================ */
 .result-panel { display: none; text-align: center; padding: 2rem 1rem; }
 .result-panel.show { display: block; }
 
@@ -270,10 +450,21 @@ body::after {
   .container { padding: 0.6rem; }
   .card { padding: 1rem; }
   .neon-title { font-size: 1.4rem; }
+  .question-card { padding: 1rem; }
   .question-text { font-size: 0.7rem; }
   .option-text { font-size: 0.6rem; }
-  .btn { font-size: 0.65rem; padding: 0.7rem 1rem; }
+  .option { padding: 0.7rem; }
   .timer { font-size: 1rem; }
+  .exam-top { padding: 0.5rem 0.7rem 0.3rem; }
+  .exam-body { padding: 0.7rem; }
+  .exam-footer { padding: 0.5rem 0.7rem 0.7rem; }
+  .nav-bar .btn, .btn-submit { font-size: 0.55rem; padding: 0.65rem 0.4rem; }
+  .pill { font-size: 0.45rem; padding: 0.3rem 0.55rem; }
+  .instruction-card { padding: 1rem; }
+  .instruction-card h2 { font-size: 0.7rem; }
+  .instruction-card h3 { font-size: 0.55rem; }
+  .instruction-card li { font-size: 0.5rem; }
+  .rule-row { font-size: 0.5rem; }
 }
 </style>
 </head>
@@ -287,10 +478,10 @@ body::after {
   </p>
 
   <div class="card">
-    <p style="font-size:0.6rem; line-height:1.8; margin-bottom:1rem; color:var(--neon-yellow);">⚠ RULES:</p>
+    <p style="font-size:0.6rem; line-height:1.8; margin-bottom:1rem; color:var(--neon-yellow);">⚠ QUICK INFO:</p>
     <ul style="font-size:0.55rem; line-height:2; padding-left:1rem; color:var(--text);">
       <li>45 Minutes | 60 Marks | Full Syllabus</li>
-      <li>+1 for correct | −0.25 for wrong | 0 for skipped</li>
+      <li>+1 correct | −0.25 wrong | 0 skipped</li>
       <li>Mandatory: Bangla, English, ICT</li>
       <li>Choose ONLY ONE optional: HM / STAT / ECON</li>
       <li>Multiple optionals = DISQUALIFIED</li>
@@ -319,6 +510,66 @@ body::after {
   </div>
 </div>
 
+<!-- ============ LOADING + INSTRUCTIONS ============ -->
+<div id="loadingScreen" class="hidden">
+  <div class="loading-container">
+    <h1 class="neon-title">Plan C</h1>
+
+    <div class="loading-status" id="loadingStatus">
+      <span class="spinner"></span>
+      <span id="loadingText">LOADING QUESTIONS…</span>
+    </div>
+
+    <div class="instruction-card">
+      <h2>◤ EXAM INSTRUCTIONS ◢</h2>
+
+      <h3>▸ EXAM OVERVIEW</h3>
+      <div class="rule-row"><span class="k">EXAM NAME</span><span class="v">THE C UNIT ARC WEEKLY EXAM -1</span></div>
+      <div class="rule-row"><span class="k">DURATION</span><span class="v">45 Minutes</span></div>
+      <div class="rule-row"><span class="k">TOTAL MARKS</span><span class="v">60</span></div>
+      <div class="rule-row"><span class="k">TOTAL QUESTIONS</span><span class="v">106</span></div>
+
+      <h3>▸ MARKING SCHEME</h3>
+      <ul>
+        <li><span class="highlight">+1</span> for each correct answer</li>
+        <li><span class="warn">−0.25</span> for each wrong answer</li>
+        <li><span class="em">0</span> for skipped / unanswered</li>
+      </ul>
+
+      <h3>▸ SUBJECT DISTRIBUTION</h3>
+      <div class="rule-row"><span class="k">BANGLA</span><span class="v">12 Q (Mandatory)</span></div>
+      <div class="rule-row"><span class="k">ENGLISH</span><span class="v">12 Q (Mandatory)</span></div>
+      <div class="rule-row"><span class="k">ICT</span><span class="v">12 Q (Mandatory)</span></div>
+      <div class="rule-row"><span class="k">HM</span><span class="v">24 Q (Optional)</span></div>
+      <div class="rule-row"><span class="k">STAT</span><span class="v">24 Q (Optional)</span></div>
+      <div class="rule-row"><span class="k">ECON</span><span class="v">24 Q (Optional)</span></div>
+
+      <h3>▸ OPTIONAL SECTION RULE</h3>
+      <ul>
+        <li>Bangla, English &amp; ICT are <span class="highlight">mandatory</span>.</li>
+        <li>Choose <span class="em">exactly ONE</span> from HM / STAT / ECON.</li>
+        <li><span class="warn">If you answer MORE THAN ONE optional section, your paper is DISQUALIFIED.</span></li>
+        <li>Your scores will still be shown, but the paper is flagged.</li>
+      </ul>
+
+      <h3>▸ RESULT THRESHOLDS</h3>
+      <ul>
+        <li><span class="highlight">35+</span> → MISSION PASSED ++ CREDIT</li>
+        <li><span class="em">24–34.99</span> → PASSED (written scripts won't be evaluated)</li>
+        <li><span class="warn">Below 24</span> → FAILED — Please contact your Instructors</li>
+      </ul>
+
+      <h3>▸ IMPORTANT</h3>
+      <ul>
+        <li>Exam auto-submits when the timer hits <span class="em">00:00</span>.</li>
+        <li>Leaving this tab is detected and counted as a <span class="warn">tab switch</span>.</li>
+        <li>Copy / paste / right-click / dev tools are disabled.</li>
+        <li>Scroll through the question area — timer &amp; buttons stay pinned.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <!-- ============ EXAM ============ -->
 <div id="examScreen" class="hidden">
   <div class="exam-header">
@@ -329,24 +580,28 @@ body::after {
     <div style="font-size:0.5rem; color:var(--neon-purple);" id="questionCounter">Q 1/0</div>
   </div>
 
-  <div class="container">
+  <div class="exam-top">
     <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-
     <div class="section-pills" id="sectionPills"></div>
+  </div>
 
-    <div class="card" id="questionCard">
+  <div class="exam-body" id="examBody">
+    <div class="question-card">
       <div class="question-number" id="qNumber"></div>
       <div class="question-text" id="qText"></div>
       <div id="optionsContainer"></div>
     </div>
+  </div>
 
-    <div class="nav-bar">
-      <button class="btn" onclick="prevQuestion()">◀ PREV</button>
-      <button class="btn" onclick="skipQuestion()">SKIP</button>
-      <button class="btn" onclick="nextQuestion()">NEXT ▶</button>
+  <div class="exam-footer">
+    <div class="exam-footer-inner">
+      <div class="nav-bar">
+        <button class="btn" onclick="prevQuestion()">◀ PREV</button>
+        <button class="btn" onclick="skipQuestion()">SKIP</button>
+        <button class="btn" onclick="nextQuestion()">NEXT ▶</button>
+      </div>
+      <button class="btn btn-danger btn-submit" onclick="confirmSubmit()">■ SUBMIT EXAM</button>
     </div>
-
-    <button class="btn btn-danger mt-1" style="width:100%" onclick="confirmSubmit()">■ SUBMIT EXAM</button>
   </div>
 </div>
 
@@ -373,8 +628,6 @@ body::after {
     </div>
   </div>
 </div>
-
-<div id="loading" class="loader hidden">LOADING QUESTIONS...</div>
 
 <script>
 /* ============================================================
@@ -467,7 +720,7 @@ async function apiSubmit(payload) {
 }
 
 /* ============================================================
-   START
+   START — show loading + instructions, fetch in background
    ============================================================ */
 async function startExam() {
   const name    = document.getElementById('name').value.trim();
@@ -486,8 +739,17 @@ async function startExam() {
 
   studentInfo = { name, college, email, phone };
 
+  // Show loading + instructions screen
   document.getElementById('startScreen').classList.add('hidden');
-  document.getElementById('loading').classList.remove('hidden');
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Reset loader text
+  const status = document.getElementById('loadingStatus');
+  const loadingText = document.getElementById('loadingText');
+  status.classList.remove('ready');
+  status.querySelector('.spinner').style.display = 'inline-block';
+  loadingText.textContent = 'LOADING QUESTIONS…';
 
   try {
     const [qData, cData] = await Promise.all([
@@ -501,11 +763,36 @@ async function startExam() {
       DURATION_MIN = cData.config.durationMinutes || DURATION_MIN;
     }
 
-    onQuestionsLoaded(qData.questions);
+    // Brief "READY" state so student sees the transition
+    status.classList.add('ready');
+    status.querySelector('.spinner').style.display = 'none';
+    loadingText.textContent = '✓ QUESTIONS LOADED — STARTING EXAM…';
+
+    // Small delay so the student perceives completion, then enter exam
+    setTimeout(() => onQuestionsLoaded(qData.questions), 700);
+
   } catch (err) {
-    alert('Failed to load questions: ' + err.message);
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('startScreen').classList.remove('hidden');
+    status.classList.remove('ready');
+    status.querySelector('.spinner').style.display = 'none';
+    loadingText.textContent = '✗ FAILED TO LOAD — ' + err.message;
+    loadingText.style.color = '#ff4444';
+
+    // Add a retry button under the status
+    const existing = document.getElementById('retryBtn');
+    if (!existing) {
+      const btn = document.createElement('button');
+      btn.id = 'retryBtn';
+      btn.className = 'btn btn-danger mt-1';
+      btn.style.width = '100%';
+      btn.style.marginTop = '1rem';
+      btn.textContent = '◀ BACK TO FORM';
+      btn.onclick = () => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+        loadingText.style.color = '';
+      };
+      status.parentNode.insertBefore(btn, status.nextSibling);
+    }
   }
 }
 
@@ -525,7 +812,7 @@ function onQuestionsLoaded(questions) {
   document.getElementById('timerDisplay').textContent =
     String(DURATION_MIN).padStart(2, '0') + ':00';
 
-  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.add('hidden');
   document.getElementById('examScreen').classList.remove('hidden');
 
   examActive = true;
@@ -624,7 +911,9 @@ function renderQuestion() {
   });
 
   updateActivePill(q.subject);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const body = document.getElementById('examBody');
+  if (body) body.scrollTop = 0;
 }
 
 function escapeHtml(str) {
@@ -633,7 +922,40 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
-function selectOption(letter) { answers[currentQ] = letter; renderQuestion(); }
+function selectOption(letter) {
+  answers[currentQ] = letter;
+  const body = document.getElementById('examBody');
+  const scrollPos = body ? body.scrollTop : 0;
+
+  const q = QUESTIONS[currentQ];
+  document.getElementById('qNumber').textContent =
+    `Question ${currentQ + 1} of ${QUESTIONS.length} [${q.subject}]`;
+  document.getElementById('qText').textContent = q.question;
+  document.getElementById('questionCounter').textContent =
+    `Q ${currentQ + 1}/${QUESTIONS.length}`;
+
+  const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  ['A', 'B', 'C', 'D'].forEach(l => {
+    if (!q[l]) return;
+    const div = document.createElement('div');
+    div.className = 'option' + (answers[currentQ] === l ? ' selected' : '');
+    div.innerHTML = `
+      <div class="option-letter">${l}</div>
+      <div class="option-text">${escapeHtml(q[l])}</div>
+    `;
+    div.onclick = () => selectOption(l);
+    container.appendChild(div);
+  });
+
+  updateActivePill(q.subject);
+
+  if (body) body.scrollTop = scrollPos;
+}
+
 function nextQuestion() { if (currentQ < QUESTIONS.length - 1) { currentQ++; renderQuestion(); } }
 function prevQuestion() { if (currentQ > 0) { currentQ--; renderQuestion(); } }
 function skipQuestion() {
@@ -655,8 +977,20 @@ function confirmSubmit() {
 
 async function doSubmit() {
   document.getElementById('examScreen').classList.add('hidden');
-  document.getElementById('loading').classList.remove('hidden');
-  document.getElementById('loading').textContent = 'SUBMITTING...';
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  document.getElementById('resultScreen').classList.add('hidden');
+
+  // Reuse loading screen for submit status
+  const status = document.getElementById('loadingStatus');
+  const loadingText = document.getElementById('loadingText');
+  status.classList.remove('ready');
+  status.querySelector('.spinner').style.display = 'inline-block';
+  loadingText.textContent = 'SUBMITTING…';
+  loadingText.style.color = '';
+
+  // Hide the instruction card during submit so it's clean
+  const instructions = document.querySelector('.instruction-card');
+  if (instructions) instructions.style.display = 'none';
 
   const payload = {
     name: studentInfo.name,
@@ -672,15 +1006,17 @@ async function doSubmit() {
     onSubmitSuccess(result);
   } catch (err) {
     alert('Submission failed: ' + err.message);
-    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('loadingScreen').classList.add('hidden');
     document.getElementById('examScreen').classList.remove('hidden');
+    if (instructions) instructions.style.display = '';
     examActive = true;
   }
 }
 
 function onSubmitSuccess(result) {
-  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.add('hidden');
   document.getElementById('resultScreen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 
   const scoreEl = document.getElementById('finalScore');
   scoreEl.textContent = result.totalScore;
