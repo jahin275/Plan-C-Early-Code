@@ -140,45 +140,71 @@ body::after {
    ============================================================ */
 #examScreen { min-height: 100vh; }
 
-/* Sticky header */
-.exam-header-wrap {
+/* Sticky top: timer left, submit right */
+.exam-sticky {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10,10,26,0.96);
+  background: rgba(10,10,26,0.97);
   backdrop-filter: blur(10px);
   border-bottom: 2px solid var(--border);
 }
+
 .exam-header {
-  padding: 0.7rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  padding: 0.65rem 0.8rem;
+  gap: 0.6rem;
 }
+
+.timer-box { display: flex; flex-direction: column; gap: 0.15rem; }
 .timer {
   font-size: 1.15rem;
   color: var(--neon-yellow);
   text-shadow: 0 0 10px var(--neon-yellow);
+  letter-spacing: 0.05em;
 }
 .timer.warning { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); animation: pulse 0.5s infinite; }
 @keyframes pulse { 50% { opacity: 0.6; } }
 
-.tab-counter { font-size: 0.55rem; color: var(--neon-pink); }
-.tab-counter span { color: var(--neon-red); font-size: 0.85rem; }
-.q-counter { font-size: 0.5rem; color: var(--neon-purple); }
+.timer-label { font-size: 0.42rem; color: var(--neon-cyan); letter-spacing: 0.1em; }
 
-.exam-top {
-  padding: 0.5rem 1rem 0.6rem;
+.submit-btn-header {
+  font-size: 0.65rem !important;
+  padding: 0.65rem 0.9rem !important;
+  flex-shrink: 0;
+  animation: submitGlow 2s infinite;
+}
+@keyframes submitGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(255,45,149,0.3); }
+  50% { box-shadow: 0 0 15px rgba(255,45,149,0.7); }
+}
+
+/* Info strip: tab count + progress + pills */
+.exam-info {
+  padding: 0.45rem 0.8rem 0.6rem;
   border-top: 1px solid var(--border);
 }
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  font-size: 0.5rem;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.tab-counter { color: var(--neon-pink); }
+.tab-counter span { color: var(--neon-red); font-size: 0.7rem; }
+.q-counter { color: var(--neon-purple); }
+
 .progress-bar {
-  width: 100%; height: 6px;
+  width: 100%; height: 5px;
   background: var(--border);
   border-radius: 3px;
   overflow: hidden;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.5rem;
 }
 .progress-fill {
   height: 100%;
@@ -187,15 +213,24 @@ body::after {
   border-radius: 3px;
 }
 
-.section-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.section-pills {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+  scrollbar-width: none;
+}
+.section-pills::-webkit-scrollbar { display: none; }
 .pill {
-  padding: 0.32rem 0.6rem;
+  padding: 0.28rem 0.55rem;
   border: 1px solid var(--border);
   border-radius: 20px;
-  font-size: 0.48rem;
+  font-size: 0.44rem;
   cursor: pointer;
   transition: all 0.2s;
   user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .pill:hover { border-color: var(--neon-cyan); }
 .pill.active { border-color: var(--neon-cyan); background: rgba(0,240,255,0.15); color: var(--neon-cyan); }
@@ -205,7 +240,6 @@ body::after {
 /* Content */
 .exam-content {
   padding: 1rem;
-  padding-bottom: 110px; /* space for fixed submit bar */
   max-width: 900px;
   margin: 0 auto;
 }
@@ -216,7 +250,7 @@ body::after {
   border-radius: 8px;
   padding: 1.1rem;
   margin-bottom: 0.85rem;
-  scroll-margin-top: 160px;
+  scroll-margin-top: 155px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .question-block.answered { border-color: rgba(57,255,20,0.35); }
@@ -273,36 +307,8 @@ body::after {
 .option.selected .option-letter { color: var(--neon-green); }
 .option-text { font-size: 0.62rem; line-height: 1.5; flex: 1; word-break: break-word; }
 
-/* Fixed submit bar */
-.exam-submit-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  padding: 0.7rem 1rem;
-  background: rgba(10,10,26,0.98);
-  border-top: 2px solid var(--border);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.7rem;
-}
-.submit-info {
-  font-size: 0.55rem;
-  color: var(--neon-cyan);
-  white-space: nowrap;
-}
-.submit-info b { color: var(--neon-green); font-size: 0.7rem; }
-.exam-submit-bar .btn {
-  padding: 0.7rem 1rem;
-  font-size: 0.62rem;
-  flex-shrink: 0;
-}
-
 /* ============================================================
-   LOADING SCREEN (with instructions)
+   LOADING SCREEN
    ============================================================ */
 #loadingScreen {
   min-height: 100vh;
@@ -346,6 +352,49 @@ body::after {
   flex-shrink: 0;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Flappy Bird */
+.game-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(176,38,255,0.15);
+}
+.game-title {
+  font-size: 0.6rem;
+  color: var(--neon-yellow);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.6rem;
+}
+.game-title .accent { color: var(--neon-purple); }
+.game-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  border: 2px solid var(--neon-purple);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(176,38,255,0.35);
+  touch-action: manipulation;
+}
+#flappyCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #0d0d24;
+  image-rendering: pixelated;
+  cursor: pointer;
+}
+.game-hint {
+  font-size: 0.42rem;
+  color: var(--neon-cyan);
+  margin-top: 0.55rem;
+  letter-spacing: 0.08em;
+}
 
 .instruction-card {
   background: var(--bg-card);
@@ -404,11 +453,7 @@ body::after {
    ============================================================ */
 #resultScreen { min-height: 100vh; padding-bottom: 3rem; }
 
-.result-top {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+.result-top { max-width: 900px; margin: 0 auto; padding: 1rem; }
 
 .result-score-card {
   text-align: center;
@@ -418,7 +463,34 @@ body::after {
   border-radius: 8px;
   box-shadow: 0 0 25px rgba(0,240,255,0.15);
   margin-bottom: 1rem;
+  position: relative;
 }
+
+.sync-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  font-size: 0.42rem;
+  color: var(--neon-cyan);
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 3px;
+  background: rgba(0,240,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.sync-badge.synced { color: var(--neon-green); border-color: var(--neon-green); background: rgba(57,255,20,0.1); }
+.sync-badge.error { color: var(--neon-red); border-color: var(--neon-red); background: rgba(255,68,68,0.1); }
+.sync-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  animation: blink 1s infinite;
+}
+.sync-badge.synced .sync-dot { background: var(--neon-green); animation: none; }
+.sync-badge.error .sync-dot { background: var(--neon-red); animation: none; }
+@keyframes blink { 50% { opacity: 0.3; } }
 
 .score-big { font-size: clamp(2.5rem, 10vw, 4rem); margin: 0.5rem 0; line-height: 1; }
 .score-big.pass { color: var(--neon-green); text-shadow: 0 0 25px var(--neon-green); }
@@ -432,11 +504,7 @@ body::after {
   margin-bottom: 0.4rem;
 }
 
-.result-status {
-  font-size: 0.62rem;
-  line-height: 1.7;
-  margin: 1rem 0 0;
-}
+.result-status { font-size: 0.62rem; line-height: 1.7; margin: 1rem 0 0; }
 
 .stat-grid {
   display: grid;
@@ -476,12 +544,7 @@ body::after {
 }
 .section-breakdown strong { color: var(--neon-cyan); font-size: 0.6rem; letter-spacing: 0.1em; }
 
-/* Review section */
-.review-wrap {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
+.review-wrap { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
 .review-title {
   font-size: 0.7rem;
   color: var(--neon-yellow);
@@ -564,19 +627,10 @@ body::after {
 }
 .review-opt .option-letter { font-size: 0.6rem; min-width: 1.2rem; color: var(--neon-cyan); }
 .review-opt .option-text { flex: 1; word-break: break-word; }
-
-.review-opt.correct-opt {
-  border-color: var(--neon-green);
-  background: rgba(57,255,20,0.08);
-}
+.review-opt.correct-opt { border-color: var(--neon-green); background: rgba(57,255,20,0.08); }
 .review-opt.correct-opt .option-letter { color: var(--neon-green); }
-
-.review-opt.user-wrong {
-  border-color: var(--neon-red);
-  background: rgba(255,68,68,0.08);
-}
+.review-opt.user-wrong { border-color: var(--neon-red); background: rgba(255,68,68,0.08); }
 .review-opt.user-wrong .option-letter { color: var(--neon-red); }
-
 .review-opt.user-correct {
   border-color: var(--neon-green);
   background: rgba(57,255,20,0.15);
@@ -597,9 +651,6 @@ body::after {
 }
 .review-ans-summary b { color: #fff; }
 
-/* ============================================================
-   UTILITIES
-   ============================================================ */
 .hidden { display: none !important; }
 .text-center { text-align: center; }
 .mt-1 { margin-top: 1rem; }
@@ -615,15 +666,16 @@ body::after {
   .container { padding: 0.6rem; }
   .card { padding: 1rem; }
   .neon-title { font-size: 1.4rem; }
-  .question-block { padding: 0.85rem; scroll-margin-top: 175px; }
+  .question-block { padding: 0.85rem; scroll-margin-top: 170px; }
   .question-text { font-size: 0.62rem; }
   .option-text { font-size: 0.58rem; }
   .option { padding: 0.6rem; }
-  .timer { font-size: 1rem; }
+  .timer { font-size: 0.95rem; }
+  .timer-label { font-size: 0.38rem; }
+  .submit-btn-header { font-size: 0.58rem !important; padding: 0.55rem 0.7rem !important; }
   .q-badge, .q-subject { font-size: 0.45rem; padding: 0.2rem 0.4rem; }
-  .pill { font-size: 0.42rem; padding: 0.28rem 0.5rem; }
-  .exam-submit-bar .btn { font-size: 0.55rem; padding: 0.6rem 0.8rem; }
-  .submit-info { font-size: 0.48rem; }
+  .pill { font-size: 0.4rem; padding: 0.25rem 0.45rem; }
+  .info-row { font-size: 0.45rem; }
   .instruction-card { padding: 1rem; }
   .instruction-card h2 { font-size: 0.7rem; }
   .instruction-card h3 { font-size: 0.55rem; }
@@ -631,6 +683,8 @@ body::after {
   .rule-row { font-size: 0.5rem; }
   .review-q { font-size: 0.58rem; }
   .review-opt { font-size: 0.54rem; padding: 0.45rem 0.55rem; }
+  .game-card { padding: 0.8rem; }
+  .game-title { font-size: 0.55rem; }
 }
 </style>
 </head>
@@ -676,7 +730,7 @@ body::after {
   </div>
 </div>
 
-<!-- ============ LOADING + INSTRUCTIONS ============ -->
+<!-- ============ LOADING + GAME + INSTRUCTIONS ============ -->
 <div id="loadingScreen" class="hidden">
   <div class="loading-container">
     <h1 class="neon-title">Plan C</h1>
@@ -684,6 +738,15 @@ body::after {
     <div class="loading-status" id="loadingStatus">
       <span class="spinner" id="loadingSpinner"></span>
       <span id="loadingText">LOADING QUESTIONS…</span>
+    </div>
+
+    <!-- Flappy Bird mini-game -->
+    <div class="game-card">
+      <div class="game-title">◤ <span class="accent">TAP TO FLAP</span> ◢</div>
+      <div class="game-wrapper">
+        <canvas id="flappyCanvas" width="480" height="270"></canvas>
+      </div>
+      <div class="game-hint">CLICK / TAP / SPACE TO JUMP</div>
     </div>
 
     <div class="instruction-card" id="instructionCard">
@@ -728,9 +791,9 @@ body::after {
       <h3>▸ IMPORTANT</h3>
       <ul>
         <li>Exam auto-submits when the timer hits <span class="em">00:00</span>.</li>
-        <li>Leaving this tab is detected and counted as a <span class="warn">tab switch</span>.</li>
+        <li>Leaving this tab is counted as a <span class="warn">tab switch</span>.</li>
         <li>Copy / paste / right-click / dev tools are disabled.</li>
-        <li>All 106 questions are on one scrollable page — use the section pills to jump.</li>
+        <li>All 106 questions are on one scrollable page.</li>
       </ul>
     </div>
   </div>
@@ -739,15 +802,20 @@ body::after {
 <!-- ============ EXAM ============ -->
 <div id="examScreen" class="hidden">
 
-  <div class="exam-header-wrap">
+  <div class="exam-sticky">
     <div class="exam-header">
-      <div>
+      <div class="timer-box">
+        <div class="timer-label">TIME LEFT</div>
         <div class="timer" id="timerDisplay">45:00</div>
-        <div class="tab-counter">TAB SWITCHES: <span id="tabCount">0</span></div>
       </div>
-      <div class="q-counter" id="questionCounter">Q 0/0 ANSWERED</div>
+      <button class="btn btn-danger submit-btn-header" id="submitBtn" onclick="confirmSubmit()">■ SUBMIT</button>
     </div>
-    <div class="exam-top">
+
+    <div class="exam-info">
+      <div class="info-row">
+        <span class="tab-counter">TAB SWITCHES: <span id="tabCount">0</span></span>
+        <span class="q-counter" id="questionCounter">0/0 ANSWERED</span>
+      </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
       <div class="section-pills" id="sectionPills"></div>
     </div>
@@ -755,11 +823,6 @@ body::after {
 
   <div class="exam-content">
     <div id="questionsList"></div>
-  </div>
-
-  <div class="exam-submit-bar">
-    <div class="submit-info">ANSWERED: <b><span id="answeredCount">0</span></b> / <span id="totalCount">0</span></div>
-    <button class="btn btn-danger" id="submitBtn" onclick="confirmSubmit()">■ SUBMIT</button>
   </div>
 
 </div>
@@ -771,6 +834,10 @@ body::after {
     <h1 class="neon-title" style="font-size:2rem;">RESULT</h1>
 
     <div class="result-score-card">
+      <div class="sync-badge" id="syncBadge">
+        <span class="sync-dot"></span>
+        <span id="syncText">SYNCING…</span>
+      </div>
       <div class="score-label">YOUR SCORE</div>
       <div class="score-big" id="finalScore">0</div>
       <div class="result-status" id="finalStatus"></div>
@@ -824,7 +891,6 @@ let studentInfo = {};
 let MANDATORY = ['Bangla', 'English', 'ICT'];
 let OPTIONAL  = ['HM', 'Stat', 'Econ'];
 let DURATION_MIN = 45;
-let LAST_RESULT = null;
 
 let SECTION_RANGES = {};
 const SECTION_LABELS = { Bangla: 'বাংলা', English: 'English', ICT: 'ICT', HM: 'HM', Stat: 'STAT', Econ: 'ECON' };
@@ -895,6 +961,50 @@ async function apiSubmit(payload) {
 }
 
 /* ============================================================
+   LOCAL SCORING (instant feedback)
+   ============================================================ */
+function computeLocalResult() {
+  let correct = 0, wrong = 0, skipped = 0;
+  const sectionScores = {};
+  [...MANDATORY, ...OPTIONAL].forEach(s => sectionScores[s] = 0);
+  const attemptedOptional = new Set();
+
+  QUESTIONS.forEach((q, i) => {
+    const chosen = (answers[i] || '').toString().trim().toUpperCase();
+    const key    = (q.ansKey || '').toString().trim().toUpperCase();
+
+    if (!chosen) {
+      skipped++;
+    } else if (chosen === key) {
+      correct++;
+      if (sectionScores[q.subject] !== undefined) sectionScores[q.subject]++;
+    } else {
+      wrong++;
+    }
+
+    if (chosen && OPTIONAL.includes(q.subject)) attemptedOptional.add(q.subject);
+  });
+
+  const totalScore = correct - (wrong * 0.25);
+  const disqualified = attemptedOptional.size > 1;
+
+  let status;
+  if (totalScore >= 35)      status = 'MISSION PASSED ++ CREDIT';
+  else if (totalScore >= 24) status = 'PASSED but your written Scripts won\'t be evaluated';
+  else                       status = 'FAILED, Please Contact your Instructors';
+
+  return {
+    totalScore: Number(totalScore.toFixed(2)),
+    correct, wrong, skipped,
+    tabSwitches,
+    status,
+    disqualified,
+    attemptedOptional: Array.from(attemptedOptional),
+    sectionScores
+  };
+}
+
+/* ============================================================
    START
    ============================================================ */
 async function startExam() {
@@ -931,6 +1041,8 @@ async function startExam() {
   const existingRetry = document.getElementById('retryBtn');
   if (existingRetry) existingRetry.remove();
 
+  startFlappy();
+
   try {
     const [qData, cData] = await Promise.all([
       apiGet('questions'),
@@ -947,7 +1059,10 @@ async function startExam() {
     spinner.style.display = 'none';
     loadingText.textContent = '✓ QUESTIONS LOADED — STARTING EXAM…';
 
-    setTimeout(() => onQuestionsLoaded(qData.questions), 700);
+    setTimeout(() => {
+      stopFlappy();
+      onQuestionsLoaded(qData.questions);
+    }, 700);
 
   } catch (err) {
     status.classList.remove('ready');
@@ -962,6 +1077,7 @@ async function startExam() {
     btn.style.marginTop = '1rem';
     btn.textContent = '◀ BACK TO FORM';
     btn.onclick = () => {
+      stopFlappy();
       document.getElementById('loadingScreen').classList.add('hidden');
       document.getElementById('startScreen').classList.remove('hidden');
       loadingText.style.color = '';
@@ -984,7 +1100,6 @@ function onQuestionsLoaded(questions) {
 
   document.getElementById('timerDisplay').textContent =
     String(DURATION_MIN).padStart(2, '0') + ':00';
-  document.getElementById('totalCount').textContent = QUESTIONS.length;
 
   document.getElementById('loadingScreen').classList.add('hidden');
   document.getElementById('examScreen').classList.remove('hidden');
@@ -1022,7 +1137,7 @@ function updateTimerDisplay() {
 function autoSubmit() {
   examActive = false;
   clearInterval(timerInterval);
-  doSubmit();
+  doSubmit(true);
 }
 
 /* ============================================================
@@ -1049,7 +1164,6 @@ function buildSectionPills() {
         el.style.boxShadow = '0 0 20px rgba(0,240,255,0.4)';
         setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 1200);
       }
-      // Highlight active pill
       document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
       setTimeout(() => pill.classList.remove('active'), 1500);
@@ -1060,12 +1174,11 @@ function buildSectionPills() {
 }
 
 /* ============================================================
-   RENDER ALL QUESTIONS (single scrollable page)
+   RENDER ALL QUESTIONS
    ============================================================ */
 function renderAllQuestions() {
   const container = document.getElementById('questionsList');
   container.innerHTML = '';
-
   const frag = document.createDocumentFragment();
 
   QUESTIONS.forEach((q, idx) => {
@@ -1108,17 +1221,13 @@ function renderAllQuestions() {
 
 function selectOption(qIdx, letter) {
   answers[qIdx] = letter;
-
   const block = document.getElementById('qblock-' + qIdx);
   if (!block) return;
-
   block.querySelectorAll('.option').forEach(o => {
     o.classList.toggle('selected', o.dataset.letter === letter);
   });
-
   if (answers[qIdx]) block.classList.add('answered');
   else block.classList.remove('answered');
-
   updateProgress();
 }
 
@@ -1126,16 +1235,14 @@ function updateProgress() {
   const total = QUESTIONS.length;
   const answered = answers.filter(a => a !== null).length;
   const pct = total ? (answered / total) * 100 : 0;
-
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('answeredCount').textContent = answered;
-  document.getElementById('questionCounter').textContent = `Q ${answered}/${total} ANSWERED`;
+  document.getElementById('questionCounter').textContent = `${answered}/${total} ANSWERED`;
 }
 
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 /* ============================================================
@@ -1143,30 +1250,21 @@ function escapeHtml(str) {
    ============================================================ */
 function confirmSubmit() {
   const answered = answers.filter(a => a !== null).length;
-  const msg = `You have answered ${answered}/${QUESTIONS.length} questions.\n\nSubmit now?`;
-  if (confirm(msg)) {
+  if (confirm(`You have answered ${answered}/${QUESTIONS.length} questions.\n\nSubmit now?`)) {
     examActive = false;
     clearInterval(timerInterval);
-    doSubmit();
+    doSubmit(false);
   }
 }
 
-async function doSubmit() {
-  document.getElementById('examScreen').classList.add('hidden');
-  document.getElementById('resultScreen').classList.add('hidden');
-  document.getElementById('loadingScreen').classList.remove('hidden');
-  window.scrollTo({ top: 0, behavior: 'instant' });
+async function doSubmit(auto) {
+  // -------- INSTANT LOCAL RESULT --------
+  const localResult = computeLocalResult();
+  showResult(localResult, auto);
+  document.getElementById('syncBadge').className = 'sync-badge';
+  document.getElementById('syncText').textContent = 'SYNCING…';
 
-  const status = document.getElementById('loadingStatus');
-  const loadingText = document.getElementById('loadingText');
-  const spinner = document.getElementById('loadingSpinner');
-  const instructions = document.getElementById('instructionCard');
-  if (instructions) instructions.style.display = 'none';
-  status.classList.remove('ready');
-  spinner.style.display = 'inline-block';
-  loadingText.textContent = 'SUBMITTING YOUR ANSWERS…';
-  loadingText.style.color = '';
-
+  // -------- BACKGROUND SUBMIT --------
   const payload = {
     name: studentInfo.name,
     college: studentInfo.college,
@@ -1178,24 +1276,25 @@ async function doSubmit() {
 
   try {
     const result = await apiSubmit(payload);
-    onSubmitSuccess(result);
+    // Server confirmed — update with server result (should match) and mark synced
+    showResult(result, auto, true);
+    const badge = document.getElementById('syncBadge');
+    badge.className = 'sync-badge synced';
+    document.getElementById('syncText').textContent = 'SYNCED ✓';
   } catch (err) {
-    alert('Submission failed: ' + err.message);
-    document.getElementById('loadingScreen').classList.add('hidden');
-    document.getElementById('examScreen').classList.remove('hidden');
-    if (instructions) instructions.style.display = '';
-    examActive = true;
+    const badge = document.getElementById('syncBadge');
+    badge.className = 'sync-badge error';
+    document.getElementById('syncText').textContent = 'SYNC FAILED';
+    console.error('Sync failed:', err);
   }
 }
 
-function onSubmitSuccess(result) {
-  LAST_RESULT = result;
-
+function showResult(result, auto, isSynced) {
+  document.getElementById('examScreen').classList.add('hidden');
   document.getElementById('loadingScreen').classList.add('hidden');
   document.getElementById('resultScreen').classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'instant' });
 
-  // Score
   const scoreEl = document.getElementById('finalScore');
   scoreEl.textContent = result.totalScore;
 
@@ -1229,18 +1328,16 @@ function onSubmitSuccess(result) {
     document.getElementById('disqWarning').classList.remove('hidden');
   }
 
-  // Build the full review
   renderReview();
   wireFilters();
 }
 
 /* ============================================================
-   REVIEW (Result answers list)
+   REVIEW
    ============================================================ */
 function renderReview() {
   const container = document.getElementById('reviewList');
   container.innerHTML = '';
-
   const frag = document.createDocumentFragment();
 
   QUESTIONS.forEach((q, idx) => {
@@ -1257,7 +1354,6 @@ function renderReview() {
     block.className = 'review-block ' + status;
     block.dataset.status = status;
 
-    // Head
     const head = document.createElement('div');
     head.className = 'review-head';
     const statusText = status === 'correct' ? '✓ CORRECT' : status === 'wrong' ? '✗ WRONG' : '— SKIPPED';
@@ -1268,16 +1364,13 @@ function renderReview() {
     `;
     block.appendChild(head);
 
-    // Question
     const qDiv = document.createElement('div');
     qDiv.className = 'review-q';
     qDiv.textContent = q.question;
     block.appendChild(qDiv);
 
-    // Options
     ['A', 'B', 'C', 'D'].forEach(letter => {
       if (!q[letter]) return;
-
       let cls = 'review-opt';
       if (letter === correctAns && letter === userAns) cls += ' user-correct correct-opt';
       else if (letter === correctAns) cls += ' correct-opt';
@@ -1292,7 +1385,6 @@ function renderReview() {
       block.appendChild(opt);
     });
 
-    // Summary line
     const summary = document.createElement('div');
     summary.className = 'review-ans-summary';
     summary.innerHTML =
@@ -1312,16 +1404,287 @@ function wireFilters() {
       const filter = pill.dataset.filter;
       document.querySelectorAll('#reviewFilters .filter-pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
-
       document.querySelectorAll('.review-block').forEach(block => {
-        if (filter === 'all' || block.dataset.status === filter) {
-          block.classList.remove('hide');
-        } else {
-          block.classList.add('hide');
-        }
+        if (filter === 'all' || block.dataset.status === filter) block.classList.remove('hide');
+        else block.classList.add('hide');
       });
     };
   });
+}
+
+/* ============================================================
+   FLAPPY BIRD MINI-GAME
+   ============================================================ */
+let flappy = null;
+let flappyRAF = null;
+
+function startFlappy() {
+  const canvas = document.getElementById('flappyCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const W = canvas.width;
+  const H = canvas.height;
+  const GROUND_H = 32;
+  const GRAVITY = 0.32;
+  const FLAP = -5.6;
+  const PIPE_W = 46;
+  const PIPE_GAP = 105;
+  const PIPE_SPACING = 180;
+  const PIPE_SPEED = 1.8;
+
+  const state = {
+    bird: { x: 90, y: H / 2, vy: 0, r: 11 },
+    pipes: [],
+    score: 0,
+    best: Number(localStorage.getItem('flappy_best') || 0),
+    over: false,
+    started: false,
+    frame: 0
+  };
+  flappy = state;
+
+  function reset() {
+    state.bird = { x: 90, y: H / 2, vy: 0, r: 11 };
+    state.pipes = [];
+    state.score = 0;
+    state.over = false;
+    state.started = false;
+    state.frame = 0;
+    for (let i = 0; i < 3; i++) {
+      state.pipes.push({
+        x: W + i * PIPE_SPACING,
+        top: 30 + Math.random() * (H - GROUND_H - PIPE_GAP - 60),
+        passed: false
+      });
+    }
+  }
+
+  function flap() {
+    if (state.over) { reset(); return; }
+    if (!state.started) state.started = true;
+    state.bird.vy = FLAP;
+  }
+
+  // Input
+  const onPointer = (e) => { e.preventDefault(); flap(); };
+  canvas.addEventListener('pointerdown', onPointer);
+  canvas.addEventListener('touchstart', onPointer, { passive: false });
+  const keyHandler = (e) => {
+    if (e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') {
+      if (!document.getElementById('loadingScreen').classList.contains('hidden')) {
+        e.preventDefault();
+        flap();
+      }
+    }
+  };
+  document.addEventListener('keydown', keyHandler);
+
+  state._cleanup = () => {
+    canvas.removeEventListener('pointerdown', onPointer);
+    canvas.removeEventListener('touchstart', onPointer);
+    document.removeEventListener('keydown', keyHandler);
+  };
+
+  function update() {
+    state.frame++;
+
+    if (!state.started || state.over) return;
+
+    // Bird physics
+    state.bird.vy += GRAVITY;
+    state.bird.y += state.bird.vy;
+
+    if (state.bird.y + state.bird.r > H - GROUND_H) {
+      state.bird.y = H - GROUND_H - state.bird.r;
+      state.over = true;
+      if (state.score > state.best) {
+        state.best = state.score;
+        localStorage.setItem('flappy_best', String(state.best));
+      }
+    }
+    if (state.bird.y - state.bird.r < 0) {
+      state.bird.y = state.bird.r;
+      state.bird.vy = 0;
+    }
+
+    // Pipes
+    state.pipes.forEach(p => { p.x -= PIPE_SPEED; });
+
+    // Recycle / respawn pipes
+    if (state.pipes[0] && state.pipes[0].x + PIPE_W < 0) {
+      const last = state.pipes[state.pipes.length - 1];
+      state.pipes.shift();
+      state.pipes.push({
+        x: last.x + PIPE_SPACING,
+        top: 30 + Math.random() * (H - GROUND_H - PIPE_GAP - 60),
+        passed: false
+      });
+    }
+
+    // Collisions & scoring
+    for (const p of state.pipes) {
+      const bx = state.bird.x;
+      const by = state.bird.y;
+      const r = state.bird.r;
+
+      // Circle vs top pipe rectangle
+      if (bx + r > p.x && bx - r < p.x + PIPE_W) {
+        if (by - r < p.top || by + r > p.top + PIPE_GAP) {
+          state.over = true;
+          if (state.score > state.best) {
+            state.best = state.score;
+            localStorage.setItem('flappy_best', String(state.best));
+          }
+        }
+      }
+
+      if (!p.passed && p.x + PIPE_W < bx) {
+        p.passed = true;
+        state.score++;
+      }
+    }
+  }
+
+  function draw() {
+    // Background gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, '#0d0d24');
+    grad.addColorStop(1, '#1a1a3a');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Stars
+    ctx.fillStyle = 'rgba(224,224,255,0.25)';
+    for (let i = 0; i < 25; i++) {
+      const sx = (i * 73 + state.frame * 0.15) % W;
+      const sy = (i * 41) % (H - GROUND_H - 20);
+      ctx.fillRect(sx, sy + 10, 1.5, 1.5);
+    }
+
+    // Pipes
+    state.pipes.forEach(p => {
+      ctx.fillStyle = '#39ff14';
+      ctx.shadowColor = '#39ff14';
+      ctx.shadowBlur = 12;
+      ctx.fillRect(p.x, 0, PIPE_W, p.top);
+      ctx.fillRect(p.x, p.top + PIPE_GAP, PIPE_W, H - GROUND_H - (p.top + PIPE_GAP));
+
+      // Pipe edge highlight
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillRect(p.x, 0, 4, p.top);
+      ctx.fillRect(p.x, p.top + PIPE_GAP, 4, H - GROUND_H - (p.top + PIPE_GAP));
+      ctx.fillRect(p.x + PIPE_W - 4, 0, 4, p.top);
+      ctx.fillRect(p.x + PIPE_W - 4, p.top + PIPE_GAP, 4, H - GROUND_H - (p.top + PIPE_GAP));
+
+      // Pipe cap
+      ctx.fillStyle = '#2ecc0f';
+      ctx.fillRect(p.x - 3, p.top - 8, PIPE_W + 6, 8);
+      ctx.fillRect(p.x - 3, p.top + PIPE_GAP, PIPE_W + 6, 8);
+    });
+    ctx.shadowBlur = 0;
+
+    // Ground
+    ctx.fillStyle = '#1a1a3a';
+    ctx.fillRect(0, H - GROUND_H, W, GROUND_H);
+    ctx.fillStyle = '#00f0ff';
+    ctx.fillRect(0, H - GROUND_H, W, 1);
+    // Ground stripes
+    ctx.fillStyle = 'rgba(0,240,255,0.25)';
+    for (let x = -((state.frame * PIPE_SPEED) % 20); x < W; x += 20) {
+      ctx.fillRect(x, H - GROUND_H + 6, 10, 2);
+    }
+
+    // Bird
+    const b = state.bird;
+    ctx.fillStyle = '#ffe600';
+    ctx.shadowColor = '#ffe600';
+    ctx.shadowBlur = 15;
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Bird eye
+    ctx.fillStyle = '#0a0a1a';
+    ctx.beginPath();
+    ctx.arc(b.x + 3, b.y - 3, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(b.x + 4, b.y - 4, 0.9, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Beak
+    ctx.fillStyle = '#ff2d95';
+    ctx.beginPath();
+    ctx.moveTo(b.x + b.r - 1, b.y);
+    ctx.lineTo(b.x + b.r + 6, b.y + 2);
+    ctx.lineTo(b.x + b.r - 1, b.y + 5);
+    ctx.closePath();
+    ctx.fill();
+
+    // Score
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 16px "Press Start 2P", monospace';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = '#00f0ff';
+    ctx.shadowBlur = 10;
+    ctx.fillText(String(state.score), W / 2, 30);
+    ctx.shadowBlur = 0;
+
+    // Best
+    ctx.font = '8px "Press Start 2P", monospace';
+    ctx.fillStyle = 'rgba(224,224,255,0.55)';
+    ctx.fillText('BEST ' + state.best, W / 2, 46);
+
+    // Get Ready / Game Over
+    if (!state.started && !state.over) {
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#ffe600';
+      ctx.font = 'bold 12px "Press Start 2P", monospace';
+      ctx.shadowColor = '#ffe600';
+      ctx.shadowBlur = 12;
+      ctx.fillText('TAP TO START', W / 2, H / 2);
+      ctx.shadowBlur = 0;
+    } else if (state.over) {
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#ff2d95';
+      ctx.font = 'bold 14px "Press Start 2P", monospace';
+      ctx.shadowColor = '#ff2d95';
+      ctx.shadowBlur = 15;
+      ctx.fillText('GAME OVER', W / 2, H / 2 - 12);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 9px "Press Start 2P", monospace';
+      ctx.fillText('SCORE ' + state.score, W / 2, H / 2 + 10);
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = '8px "Press Start 2P", monospace';
+      ctx.fillText('TAP TO RETRY', W / 2, H / 2 + 32);
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    flappyRAF = requestAnimationFrame(loop);
+  }
+
+  reset();
+  // Prime the initial pipes to be off-screen right so player has time
+  state.pipes.forEach((p, i) => { p.x = W + 80 + i * PIPE_SPACING; });
+
+  loop();
+}
+
+function stopFlappy() {
+  if (flappyRAF) cancelAnimationFrame(flappyRAF);
+  flappyRAF = null;
+  if (flappy && flappy._cleanup) flappy._cleanup();
+  flappy = null;
 }
 </script>
 </body>
