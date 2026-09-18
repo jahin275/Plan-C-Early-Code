@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>The C Unit Arc Weekly Exam -1</title>
 <style>
-/* ============ ARCADE THEME ============ */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
@@ -32,23 +31,19 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Scanline overlay */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   background: repeating-linear-gradient(
     0deg,
-    rgba(0,0,0,0.15) 0px,
-    rgba(0,0,0,0.15) 1px,
-    transparent 1px,
-    transparent 3px
+    rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px,
+    transparent 1px, transparent 3px
   );
   pointer-events: none;
   z-index: 9999;
 }
 
-/* ============ FLICKERING "Plan C" ============ */
 @keyframes flicker {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
     opacity: 1;
@@ -67,7 +62,6 @@ body::after {
   user-select: none;
 }
 
-/* ============ CONTAINERS ============ */
 .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
 
 .card {
@@ -79,7 +73,6 @@ body::after {
   box-shadow: 0 0 20px rgba(0,240,255,0.1);
 }
 
-/* ============ FORM ============ */
 .form-group { margin-bottom: 1rem; }
 .form-group label {
   display: block;
@@ -105,7 +98,6 @@ body::after {
   box-shadow: 0 0 10px rgba(0,240,255,0.3);
 }
 
-/* ============ BUTTONS ============ */
 .btn {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.75rem;
@@ -134,10 +126,7 @@ body::after {
   color: var(--bg-dark);
   box-shadow: 0 0 20px var(--neon-green);
 }
-.btn-danger {
-  border-color: var(--neon-pink);
-  color: var(--neon-pink);
-}
+.btn-danger { border-color: var(--neon-pink); color: var(--neon-pink); }
 .btn-danger:hover, .btn-danger:active {
   background: var(--neon-pink);
   color: var(--bg-dark);
@@ -145,7 +134,6 @@ body::after {
 }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* ============ EXAM HEADER ============ */
 .exam-header {
   position: sticky;
   top: 0;
@@ -166,13 +154,11 @@ body::after {
   text-shadow: 0 0 10px var(--neon-yellow);
 }
 .timer.warning { color: #ff4444; text-shadow: 0 0 15px #ff4444; animation: pulse 0.5s infinite; }
-
 @keyframes pulse { 50% { opacity: 0.6; } }
 
 .tab-counter { font-size: 0.6rem; color: var(--neon-pink); }
 .tab-counter span { color: #ff4444; font-size: 0.9rem; }
 
-/* ============ QUESTION ============ */
 .question-number { font-size: 0.65rem; color: var(--neon-purple); margin-bottom: 0.5rem; }
 .question-text { font-size: 0.75rem; line-height: 1.6; margin-bottom: 1.2rem; color: #ffffff; }
 
@@ -198,11 +184,9 @@ body::after {
 .option.selected .option-letter { color: var(--neon-green); }
 .option-text { font-size: 0.65rem; line-height: 1.5; flex: 1; }
 
-/* ============ NAV ============ */
 .nav-bar { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1rem; }
 .nav-bar .btn { flex: 1; text-align: center; }
 
-/* ============ PROGRESS ============ */
 .progress-bar {
   width: 100%; height: 6px;
   background: var(--border);
@@ -217,7 +201,6 @@ body::after {
   border-radius: 3px;
 }
 
-/* ============ SECTION PILLS ============ */
 .section-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0; }
 .pill {
   padding: 0.4rem 0.7rem;
@@ -232,7 +215,6 @@ body::after {
 .pill.optional { border-color: var(--neon-purple); }
 .pill.optional.active { border-color: var(--neon-purple); background: rgba(176,38,255,0.2); color: var(--neon-purple); }
 
-/* ============ RESULT ============ */
 .result-panel { display: none; text-align: center; padding: 2rem 1rem; }
 .result-panel.show { display: block; }
 
@@ -265,7 +247,6 @@ body::after {
   line-height: 1.6;
 }
 
-/* ============ UTIL ============ */
 .hidden { display: none !important; }
 .text-center { text-align: center; }
 .mt-1 { margin-top: 1rem; }
@@ -393,10 +374,14 @@ body::after {
   </div>
 </div>
 
-<!-- ============ LOADER ============ -->
 <div id="loading" class="loader hidden">LOADING QUESTIONS...</div>
 
 <script>
+/* ============================================================
+   APPS SCRIPT BACKEND
+   ============================================================ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbzFJp-eyyrg21tYYu6iNrSocoMuoALeXJD8UZ3p9X9cHupgj9j-yBckPY0h7YvMsNYg/exec';
+
 /* ============================================================
    STATE
    ============================================================ */
@@ -411,6 +396,7 @@ let studentInfo = {};
 
 let MANDATORY = ['Bangla', 'English', 'ICT'];
 let OPTIONAL  = ['HM', 'Stat', 'Econ'];
+let DURATION_MIN = 45;
 
 let SECTION_RANGES = {};
 const SECTION_LABELS = { Bangla: 'বাংলা', English: 'English', ICT: 'ICT', HM: 'HM', Stat: 'STAT', Econ: 'ECON' };
@@ -454,9 +440,36 @@ window.addEventListener('blur', () => {
 });
 
 /* ============================================================
+   API
+   ============================================================ */
+async function apiGet(action) {
+  const res = await fetch(API_URL + '?action=' + encodeURIComponent(action));
+  const text = await res.text();
+  let data;
+  try { data = JSON.parse(text); }
+  catch (e) { throw new Error('Backend did not return JSON. First 120 chars: ' + text.slice(0, 120)); }
+  if (!data.ok) throw new Error(data.error || 'API error');
+  return data;
+}
+
+async function apiSubmit(payload) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'submit', payload })
+  });
+  const text = await res.text();
+  let data;
+  try { data = JSON.parse(text); }
+  catch (e) { throw new Error('Backend did not return JSON. First 120 chars: ' + text.slice(0, 120)); }
+  if (!data.ok) throw new Error(data.error || 'API error');
+  return data.result;
+}
+
+/* ============================================================
    START
    ============================================================ */
-function startExam() {
+async function startExam() {
   const name    = document.getElementById('name').value.trim();
   const college = document.getElementById('college').value.trim();
   const email   = document.getElementById('email').value.trim();
@@ -476,24 +489,31 @@ function startExam() {
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('loading').classList.remove('hidden');
 
-  google.script.run
-    .withSuccessHandler(cfg => { MANDATORY = cfg.mandatory; OPTIONAL = cfg.optional; })
-    .getExamConfig();
+  try {
+    const [qData, cData] = await Promise.all([
+      apiGet('questions'),
+      apiGet('config').catch(() => null)
+    ]);
 
-  google.script.run
-    .withSuccessHandler(onQuestionsLoaded)
-    .withFailureHandler(err => {
-      alert('Failed to load questions: ' + err.message);
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('startScreen').classList.remove('hidden');
-    })
-    .getQuestions();
+    if (cData && cData.config) {
+      MANDATORY    = cData.config.mandatory      || MANDATORY;
+      OPTIONAL     = cData.config.optional       || OPTIONAL;
+      DURATION_MIN = cData.config.durationMinutes || DURATION_MIN;
+    }
+
+    onQuestionsLoaded(qData.questions);
+  } catch (err) {
+    alert('Failed to load questions: ' + err.message);
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('startScreen').classList.remove('hidden');
+  }
 }
 
 function onQuestionsLoaded(questions) {
   QUESTIONS = questions;
   answers = new Array(QUESTIONS.length).fill(null);
   currentQ = 0;
+  timeLeft = DURATION_MIN * 60;
 
   SECTION_RANGES = {};
   QUESTIONS.forEach((q, i) => {
@@ -501,6 +521,9 @@ function onQuestionsLoaded(questions) {
     if (!SECTION_RANGES[q.subject]) SECTION_RANGES[q.subject] = { start: i, end: i };
     else SECTION_RANGES[q.subject].end = i;
   });
+
+  document.getElementById('timerDisplay').textContent =
+    String(DURATION_MIN).padStart(2, '0') + ':00';
 
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('examScreen').classList.remove('hidden');
@@ -519,9 +542,7 @@ function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
     updateTimerDisplay();
-
     if (timeLeft <= 300) document.getElementById('timerDisplay').classList.add('warning');
-
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
       autoSubmit();
@@ -578,9 +599,11 @@ function renderQuestion() {
   const q = QUESTIONS[currentQ];
   if (!q) return;
 
-  document.getElementById('qNumber').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length} [${q.subject}]`;
+  document.getElementById('qNumber').textContent =
+    `Question ${currentQ + 1} of ${QUESTIONS.length} [${q.subject}]`;
   document.getElementById('qText').textContent = q.question;
-  document.getElementById('questionCounter').textContent = `Q ${currentQ + 1}/${QUESTIONS.length}`;
+  document.getElementById('questionCounter').textContent =
+    `Q ${currentQ + 1}/${QUESTIONS.length}`;
 
   const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
   document.getElementById('progressFill').style.width = pct + '%';
@@ -630,7 +653,7 @@ function confirmSubmit() {
   }
 }
 
-function doSubmit() {
+async function doSubmit() {
   document.getElementById('examScreen').classList.add('hidden');
   document.getElementById('loading').classList.remove('hidden');
   document.getElementById('loading').textContent = 'SUBMITTING...';
@@ -644,15 +667,15 @@ function doSubmit() {
     tabSwitches: tabSwitches
   };
 
-  google.script.run
-    .withSuccessHandler(onSubmitSuccess)
-    .withFailureHandler(err => {
-      alert('Submission failed: ' + err.message);
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('examScreen').classList.remove('hidden');
-      examActive = true;
-    })
-    .submitExam(payload);
+  try {
+    const result = await apiSubmit(payload);
+    onSubmitSuccess(result);
+  } catch (err) {
+    alert('Submission failed: ' + err.message);
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('examScreen').classList.remove('hidden');
+    examActive = true;
+  }
 }
 
 function onSubmitSuccess(result) {
