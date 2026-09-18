@@ -13,6 +13,7 @@
   --neon-yellow: #ffe600;
   --neon-green: #39ff14;
   --neon-purple: #b026ff;
+  --neon-red: #ff4444;
   --bg-dark: #0a0a1a;
   --bg-card: #12122a;
   --bg-card-alt: #1a1a3a;
@@ -135,54 +136,49 @@ body::after {
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ============================================================
-   EXAM SCREEN — fixed-height flex layout
+   EXAM SCREEN
    ============================================================ */
-#examScreen {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-}
-#examScreen.hidden { display: none !important; }
+#examScreen { min-height: 100vh; }
 
-.exam-header {
-  flex-shrink: 0;
-  background: rgba(10,10,26,0.95);
-  backdrop-filter: blur(8px);
+/* Sticky header */
+.exam-header-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,10,26,0.96);
+  backdrop-filter: blur(10px);
   border-bottom: 2px solid var(--border);
-  padding: 0.8rem 1rem;
+}
+.exam-header {
+  padding: 0.7rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-  z-index: 10;
 }
 .timer {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--neon-yellow);
   text-shadow: 0 0 10px var(--neon-yellow);
 }
-.timer.warning { color: #ff4444; text-shadow: 0 0 15px #ff4444; animation: pulse 0.5s infinite; }
+.timer.warning { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); animation: pulse 0.5s infinite; }
 @keyframes pulse { 50% { opacity: 0.6; } }
 
-.tab-counter { font-size: 0.6rem; color: var(--neon-pink); }
-.tab-counter span { color: #ff4444; font-size: 0.9rem; }
+.tab-counter { font-size: 0.55rem; color: var(--neon-pink); }
+.tab-counter span { color: var(--neon-red); font-size: 0.85rem; }
+.q-counter { font-size: 0.5rem; color: var(--neon-purple); }
 
 .exam-top {
-  flex-shrink: 0;
-  padding: 0.6rem 1rem 0.4rem;
-  background: var(--bg-dark);
-  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1rem 0.6rem;
+  border-top: 1px solid var(--border);
 }
-
 .progress-bar {
   width: 100%; height: 6px;
   background: var(--border);
   border-radius: 3px;
   overflow: hidden;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.55rem;
 }
 .progress-fill {
   height: 100%;
@@ -191,64 +187,80 @@ body::after {
   border-radius: 3px;
 }
 
-.section-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
+.section-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .pill {
-  padding: 0.35rem 0.65rem;
+  padding: 0.32rem 0.6rem;
   border: 1px solid var(--border);
   border-radius: 20px;
-  font-size: 0.5rem;
+  font-size: 0.48rem;
   cursor: pointer;
   transition: all 0.2s;
   user-select: none;
 }
+.pill:hover { border-color: var(--neon-cyan); }
 .pill.active { border-color: var(--neon-cyan); background: rgba(0,240,255,0.15); color: var(--neon-cyan); }
 .pill.optional { border-color: var(--neon-purple); }
 .pill.optional.active { border-color: var(--neon-purple); background: rgba(176,38,255,0.2); color: var(--neon-purple); }
 
-.exam-body {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+/* Content */
+.exam-content {
   padding: 1rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--neon-cyan) var(--bg-dark);
-}
-.exam-body::-webkit-scrollbar { width: 8px; }
-.exam-body::-webkit-scrollbar-track { background: var(--bg-dark); }
-.exam-body::-webkit-scrollbar-thumb {
-  background: var(--neon-cyan);
-  border-radius: 4px;
-  box-shadow: 0 0 8px var(--neon-cyan);
+  padding-bottom: 110px; /* space for fixed submit bar */
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.question-card {
+.question-block {
   background: var(--bg-card);
   border: 2px solid var(--border);
   border-radius: 8px;
-  padding: 1.5rem;
-  margin: 0 auto;
-  max-width: 900px;
-  box-shadow: 0 0 20px rgba(0,240,255,0.1);
+  padding: 1.1rem;
+  margin-bottom: 0.85rem;
+  scroll-margin-top: 160px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.question-block.answered { border-color: rgba(57,255,20,0.35); }
+
+.q-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  gap: 0.5rem;
+}
+.q-badge {
+  font-size: 0.55rem;
+  color: var(--neon-cyan);
+  background: rgba(0,240,255,0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+.q-subject {
+  font-size: 0.5rem;
+  color: var(--neon-purple);
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--neon-purple);
+  border-radius: 3px;
 }
 
-.question-number { font-size: 0.65rem; color: var(--neon-purple); margin-bottom: 0.5rem; }
-.question-text { font-size: 0.75rem; line-height: 1.6; margin-bottom: 1.2rem; color: #ffffff; }
+.question-text {
+  font-size: 0.68rem;
+  line-height: 1.65;
+  margin-bottom: 0.9rem;
+  color: #ffffff;
+  word-break: break-word;
+}
 
 .option {
   display: flex;
   align-items: flex-start;
-  gap: 0.8rem;
-  padding: 0.8rem;
-  margin-bottom: 0.6rem;
+  gap: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 0.45rem;
   border: 2px solid var(--border);
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.12s;
   user-select: none;
 }
 .option:hover { border-color: var(--neon-cyan); background: rgba(0,240,255,0.05); }
@@ -257,41 +269,51 @@ body::after {
   background: rgba(57,255,20,0.1);
   box-shadow: 0 0 10px rgba(57,255,20,0.2);
 }
-.option-letter { font-size: 0.7rem; color: var(--neon-cyan); min-width: 1.5rem; }
+.option-letter { font-size: 0.65rem; color: var(--neon-cyan); min-width: 1.2rem; }
 .option.selected .option-letter { color: var(--neon-green); }
-.option-text { font-size: 0.65rem; line-height: 1.5; flex: 1; }
+.option-text { font-size: 0.62rem; line-height: 1.5; flex: 1; word-break: break-word; }
 
-.exam-footer {
-  flex-shrink: 0;
-  padding: 0.7rem 1rem 0.9rem;
+/* Fixed submit bar */
+.exam-submit-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0.7rem 1rem;
   background: rgba(10,10,26,0.98);
   border-top: 2px solid var(--border);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
 }
-.exam-footer-inner { max-width: 900px; margin: 0 auto; }
-.nav-bar { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
-.nav-bar .btn { flex: 1; text-align: center; padding: 0.75rem 0.5rem; font-size: 0.65rem; }
-.btn-submit { width: 100%; padding: 0.75rem 0.5rem; font-size: 0.65rem; }
+.submit-info {
+  font-size: 0.55rem;
+  color: var(--neon-cyan);
+  white-space: nowrap;
+}
+.submit-info b { color: var(--neon-green); font-size: 0.7rem; }
+.exam-submit-bar .btn {
+  padding: 0.7rem 1rem;
+  font-size: 0.62rem;
+  flex-shrink: 0;
+}
 
 /* ============================================================
    LOADING SCREEN (with instructions)
    ============================================================ */
 #loadingScreen {
   min-height: 100vh;
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   padding: 1rem;
 }
 #loadingScreen.hidden { display: none !important; }
 
-.loading-container {
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-}
+.loading-container { max-width: 900px; width: 100%; margin: 0 auto; }
 
 .loading-status {
   display: flex;
@@ -303,8 +325,14 @@ body::after {
   border: 2px solid var(--border);
   border-radius: 8px;
   margin-bottom: 1rem;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--neon-cyan);
+  text-align: center;
+}
+.loading-status.ready {
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(57,255,20,0.3);
 }
 
 .spinner {
@@ -315,22 +343,9 @@ body::after {
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.loading-status.ready {
-  color: var(--neon-green);
-  border-color: var(--neon-green);
-  box-shadow: 0 0 15px rgba(57,255,20,0.3);
-}
-.loading-status.ready .spinner {
-  border-color: var(--neon-green);
-  border-top-color: transparent;
-  animation: none;
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
-}
 
 .instruction-card {
   background: var(--bg-card);
@@ -339,7 +354,6 @@ body::after {
   padding: 1.5rem;
   box-shadow: 0 0 20px rgba(0,240,255,0.1);
 }
-
 .instruction-card h2 {
   font-size: 0.85rem;
   color: var(--neon-yellow);
@@ -347,19 +361,13 @@ body::after {
   letter-spacing: 0.1em;
   text-align: center;
 }
-
 .instruction-card h3 {
   font-size: 0.6rem;
   color: var(--neon-cyan);
   margin: 1.2rem 0 0.6rem;
   letter-spacing: 0.08em;
 }
-
-.instruction-card ul {
-  list-style: none;
-  padding: 0;
-}
-
+.instruction-card ul { list-style: none; padding: 0; }
 .instruction-card li {
   font-size: 0.55rem;
   line-height: 1.9;
@@ -374,9 +382,8 @@ body::after {
   left: 0;
   color: var(--neon-pink);
 }
-
 .instruction-card .highlight { color: var(--neon-green); }
-.instruction-card .warn { color: #ff4444; }
+.instruction-card .warn { color: var(--neon-red); }
 .instruction-card .em { color: var(--neon-yellow); }
 
 .rule-row {
@@ -393,51 +400,209 @@ body::after {
 .rule-row .v { color: var(--text); text-align: right; }
 
 /* ============================================================
-   RESULT
+   RESULT SCREEN
    ============================================================ */
-.result-panel { display: none; text-align: center; padding: 2rem 1rem; }
-.result-panel.show { display: block; }
+#resultScreen { min-height: 100vh; padding-bottom: 3rem; }
 
-.score-big { font-size: clamp(2.5rem, 10vw, 4rem); margin: 1rem 0; }
-.score-big.pass { color: var(--neon-green); text-shadow: 0 0 20px var(--neon-green); }
-.score-big.mid  { color: var(--neon-yellow); text-shadow: 0 0 20px var(--neon-yellow); }
-.score-big.fail { color: #ff4444; text-shadow: 0 0 20px #ff4444; }
+.result-top {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
 
-.result-status { font-size: 0.8rem; line-height: 1.8; margin: 1rem 0; }
+.result-score-card {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 0 25px rgba(0,240,255,0.15);
+  margin-bottom: 1rem;
+}
 
-.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin: 1.5rem 0; }
+.score-big { font-size: clamp(2.5rem, 10vw, 4rem); margin: 0.5rem 0; line-height: 1; }
+.score-big.pass { color: var(--neon-green); text-shadow: 0 0 25px var(--neon-green); }
+.score-big.mid  { color: var(--neon-yellow); text-shadow: 0 0 25px var(--neon-yellow); }
+.score-big.fail { color: var(--neon-red); text-shadow: 0 0 25px var(--neon-red); }
+
+.score-label {
+  font-size: 0.55rem;
+  color: var(--neon-cyan);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.4rem;
+}
+
+.result-status {
+  font-size: 0.62rem;
+  line-height: 1.7;
+  margin: 1rem 0 0;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
 .stat-item {
   background: var(--bg-card-alt);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 0.8rem;
+  padding: 0.7rem;
   text-align: center;
 }
-.stat-item .label { font-size: 0.5rem; color: var(--neon-cyan); margin-bottom: 0.3rem; }
-.stat-item .value { font-size: 1rem; color: #fff; }
+.stat-item .label { font-size: 0.45rem; color: var(--neon-cyan); margin-bottom: 0.35rem; letter-spacing: 0.1em; }
+.stat-item .value { font-size: 0.95rem; color: #fff; }
 
 .disq-warning {
-  border: 2px solid #ff4444;
+  border: 2px solid var(--neon-red);
   background: rgba(255,68,68,0.1);
   padding: 1rem;
   border-radius: 4px;
   margin: 1rem 0;
-  font-size: 0.6rem;
-  color: #ff4444;
+  font-size: 0.55rem;
+  color: var(--neon-red);
   line-height: 1.6;
 }
 
+.section-breakdown {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.55rem;
+  line-height: 2;
+}
+.section-breakdown strong { color: var(--neon-cyan); font-size: 0.6rem; letter-spacing: 0.1em; }
+
+/* Review section */
+.review-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.review-title {
+  font-size: 0.7rem;
+  color: var(--neon-yellow);
+  text-align: center;
+  margin: 1.5rem 0 0.8rem;
+  letter-spacing: 0.15em;
+}
+
+.review-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.filter-pill {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.filter-pill:hover { border-color: var(--neon-cyan); }
+.filter-pill.active { border-color: var(--neon-cyan); background: rgba(0,240,255,0.15); color: var(--neon-cyan); }
+.filter-pill.active[data-filter="correct"] { border-color: var(--neon-green); background: rgba(57,255,20,0.15); color: var(--neon-green); }
+.filter-pill.active[data-filter="wrong"] { border-color: var(--neon-red); background: rgba(255,68,68,0.15); color: var(--neon-red); }
+.filter-pill.active[data-filter="skipped"] { border-color: var(--neon-yellow); background: rgba(255,230,0,0.15); color: var(--neon-yellow); }
+
+.review-block {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+.review-block.correct { border-left-color: var(--neon-green); }
+.review-block.wrong { border-left-color: var(--neon-red); }
+.review-block.skipped { border-left-color: var(--neon-yellow); opacity: 0.85; }
+.review-block.hide { display: none; }
+
+.review-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+.review-status {
+  font-size: 0.55rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 3px;
+  letter-spacing: 0.1em;
+}
+.review-status.correct { color: var(--neon-green); border: 1px solid var(--neon-green); background: rgba(57,255,20,0.1); }
+.review-status.wrong { color: var(--neon-red); border: 1px solid var(--neon-red); background: rgba(255,68,68,0.1); }
+.review-status.skipped { color: var(--neon-yellow); border: 1px solid var(--neon-yellow); background: rgba(255,230,0,0.1); }
+
+.review-q {
+  font-size: 0.62rem;
+  line-height: 1.6;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  word-break: break-word;
+}
+
+.review-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.5rem 0.65rem;
+  margin-bottom: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.58rem;
+  line-height: 1.5;
+}
+.review-opt .option-letter { font-size: 0.6rem; min-width: 1.2rem; color: var(--neon-cyan); }
+.review-opt .option-text { flex: 1; word-break: break-word; }
+
+.review-opt.correct-opt {
+  border-color: var(--neon-green);
+  background: rgba(57,255,20,0.08);
+}
+.review-opt.correct-opt .option-letter { color: var(--neon-green); }
+
+.review-opt.user-wrong {
+  border-color: var(--neon-red);
+  background: rgba(255,68,68,0.08);
+}
+.review-opt.user-wrong .option-letter { color: var(--neon-red); }
+
+.review-opt.user-correct {
+  border-color: var(--neon-green);
+  background: rgba(57,255,20,0.15);
+  box-shadow: 0 0 8px rgba(57,255,20,0.2);
+}
+.review-opt.user-correct .option-letter { color: var(--neon-green); }
+
+.review-ans-summary {
+  margin-top: 0.6rem;
+  font-size: 0.5rem;
+  color: var(--neon-cyan);
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.review-ans-summary b { color: #fff; }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
 .hidden { display: none !important; }
 .text-center { text-align: center; }
 .mt-1 { margin-top: 1rem; }
-
-.loader {
-  text-align: center;
-  padding: 3rem;
-  color: var(--neon-cyan);
-  font-size: 0.7rem;
-  animation: pulse 1s infinite;
-}
 
 .noselect {
   -webkit-user-select: none;
@@ -450,21 +615,22 @@ body::after {
   .container { padding: 0.6rem; }
   .card { padding: 1rem; }
   .neon-title { font-size: 1.4rem; }
-  .question-card { padding: 1rem; }
-  .question-text { font-size: 0.7rem; }
-  .option-text { font-size: 0.6rem; }
-  .option { padding: 0.7rem; }
+  .question-block { padding: 0.85rem; scroll-margin-top: 175px; }
+  .question-text { font-size: 0.62rem; }
+  .option-text { font-size: 0.58rem; }
+  .option { padding: 0.6rem; }
   .timer { font-size: 1rem; }
-  .exam-top { padding: 0.5rem 0.7rem 0.3rem; }
-  .exam-body { padding: 0.7rem; }
-  .exam-footer { padding: 0.5rem 0.7rem 0.7rem; }
-  .nav-bar .btn, .btn-submit { font-size: 0.55rem; padding: 0.65rem 0.4rem; }
-  .pill { font-size: 0.45rem; padding: 0.3rem 0.55rem; }
+  .q-badge, .q-subject { font-size: 0.45rem; padding: 0.2rem 0.4rem; }
+  .pill { font-size: 0.42rem; padding: 0.28rem 0.5rem; }
+  .exam-submit-bar .btn { font-size: 0.55rem; padding: 0.6rem 0.8rem; }
+  .submit-info { font-size: 0.48rem; }
   .instruction-card { padding: 1rem; }
   .instruction-card h2 { font-size: 0.7rem; }
   .instruction-card h3 { font-size: 0.55rem; }
   .instruction-card li { font-size: 0.5rem; }
   .rule-row { font-size: 0.5rem; }
+  .review-q { font-size: 0.58rem; }
+  .review-opt { font-size: 0.54rem; padding: 0.45rem 0.55rem; }
 }
 </style>
 </head>
@@ -516,11 +682,11 @@ body::after {
     <h1 class="neon-title">Plan C</h1>
 
     <div class="loading-status" id="loadingStatus">
-      <span class="spinner"></span>
+      <span class="spinner" id="loadingSpinner"></span>
       <span id="loadingText">LOADING QUESTIONS…</span>
     </div>
 
-    <div class="instruction-card">
+    <div class="instruction-card" id="instructionCard">
       <h2>◤ EXAM INSTRUCTIONS ◢</h2>
 
       <h3>▸ EXAM OVERVIEW</h3>
@@ -564,7 +730,7 @@ body::after {
         <li>Exam auto-submits when the timer hits <span class="em">00:00</span>.</li>
         <li>Leaving this tab is detected and counted as a <span class="warn">tab switch</span>.</li>
         <li>Copy / paste / right-click / dev tools are disabled.</li>
-        <li>Scroll through the question area — timer &amp; buttons stay pinned.</li>
+        <li>All 106 questions are on one scrollable page — use the section pills to jump.</li>
       </ul>
     </div>
   </div>
@@ -572,61 +738,70 @@ body::after {
 
 <!-- ============ EXAM ============ -->
 <div id="examScreen" class="hidden">
-  <div class="exam-header">
-    <div>
-      <div class="timer" id="timerDisplay">45:00</div>
-      <div class="tab-counter">TAB SWITCHES: <span id="tabCount">0</span></div>
-    </div>
-    <div style="font-size:0.5rem; color:var(--neon-purple);" id="questionCounter">Q 1/0</div>
-  </div>
 
-  <div class="exam-top">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-    <div class="section-pills" id="sectionPills"></div>
-  </div>
-
-  <div class="exam-body" id="examBody">
-    <div class="question-card">
-      <div class="question-number" id="qNumber"></div>
-      <div class="question-text" id="qText"></div>
-      <div id="optionsContainer"></div>
-    </div>
-  </div>
-
-  <div class="exam-footer">
-    <div class="exam-footer-inner">
-      <div class="nav-bar">
-        <button class="btn" onclick="prevQuestion()">◀ PREV</button>
-        <button class="btn" onclick="skipQuestion()">SKIP</button>
-        <button class="btn" onclick="nextQuestion()">NEXT ▶</button>
+  <div class="exam-header-wrap">
+    <div class="exam-header">
+      <div>
+        <div class="timer" id="timerDisplay">45:00</div>
+        <div class="tab-counter">TAB SWITCHES: <span id="tabCount">0</span></div>
       </div>
-      <button class="btn btn-danger btn-submit" onclick="confirmSubmit()">■ SUBMIT EXAM</button>
+      <div class="q-counter" id="questionCounter">Q 0/0 ANSWERED</div>
+    </div>
+    <div class="exam-top">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="section-pills" id="sectionPills"></div>
     </div>
   </div>
+
+  <div class="exam-content">
+    <div id="questionsList"></div>
+  </div>
+
+  <div class="exam-submit-bar">
+    <div class="submit-info">ANSWERED: <b><span id="answeredCount">0</span></b> / <span id="totalCount">0</span></div>
+    <button class="btn btn-danger" id="submitBtn" onclick="confirmSubmit()">■ SUBMIT</button>
+  </div>
+
 </div>
 
 <!-- ============ RESULT ============ -->
-<div id="resultScreen" class="container hidden">
-  <h1 class="neon-title" style="font-size:2rem;">RESULT</h1>
+<div id="resultScreen" class="hidden">
 
-  <div class="card result-panel show" id="resultPanel">
-    <div class="score-big" id="finalScore">0</div>
-    <div class="result-status" id="finalStatus"></div>
+  <div class="result-top">
+    <h1 class="neon-title" style="font-size:2rem;">RESULT</h1>
 
-    <div class="stat-grid">
-      <div class="stat-item"><div class="label">CORRECT</div><div class="value" id="rCorrect">0</div></div>
-      <div class="stat-item"><div class="label">WRONG</div><div class="value" id="rWrong">0</div></div>
-      <div class="stat-item"><div class="label">SKIPPED</div><div class="value" id="rSkipped">0</div></div>
-      <div class="stat-item"><div class="label">TAB SWITCHES</div><div class="value" id="rTabs">0</div></div>
+    <div class="result-score-card">
+      <div class="score-label">YOUR SCORE</div>
+      <div class="score-big" id="finalScore">0</div>
+      <div class="result-status" id="finalStatus"></div>
+
+      <div class="stat-grid">
+        <div class="stat-item"><div class="label">CORRECT</div><div class="value" id="rCorrect">0</div></div>
+        <div class="stat-item"><div class="label">WRONG</div><div class="value" id="rWrong">0</div></div>
+        <div class="stat-item"><div class="label">SKIPPED</div><div class="value" id="rSkipped">0</div></div>
+        <div class="stat-item"><div class="label">TAB SWITCHES</div><div class="value" id="rTabs">0</div></div>
+      </div>
     </div>
 
-    <div id="sectionBreakdown" style="font-size:0.55rem; line-height:2; margin:1rem 0;"></div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
 
     <div class="disq-warning hidden" id="disqWarning">
       ⚠ DISQUALIFIED: You answered multiple optional sections (HM / STAT / ECON).
       Your scores are still shown, but this paper is marked as disqualified.
     </div>
   </div>
+
+  <div class="review-wrap">
+    <h2 class="review-title">◤ ANSWER REVIEW ◢</h2>
+    <div class="review-filters" id="reviewFilters">
+      <div class="filter-pill active" data-filter="all">ALL</div>
+      <div class="filter-pill" data-filter="correct">✓ CORRECT</div>
+      <div class="filter-pill" data-filter="wrong">✗ WRONG</div>
+      <div class="filter-pill" data-filter="skipped">— SKIPPED</div>
+    </div>
+    <div id="reviewList"></div>
+  </div>
+
 </div>
 
 <script>
@@ -640,7 +815,6 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzFJp-eyyrg21tYYu6iNrSo
    ============================================================ */
 let QUESTIONS = [];
 let answers = [];
-let currentQ = 0;
 let tabSwitches = 0;
 let timeLeft = 45 * 60;
 let timerInterval = null;
@@ -650,6 +824,7 @@ let studentInfo = {};
 let MANDATORY = ['Bangla', 'English', 'ICT'];
 let OPTIONAL  = ['HM', 'Stat', 'Econ'];
 let DURATION_MIN = 45;
+let LAST_RESULT = null;
 
 let SECTION_RANGES = {};
 const SECTION_LABELS = { Bangla: 'বাংলা', English: 'English', ICT: 'ICT', HM: 'HM', Stat: 'STAT', Econ: 'ECON' };
@@ -720,7 +895,7 @@ async function apiSubmit(payload) {
 }
 
 /* ============================================================
-   START — show loading + instructions, fetch in background
+   START
    ============================================================ */
 async function startExam() {
   const name    = document.getElementById('name').value.trim();
@@ -739,17 +914,22 @@ async function startExam() {
 
   studentInfo = { name, college, email, phone };
 
-  // Show loading + instructions screen
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('loadingScreen').classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'instant' });
 
-  // Reset loader text
   const status = document.getElementById('loadingStatus');
   const loadingText = document.getElementById('loadingText');
+  const spinner = document.getElementById('loadingSpinner');
+  const instructions = document.getElementById('instructionCard');
+  instructions.style.display = '';
   status.classList.remove('ready');
-  status.querySelector('.spinner').style.display = 'inline-block';
+  spinner.style.display = 'inline-block';
   loadingText.textContent = 'LOADING QUESTIONS…';
+  loadingText.style.color = '';
+
+  const existingRetry = document.getElementById('retryBtn');
+  if (existingRetry) existingRetry.remove();
 
   try {
     const [qData, cData] = await Promise.all([
@@ -763,43 +943,36 @@ async function startExam() {
       DURATION_MIN = cData.config.durationMinutes || DURATION_MIN;
     }
 
-    // Brief "READY" state so student sees the transition
     status.classList.add('ready');
-    status.querySelector('.spinner').style.display = 'none';
+    spinner.style.display = 'none';
     loadingText.textContent = '✓ QUESTIONS LOADED — STARTING EXAM…';
 
-    // Small delay so the student perceives completion, then enter exam
     setTimeout(() => onQuestionsLoaded(qData.questions), 700);
 
   } catch (err) {
     status.classList.remove('ready');
-    status.querySelector('.spinner').style.display = 'none';
+    spinner.style.display = 'none';
     loadingText.textContent = '✗ FAILED TO LOAD — ' + err.message;
-    loadingText.style.color = '#ff4444';
+    loadingText.style.color = 'var(--neon-red)';
 
-    // Add a retry button under the status
-    const existing = document.getElementById('retryBtn');
-    if (!existing) {
-      const btn = document.createElement('button');
-      btn.id = 'retryBtn';
-      btn.className = 'btn btn-danger mt-1';
-      btn.style.width = '100%';
-      btn.style.marginTop = '1rem';
-      btn.textContent = '◀ BACK TO FORM';
-      btn.onclick = () => {
-        document.getElementById('loadingScreen').classList.add('hidden');
-        document.getElementById('startScreen').classList.remove('hidden');
-        loadingText.style.color = '';
-      };
-      status.parentNode.insertBefore(btn, status.nextSibling);
-    }
+    const btn = document.createElement('button');
+    btn.id = 'retryBtn';
+    btn.className = 'btn btn-danger mt-1';
+    btn.style.width = '100%';
+    btn.style.marginTop = '1rem';
+    btn.textContent = '◀ BACK TO FORM';
+    btn.onclick = () => {
+      document.getElementById('loadingScreen').classList.add('hidden');
+      document.getElementById('startScreen').classList.remove('hidden');
+      loadingText.style.color = '';
+    };
+    status.parentNode.insertBefore(btn, status.nextSibling);
   }
 }
 
 function onQuestionsLoaded(questions) {
   QUESTIONS = questions;
   answers = new Array(QUESTIONS.length).fill(null);
-  currentQ = 0;
   timeLeft = DURATION_MIN * 60;
 
   SECTION_RANGES = {};
@@ -811,13 +984,16 @@ function onQuestionsLoaded(questions) {
 
   document.getElementById('timerDisplay').textContent =
     String(DURATION_MIN).padStart(2, '0') + ':00';
+  document.getElementById('totalCount').textContent = QUESTIONS.length;
 
   document.getElementById('loadingScreen').classList.add('hidden');
   document.getElementById('examScreen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 
   examActive = true;
   buildSectionPills();
-  renderQuestion();
+  renderAllQuestions();
+  updateProgress();
   startTimer();
 }
 
@@ -865,55 +1041,95 @@ function buildSectionPills() {
     pill.onclick = () => {
       const r = SECTION_RANGES[sec];
       if (!r) return;
-      currentQ = r.start;
-      renderQuestion();
+      const el = document.getElementById('qblock-' + r.start);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.style.transition = 'border-color 0.4s, box-shadow 0.4s';
+        el.style.borderColor = 'var(--neon-cyan)';
+        el.style.boxShadow = '0 0 20px rgba(0,240,255,0.4)';
+        setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 1200);
+      }
+      // Highlight active pill
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      setTimeout(() => pill.classList.remove('active'), 1500);
     };
 
     container.appendChild(pill);
   });
 }
 
-function updateActivePill(section) {
-  document.querySelectorAll('.pill').forEach(p => {
-    p.classList.toggle('active', p.dataset.section === section);
-  });
-}
-
 /* ============================================================
-   RENDER QUESTION
+   RENDER ALL QUESTIONS (single scrollable page)
    ============================================================ */
-function renderQuestion() {
-  const q = QUESTIONS[currentQ];
-  if (!q) return;
-
-  document.getElementById('qNumber').textContent =
-    `Question ${currentQ + 1} of ${QUESTIONS.length} [${q.subject}]`;
-  document.getElementById('qText').textContent = q.question;
-  document.getElementById('questionCounter').textContent =
-    `Q ${currentQ + 1}/${QUESTIONS.length}`;
-
-  const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
-
-  const container = document.getElementById('optionsContainer');
+function renderAllQuestions() {
+  const container = document.getElementById('questionsList');
   container.innerHTML = '';
 
-  ['A', 'B', 'C', 'D'].forEach(letter => {
-    if (!q[letter]) return;
-    const div = document.createElement('div');
-    div.className = 'option' + (answers[currentQ] === letter ? ' selected' : '');
-    div.innerHTML = `
-      <div class="option-letter">${letter}</div>
-      <div class="option-text">${escapeHtml(q[letter])}</div>
+  const frag = document.createDocumentFragment();
+
+  QUESTIONS.forEach((q, idx) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = 'qblock-' + idx;
+
+    const head = document.createElement('div');
+    head.className = 'q-head';
+    head.innerHTML = `
+      <span class="q-badge">Q ${idx + 1}</span>
+      <span class="q-subject">${escapeHtml(q.subject)}</span>
     `;
-    div.onclick = () => selectOption(letter);
-    container.appendChild(div);
+    block.appendChild(head);
+
+    const qText = document.createElement('div');
+    qText.className = 'question-text';
+    qText.textContent = q.question;
+    block.appendChild(qText);
+
+    ['A', 'B', 'C', 'D'].forEach(letter => {
+      if (!q[letter]) return;
+      const opt = document.createElement('div');
+      opt.className = 'option';
+      opt.dataset.qidx = idx;
+      opt.dataset.letter = letter;
+      opt.innerHTML = `
+        <span class="option-letter">${letter}</span>
+        <span class="option-text">${escapeHtml(q[letter])}</span>
+      `;
+      opt.onclick = () => selectOption(idx, letter);
+      block.appendChild(opt);
+    });
+
+    frag.appendChild(block);
   });
 
-  updateActivePill(q.subject);
+  container.appendChild(frag);
+}
 
-  const body = document.getElementById('examBody');
-  if (body) body.scrollTop = 0;
+function selectOption(qIdx, letter) {
+  answers[qIdx] = letter;
+
+  const block = document.getElementById('qblock-' + qIdx);
+  if (!block) return;
+
+  block.querySelectorAll('.option').forEach(o => {
+    o.classList.toggle('selected', o.dataset.letter === letter);
+  });
+
+  if (answers[qIdx]) block.classList.add('answered');
+  else block.classList.remove('answered');
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = QUESTIONS.length;
+  const answered = answers.filter(a => a !== null).length;
+  const pct = total ? (answered / total) * 100 : 0;
+
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('answeredCount').textContent = answered;
+  document.getElementById('questionCounter').textContent = `Q ${answered}/${total} ANSWERED`;
 }
 
 function escapeHtml(str) {
@@ -922,53 +1138,13 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
-function selectOption(letter) {
-  answers[currentQ] = letter;
-  const body = document.getElementById('examBody');
-  const scrollPos = body ? body.scrollTop : 0;
-
-  const q = QUESTIONS[currentQ];
-  document.getElementById('qNumber').textContent =
-    `Question ${currentQ + 1} of ${QUESTIONS.length} [${q.subject}]`;
-  document.getElementById('qText').textContent = q.question;
-  document.getElementById('questionCounter').textContent =
-    `Q ${currentQ + 1}/${QUESTIONS.length}`;
-
-  const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
-
-  const container = document.getElementById('optionsContainer');
-  container.innerHTML = '';
-  ['A', 'B', 'C', 'D'].forEach(l => {
-    if (!q[l]) return;
-    const div = document.createElement('div');
-    div.className = 'option' + (answers[currentQ] === l ? ' selected' : '');
-    div.innerHTML = `
-      <div class="option-letter">${l}</div>
-      <div class="option-text">${escapeHtml(q[l])}</div>
-    `;
-    div.onclick = () => selectOption(l);
-    container.appendChild(div);
-  });
-
-  updateActivePill(q.subject);
-
-  if (body) body.scrollTop = scrollPos;
-}
-
-function nextQuestion() { if (currentQ < QUESTIONS.length - 1) { currentQ++; renderQuestion(); } }
-function prevQuestion() { if (currentQ > 0) { currentQ--; renderQuestion(); } }
-function skipQuestion() {
-  answers[currentQ] = null;
-  if (currentQ < QUESTIONS.length - 1) { currentQ++; renderQuestion(); }
-}
-
 /* ============================================================
    SUBMIT
    ============================================================ */
 function confirmSubmit() {
   const answered = answers.filter(a => a !== null).length;
-  if (confirm(`You have answered ${answered}/${QUESTIONS.length} questions.\n\nSubmit now?`)) {
+  const msg = `You have answered ${answered}/${QUESTIONS.length} questions.\n\nSubmit now?`;
+  if (confirm(msg)) {
     examActive = false;
     clearInterval(timerInterval);
     doSubmit();
@@ -977,20 +1153,19 @@ function confirmSubmit() {
 
 async function doSubmit() {
   document.getElementById('examScreen').classList.add('hidden');
-  document.getElementById('loadingScreen').classList.remove('hidden');
   document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 
-  // Reuse loading screen for submit status
   const status = document.getElementById('loadingStatus');
   const loadingText = document.getElementById('loadingText');
-  status.classList.remove('ready');
-  status.querySelector('.spinner').style.display = 'inline-block';
-  loadingText.textContent = 'SUBMITTING…';
-  loadingText.style.color = '';
-
-  // Hide the instruction card during submit so it's clean
-  const instructions = document.querySelector('.instruction-card');
+  const spinner = document.getElementById('loadingSpinner');
+  const instructions = document.getElementById('instructionCard');
   if (instructions) instructions.style.display = 'none';
+  status.classList.remove('ready');
+  spinner.style.display = 'inline-block';
+  loadingText.textContent = 'SUBMITTING YOUR ANSWERS…';
+  loadingText.style.color = '';
 
   const payload = {
     name: studentInfo.name,
@@ -1014,10 +1189,13 @@ async function doSubmit() {
 }
 
 function onSubmitSuccess(result) {
+  LAST_RESULT = result;
+
   document.getElementById('loadingScreen').classList.add('hidden');
   document.getElementById('resultScreen').classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'instant' });
 
+  // Score
   const scoreEl = document.getElementById('finalScore');
   scoreEl.textContent = result.totalScore;
 
@@ -1028,24 +1206,122 @@ function onSubmitSuccess(result) {
 
   const color = result.totalScore >= 35 ? 'var(--neon-green)'
               : result.totalScore >= 24 ? 'var(--neon-yellow)'
-              : '#ff4444';
+              : 'var(--neon-red)';
   document.getElementById('finalStatus').innerHTML =
-    `<span style="color:${color}; font-size:0.7rem;">${result.status}</span>`;
+    `<span style="color:${color};">${result.status}</span>`;
 
   document.getElementById('rCorrect').textContent = result.correct;
   document.getElementById('rWrong').textContent   = result.wrong;
   document.getElementById('rSkipped').textContent = result.skipped;
   document.getElementById('rTabs').textContent    = result.tabSwitches;
 
+  // Section breakdown
   const secDiv = document.getElementById('sectionBreakdown');
-  secDiv.innerHTML = '<strong style="color:var(--neon-cyan);">SECTION BREAKDOWN</strong><br>';
+  let secHtml = '<strong>◤ SECTION BREAKDOWN ◢</strong><br>';
   Object.entries(result.sectionScores).forEach(([sec, score]) => {
-    secDiv.innerHTML += `${SECTION_LABELS[sec] || sec}: ${score} correct<br>`;
+    const label = SECTION_LABELS[sec] || sec;
+    const tag = OPTIONAL.includes(sec) ? ' <span style="color:var(--neon-purple);">[optional]</span>' : '';
+    secHtml += `${label}${tag}: <span style="color:var(--neon-green);">${score} correct</span><br>`;
   });
+  secDiv.innerHTML = secHtml;
 
   if (result.disqualified) {
     document.getElementById('disqWarning').classList.remove('hidden');
   }
+
+  // Build the full review
+  renderReview();
+  wireFilters();
+}
+
+/* ============================================================
+   REVIEW (Result answers list)
+   ============================================================ */
+function renderReview() {
+  const container = document.getElementById('reviewList');
+  container.innerHTML = '';
+
+  const frag = document.createDocumentFragment();
+
+  QUESTIONS.forEach((q, idx) => {
+    const userAns = answers[idx];
+    const correctAns = (q.ansKey || '').toString().toUpperCase();
+    const hasUserAns = !!userAns;
+
+    let status;
+    if (!hasUserAns) status = 'skipped';
+    else if (userAns === correctAns) status = 'correct';
+    else status = 'wrong';
+
+    const block = document.createElement('div');
+    block.className = 'review-block ' + status;
+    block.dataset.status = status;
+
+    // Head
+    const head = document.createElement('div');
+    head.className = 'review-head';
+    const statusText = status === 'correct' ? '✓ CORRECT' : status === 'wrong' ? '✗ WRONG' : '— SKIPPED';
+    head.innerHTML = `
+      <span class="q-badge">Q ${idx + 1}</span>
+      <span class="q-subject">${escapeHtml(q.subject)}</span>
+      <span class="review-status ${status}">${statusText}</span>
+    `;
+    block.appendChild(head);
+
+    // Question
+    const qDiv = document.createElement('div');
+    qDiv.className = 'review-q';
+    qDiv.textContent = q.question;
+    block.appendChild(qDiv);
+
+    // Options
+    ['A', 'B', 'C', 'D'].forEach(letter => {
+      if (!q[letter]) return;
+
+      let cls = 'review-opt';
+      if (letter === correctAns && letter === userAns) cls += ' user-correct correct-opt';
+      else if (letter === correctAns) cls += ' correct-opt';
+      else if (letter === userAns) cls += ' user-wrong';
+
+      const opt = document.createElement('div');
+      opt.className = cls;
+      opt.innerHTML = `
+        <span class="option-letter">${letter}</span>
+        <span class="option-text">${escapeHtml(q[letter])}</span>
+      `;
+      block.appendChild(opt);
+    });
+
+    // Summary line
+    const summary = document.createElement('div');
+    summary.className = 'review-ans-summary';
+    summary.innerHTML =
+      `<span>YOUR ANS: <b style="color:${status === 'correct' ? 'var(--neon-green)' : status === 'wrong' ? 'var(--neon-red)' : 'var(--neon-yellow)'};">${userAns || '—'}</b></span>` +
+      `<span>CORRECT: <b style="color:var(--neon-green);">${correctAns || '?'}</b></span>`;
+    block.appendChild(summary);
+
+    frag.appendChild(block);
+  });
+
+  container.appendChild(frag);
+}
+
+function wireFilters() {
+  document.querySelectorAll('#reviewFilters .filter-pill').forEach(pill => {
+    pill.onclick = () => {
+      const filter = pill.dataset.filter;
+      document.querySelectorAll('#reviewFilters .filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      document.querySelectorAll('.review-block').forEach(block => {
+        if (filter === 'all' || block.dataset.status === filter) {
+          block.classList.remove('hide');
+        } else {
+          block.classList.add('hide');
+        }
+      });
+    };
+  });
 }
 </script>
 </body>
