@@ -67,9 +67,18 @@
   }
   @keyframes pop{ from{ transform:scale(.94); opacity:0 } to{ transform:scale(1); opacity:1 } }
 
-  .hero .logo{ font-size:2.4rem; line-height:1; }
+  .hero .logo{
+    display:flex; justify-content:center; align-items:center;
+    margin:0 auto 8px; line-height:1;
+  }
+  .hero .logo img{
+    max-width:110px; max-height:110px;
+    width:auto; height:auto;
+    display:block; border-radius:16px; object-fit:contain;
+  }
+
   .hero h1{
-    font-size:clamp(1.55rem,5vw,2.05rem); margin:8px 0 6px; font-weight:700; letter-spacing:.2px;
+    font-size:clamp(1.55rem,5vw,2.05rem); margin:6px 0 6px; font-weight:700; letter-spacing:.2px;
     background:linear-gradient(135deg,#6d28d9,#db2777);
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
@@ -103,16 +112,9 @@
     box-shadow:0 0 0 4px rgba(109,40,217,.12);
     background:#fff;
   }
-  .field.invalid input{
-    border-color:#dc2626; background:#fef2f2;
-  }
-  .field.invalid input:focus{
-    box-shadow:0 0 0 4px rgba(220,38,38,.12);
-  }
-  .field .err{
-    display:none; color:#dc2626; font-size:.82rem;
-    margin-top:4px; font-weight:500;
-  }
+  .field.invalid input{ border-color:#dc2626; background:#fef2f2; }
+  .field.invalid input:focus{ box-shadow:0 0 0 4px rgba(220,38,38,.12); }
+  .field .err{ display:none; color:#dc2626; font-size:.82rem; margin-top:4px; font-weight:500; }
   .field.invalid .err{ display:block; }
 
   .big-btn{
@@ -159,8 +161,7 @@
     color:#fff; padding:9px 18px; border-radius:999px;
     background:linear-gradient(135deg,#db2777,#f43f5e);
     box-shadow:0 8px 20px rgba(219,39,119,.45);
-    transition:transform .15s;
-    white-space:nowrap;
+    transition:transform .15s; white-space:nowrap;
   }
   .submit-btn:hover{ transform:translateY(-2px); }
   .submit-btn:active{ transform:scale(.97); }
@@ -319,6 +320,7 @@
     .submit-btn{ padding:8px 14px; font-size:.9rem; }
     .wrap{ padding:14px 10px 90px; }
     .hero{ padding:22px 16px 20px; border-radius:22px; }
+    .hero .logo img{ max-width:90px; max-height:90px; }
   }
 </style>
 </head>
@@ -328,7 +330,7 @@
 <!-- ============ START SCREEN ============ -->
 <div class="screen active" id="startScreen">
   <div class="hero">
-    <div class="logo">📘</div>
+    <div class="logo"><img src="C.png" alt="Plan C Logo" /></div>
     <h1>Plan C B3 Test</h1>
     <p class="sub">১২ মিনিট &nbsp;•&nbsp; ২৪টি প্রশ্ন &nbsp;•&nbsp; ২৪ নম্বর</p>
 
@@ -594,66 +596,36 @@
   function setFieldError(fieldId, errId, msg) {
     const f = $(fieldId);
     const e = $(errId);
-    if (msg) {
-      f.classList.add('invalid');
-      e.textContent = msg;
-    } else {
-      f.classList.remove('invalid');
-      e.textContent = '';
-    }
+    if (msg) { f.classList.add('invalid'); e.textContent = msg; }
+    else { f.classList.remove('invalid'); e.textContent = ''; }
   }
 
   function validateForm() {
     let ok = true;
-
     const name    = ($('inName').value || '').trim();
     const email   = ($('inEmail').value || '').trim();
     const college = ($('inCollege').value || '').trim();
     const contact = ($('inContact').value || '').trim();
 
-    if (!name) {
-      setFieldError('fName', 'errName', 'নাম লিখুন।');
-      ok = false;
-    } else if (name.length < 2) {
-      setFieldError('fName', 'errName', 'নাম কমপক্ষে ২ অক্ষরের হতে হবে।');
-      ok = false;
-    } else {
-      setFieldError('fName', 'errName', '');
-    }
+    if (!name) { setFieldError('fName', 'errName', 'নাম লিখুন।'); ok = false; }
+    else if (name.length < 2) { setFieldError('fName', 'errName', 'নাম কমপক্ষে ২ অক্ষরের হতে হবে।'); ok = false; }
+    else { setFieldError('fName', 'errName', ''); }
 
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    if (!email) {
-      setFieldError('fEmail', 'errEmail', 'ইমেইল লিখুন।');
-      ok = false;
-    } else if (!emailRe.test(email)) {
-      setFieldError('fEmail', 'errEmail', 'সঠিক ইমেইল ঠিকানা লিখুন।');
-      ok = false;
-    } else {
-      setFieldError('fEmail', 'errEmail', '');
-    }
+    if (!email) { setFieldError('fEmail', 'errEmail', 'ইমেইল লিখুন।'); ok = false; }
+    else if (!emailRe.test(email)) { setFieldError('fEmail', 'errEmail', 'সঠিক ইমেইল ঠিকানা লিখুন।'); ok = false; }
+    else { setFieldError('fEmail', 'errEmail', ''); }
 
-    if (!college) {
-      setFieldError('fCollege', 'errCollege', 'কলেজ বা প্রতিষ্ঠানের নাম লিখুন।');
-      ok = false;
-    } else if (college.length < 2) {
-      setFieldError('fCollege', 'errCollege', 'নাম কমপক্ষে ২ অক্ষরের হতে হবে।');
-      ok = false;
-    } else {
-      setFieldError('fCollege', 'errCollege', '');
-    }
+    if (!college) { setFieldError('fCollege', 'errCollege', 'কলেজ বা প্রতিষ্ঠানের নাম লিখুন।'); ok = false; }
+    else if (college.length < 2) { setFieldError('fCollege', 'errCollege', 'নাম কমপক্ষে ২ অক্ষরের হতে হবে।'); ok = false; }
+    else { setFieldError('fCollege', 'errCollege', ''); }
 
     const digits = contact.replace(/[\s\-()+]/g, '');
-    if (!contact) {
-      setFieldError('fContact', 'errContact', 'মোবাইল নম্বর লিখুন।');
-      ok = false;
-    } else if (!/^\d{10,15}$/.test(digits)) {
-      setFieldError('fContact', 'errContact', 'সঠিক মোবাইল নম্বর লিখুন (১০–১৫ ডিজিট)।');
-      ok = false;
-    } else {
-      setFieldError('fContact', 'errContact', '');
-    }
+    if (!contact) { setFieldError('fContact', 'errContact', 'মোবাইল নম্বর লিখুন।'); ok = false; }
+    else if (!/^\d{10,15}$/.test(digits)) { setFieldError('fContact', 'errContact', 'সঠিক মোবাইল নম্বর লিখুন (১০–১৫ ডিজিট)।'); ok = false; }
+    else { setFieldError('fContact', 'errContact', ''); }
 
-    return ok ? { name, email, college, contact } : null;
+    return ok ? { name: name, email: email, college: college, contact: contact } : null;
   }
 
   ['inName','inEmail','inCollege','inContact'].forEach(function (id) {
@@ -774,10 +746,7 @@
 
   ['inName','inEmail','inCollege','inContact'].forEach(function (id) {
     $(id).addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        $('startBtn').click();
-      }
+      if (e.key === 'Enter') { e.preventDefault(); $('startBtn').click(); }
     });
   });
 
@@ -816,46 +785,53 @@
     const score = Math.round((correct * MARK_RIGHT + wrong * MARK_WRONG) * 100) / 100;
 
     const result = { score: score, correct: correct, wrong: wrong, skipped: skipped, timeTaken: timeTaken, auto: !!auto };
+
     postToSheet(result);
     renderResult(result);
   }
 
   /* ============================================================
-     ☁️ SEND TO GOOGLE SHEET
+     ☁️ SEND TO GOOGLE SHEET  (JSON body — reliable)
      ============================================================ */
   function postToSheet(res) {
     try {
-      const p = new URLSearchParams();
-      p.append('name',    state.name);
-      p.append('email',   state.email);
-      p.append('college', state.college);
-      p.append('contact', state.contact);
-      p.append('score',   res.score);
-      p.append('totalMarks', TOTAL_Q);
-      p.append('totalQuestions', TOTAL_Q);
-      p.append('correct', res.correct);
-      p.append('wrong',   res.wrong);
-      p.append('skipped', res.skipped);
-      p.append('tabSwitches', state.tabSwitches);
-      p.append('timeTaken', fmtTime(res.timeTaken));
-      p.append('timeTakenSeconds', res.timeTaken);
-      p.append('autoSubmitted', res.auto ? 'YES' : 'NO');
-      p.append('submittedAt', new Date().toLocaleString('en-GB'));
-      p.append('userAgent', navigator.userAgent);
-      p.append('givenAnswers', JSON.stringify(state.answers.map(function (a) {
-        return a === null ? '-' : LBL[a];
-      })));
-      p.append('correctAnswers', JSON.stringify(QUIZ.map(function (q) {
-        return LBL[q.a];
-      })));
+      const payload = {
+        name:    state.name,
+        email:   state.email,
+        college: state.college,
+        contact: state.contact,
+        score:   res.score,
+        totalMarks: TOTAL_Q,
+        totalQuestions: TOTAL_Q,
+        correct: res.correct,
+        wrong:   res.wrong,
+        skipped: res.skipped,
+        tabSwitches: state.tabSwitches,
+        timeTaken: fmtTime(res.timeTaken),
+        timeTakenSeconds: res.timeTaken,
+        autoSubmitted: res.auto ? 'YES' : 'NO',
+        submittedAt: new Date().toLocaleString('en-GB'),
+        userAgent: navigator.userAgent,
+        givenAnswers: JSON.stringify(state.answers.map(function (a) {
+          return a === null ? '-' : LBL[a];
+        })),
+        correctAnswers: JSON.stringify(QUIZ.map(function (q) {
+          return LBL[q.a];
+        }))
+      };
 
       fetch(SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body: p.toString()
-      }).catch(function () {});
-    } catch (err) {}
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      }).catch(function (err) {
+        console.warn('Sheet save error:', err);
+      });
+
+    } catch (err) {
+      console.warn('postToSheet failed:', err);
+    }
   }
 
   /* ============================================================
