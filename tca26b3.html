@@ -20,18 +20,11 @@
 
 <style>
   :root{
-    --ink:#1e1b4b;
-    --muted:#64748b;
-    --brand:#6d28d9;
-    --brand2:#db2777;
-    --ok:#16a34a;
-    --bad:#dc2626;
-    --line:#e5e7ff;
+    --ink:#1e1b4b; --muted:#64748b; --brand:#6d28d9; --brand2:#db2777;
+    --ok:#16a34a; --bad:#dc2626; --line:#e5e7ff;
   }
-
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html{ scroll-behavior:smooth; }
-
   body{
     margin:0; min-height:100vh;
     font-family:'Hind Siliguri','Noto Sans Bengali','Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -43,22 +36,15 @@
       #f6f7ff;
     background-attachment:fixed;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
-    -webkit-touch-callout:none;
-    overflow-x:hidden;
+    -webkit-touch-callout:none; overflow-x:hidden;
   }
   input{ -webkit-user-select:text; user-select:text; }
 
   .screen{ display:none; }
   .screen.active{ display:block; }
-
   .wrap{ max-width:920px; margin:0 auto; padding:18px 14px 90px; }
 
-  /* ---------------- Start screen ---------------- */
-  #startScreen.active{
-    display:flex; justify-content:center; align-items:flex-start;
-    min-height:100vh; padding:20px 14px;
-  }
-
+  #startScreen.active{ display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:20px 14px; }
   .hero{
     width:100%; max-width:640px; margin:auto;
     background:#fff; border-radius:26px; padding:26px 22px 24px;
@@ -66,17 +52,8 @@
     text-align:center; animation:pop .45s cubic-bezier(.2,.9,.3,1.3);
   }
   @keyframes pop{ from{ transform:scale(.94); opacity:0 } to{ transform:scale(1); opacity:1 } }
-
-  .hero .logo{
-    display:flex; justify-content:center; align-items:center;
-    margin:0 auto 8px; line-height:1;
-  }
-  .hero .logo img{
-    max-width:110px; max-height:110px;
-    width:auto; height:auto;
-    display:block; border-radius:16px; object-fit:contain;
-  }
-
+  .hero .logo{ display:flex; justify-content:center; align-items:center; margin:0 auto 8px; line-height:1; }
+  .hero .logo img{ max-width:110px; max-height:110px; width:auto; height:auto; display:block; border-radius:16px; object-fit:contain; }
   .hero h1{
     font-size:clamp(1.55rem,5vw,2.05rem); margin:6px 0 6px; font-weight:700; letter-spacing:.2px;
     background:linear-gradient(135deg,#6d28d9,#db2777);
@@ -84,22 +61,15 @@
   }
   .hero .sub{ color:var(--muted); margin:0 0 16px; font-size:.98rem; }
 
-  .rules{
-    text-align:left; list-style:none; padding:0; margin:0 0 18px;
-    display:grid; gap:8px;
-  }
+  .rules{ text-align:left; list-style:none; padding:0; margin:0 0 18px; display:grid; gap:8px; }
   .rules li{
     background:#f7f7ff; border:1.5px solid var(--line); border-radius:13px;
     padding:9px 13px; font-size:.92rem; display:flex; gap:9px; align-items:flex-start;
   }
   .rules li b{ color:var(--brand); }
 
-  /* ---------- form ---------- */
   .form-grid{ text-align:left; display:grid; gap:12px; margin:0 0 18px; }
-  .field label{
-    display:block; font-weight:600; font-size:.92rem;
-    color:#374151; margin-bottom:5px;
-  }
+  .field label{ display:block; font-weight:600; font-size:.92rem; color:#374151; margin-bottom:5px; }
   .field .req{ color:#dc2626; margin-left:2px; }
   .field input{
     width:100%; padding:12px 14px; border-radius:12px;
@@ -107,11 +77,7 @@
     outline:none; background:#fbfbff; transition:.2s;
   }
   .field input::placeholder{ color:#a5a8c9; }
-  .field input:focus{
-    border-color:var(--brand);
-    box-shadow:0 0 0 4px rgba(109,40,217,.12);
-    background:#fff;
-  }
+  .field input:focus{ border-color:var(--brand); box-shadow:0 0 0 4px rgba(109,40,217,.12); background:#fff; }
   .field.invalid input{ border-color:#dc2626; background:#fef2f2; }
   .field.invalid input:focus{ box-shadow:0 0 0 4px rgba(220,38,38,.12); }
   .field .err{ display:none; color:#dc2626; font-size:.82rem; margin-top:4px; font-weight:500; }
@@ -127,7 +93,6 @@
   .big-btn:hover{ transform:translateY(-2px); box-shadow:0 16px 32px rgba(109,40,217,.42); }
   .big-btn:active{ transform:translateY(0) scale(.99); }
 
-  /* ---------------- Top bar ---------------- */
   .topbar{
     position:sticky; top:0; z-index:60;
     background:rgba(30,27,75,.94);
@@ -135,10 +100,7 @@
     color:#fff; padding:9px 12px 0;
     box-shadow:0 8px 26px rgba(30,27,75,.30);
   }
-  .bar-inner{
-    max-width:920px; margin:0 auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap;
-    padding-bottom:9px;
-  }
+  .bar-inner{ max-width:920px; margin:0 auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding-bottom:9px; }
   .brand-mini{
     font-weight:700; font-size:.95rem; letter-spacing:.2px;
     background:linear-gradient(135deg,#c4b5fd,#f9a8d4);
@@ -169,7 +131,6 @@
   .pbar{ max-width:920px; margin:0 auto; height:5px; background:rgba(255,255,255,.14); border-radius:999px 999px 0 0; overflow:hidden; }
   .pfill{ height:100%; width:0%; border-radius:999px; background:linear-gradient(90deg,#8b5cf6,#ec4899,#22d3ee); transition:width .35s ease; }
 
-  /* ---------------- Question cards ---------------- */
   .qcard{
     background:#fff; border-radius:20px; padding:18px 16px 14px; margin-bottom:16px;
     border:1.5px solid var(--line);
@@ -177,7 +138,6 @@
     animation:rise .35s ease both;
   }
   @keyframes rise{ from{ transform:translateY(14px); opacity:0 } to{ transform:translateY(0); opacity:1 } }
-
   .qhead{ display:flex; gap:12px; align-items:flex-start; }
   .qnum{
     flex:0 0 34px; width:34px; height:34px; border-radius:11px;
@@ -186,14 +146,9 @@
     border:1.5px solid #ddd6fe;
   }
   .qcard.answered .qnum{ background:linear-gradient(135deg,#6d28d9,#db2777); color:#fff; border-color:transparent; }
-
-  .qtext{
-    margin:2px 0 0; font-size:1.12rem; font-weight:600; line-height:1.6; flex:1;
-    word-break:break-word;
-  }
+  .qtext{ margin:2px 0 0; font-size:1.12rem; font-weight:600; line-height:1.6; flex:1; word-break:break-word; }
 
   .opts{ margin-top:12px; display:grid; gap:9px; }
-
   .opt{
     display:flex; align-items:center; gap:12px; width:100%; text-align:left;
     background:#f8f9ff; border:1.5px solid #e3e6ff; border-radius:15px;
@@ -203,13 +158,8 @@
   }
   .opt:hover{ background:#eef0ff; border-color:#c7ccff; transform:translateY(-1px); }
   .opt:active{ transform:translateY(0); }
-  .opt.sel{
-    background:linear-gradient(135deg,#ede9fe,#fce7f3);
-    border-color:#8b5cf6;
-    box-shadow:0 0 0 3px rgba(139,92,246,.16);
-  }
+  .opt.sel{ background:linear-gradient(135deg,#ede9fe,#fce7f3); border-color:#8b5cf6; box-shadow:0 0 0 3px rgba(139,92,246,.16); }
   .opt.sel::after{ content:'✓'; margin-left:auto; font-weight:700; color:#6d28d9; font-size:1.15rem; }
-
   .badge{
     flex:0 0 32px; width:32px; height:32px; border-radius:50%;
     display:grid; place-items:center; font-weight:700; font-size:.95rem;
@@ -218,7 +168,6 @@
   .opt.sel .badge{ background:linear-gradient(135deg,#6d28d9,#db2777); color:#fff; }
   .otext{ flex:1; word-break:break-word; }
 
-  /* ---------------- Toast ---------------- */
   #toast{
     position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px);
     background:rgba(30,27,75,.96); color:#fff; padding:12px 20px; border-radius:999px;
@@ -227,16 +176,9 @@
   }
   #toast.show{ opacity:1; transform:translate(-50%,0); }
 
-  /* ---------------- Modal ---------------- */
-  .modal{
-    position:fixed; inset:0; background:rgba(30,27,75,.55); backdrop-filter:blur(4px);
-    display:none; align-items:center; justify-content:center; padding:20px; z-index:250;
-  }
+  .modal{ position:fixed; inset:0; background:rgba(30,27,75,.55); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; padding:20px; z-index:250; }
   .modal.show{ display:flex; }
-  .modal-box{
-    background:#fff; border-radius:22px; padding:24px 20px; max-width:430px; width:100%;
-    text-align:center; box-shadow:0 24px 60px rgba(0,0,0,.35); animation:pop .3s ease;
-  }
+  .modal-box{ background:#fff; border-radius:22px; padding:24px 20px; max-width:430px; width:100%; text-align:center; box-shadow:0 24px 60px rgba(0,0,0,.35); animation:pop .3s ease; }
   .modal-box h3{ margin:0 0 10px; font-size:1.25rem; }
   .modal-box p{ margin:0 0 20px; color:#475569; font-size:1rem; }
   .modal-actions{ display:flex; gap:10px; }
@@ -244,7 +186,6 @@
   .btn-yes{ background:linear-gradient(135deg,#16a34a,#22c55e); color:#fff; box-shadow:0 8px 20px rgba(22,163,74,.35); }
   .btn-no{ background:#eef0ff; color:#4338ca; }
 
-  /* ---------------- Result screen ---------------- */
   .result-head{
     background:linear-gradient(135deg,#4c1d95,#7c3aed 45%,#db2777);
     border-radius:24px; padding:26px 20px; color:#fff; text-align:center;
@@ -259,20 +200,13 @@
   .score-cap{ opacity:.9; font-size:.95rem; margin-top:4px; }
 
   .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:10px; margin-bottom:18px; }
-  .stat{
-    background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:13px 8px; text-align:center;
-    box-shadow:0 6px 18px rgba(79,70,229,.07);
-  }
+  .stat{ background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:13px 8px; text-align:center; box-shadow:0 6px 18px rgba(79,70,229,.07); }
   .stat .v{ display:block; font-size:1.45rem; font-weight:700; line-height:1.25; font-variant-numeric:tabular-nums; }
   .stat .k{ display:block; font-size:.83rem; color:var(--muted); margin-top:2px; }
-  .stat.ok .v{ color:var(--ok); }
-  .stat.no .v{ color:var(--bad); }
-  .stat.sk .v{ color:#f59e0b; }
-  .stat.tb .v{ color:#7c3aed; }
+  .stat.ok .v{ color:var(--ok); } .stat.no .v{ color:var(--bad); }
+  .stat.sk .v{ color:#f59e0b; } .stat.tb .v{ color:#7c3aed; }
 
-  .sec-title{
-    font-size:1.15rem; font-weight:700; margin:22px 4px 12px; display:flex; align-items:center; gap:8px;
-  }
+  .sec-title{ font-size:1.15rem; font-weight:700; margin:22px 4px 12px; display:flex; align-items:center; gap:8px; }
 
   .rcard{
     background:#fff; border-radius:18px; padding:16px 15px 13px; margin-bottom:14px;
@@ -282,24 +216,18 @@
   .rcard.right{ border-left-color:var(--ok); }
   .rcard.wrong{ border-left-color:var(--bad); }
   .rcard.skipped{ border-left-color:#f59e0b; }
-
   .rcard .qhead{ align-items:center; }
   .rcard .qtext{ font-size:1.05rem; font-weight:600; }
 
   .ropts{ margin-top:11px; display:grid; gap:8px; }
-  .ropt{
-    display:flex; align-items:center; gap:11px; padding:10px 13px; border-radius:13px;
-    background:#f8fafc; border:1.5px solid #e9edf5; font-size:1rem; line-height:1.5;
-  }
+  .ropt{ display:flex; align-items:center; gap:11px; padding:10px 13px; border-radius:13px; background:#f8fafc; border:1.5px solid #e9edf5; font-size:1rem; line-height:1.5; }
   .ropt.ok{ background:#dcfce7; border-color:#4ade80; font-weight:600; color:#14532d; }
   .ropt.no{ background:#fee2e2; border-color:#f87171; font-weight:600; color:#7f1d1d; }
   .ropt .badge{ flex:0 0 30px; width:30px; height:30px; font-size:.9rem; }
   .ropt.ok .badge{ background:#16a34a; color:#fff; }
   .ropt.no .badge{ background:#dc2626; color:#fff; }
 
-  .tag{
-    margin-left:auto; font-size:.76rem; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap;
-  }
+  .tag{ margin-left:auto; font-size:.76rem; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap; }
   .tag.ok{ background:#16a34a; color:#fff; }
   .tag.no{ background:#dc2626; color:#fff; }
 
@@ -349,19 +277,16 @@
         <input id="inName" type="text" placeholder="আপনার পূর্ণ নাম" maxlength="60" autocomplete="name" />
         <span class="err" id="errName"></span>
       </div>
-
       <div class="field" id="fEmail">
         <label for="inEmail">ইমেইল <span class="req">*</span></label>
         <input id="inEmail" type="email" placeholder="example@email.com" maxlength="80" autocomplete="email" inputmode="email" />
         <span class="err" id="errEmail"></span>
       </div>
-
       <div class="field" id="fCollege">
         <label for="inCollege">কলেজ / প্রতিষ্ঠান <span class="req">*</span></label>
         <input id="inCollege" type="text" placeholder="আপনার কলেজ বা প্রতিষ্ঠানের নাম" maxlength="100" autocomplete="organization" />
         <span class="err" id="errCollege"></span>
       </div>
-
       <div class="field" id="fContact">
         <label for="inContact">মোবাইল নম্বর <span class="req">*</span></label>
         <input id="inContact" type="tel" placeholder="01XXXXXXXXX" maxlength="20" autocomplete="tel" inputmode="tel" />
@@ -385,7 +310,6 @@
     </div>
     <div class="pbar"><div class="pfill" id="pfill"></div></div>
   </header>
-
   <main class="wrap" id="questions"></main>
 </div>
 
@@ -428,94 +352,61 @@
   const QUIZ = [
     { q: 'ব্যঞ্জন বিকৃতির দৃষ্টান্ত কোনটি?',
       o: ['ফাল্গুন > ফাগুন', 'বউদিদি > বউদি', 'ধোবা > ধোপা', 'ধরিতে > ধরতে'], a: 2 },
-
     { q: 'বড় > বড্ড — এটি কোন ধরনের পরিবর্তন?',
       o: ['বিষমীভবন', 'সমীভবন', 'ব্যঞ্জনদ্বিত্ব', 'ব্যঞ্জন বিকৃতি'], a: 2 },
-
     { q: '‘স্কুল > ইস্কুল’ — এটি কোন ধরনের ধ্বনির পরিবর্তন?',
       o: ['আদি স্বরাগম', 'বিপ্রকর্ষ', 'অপিনিহিতি', 'পরাগত'], a: 0 },
-
     { q: 'কোন শব্দটি উপসর্গযোগে গঠিত?',
       o: ['পঙ্কজ', 'দরদালান', 'বিলাসিতা', 'দানব'], a: 1 },
-
     { q: 'নিচের কোনটির অর্থবাচকতা নেই, অর্থদ্যোতকতা আছে?',
       o: ['অনুসর্গ', 'উপসর্গ', 'প্রত্যয়', 'সমাস'], a: 1 },
-
     { q: 'উপসর্গযুক্ত শব্দ কোনটি?',
       o: ['পঙ্কজ', 'জ্বালাতন', 'কদবেল', 'মাচান'], a: 2 },
-
     { q: '‘প্রলয়’ শব্দের ‘প্র’ উপসর্গ কোন অর্থে ব্যবহৃত হয়েছে?',
       o: ['বিপরীত', 'গতি', 'আধিক্য', 'প্রকৃষ্ট'], a: 2 },
-
     { q: '‘তপোবন’ কোন সমাস?',
       o: ['রূপক কর্মধারয়', 'বহুব্রীহি', 'দ্বিগু', 'চতুর্থী তৎপুরুষ', 'নিত্য'], a: 3 },
-
     { q: '‘পুরুষ সিংহের ন্যায় = পুরুষ সিংহ’ — এটি যে সমাসের উদাহরণ তার নাম কী?',
       o: ['উপমান কর্মধারয়', 'উপমিত কর্মধারয়', 'রূপক কর্মধারয়', 'মধ্যপদলোপী কর্মধারয়'], a: 1 },
-
     { q: '‘ফুলকুমারী’ সমাসবদ্ধ পদের ব্যাসবাক্য কোনটি?',
       o: ['ফুল ও কুমারী', 'ফুল যে কুমারী', 'ফুল কুমারীর ন্যায়', 'কুমারী ফুলের ন্যায়'], a: 3 },
-
     { q: '‘বিষাদ-সিন্ধু’ কোন সমাস?',
       o: ['রূপক কর্মধারয়', 'মধ্যপদলোপী কর্মধারয়', 'উপমান কর্মধারয়', 'উপমিত কর্মধারয়'], a: 0 },
-
     { q: 'প্রচুর + য = প্রাচুর্য — এটি কোন প্রত্যয়?',
       o: ['কৃৎ প্রত্যয়', 'তদ্ধিত প্রত্যয়', 'বাংলা কৃৎ প্রত্যয়', 'সংস্কৃত কৃৎ প্রত্যয়'], a: 1 },
-
     { q: '‘বাক্য’ এর প্রকৃতি-প্রত্যয় কোনটি?',
       o: ['√বাক্ + ত', '√বচ্ + য', '√বাক্ + য', '√বাচ্ + য'], a: 1 },
-
     { q: '‘দ্রাঘিমা’ শব্দের প্রকৃতি-প্রত্যয় কোনটি?',
       o: ['দৈর্ঘ্য + ইমন', 'দীর্ঘ + ইমন', 'দৈর্ঘ্য + মা', 'দীর্ঘ + মা'], a: 1 },
-
     { q: '‘জনৈক’ শব্দটির সন্ধি বিচ্ছেদ কোনটি?',
       o: ['জন + ইক', 'জন + এক', 'জনে + এক', 'জন + ঈক'], a: 1 },
-
     { q: 'কোন সন্ধিটি নিপাতনে সিদ্ধ?',
       o: ['বাক্ + দান = বাগদান', 'উৎ + ছেদ = উচ্ছেদ', 'পর + পর = পরস্পর', 'সম + সার = সংসার'], a: 2 },
-
     { q: '‘উত্থাপন’ শব্দটির সন্ধিবিচ্ছেদ কোনটি?',
       o: ['উৎ + থাপন', 'উৎ + স্থাপন', 'উঃ + স্থাপন', 'উঃ + থাপন'], a: 1 },
-
     { q: '‘ব্যর্থ’ শব্দের সন্ধি বিচ্ছেদ কোনটি?',
       o: ['বি + অর্থ', 'ব্য + অর্থ', 'ব্য + থ', 'বি + থ'], a: 0 },
-
     { q: 'নিম্নের কোনটি নিপাতনে সিদ্ধ সন্ধি?',
       o: ['কুলটা', 'সঞ্চার', 'গবেষণা', 'ভাবুক'], a: 0 },
-
     { q: '‘অর্ধাঙ্গী’ প্রবন্ধটি কার রচনা?',
       o: ['সুফিয়া কামাল', 'বেগম রোকেয়া', 'সেলিনা হোসেন', 'জাহানারা ইমাম'], a: 1 },
-
     { q: '‘প্রতিদান’ কবিতার মূল প্রতিপাদ্য কী?',
       o: ['ব্যক্তিস্বার্থ', 'পরার্থপরতা', 'আত্মগ্লানি', 'প্রকৃতি-বন্দনা'], a: 1 },
-
     { q: '‘সুচেতনা’ কবিতায় ‘অনেক শতাব্দীর মনীষীর কাজ’ বলতে কী বোঝানো হয়েছে?',
       o: ['শিক্ষার প্রসার ঘটানো', 'কবিতা রচনা করা', 'শিক্ষা প্রতিষ্ঠান তৈরি করা', 'পৃথিবীর ক্রমমুক্তি ঘটানো'], a: 3 },
-
     { q: 'কাজী নজরুল ইসলামকে ‘বিদ্রোহী কবি’ উপাধি কে দিয়েছেন?',
       o: ['রবীন্দ্রনাথ ঠাকুর', 'বঙ্কিমচন্দ্র চট্টোপাধ্যায়', 'প্রমথ চৌধুরী', 'শরৎচন্দ্র চট্টোপাধ্যায়'], a: 2 },
-
     { q: '‘বিদ্রোহী’ কবিতায় কবি দাবানল হয়ে কী বা কাকে দাহন করতে চান?',
       o: ['লোকালয়', 'অত্যাচারী', 'বিশ্ব', 'সৃষ্টি'], a: 2 }
   ];
-
   const TOTAL_Q = QUIZ.length;
 
-  /* ============================================================
-     🧠 STATE
-     ============================================================ */
   const state = {
-    name: 'শিক্ষার্থী',
-    email: '',
-    college: '',
-    contact: '',
+    name: 'শিক্ষার্থী', email: '', college: '', contact: '',
     answers: new Array(TOTAL_Q).fill(null),
-    tabSwitches: 0,
-    lastSwitchAt: 0,
-    timeLeft: TOTAL_TIME,
-    timerId: null,
-    started: false,
-    submitted: false
+    tabSwitches: 0, lastSwitchAt: 0,
+    timeLeft: TOTAL_TIME, timerId: null,
+    started: false, submitted: false
   };
 
   const $ = (id) => document.getElementById(id);
@@ -523,22 +414,13 @@
   const examScreen   = $('examScreen');
   const resultScreen = $('resultScreen');
 
-  /* ============================================================
-     🛠️ HELPERS
-     ============================================================ */
   function fmtTime(sec) {
     sec = Math.max(0, Math.round(sec));
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    return String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0');
   }
-  function fmtNum(n) {
-    return Number.isInteger(n) ? String(n) : n.toFixed(2);
-  }
+  function fmtNum(n) { return Number.isInteger(n) ? String(n) : n.toFixed(2); }
   function typeset(node) {
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise([node]).catch(function () {});
-    }
+    if (window.MathJax && window.MathJax.typesetPromise) window.MathJax.typesetPromise([node]).catch(function(){});
   }
   let toastTimer = null;
   function showToast(msg) {
@@ -549,10 +431,8 @@
     toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2600);
   }
 
-  /* ============================================================
-     🚫 ANTI-COPY / ANTI-SELECT
-     ============================================================ */
-  ['copy', 'cut', 'contextmenu', 'dragstart', 'selectstart'].forEach(function (ev) {
+  /* ---------------- Anti-copy / anti-select ---------------- */
+  ['copy','cut','contextmenu','dragstart','selectstart'].forEach(function (ev) {
     document.addEventListener(ev, function (e) {
       if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
       e.preventDefault();
@@ -562,15 +442,12 @@
     const k = (e.key || '').toLowerCase();
     const inField = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA');
     if ((e.ctrlKey || e.metaKey) && ['c','x','s','p','u'].indexOf(k) !== -1) {
-      e.preventDefault();
-      showToast('🚫 কপি করা যাবে না');
+      e.preventDefault(); showToast('🚫 কপি করা যাবে না');
     }
     if ((e.ctrlKey || e.metaKey) && k === 'a' && !inField) e.preventDefault();
   }, false);
 
-  /* ============================================================
-     👁️ TAB / WINDOW SWITCH DETECTION
-     ============================================================ */
+  /* ---------------- Tab switch detection ---------------- */
   function bumpTabSwitch() {
     if (!state.started || state.submitted) return;
     const now = Date.now();
@@ -580,26 +457,18 @@
     $('switchText').textContent = state.tabSwitches;
     showToast('⚠️ ট্যাব পরিবর্তন রেকর্ড হয়েছে (' + state.tabSwitches + ')');
   }
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) bumpTabSwitch();
-  });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) bumpTabSwitch(); });
   window.addEventListener('blur', bumpTabSwitch);
   window.addEventListener('beforeunload', function (e) {
-    if (state.started && !state.submitted) {
-      e.preventDefault(); e.returnValue = ''; return '';
-    }
+    if (state.started && !state.submitted) { e.preventDefault(); e.returnValue = ''; return ''; }
   });
 
-  /* ============================================================
-     ✅ FORM VALIDATION
-     ============================================================ */
+  /* ---------------- Form validation ---------------- */
   function setFieldError(fieldId, errId, msg) {
-    const f = $(fieldId);
-    const e = $(errId);
+    const f = $(fieldId), e = $(errId);
     if (msg) { f.classList.add('invalid'); e.textContent = msg; }
     else { f.classList.remove('invalid'); e.textContent = ''; }
   }
-
   function validateForm() {
     let ok = true;
     const name    = ($('inName').value || '').trim();
@@ -607,34 +476,31 @@
     const college = ($('inCollege').value || '').trim();
     const contact = ($('inContact').value || '').trim();
 
-    if (!name) { setFieldError('fName', 'errName', 'নাম লিখুন।'); ok = false; }
-    else if (name.length < 2) { setFieldError('fName', 'errName', 'নাম কমপক্ষে ২ অক্ষরের হতে হবে।'); ok = false; }
-    else { setFieldError('fName', 'errName', ''); }
+    if (!name) { setFieldError('fName','errName','নাম লিখুন।'); ok = false; }
+    else if (name.length < 2) { setFieldError('fName','errName','নাম কমপক্ষে ২ অক্ষরের হতে হবে।'); ok = false; }
+    else setFieldError('fName','errName','');
 
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    if (!email) { setFieldError('fEmail', 'errEmail', 'ইমেইল লিখুন।'); ok = false; }
-    else if (!emailRe.test(email)) { setFieldError('fEmail', 'errEmail', 'সঠিক ইমেইল ঠিকানা লিখুন।'); ok = false; }
-    else { setFieldError('fEmail', 'errEmail', ''); }
+    if (!email) { setFieldError('fEmail','errEmail','ইমেইল লিখুন।'); ok = false; }
+    else if (!emailRe.test(email)) { setFieldError('fEmail','errEmail','সঠিক ইমেইল ঠিকানা লিখুন।'); ok = false; }
+    else setFieldError('fEmail','errEmail','');
 
-    if (!college) { setFieldError('fCollege', 'errCollege', 'কলেজ বা প্রতিষ্ঠানের নাম লিখুন।'); ok = false; }
-    else if (college.length < 2) { setFieldError('fCollege', 'errCollege', 'নাম কমপক্ষে ২ অক্ষরের হতে হবে।'); ok = false; }
-    else { setFieldError('fCollege', 'errCollege', ''); }
+    if (!college) { setFieldError('fCollege','errCollege','কলেজ বা প্রতিষ্ঠানের নাম লিখুন।'); ok = false; }
+    else if (college.length < 2) { setFieldError('fCollege','errCollege','নাম কমপক্ষে ২ অক্ষরের হতে হবে।'); ok = false; }
+    else setFieldError('fCollege','errCollege','');
 
     const digits = contact.replace(/[\s\-()+]/g, '');
-    if (!contact) { setFieldError('fContact', 'errContact', 'মোবাইল নম্বর লিখুন।'); ok = false; }
-    else if (!/^\d{10,15}$/.test(digits)) { setFieldError('fContact', 'errContact', 'সঠিক মোবাইল নম্বর লিখুন (১০–১৫ ডিজিট)।'); ok = false; }
-    else { setFieldError('fContact', 'errContact', ''); }
+    if (!contact) { setFieldError('fContact','errContact','মোবাইল নম্বর লিখুন।'); ok = false; }
+    else if (!/^\d{10,15}$/.test(digits)) { setFieldError('fContact','errContact','সঠিক মোবাইল নম্বর লিখুন (১০–১৫ ডিজিট)।'); ok = false; }
+    else setFieldError('fContact','errContact','');
 
     return ok ? { name: name, email: email, college: college, contact: contact } : null;
   }
-
   ['inName','inEmail','inCollege','inContact'].forEach(function (id) {
     $(id).addEventListener('input', function () {
       const map = {
-        inName:    ['fName','errName'],
-        inEmail:   ['fEmail','errEmail'],
-        inCollege: ['fCollege','errCollege'],
-        inContact: ['fContact','errContact']
+        inName:['fName','errName'], inEmail:['fEmail','errEmail'],
+        inCollege:['fCollege','errCollege'], inContact:['fContact','errContact']
       };
       const pair = map[id];
       $(pair[0]).classList.remove('invalid');
@@ -642,9 +508,7 @@
     });
   });
 
-  /* ============================================================
-     🏗️ BUILD QUESTIONS
-     ============================================================ */
+  /* ---------------- Build questions ---------------- */
   function buildQuestions() {
     const host = $('questions');
     host.innerHTML = QUIZ.map(function (item, i) {
@@ -665,9 +529,6 @@
     typeset(host);
   }
 
-  /* ============================================================
-     🖱️ OPTION SELECTION
-     ============================================================ */
   $('questions').addEventListener('click', function (e) {
     const btn = e.target.closest ? e.target.closest('.opt') : null;
     if (!btn || state.submitted) return;
@@ -688,9 +549,7 @@
     $('pfill').style.width = ((done / TOTAL_Q) * 100) + '%';
   }
 
-  /* ============================================================
-     ⏱️ TIMER
-     ============================================================ */
+  /* ---------------- Timer ---------------- */
   function updateTimerUI() {
     $('timeText').textContent = fmtTime(state.timeLeft);
     const chip = $('timerChip');
@@ -710,9 +569,7 @@
     }, 1000);
   }
 
-  /* ============================================================
-     ▶️ START EXAM
-     ============================================================ */
+  /* ---------------- Start exam ---------------- */
   $('startBtn').addEventListener('click', function () {
     const data = validateForm();
     if (!data) {
@@ -721,17 +578,11 @@
       if (firstInvalid) firstInvalid.focus();
       return;
     }
-
-    state.name    = data.name;
-    state.email   = data.email;
-    state.college = data.college;
-    state.contact = data.contact;
-
-    state.started     = true;
-    state.submitted   = false;
-    state.answers     = new Array(TOTAL_Q).fill(null);
-    state.tabSwitches = 0;
-    state.timeLeft    = TOTAL_TIME;
+    state.name = data.name; state.email = data.email;
+    state.college = data.college; state.contact = data.contact;
+    state.started = true; state.submitted = false;
+    state.answers = new Array(TOTAL_Q).fill(null);
+    state.tabSwitches = 0; state.timeLeft = TOTAL_TIME;
 
     startScreen.classList.remove('active');
     resultScreen.classList.remove('active');
@@ -750,9 +601,7 @@
     });
   });
 
-  /* ============================================================
-     📤 SUBMIT
-     ============================================================ */
+  /* ---------------- Submit ---------------- */
   $('submitBtn').addEventListener('click', function () {
     if (state.submitted) return;
     const done = state.answers.filter(function (a) { return a !== null; }).length;
@@ -761,13 +610,8 @@
       'বাকি <b>' + (TOTAL_Q - done) + '</b> টি উত্তর না দেওয়া অবস্থায় সাবমিট হবে।';
     $('modal').classList.add('show');
   });
-  $('modalNo').addEventListener('click', function () {
-    $('modal').classList.remove('show');
-  });
-  $('modalYes').addEventListener('click', function () {
-    $('modal').classList.remove('show');
-    doSubmit(false);
-  });
+  $('modalNo').addEventListener('click', function () { $('modal').classList.remove('show'); });
+  $('modalYes').addEventListener('click', function () { $('modal').classList.remove('show'); doSubmit(false); });
 
   function doSubmit(auto) {
     if (state.submitted) return;
@@ -775,7 +619,6 @@
     clearInterval(state.timerId);
 
     const timeTaken = TOTAL_TIME - Math.max(0, state.timeLeft);
-
     let correct = 0, wrong = 0, skipped = 0;
     state.answers.forEach(function (ans, i) {
       if (ans === null) skipped++;
@@ -783,7 +626,6 @@
       else wrong++;
     });
     const score = Math.round((correct * MARK_RIGHT + wrong * MARK_WRONG) * 100) / 100;
-
     const result = { score: score, correct: correct, wrong: wrong, skipped: skipped, timeTaken: timeTaken, auto: !!auto };
 
     postToSheet(result);
@@ -791,52 +633,56 @@
   }
 
   /* ============================================================
-     ☁️ SEND TO GOOGLE SHEET  (JSON body — reliable)
+     ☁️ SAVE TO GOOGLE SHEET  (working pattern)
+     Content-Type: text/plain  •  JSON body  •  no no-cors
      ============================================================ */
   function postToSheet(res) {
-    try {
-      const payload = {
-        name:    state.name,
-        email:   state.email,
-        college: state.college,
-        contact: state.contact,
-        score:   res.score,
-        totalMarks: TOTAL_Q,
-        totalQuestions: TOTAL_Q,
-        correct: res.correct,
-        wrong:   res.wrong,
-        skipped: res.skipped,
-        tabSwitches: state.tabSwitches,
-        timeTaken: fmtTime(res.timeTaken),
-        timeTakenSeconds: res.timeTaken,
-        autoSubmitted: res.auto ? 'YES' : 'NO',
-        submittedAt: new Date().toLocaleString('en-GB'),
-        userAgent: navigator.userAgent,
-        givenAnswers: JSON.stringify(state.answers.map(function (a) {
-          return a === null ? '-' : LBL[a];
-        })),
-        correctAnswers: JSON.stringify(QUIZ.map(function (q) {
-          return LBL[q.a];
-        }))
-      };
+    const payload = {
+      name:    state.name,
+      email:   state.email,
+      college: state.college,
+      contact: state.contact,
+      score:   res.score,
+      totalMarks: TOTAL_Q,
+      totalQuestions: TOTAL_Q,
+      correct: res.correct,
+      wrong:   res.wrong,
+      skipped: res.skipped,
+      tabSwitches: state.tabSwitches,
+      timeTaken: fmtTime(res.timeTaken),
+      timeTakenSeconds: res.timeTaken,
+      autoSubmitted: res.auto ? 'YES' : 'NO',
+      submittedAt: new Date().toLocaleString('en-GB'),
+      userAgent: navigator.userAgent,
+      givenAnswers: JSON.stringify(state.answers.map(function (a) {
+        return a === null ? '-' : LBL[a];
+      })),
+      correctAnswers: JSON.stringify(QUIZ.map(function (q) {
+        return LBL[q.a];
+      }))
+    };
 
-      fetch(SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      }).catch(function (err) {
-        console.warn('Sheet save error:', err);
-      });
-
-    } catch (err) {
-      console.warn('postToSheet failed:', err);
-    }
+    fetch(SHEET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'submit', payload: payload })
+    })
+    .then(function (r) { return r.text(); })
+    .then(function (t) {
+      try {
+        const data = JSON.parse(t);
+        if (!data.ok) console.warn('Save error:', data.error);
+        else console.log('✅ Saved at row', data.result && data.result.row);
+      } catch (e) {
+        console.warn('Non-JSON response:', t.slice(0, 200));
+      }
+    })
+    .catch(function (err) {
+      console.warn('Fetch error:', err);
+    });
   }
 
-  /* ============================================================
-     🏆 RENDER RESULT
-     ============================================================ */
+  /* ---------------- Result render ---------------- */
   function renderResult(res) {
     examScreen.classList.remove('active');
     resultScreen.classList.add('active');
@@ -854,7 +700,6 @@
       const ua = state.answers[i];
       const isRight = ua === item.a;
       const cls = ua === null ? 'skipped' : (isRight ? 'right' : 'wrong');
-
       let statusPill;
       if (ua === null) statusPill = '<span class="pill skip">উত্তর দেননি</span>';
       else if (isRight) statusPill = '<span class="pill ok">সঠিক</span>';
@@ -893,7 +738,6 @@
         '<div class="score-big">' + fmtNum(res.score) + '<small> / ' + TOTAL_Q + '</small></div>' +
         '<div class="score-cap">' + msg + ' &nbsp;•&nbsp; সঠিকতার হার ' + pct + '%</div>' +
       '</div>' +
-
       '<div class="stat-grid">' +
         '<div class="stat ok"><span class="v">' + res.correct + '</span><span class="k">সঠিক উত্তর</span></div>' +
         '<div class="stat no"><span class="v">' + res.wrong + '</span><span class="k">ভুল উত্তর</span></div>' +
@@ -901,16 +745,13 @@
         '<div class="stat tb"><span class="v">' + state.tabSwitches + '</span><span class="k">ট্যাব পরিবর্তন</span></div>' +
         '<div class="stat"><span class="v">' + fmtTime(res.timeTaken) + '</span><span class="k">সময় লেগেছে</span></div>' +
       '</div>' +
-
       '<div class="sec-title">📋 উত্তরপত্র পর্যালোচনা</div>' +
       reviewHTML +
-
       '<div class="footer-actions">' +
         '<button class="big-btn" id="retryBtn">🔄 আবার পরীক্ষা দিন</button>' +
       '</div>';
 
     typeset($('resultWrap'));
-
     const retry = $('retryBtn');
     if (retry) {
       retry.addEventListener('click', function () {
