@@ -8,11 +8,11 @@
 <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
     body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px}
-    .container{background:#fff;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.15);overflow:hidden;width:100%;max-width:760px;animation:fadeIn .45s ease-out;margin:auto}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .container{background:#fff;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.15);width:100%;max-width:760px;margin:auto;animation:fadeIn .45s ease-out;position:relative}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-    .header{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);padding:28px 20px;text-align:center;color:#fff}
+    /* ---------- START ---------- */
+    .header{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);padding:28px 20px;text-align:center;color:#fff;border-radius:20px 20px 0 0}
     .logos{display:flex;justify-content:center;gap:18px;margin-bottom:16px}
     .logo{width:58px;height:58px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px rgba(0,0,0,.2);font-size:1.5rem;color:#0ea5e9}
     .logo.alt{color:#6a11cb}
@@ -34,57 +34,106 @@
 
     .rules{background:#f8f9fa;border-left:4px solid #0ea5e9;border-radius:10px;padding:16px 18px;margin-bottom:22px;font-size:.92rem;color:#444;line-height:1.75}
     .rules b{color:#0ea5e9}
+    .footer{text-align:center;padding:18px;color:#666;font-size:.85rem;background:#f8f9fa;border-top:1px solid #eee;border-radius:0 0 20px 20px}
 
-    .footer{text-align:center;padding:18px;color:#666;font-size:.85rem;background:#f8f9fa;border-top:1px solid #eee}
+    /* ---------- STICKY TOP BAR ---------- */
+    .sticky-bar{
+        position:sticky;
+        top:0;
+        z-index:100;
+        background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);
+        color:#fff;
+        padding:12px 18px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+        border-radius:20px 20px 0 0;
+        box-shadow:0 4px 14px rgba(0,0,0,.12);
+    }
+    .bar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .bar-title{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px}
+    .bar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
-    .exam-top{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    .exam-title{font-weight:700;font-size:1.02rem}
-    .exam-sub{font-size:.8rem;opacity:.9;margin-top:2px}
-    .timer{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:9px 16px;border-radius:30px;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
-    .timer.warn{background:rgba(234,67,53,.85);border-color:#ea4335;animation:pulse 1s infinite}
+    .timer{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:8px 14px;border-radius:30px;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums}
+    .timer.warn{background:rgba(234,67,53,.9);border-color:#ea4335;animation:pulse 1s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+    .tab-pill{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 12px;border-radius:30px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:6px}
+    .tab-pill.alert{background:rgba(234,67,53,.9);border-color:#ea4335}
+
+    .top-submit{background:#fff;color:#0ea5e9;border:none;padding:9px 16px;border-radius:30px;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s}
+    .top-submit:hover{background:#f0f9ff;transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+
     .progress-bar{height:5px;background:#e9ecf5;width:100%}
     .progress-fill{height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,#6a11cb);transition:width .3s}
 
-    .tab-pill{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:30px;font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:7px}
-    .tab-pill.alert{background:rgba(234,67,53,.9);border-color:#ea4335;animation:pulse 1s infinite}
+    /* ---------- FLOATING TOAST ---------- */
+    .tab-toast{
+        position:fixed;
+        top:80px;
+        left:50%;
+        transform:translateX(-50%);
+        background:#fef3c7;
+        color:#92400e;
+        padding:10px 18px;
+        border-radius:10px;
+        box-shadow:0 6px 20px rgba(0,0,0,.18);
+        font-size:.88rem;
+        font-weight:700;
+        z-index:300;
+        display:none;
+        border-left:4px solid #f59e0b;
+    }
+    .tab-toast.show{display:block;animation:slideDown .3s ease-out}
+    @keyframes slideDown{from{opacity:0;transform:translate(-50%,-10px)}to{opacity:1;transform:translate(-50%,0)}}
 
-    .tab-warning{display:none;background:#fef3c7;border-left:4px solid #f59e0b;color:#92400e;padding:12px 16px;font-size:.88rem;font-weight:600;line-height:1.5}
-    .tab-warning.show{display:block;animation:slideUp .3s ease-out}
-
-    .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
-    .q-num{font-weight:700;color:#0ea5e9;font-size:1rem}
-    .q-status{font-size:.78rem;padding:4px 12px;border-radius:20px;background:#eef0f6;color:#777;font-weight:600}
+    /* ---------- EXAM BODY ---------- */
+    .exam-body{padding:22px 22px 10px}
+    .q-card{
+        background:#fcfdff;
+        border:1px solid #eef0f6;
+        border-left:4px solid #0ea5e9;
+        border-radius:12px;
+        padding:18px 18px 8px;
+        margin-bottom:18px;
+        scroll-margin-top:90px;
+        transition:.2s;
+    }
+    .q-card.answered{border-left-color:#16a34a}
+    .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+    .q-num{font-weight:700;color:#0ea5e9;font-size:.92rem}
+    .q-status{font-size:.74rem;padding:3px 11px;border-radius:20px;background:#eef0f6;color:#777;font-weight:600}
     .q-status.answered{background:#e6f4ea;color:#137333}
-    .q-text{font-size:1.08rem;line-height:1.6;color:#1f2430;margin-bottom:20px;font-weight:500}
+    .q-text{font-size:1.02rem;line-height:1.6;color:#1f2430;margin-bottom:14px;font-weight:500}
 
-    .option{display:flex;align-items:center;gap:13px;padding:14px 16px;border:2px solid #e5e7eb;border-radius:12px;margin-bottom:10px;cursor:pointer;transition:.18s;background:#fff}
+    .option{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:.18s;background:#fff}
     .option:hover{border-color:#7dd3fc;background:#f0f9ff;transform:translateX(3px)}
     .option.selected{border-color:#0ea5e9;background:#e0f2fe;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
-    .option-letter{width:32px;height:32px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0ea5e9;flex-shrink:0;transition:.18s}
+    .option-letter{width:30px;height:30px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0ea5e9;flex-shrink:0;transition:.18s}
     .option.selected .option-letter{background:#0ea5e9;color:#fff}
-    .option-text{font-size:1rem;color:#2b3140;word-break:break-word}
+    .option-text{font-size:.96rem;color:#2b3140;word-break:break-word}
 
-    .nav-btns{display:flex;gap:12px;margin-top:22px}
-    .nav-btn{flex:1;padding:13px;border-radius:10px;border:2px solid #dfe3ee;background:#fff;color:#0ea5e9;font-weight:600;font-size:.95rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
-    .nav-btn:hover:not(:disabled){background:#f0f9ff;border-color:#0ea5e9}
-    .nav-btn:disabled{opacity:.4;cursor:not-allowed}
-    .nav-btn.primary{background:linear-gradient(135deg,#0ea5e9,#6a11cb);color:#fff;border-color:transparent}
-    .nav-btn.primary:hover{box-shadow:0 8px 18px rgba(14,165,233,.3)}
+    .end-submit-wrap{padding:10px 22px 26px}
+    .back-top{
+        position:fixed;
+        bottom:24px;
+        right:24px;
+        width:46px;height:46px;
+        border-radius:50%;
+        background:linear-gradient(135deg,#0ea5e9,#6a11cb);
+        color:#fff;border:none;cursor:pointer;
+        display:none;
+        align-items:center;justify-content:center;
+        font-size:1.1rem;
+        box-shadow:0 6px 18px rgba(14,165,233,.4);
+        z-index:150;
+    }
+    .back-top.show{display:flex}
+    .back-top:hover{transform:translateY(-2px)}
 
-    .palette-wrap{margin-top:26px;border-top:1px dashed #e3e6ef;padding-top:18px}
-    .palette-title{font-size:.88rem;font-weight:700;color:#555;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-    .palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}
-    .p-btn{height:42px;border-radius:9px;border:2px solid #e1e5f0;background:#fff;font-weight:700;color:#7a8194;cursor:pointer;transition:.18s;font-size:.9rem}
-    .p-btn:hover{border-color:#0ea5e9;color:#0ea5e9}
-    .p-btn.answered{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
-    .p-btn.current{border-color:#6a11cb;border-width:3px;box-shadow:0 0 0 3px rgba(106,17,203,.15)}
-
-    .submit-btn{margin-top:24px}
-    .mini-legend{display:flex;gap:16px;font-size:.78rem;color:#777;margin-top:12px;flex-wrap:wrap}
-    .dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:middle}
-    .dot.a{background:#0ea5e9}.dot.u{background:#fff;border:2px solid #e1e5f0}
-
+    /* ---------- RESULT ---------- */
     .score-ring{width:170px;height:170px;border-radius:50%;background:conic-gradient(#0ea5e9 var(--p,0%),#e9ecf5 0);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;transition:background .6s}
     .score-inner{width:138px;height:138px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 2px 10px rgba(0,0,0,.07)}
     .score-big{font-size:1.9rem;font-weight:800;color:#2b3140;line-height:1}
@@ -99,7 +148,6 @@
     .stat.g .v{color:#16a34a}.stat.r .v{color:#ea4335}.stat.y .v{color:#f59e0b}.stat.b .v{color:#0ea5e9}.stat.p .v{color:#6a11cb}
 
     .save-status{text-align:center;font-size:.9rem;color:#555;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:20px}
-
     .section-title{font-size:1.02rem;font-weight:700;color:#2b3140;margin:24px 0 12px;display:flex;align-items:center;gap:9px}
     .section-title i{color:#0ea5e9}
 
@@ -140,17 +188,23 @@
         body{padding:10px}
         .container{border-radius:14px}
         .content{padding:20px 16px}
+        .exam-body{padding:16px 14px 10px}
+        .end-submit-wrap{padding:10px 14px 22px}
         .title{font-size:1.4rem}
-        .option{padding:12px 13px}
-        .option-text{font-size:.94rem}
-        .q-text{font-size:1rem}
+        .sticky-bar{border-radius:14px 14px 0 0;padding:10px 12px}
+        .bar-title{font-size:.82rem}
+        .timer{font-size:.9rem;padding:7px 11px}
+        .top-submit{font-size:.78rem;padding:8px 12px}
+        .option{padding:11px 12px}
+        .option-text{font-size:.9rem}
+        .q-text{font-size:.96rem}
     }
 </style>
 </head>
 <body>
 <div class="container">
 
-    <!-- START SCREEN -->
+    <!-- ================= START SCREEN ================= -->
     <section id="startScreen">
         <div class="header">
             <div class="logos">
@@ -163,31 +217,23 @@
         <div class="content">
             <div class="input-group">
                 <label class="input-label"><i class="fas fa-user"></i> Full Name</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-user input-icon"></i>
-                    <input type="text" id="nameInput" placeholder="e.g. Rahim Uddin" maxlength="60" autocomplete="off">
-                </div>
+                <div class="input-wrapper"><i class="fas fa-user input-icon"></i>
+                    <input type="text" id="nameInput" placeholder="e.g. Rahim Uddin" maxlength="60" autocomplete="off"></div>
             </div>
             <div class="input-group">
                 <label class="input-label"><i class="fas fa-building-columns"></i> College</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-building-columns input-icon"></i>
-                    <input type="text" id="collegeInput" placeholder="e.g. Dhaka College" maxlength="100" autocomplete="off">
-                </div>
+                <div class="input-wrapper"><i class="fas fa-building-columns input-icon"></i>
+                    <input type="text" id="collegeInput" placeholder="e.g. Dhaka College" maxlength="100" autocomplete="off"></div>
             </div>
             <div class="input-group">
                 <label class="input-label"><i class="fas fa-envelope"></i> Email</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-envelope input-icon"></i>
-                    <input type="email" id="emailInput" placeholder="e.g. rahim@example.com" maxlength="80" autocomplete="off">
-                </div>
+                <div class="input-wrapper"><i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="emailInput" placeholder="e.g. rahim@example.com" maxlength="80" autocomplete="off"></div>
             </div>
             <div class="input-group">
                 <label class="input-label"><i class="fas fa-phone"></i> Contact No.</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-phone input-icon"></i>
-                    <input type="text" id="numberInput" placeholder="e.g. 01712345678" maxlength="20" autocomplete="off">
-                </div>
+                <div class="input-wrapper"><i class="fas fa-phone input-icon"></i>
+                    <input type="text" id="numberInput" placeholder="e.g. 01712345678" maxlength="20" autocomplete="off"></div>
             </div>
 
             <div class="rules">
@@ -195,7 +241,7 @@
                 • Total <b>24</b> MCQ questions, each carries <b>1</b> mark.<br>
                 • <b>Negative marking:</b> −0.25 for each wrong answer. Skipped = 0.<br>
                 • Time limit is <b>12 minutes</b> — the exam auto-submits when time is up.<br>
-                • Use the <b>Question Palette</b> to jump to any question.<br>
+                • All questions are on one page — just scroll and answer.<br>
                 • ⚠️ <b>Tab switching is monitored</b> and recorded with your result.<br>
                 • Your score will be saved to the <b>English3</b> leaderboard automatically.
             </div>
@@ -204,60 +250,33 @@
                 <i class="fas fa-play"></i> Start Exam
             </button>
         </div>
-        <div class="footer">
-            <p>© 2024 Plan C Academy | English 3 Model Test Portal</p>
-        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | English 3 Model Test Portal</p></div>
     </section>
 
-    <!-- EXAM SCREEN -->
+    <!-- ================= EXAM SCREEN ================= -->
     <section id="examScreen" style="display:none">
-        <div class="exam-top">
-            <div>
-                <div class="exam-title"><i class="fas fa-file-pen"></i> English 3 • Model Test</div>
-                <div class="exam-sub" id="examUser">—</div>
+        <div class="sticky-bar" id="stickyBar">
+            <div class="bar-left">
+                <span class="bar-title"><i class="fas fa-file-pen"></i> English 3 • Model Test</span>
+                <span class="tab-pill" id="tabPill"><i class="fas fa-eye"></i> Tabs: <span id="tabCount">0</span></span>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-                <div class="tab-pill" id="tabPill"><i class="fas fa-eye"></i> Tabs: <span id="tabCount">0</span></div>
+            <div class="bar-right">
                 <div class="timer" id="timer"><i class="fas fa-clock"></i> <span id="timerText">12:00</span></div>
+                <button class="top-submit" onclick="confirmSubmit()"><i class="fas fa-paper-plane"></i> Submit</button>
             </div>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="tab-warning" id="tabWarning">
-            <i class="fas fa-triangle-exclamation"></i> Tab switch detected! This is being recorded with your result.
-        </div>
 
-        <div class="content">
-            <div class="q-header">
-                <span class="q-num" id="qNum">Question 1 of 24</span>
-                <span class="q-status" id="qStatus">Not answered</span>
-            </div>
-            <div class="q-text" id="qText"></div>
-            <div class="options" id="options"></div>
+        <div class="exam-body" id="examBody"></div>
 
-            <div class="nav-btns">
-                <button class="nav-btn" id="prevBtn" onclick="prevQ()"><i class="fas fa-arrow-left"></i> Previous</button>
-                <button class="nav-btn primary" id="nextBtn" onclick="nextQ()">Next <i class="fas fa-arrow-right"></i></button>
-            </div>
-
-            <div class="palette-wrap">
-                <div class="palette-title">
-                    <span>Question Palette</span>
-                    <span id="paletteCount">0 / 24 answered</span>
-                </div>
-                <div class="palette" id="palette"></div>
-                <div class="mini-legend">
-                    <span><span class="dot a"></span>Answered</span>
-                    <span><span class="dot u"></span>Not answered</span>
-                </div>
-            </div>
-
-            <button class="search-btn submit-btn" onclick="confirmSubmit()">
+        <div class="end-submit-wrap">
+            <button class="search-btn" onclick="confirmSubmit()">
                 <i class="fas fa-paper-plane"></i> Submit Exam
             </button>
         </div>
     </section>
 
-    <!-- RESULT SCREEN -->
+    <!-- ================= RESULT SCREEN ================= -->
     <section id="resultScreen" style="display:none">
         <div class="header">
             <h1 class="title" style="font-size:1.45rem">Exam Completed</h1>
@@ -293,12 +312,18 @@
                 <button class="btn-outline" onclick="refreshLeaderboard()"><i class="fas fa-arrows-rotate"></i> Refresh Board</button>
             </div>
         </div>
-        <div class="footer">
-            <p>© 2024 Plan C Academy | English 3 Model Test Portal</p>
-        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | English 3 Model Test Portal</p></div>
     </section>
 
 </div>
+
+<div class="tab-toast" id="tabToast">
+    <i class="fas fa-triangle-exclamation"></i> Tab switch detected — this is being recorded.
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+</button>
 
 <script>
 /* ================= CONFIG ================= */
@@ -362,7 +387,7 @@ function startExam(){
     state={
         name,email,college,number,
         answers:new Array(TOTAL).fill(null),
-        qTime:new Array(TOTAL).fill(0),
+        answerTimes:new Array(TOTAL).fill(null), // seconds since start when first answered
         current:0,
         timeLeft:CONFIG.EXAM_MINUTES*60,
         startTime:Date.now(),
@@ -371,10 +396,10 @@ function startExam(){
         submitted:false
     };
 
-    document.getElementById('examUser').textContent=name+'  •  '+college+'  •  '+number;
     document.getElementById('tabCount').textContent='0';
+    document.getElementById('tabPill').classList.remove('alert');
     showScreen('examScreen');
-    renderQuestion();
+    renderAllQuestions();
     updateProgress();
     startTimer();
 }
@@ -384,7 +409,6 @@ function startTimer(){
     updateTimerDisplay();
     state.timerId=setInterval(()=>{
         state.timeLeft--;
-        if(state.qTime&&state.answers) state.qTime[state.current]++;
         updateTimerDisplay();
         if(state.timeLeft<=0){clearInterval(state.timerId);submitExam(true);}
     },1000);
@@ -395,52 +419,46 @@ function updateTimerDisplay(){
     document.getElementById('timer').classList.toggle('warn',state.timeLeft<=60);
 }
 
-function renderQuestion(){
-    const i=state.current;
-    const q=QUESTIONS[i];
-    document.getElementById('qNum').textContent=`Question ${i+1} of ${TOTAL}`;
-
-    const st=document.getElementById('qStatus');
-    if(state.answers[i]===null){st.textContent='Not answered';st.className='q-status';}
-    else{st.textContent='Answered';st.className='q-status answered';}
-
-    document.getElementById('qText').innerHTML=esc(q.q);
-    const box=document.getElementById('options');
-    box.innerHTML='';
-    q.opts.forEach((opt,idx)=>{
-        const div=document.createElement('div');
-        div.className='option'+(state.answers[i]===idx?' selected':'');
-        div.innerHTML=`<span class="option-letter">${LETTERS[idx]}</span><span class="option-text">${esc(opt)}</span>`;
-        div.onclick=()=>selectOption(idx);
-        box.appendChild(div);
-    });
-
-    document.getElementById('prevBtn').disabled=(i===0);
-    document.getElementById('nextBtn').innerHTML=(i===TOTAL-1)?'Last Question <i class="fas fa-flag-checkered"></i>':'Next <i class="fas fa-arrow-right"></i>';
-    renderPalette();
+function renderAllQuestions(){
+    const body=document.getElementById('examBody');
+    body.innerHTML=QUESTIONS.map((q,qi)=>`
+        <div class="q-card" id="q${qi}" data-qi="${qi}">
+            <div class="q-header">
+                <span class="q-num">Question ${qi+1} of ${TOTAL}</span>
+                <span class="q-status" id="qStatus${qi}">Not answered</span>
+            </div>
+            <div class="q-text">${esc(q.q)}</div>
+            <div class="options" id="opts${qi}">
+                ${q.opts.map((opt,oi)=>`
+                    <div class="option" data-qi="${qi}" data-oi="${oi}" onclick="selectOption(${qi},${oi})">
+                        <span class="option-letter">${LETTERS[oi]}</span>
+                        <span class="option-text">${esc(opt)}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
 }
 
-function selectOption(idx){state.answers[state.current]=idx;renderQuestion();updateProgress();}
-function prevQ(){if(state.current>0){state.current--;renderQuestion();}}
-function nextQ(){if(state.current<TOTAL-1){state.current++;renderQuestion();}else{confirmSubmit();}}
-function jumpTo(i){state.current=i;renderQuestion();}
-
-function renderPalette(){
-    const p=document.getElementById('palette');
-    p.innerHTML='';
-    for(let i=0;i<TOTAL;i++){
-        const b=document.createElement('button');
-        b.className='p-btn'+(state.answers[i]!==null?' answered':'')+(i===state.current?' current':'');
-        b.textContent=i+1;
-        b.onclick=()=>jumpTo(i);
-        p.appendChild(b);
+function selectOption(qi,oi){
+    if(state.submitted) return;
+    if(state.answerTimes[qi]===null){
+        state.answerTimes[qi]=Math.round((Date.now()-state.startTime)/1000);
     }
+    state.answers[qi]=oi;
+    document.querySelectorAll(`#opts${qi} .option`).forEach((el,idx)=>{
+        el.classList.toggle('selected',idx===oi);
+    });
+    const st=document.getElementById(`qStatus${qi}`);
+    st.textContent='Answered';
+    st.className='q-status answered';
+    document.getElementById(`q${qi}`).classList.add('answered');
+    updateProgress();
 }
 
 function updateProgress(){
     const done=state.answers.filter(a=>a!==null).length;
     document.getElementById('progressFill').style.width=(done/TOTAL*100)+'%';
-    document.getElementById('paletteCount').textContent=`${done} / ${TOTAL} answered`;
 }
 
 function confirmSubmit(){
@@ -451,7 +469,28 @@ function confirmSubmit(){
     if(confirm(msg)) submitExam(false);
 }
 
-/* ================= TAB SWITCH TRACKING ================= */
+/* ================= SCROLL SPY (keyboard target) ================= */
+function updateScrollSpy(){
+    const cards=document.querySelectorAll('.q-card');
+    if(!cards.length) return;
+    const barH=document.getElementById('stickyBar').offsetHeight;
+    let closest=0,minDist=Infinity;
+    cards.forEach((el,i)=>{
+        const rect=el.getBoundingClientRect();
+        const dist=Math.abs(rect.top-barH-8);
+        if(dist<minDist){minDist=dist;closest=i;}
+    });
+    state.current=closest;
+}
+window.addEventListener('scroll',()=>{ if(state.answers) updateScrollSpy(); },{passive:true});
+
+/* Back-to-top button */
+window.addEventListener('scroll',()=>{
+    const btn=document.getElementById('backTop');
+    if(btn) btn.classList.toggle('show',window.scrollY>600);
+},{passive:true});
+
+/* ================= TAB SWITCH ================= */
 document.addEventListener('visibilitychange',function(){
     if(!state||!state.answers||state.submitted) return;
     if(document.getElementById('examScreen').style.display==='none') return;
@@ -460,9 +499,9 @@ document.addEventListener('visibilitychange',function(){
         document.getElementById('tabCount').textContent=state.tabSwitches;
         document.getElementById('tabPill').classList.add('alert');
     } else {
-        const w=document.getElementById('tabWarning');
-        w.classList.add('show');
-        setTimeout(()=>w.classList.remove('show'),4000);
+        const t=document.getElementById('tabToast');
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'),4000);
     }
 });
 
@@ -503,8 +542,8 @@ function submitExam(auto){
         autoSubmitted:auto,
         answers:state.answers,
         answersText:answersText(),
-        qTime:state.qTime,
-        qTimeText:state.qTime.map(t=>t+'s').join('|')
+        qTime:state.answerTimes,
+        qTimeText:state.answerTimes.map(t=>t===null?'-':t+'s').join('|')
     });
 }
 
@@ -543,7 +582,8 @@ function buildReview(){
         const isCorrect=ua===q.ans;
         const cls=ua===null?'skip':(isCorrect?'ok':'bad');
         const label=ua===null?'Skipped':(isCorrect?'Correct':'Wrong');
-        const spent=(state.qTime&&state.qTime[i])?state.qTime[i]+'s':'0s';
+        const t=state.answerTimes[i];
+        const spent=t===null?'—':'answered at '+fmtTime(t);
         return `
             <div class="review-item ${cls}">
                 <div class="review-head">
@@ -595,12 +635,8 @@ async function loadLeaderboard(){
         }
         let html=`<table class="lb-table">
             <thead><tr>
-                <th style="width:52px">#</th>
-                <th>Name</th>
-                <th>College</th>
-                <th>Contact</th>
-                <th style="width:70px">Score</th>
-                <th style="width:80px">Time</th>
+                <th style="width:52px">#</th><th>Name</th><th>College</th><th>Contact</th>
+                <th style="width:70px">Score</th><th style="width:80px">Time</th>
             </tr></thead><tbody>`;
         data.leaderboard.forEach((r,i)=>{
             const rank=i+1;
@@ -630,12 +666,17 @@ function refreshLeaderboard(){loadLeaderboard();}
 document.getElementById('numberInput').addEventListener('input',function(){
     this.value=this.value.replace(/[^0-9+\-()\s]/g,'');
 });
+
 document.addEventListener('keydown',function(e){
+    if(!state||!state.answers) return;
     if(document.getElementById('examScreen').style.display==='none') return;
-    if(e.key==='ArrowRight') nextQ();
-    if(e.key==='ArrowLeft') prevQ();
-    if(['1','2','3','4'].includes(e.key)) selectOption(parseInt(e.key)-1);
+    if(['1','2','3','4'].includes(e.key)){
+        selectOption(state.current,parseInt(e.key)-1);
+        const card=document.getElementById('q'+state.current);
+        if(card) card.scrollIntoView({behavior:'smooth',block:'center'});
+    }
 });
+
 window.addEventListener('beforeunload',function(e){
     if(state&&!state.submitted&&document.getElementById('examScreen').style.display!=='none'){
         e.preventDefault();e.returnValue='';
