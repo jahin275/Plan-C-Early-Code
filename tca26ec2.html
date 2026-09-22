@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Econ 2 Model Test – Plan C Academy</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px}
+    .container{background:#fff;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.15);width:100%;max-width:760px;margin:auto;animation:fadeIn .45s ease-out;position:relative}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    /* ---------- HEADER ---------- */
+    .header{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);padding:28px 20px;text-align:center;color:#fff;border-radius:20px 20px 0 0}
+    .logos{display:flex;justify-content:center;align-items:center;gap:18px;margin-bottom:16px}
+    .logo{width:64px;height:64px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px rgba(0,0,0,.2);overflow:hidden;flex-shrink:0}
+    .logo img{width:100%;height:100%;object-fit:contain;display:block;padding:4px}
+    .logo i{font-size:1.5rem;color:#0ea5e9}
+    .logo.alt i{color:#6a11cb}
+    .title{font-size:1.75rem;font-weight:700;margin-bottom:6px;text-shadow:1px 1px 3px rgba(0,0,0,.2)}
+    .subtitle{font-size:.95rem;opacity:.92}
+
+    /* ---------- START ---------- */
+    .content{padding:28px}
+    .input-group{margin-bottom:18px}
+    .input-label{display:block;font-size:.95rem;color:#333;margin-bottom:8px;font-weight:600}
+    .input-wrapper{position:relative;width:100%}
+    .input-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#0ea5e9;font-size:1.05rem}
+    .input-wrapper input{width:100%;padding:13px 14px 13px 44px;font-size:1rem;border:2px solid #e0e0e0;border-radius:10px;outline:none;transition:.25s}
+    .input-wrapper input:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+
+    .search-btn{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);color:#fff;border:none;padding:15px 30px;font-size:1.05rem;font-weight:600;border-radius:10px;cursor:pointer;width:100%;transition:.3s;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.4px}
+    .search-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(14,165,233,.35)}
+    .search-btn:active{transform:translateY(0)}
+    .search-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+    .rules{background:#f8f9fa;border-left:4px solid #0ea5e9;border-radius:10px;padding:16px 18px;margin-bottom:22px;font-size:.92rem;color:#444;line-height:1.75}
+    .rules b{color:#0ea5e9}
+    .footer{text-align:center;padding:18px;color:#666;font-size:.85rem;background:#f8f9fa;border-top:1px solid #eee;border-radius:0 0 20px 20px}
+
+    /* ---------- STICKY BAR ---------- */
+    .sticky-bar{
+        position:sticky;top:0;z-index:100;
+        background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);
+        color:#fff;padding:12px 18px;
+        display:flex;justify-content:space-between;align-items:center;
+        gap:10px;flex-wrap:wrap;border-radius:20px 20px 0 0;
+        box-shadow:0 4px 14px rgba(0,0,0,.12);
+    }
+    .bar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .bar-title{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px}
+    .bar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+    .timer{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:8px 14px;border-radius:30px;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums}
+    .timer.warn{background:rgba(234,67,53,.9);border-color:#ea4335;animation:pulse 1s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+    .tab-pill{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 12px;border-radius:30px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:6px}
+    .tab-pill.alert{background:rgba(234,67,53,.9);border-color:#ea4335}
+
+    .top-submit{background:#fff;color:#0ea5e9;border:none;padding:9px 16px;border-radius:30px;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s}
+    .top-submit:hover{background:#f0f9ff;transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+
+    .progress-bar{height:5px;background:#e9ecf5;width:100%}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,#6a11cb);transition:width .3s}
+
+    /* ---------- TOAST ---------- */
+    .tab-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);
+        background:#fef3c7;color:#92400e;padding:10px 18px;border-radius:10px;
+        box-shadow:0 6px 20px rgba(0,0,0,.18);font-size:.88rem;font-weight:700;
+        z-index:300;display:none;border-left:4px solid #f59e0b}
+    .tab-toast.show{display:block;animation:slideDown .3s ease-out}
+    @keyframes slideDown{from{opacity:0;transform:translate(-50%,-10px)}to{opacity:1;transform:translate(-50%,0)}}
+
+    /* ---------- EXAM BODY ---------- */
+    .exam-body{padding:22px 22px 10px}
+    .q-card{background:#fcfdff;border:1px solid #eef0f6;border-left:4px solid #0ea5e9;
+        border-radius:12px;padding:18px 18px 8px;margin-bottom:18px;
+        scroll-margin-top:90px;transition:.2s}
+    .q-card.answered{border-left-color:#16a34a}
+    .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+    .q-num{font-weight:700;color:#0ea5e9;font-size:.92rem}
+    .q-status{font-size:.74rem;padding:3px 11px;border-radius:20px;background:#eef0f6;color:#777;font-weight:600}
+    .q-status.answered{background:#e6f4ea;color:#137333}
+    .q-text{font-size:1.02rem;line-height:1.6;color:#1f2430;margin-bottom:14px;font-weight:500}
+
+    .option{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:.18s;background:#fff}
+    .option:hover{border-color:#7dd3fc;background:#f0f9ff;transform:translateX(3px)}
+    .option.selected{border-color:#0ea5e9;background:#e0f2fe;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+    .option-letter{width:30px;height:30px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0ea5e9;flex-shrink:0;transition:.18s}
+    .option.selected .option-letter{background:#0ea5e9;color:#fff}
+    .option-text{font-size:.96rem;color:#2b3140;word-break:break-word}
+
+    .end-submit-wrap{padding:10px 22px 26px}
+    .back-top{position:fixed;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;
+        background:linear-gradient(135deg,#0ea5e9,#6a11cb);color:#fff;border:none;cursor:pointer;
+        display:none;align-items:center;justify-content:center;font-size:1.1rem;
+        box-shadow:0 6px 18px rgba(14,165,233,.4);z-index:150}
+    .back-top.show{display:flex}
+    .back-top:hover{transform:translateY(-2px)}
+
+    /* ---------- RESULT ---------- */
+    .score-ring{width:170px;height:170px;border-radius:50%;background:conic-gradient(#0ea5e9 var(--p,0%),#e9ecf5 0);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;transition:background .6s}
+    .score-inner{width:138px;height:138px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 2px 10px rgba(0,0,0,.07)}
+    .score-big{font-size:1.9rem;font-weight:800;color:#2b3140;line-height:1}
+    .score-pct{font-size:.9rem;color:#7a8194;margin-top:5px;font-weight:600}
+    .verdict{text-align:center;font-size:1.15rem;font-weight:700;margin-bottom:22px;color:#0ea5e9}
+    .verdict small{display:block;font-weight:500;font-size:.85rem;color:#7a8194;margin-top:5px}
+
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:10px;margin-bottom:22px}
+    .stat{background:#f8f9fa;border-radius:12px;padding:14px 8px;text-align:center;border:1px solid #eef0f6}
+    .stat .v{font-size:1.35rem;font-weight:800;line-height:1}
+    .stat .l{font-size:.72rem;color:#7a8194;margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+    .stat.g .v{color:#16a34a}.stat.r .v{color:#ea4335}.stat.y .v{color:#f59e0b}.stat.b .v{color:#0ea5e9}.stat.p .v{color:#6a11cb}
+
+    .save-status{text-align:center;font-size:.9rem;color:#555;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:20px}
+    .section-title{font-size:1.02rem;font-weight:700;color:#2b3140;margin:24px 0 12px;display:flex;align-items:center;gap:9px}
+    .section-title i{color:#0ea5e9}
+
+    .lb-table{width:100%;border-collapse:collapse;font-size:.88rem;border-radius:12px;overflow:hidden}
+    .lb-table th{background:#0ea5e9;color:#fff;padding:11px 9px;text-align:left;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+    .lb-table td{padding:10px 9px;border-bottom:1px solid #eef0f6;color:#3a4152}
+    .lb-table tr:nth-child(even) td{background:#fafbff}
+    .lb-table tr.me td{background:#e0f2fe;font-weight:700}
+    .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#eef0f6;color:#0ea5e9;font-weight:700;font-size:.8rem}
+    .rank-badge.g1{background:#ffd54f;color:#7a5c00}
+    .rank-badge.g2{background:#cfd8dc;color:#455a64}
+    .rank-badge.g3{background:#ffcc9c;color:#7a4200}
+    .lb-empty{text-align:center;color:#8b93a7;padding:24px;font-size:.9rem}
+
+    .review-item{border:1px solid #eef0f6;border-left:5px solid #cbd2e0;border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fcfdff}
+    .review-item.ok{border-left-color:#16a34a}
+    .review-item.bad{border-left-color:#ea4335}
+    .review-item.skip{border-left-color:#f59e0b}
+    .review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+    .review-num{font-weight:800;color:#0ea5e9;font-size:.85rem}
+    .review-time{font-size:.72rem;color:#8b93a7;font-weight:600}
+    .review-badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+    .review-badge.ok{background:#e6f4ea;color:#137333}
+    .review-badge.bad{background:#fce8e6;color:#c5221f}
+    .review-badge.skip{background:#fef3c7;color:#92400e}
+    .review-q{font-size:.95rem;color:#2b3140;margin-bottom:9px;line-height:1.5;font-weight:500}
+    .review-line{font-size:.85rem;color:#5a6274;margin-bottom:4px;line-height:1.5}
+    .review-line b{color:#3a4152}
+    .review-exp{font-size:.83rem;color:#4a5568;background:#f0f9ff;border-radius:8px;padding:9px 11px;margin-top:8px;line-height:1.6}
+    .review-exp i{color:#f59e0b;margin-right:5px}
+
+    .btn-row{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+    .btn-row .search-btn{flex:1;min-width:150px}
+    .btn-outline{background:#fff;border:2px solid #0ea5e9;color:#0ea5e9;padding:15px 24px;border-radius:10px;font-weight:600;cursor:pointer;flex:1;min-width:150px;transition:.2s;font-size:1rem}
+    .btn-outline:hover{background:#f0f9ff}
+
+    @media(max-width:520px){
+        body{padding:10px}
+        .container{border-radius:14px}
+        .content{padding:20px 16px}
+        .exam-body{padding:16px 14px 10px}
+        .end-submit-wrap{padding:10px 14px 22px}
+        .title{font-size:1.4rem}
+        .sticky-bar{border-radius:14px 14px 0 0;padding:10px 12px}
+        .bar-title{font-size:.82rem}
+        .timer{font-size:.9rem;padding:7px 11px}
+        .top-submit{font-size:.78rem;padding:8px 12px}
+        .option{padding:11px 12px}
+        .option-text{font-size:.9rem}
+        .q-text{font-size:.96rem}
+        .logo{width:54px;height:54px}
+    }
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ================= START SCREEN ================= -->
+    <section id="startScreen">
+        <div class="header">
+            <div class="logos">
+                <div class="logo">
+                    <img src="C.png" alt="Plan C" onerror="this.parentNode.innerHTML='<i class=&quot;fas fa-chart-line&quot;></i>'">
+                </div>
+                <div class="logo alt"><i class="fas fa-coins"></i></div>
+            </div>
+            <h1 class="title">Econ 2 – Model Test</h1>
+            <p class="subtitle">Demand, Supply, Elasticity &amp; Market Equilibrium &nbsp;•&nbsp; 24 Questions &nbsp;•&nbsp; 12 Minutes</p>
+        </div>
+        <div class="content">
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-user"></i> Full Name</label>
+                <div class="input-wrapper"><i class="fas fa-user input-icon"></i>
+                    <input type="text" id="nameInput" placeholder="e.g. Rahim Uddin" maxlength="60" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-building-columns"></i> College</label>
+                <div class="input-wrapper"><i class="fas fa-building-columns input-icon"></i>
+                    <input type="text" id="collegeInput" placeholder="e.g. Dhaka College" maxlength="100" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-envelope"></i> Email</label>
+                <div class="input-wrapper"><i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="emailInput" placeholder="e.g. rahim@example.com" maxlength="80" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-phone"></i> Contact No.</label>
+                <div class="input-wrapper"><i class="fas fa-phone input-icon"></i>
+                    <input type="text" id="numberInput" placeholder="e.g. 01712345678" maxlength="20" autocomplete="off"></div>
+            </div>
+
+            <div class="rules">
+                <b><i class="fas fa-circle-info"></i> Instructions</b><br>
+                • Total <b>24</b> MCQ questions, each carries <b>1</b> mark.<br>
+                • <b>Negative marking:</b> −0.25 for each wrong answer. Skipped = 0.<br>
+                • Time limit is <b>12 minutes</b> — the exam auto-submits when time is up.<br>
+                • All questions are on one page — just scroll and answer.<br>
+                • ⚠️ <b>Tab switching is monitored</b> and recorded with your result.<br>
+                • Your score will be saved to the <b>Econ2</b> leaderboard automatically.
+            </div>
+
+            <button class="search-btn" onclick="startExam()">
+                <i class="fas fa-play"></i> Start Exam
+            </button>
+        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | Econ 2 Model Test Portal</p></div>
+    </section>
+
+    <!-- ================= EXAM SCREEN ================= -->
+    <section id="examScreen" style="display:none">
+        <div class="sticky-bar" id="stickyBar">
+            <div class="bar-left">
+                <span class="bar-title"><i class="fas fa-file-pen"></i> Econ 2 • Model Test</span>
+                <span class="tab-pill" id="tabPill"><i class="fas fa-eye"></i> Tabs: <span id="tabCount">0</span></span>
+            </div>
+            <div class="bar-right">
+                <div class="timer" id="timer"><i class="fas fa-clock"></i> <span id="timerText">12:00</span></div>
+                <button class="top-submit" onclick="confirmSubmit()"><i class="fas fa-paper-plane"></i> Submit</button>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <div class="exam-body" id="examBody"></div>
+
+        <div class="end-submit-wrap">
+            <button class="search-btn" onclick="confirmSubmit()">
+                <i class="fas fa-paper-plane"></i> Submit Exam
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= RESULT SCREEN ================= -->
+    <section id="resultScreen" style="display:none">
+        <div class="header">
+            <div class="logos">
+                <div class="logo">
+                    <img src="C.png" alt="Plan C" onerror="this.parentNode.innerHTML='<i class=&quot;fas fa-chart-line&quot;></i>'">
+                </div>
+            </div>
+            <h1 class="title" style="font-size:1.45rem">Exam Completed</h1>
+            <p class="subtitle" id="resultUser">—</p>
+        </div>
+        <div class="content">
+            <div class="score-ring" id="scoreRing" style="--p:0%">
+                <div class="score-inner">
+                    <div class="score-big" id="scoreBig">0/24</div>
+                    <div class="score-pct" id="scorePct">0%</div>
+                </div>
+            </div>
+            <div class="verdict" id="verdict"></div>
+
+            <div class="stats">
+                <div class="stat g"><div class="v" id="statCorrect">0</div><div class="l">Correct</div></div>
+                <div class="stat r"><div class="v" id="statWrong">0</div><div class="l">Wrong</div></div>
+                <div class="stat y"><div class="v" id="statSkipped">0</div><div class="l">Skipped</div></div>
+                <div class="stat b"><div class="v" id="statTime">0:00</div><div class="l">Time</div></div>
+                <div class="stat p"><div class="v" id="statTabs">0</div><div class="l">Tab Switch</div></div>
+            </div>
+
+            <div class="save-status" id="saveStatus"><i class="fas fa-spinner fa-spin"></i> Saving your score…</div>
+
+            <div class="section-title"><i class="fas fa-trophy"></i> Econ2 Leaderboard</div>
+            <div id="leaderboard"><div class="lb-empty">Loading leaderboard…</div></div>
+
+            <div class="section-title"><i class="fas fa-list-check"></i> Answer Review</div>
+            <div id="review"></div>
+
+            <div class="btn-row">
+                <button class="search-btn" onclick="location.reload()"><i class="fas fa-rotate-right"></i> Retake Exam</button>
+                <button class="btn-outline" onclick="refreshLeaderboard()"><i class="fas fa-arrows-rotate"></i> Refresh Board</button>
+            </div>
+        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | Econ 2 Model Test Portal</p></div>
+    </section>
+
+</div>
+
+<div class="tab-toast" id="tabToast">
+    <i class="fas fa-triangle-exclamation"></i> Tab switch detected — this is being recorded.
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+/* ================= CONFIG ================= */
+const CONFIG = {
+    WEB_APP_URL: "https://script.google.com/macros/s/AKfycbw35N066KgkYusfUvun_XSZLXGkI7ZXYVSjq3OEM10jF1rN8gn8iPgBTPM_rBjYJgnZ/exec",
+    SHEET_NAME: "Econ2",
+    EXAM_MINUTES: 12,
+    LEADERBOARD_LIMIT: 20,
+    NEGATIVE_MARK: 0.25
+};
+
+/* ================= QUESTION BANK ================= */
+const QUESTIONS = [
+{q:"অন্যান্য অবস্থা অপরিবর্তিত থেকে কোনো দ্রব্যের নিজস্ব দাম ২৫% হ্রাস পেলে চাহিদার পরিমাণ ২০ একক থেকে বৃদ্ধি পেয়ে ৩০ একক হয়। এই ঘটনাটি অর্থনীতির পরিভাষায় কী নির্দেশ করে? (Ceteris paribus, when the own price of a good falls by 25%, the quantity demanded increases from 20 units to 30 units. Economically, this phenomenon is termed as:)",
+opts:["চাহিদার বৃদ্ধি (Increase in demand)","চাহিদার প্রসারণ (Extension of demand)","চাহিদার পরিবর্তন বা স্থানান্তর (Shift in demand)","আয় প্রভাবজনিত চাহিদা বৃদ্ধি (Pure income shift)"],ans:1,
+exp:"নিজস্ব দাম পরিবর্তনের কারণে চাহিদার পরিমাণ পরিবর্তন হলে সেটি চাহিদার প্রসারণ (Extension of demand) — চাহিদা রেখা বরাবর সঞ্চালন।"},
+
+{q:"কোনো দ্রব্যের চাহিদা অপেক্ষক Qd = a − bP থেকে পরিবর্তিত হয়ে Qd = (a + k) − bP হলো (যেখানে k > 0)। এর জ্যামিতিক তাৎপর্য কী? (A demand function changes from Qd = a − bP to Qd = (a + k) − bP (where k > 0). What is its geometric significance?)",
+opts:["চাহিদা রেখা বরাবর নিচের দিকে সঞ্চালন (Downwards movement along the curve)","চাহিদা রেখার ঢাল বৃদ্ধি পেয়ে রেখাটি খাড়া হবে (Curve becomes steeper)","চাহিদা রেখা সমান্তরালভাবে ডানদিকে স্থানান্তরিত হবে (Parallel rightward shift)","চাহিদা রেখা সমান্তরালভাবে বামদিকে স্থানান্তরিত হবে (Parallel leftward shift)"],ans:2,
+exp:"Intercept বেড়েছে (a → a+k) কিন্তু slope −b একই আছে → চাহিদা রেখা সমান্তরালভাবে ডানে সরে।"},
+
+{q:"যদি বাজারে চা এবং কফি পরস্পর পরিবর্তক (Substitute) দ্রব্য হয়, তবে চায়ের ওপর সরকার নতুন শুল্ক আরোপ করে দাম বাড়িয়ে দিলে কফির বাজারে কী প্রভাব পড়বে? (If tea and coffee are substitute goods in the market, what will happen in the coffee market if the government imposes a tax on tea, raising its price?)",
+opts:["কফির চাহিদা রেখা বরাবর প্রসারণ ঘটবে (Movement along coffee demand curve)","কফির চাহিদা রেখা সম্পূর্ণভাবে ডানদিকে স্থানান্তরিত হবে (Rightward shift of coffee demand)","কফির চাহিদা রেখা বামদিকে স্থানান্তরিত হবে (Leftward shift of coffee demand)","কফির যোগান রেখা বামদিকে স্থানান্তরিত হবে (Leftward shift of coffee supply)"],ans:1,
+exp:"চায়ের দাম বাড়লে ভোক্তা কফির দিকে ঝুঁকে → কফির চাহিদা বাড়ে → কফির চাহিদা রেখা ডানে সরে।"},
+
+{q:"ভোক্তার আয় ২০,০০০ টাকা থেকে বৃদ্ধি পেয়ে ২৫,০০০ টাকা হওয়ায় কোনো একটি দ্রব্যের মাসিক চাহিদা ৪০ একক থেকে হ্রাস পেয়ে ৩০ একক হলো। দ্রব্যটির আয়ের স্থিতিস্থাপকতা (Ey) কত এবং দ্রব্যটি কেমন? (When consumer income increases from Tk 20,000 to Tk 25,000, monthly demand for a good falls from 40 units to 30 units. What is the income elasticity of demand (Ey) and the nature of the good?)",
+opts:["Ey = +1.0, স্বাভাবিক দ্রব্য (Normal good)","Ey = −1.0, নিকৃষ্ট দ্রব্য (Inferior good)","Ey = −0.5, গিফেন দ্রব্য (Giffen good)","Ey = +1.25, বিলাসজাতীয় দ্রব্য (Luxury good)"],ans:1,
+exp:"%ΔQ = (30−40)/40 = −25%, %ΔY = (25000−20000)/20000 = +25%. Ey = −25/25 = −1.0। Ey < 0 → নিকৃষ্ট দ্রব্য।"},
+
+{q:"যদি ভোক্তার আয়ের শতকরা পরিবর্তনের তুলনায় কোনো দ্রব্যের চাহিদার পরিমাণের শতকরা পরিবর্তন বেশি হয় (Ey > 1), তবে সেই দ্রব্যটিকে কী বলা হয়? (If the percentage change in quantity demanded is greater than the percentage change in consumer's income (Ey > 1), what is the commodity classified as?)",
+opts:["অতি-প্রয়োজনীয় নিত্যপণ্য (Essential staple good)","নিকৃষ্ট পণ্য (Inferior good)","বিলাসবহুল বা আরামদায়ক পণ্য (Luxury / Comfort good)","গিফেন পণ্য (Giffen good)"],ans:2,
+exp:"Ey > 1 হলে দ্রব্যটি বিলাসবহুল বা আরামদায়ক পণ্য (Luxury / Comfort good)।"},
+
+{q:"একজন ভোক্তার আয় দ্বিগুণ বৃদ্ধি পাওয়া সত্ত্বেও রান্নায় ব্যবহৃত লবণের মাসিক ক্রয়ের পরিমাণ অপরিবর্তিত থাকে। এক্ষেত্রে লবণের আয়ের স্থিতিস্থাপকতা কত? (A consumer's income doubles, yet his monthly purchase of cooking salt remains completely unchanged. What is the income elasticity of demand for salt in this case?)",
+opts:["Ey = 0 (শূন্য)","Ey = 1 (একক)","Ey = ∞ (অসীম)","Ey < 0 (ঋণাত্মক)"],ans:0,
+exp:"আয় বাড়লেও চাহিদা অপরিবর্তিত → %ΔQ = 0 → Ey = 0।"},
+
+{q:"কোনো দ্রব্যের ওপর উৎপাদন শুল্ক আরোপের কারণে দাম বৃদ্ধি পাওয়ায় চাহিদার যে হ্রাস ঘটে, এবং ভোক্তার রুচির প্রতিকূল পরিবর্তনের কারণে চাহিদার যে হ্রাস ঘটে—এই দুটির মধ্যে মৌলিক পার্থক্য কী? (What is the fundamental difference between the decrease in demand caused by a price rise due to an excise tax, versus a decline caused by an adverse change in consumer taste?)",
+opts:["উভয় ক্ষেত্রেই চাহিদা রেখা সমান্তরালভাবে বামে সরে (Both cause a parallel leftward shift of demand)","প্রথমটি চাহিদার সংকোচন (Contraction), দ্বিতীয়টি চাহিদার হ্রাস (Decrease in demand)","প্রথমটি চাহিদার হ্রাস, দ্বিতীয়টি চাহিদার সংকোচন (First is decrease in demand, second is contraction of demand)","উভয় ক্ষেত্রেই চাহিদা রেখা বরাবর উর্ধ্বমুখী সঞ্চালন ঘটে (Both represent upward movement along the demand curve)"],ans:1,
+exp:"দাম বাড়ার কারণে → চাহিদার সংকোচন (movement along curve); রুচি পরিবর্তনের কারণে → চাহিদার হ্রাস (curve shift left)।"},
+
+{q:"স্বাভাবিক দ্রব্যের ক্ষেত্রে যোগান রেখা বাম থেকে ডানে উর্ধ্বগামী হওয়ার মূল অর্থনৈতিক কারণ কোনটি? (What is the primary economic reason for a normal supply curve to slope upward from left to right?)",
+opts:["ক্রমহ্রাসমান প্রান্তিক উপযোগ বিধি (Law of diminishing marginal utility)","উৎপাদনে ক্রমহ্রাসমান প্রান্তিক উৎপাদন বিধি ও ক্রমবর্ধমান প্রান্তিক ব্যয় (Diminishing marginal returns and rising marginal cost)","ভোক্তার আয়ের ধনাত্মক প্রভাব (Positive income effect of consumers)","বাজার চাহিদার অস্থিতিস্থাপকতা (Inelasticity of market demand)"],ans:1,
+exp:"উৎপাদন বাড়ালে প্রান্তিক উৎপাদন কমে ও প্রান্তিক ব্যয় বাড়ে → যোগান রেখা ঊর্ধ্বগামী।"},
+
+{q:"একটি ফার্মের যোগান অপেক্ষক Qs = −40 + 5P। দ্রব্যের দাম P = 6 টাকা হলে ফার্মটির যোগানের পরিমাণ কত হবে? (A firm's supply function is Qs = −40 + 5P. What will be the firm's quantity supplied when the price P = Tk 6?)",
+opts:["১০ একক (10 units)","−১০ একক (−10 units)","০ একক (Zero units)","৪০ একক (40 units)"],ans:2,
+exp:"Qs = −40 + 5(6) = −40 + 30 = −10। যেহেতু ঋণাত্মক যোগান অর্থহীন, কার্যত যোগান = 0 একক (এই দামে ফার্ম উৎপাদনে আগ্রহী নয়)।"},
+
+{q:"মূলবিন্দু (Origin) থেকে উত্থিত যেকোনো সরলরৈখিক যোগান রেখার সকল বিন্দুতে যোগানের স্থিতিস্থাপকতা (Es) কত? (What is the elasticity of supply (Es) at every point on any linear supply curve that originates from the origin?)",
+opts:["Es = 0","Es = 1","Es > 1","Es < 1"],ans:1,
+exp:"মূলবিন্দুগামী সরলরৈখিক যোগান রেখার প্রতিটি বিন্দুতে Es = 1 (একক স্থিতিস্থাপক)।"},
+
+{q:"যদি কোনো সরলরৈখিক যোগান রেখা উল্লম্ব অক্ষকে (দাম অক্ষ বা Y-axis) ছেদ করে ডানদিকে উর্ধ্বগামী হয়, তবে সেই রেখার যেকোনো বিন্দুতে যোগানের স্থিতিস্থাপকতা কেমন হবে? (If a linear supply curve intersects the vertical price axis (Y-axis) and slopes upward to the right, what is the elasticity of supply (Es) at any point?)",
+opts:["এককের সমান (Es = 1)","এককের চেয়ে বেশি (Es > 1)","এককের চেয়ে কম (Es < 1)","সম্পূর্ণ অস্থিতিস্থাপক (Es = 0)"],ans:1,
+exp:"Y-axis কে ছেদ করলে যোগান রেখা বেশি স্থিতিস্থাপক → Es > 1।"},
+
+{q:"একটি বাজারে কোনো পণ্যের যোগান অপেক্ষক Qs = 20 + 4P। দাম P = 5 টাকা হলে যোগানের দাম স্থিতিস্থাপকতা (Price Elasticity of Supply, Es) কত? (In a market, the supply function of a good is Qs = 20 + 4P. What is the price elasticity of supply (Es) when the price P = Tk 5?)",
+opts:["০.২৫ (0.25)","০.৫০ (0.50)","১.০০ (1.00)","২.০০ (2.00)"],ans:1,
+exp:"P = 5 → Qs = 40। dQ/dP = 4। Es = 4 × (5/40) = 0.5।"},
+
+{q:"লিয়োনার্দো দা ভিঞ্চির বিখ্যাত চিত্রকর্ম 'মোনালিসা'-র যোগানের দাম স্থিতিস্থাপকতা কত? (What is the price elasticity of supply for Leonardo da Vinci's original masterpiece painting 'Mona Lisa'?)",
+opts:["Es = 0 (সম্পূর্ণ অস্থিতিস্থাপক)","Es = 1 (একক স্থিতিস্থাপক)","Es = ∞ (সম্পূর্ণ স্থিতিস্থাপক)","Es > 1 (অধিক স্থিতিস্থাপক)"],ans:0,
+exp:"অনন্য/অপুনরুৎপাদনযোগ্য শিল্পকর্মের যোগান সম্পূর্ণ অস্থিতিস্থাপক → Es = 0।"},
+
+{q:"নিচের কোন ক্ষেত্রে একই যোগান রেখা বরাবর উর্ধ্বমুখী সঞ্চালন (Upward movement along the supply curve) ঘটবে? (Under which of the following scenarios will an upward movement along the same supply curve occur?)",
+opts:["শ্রমিকের মজুরি হ্রাস পাওয়ার কারণে উৎপাদন খরচ কমলে (Production cost falls due to a decrease in wages)","সরকার উৎপাদককে একক প্রতি ভর্তুকি প্রদান করলে (Government grants a per-unit subsidy to producers)","বাজারে দ্রব্যের নিজস্ব বিক্রয় মূল্য বৃদ্ধি পেলে (The market selling price of the good itself increases)","আধুনিক অটোমেশন প্রযুক্তির উদ্ভাবন ঘটলে (Invention of advanced automation technology)"],ans:2,
+exp:"নিজস্ব দাম বাড়লে যোগান রেখা বরাবর ঊর্ধ্বমুখী সঞ্চালন (Extension of supply) ঘটে।"},
+
+{q:"একটি শিল্প কারখানায় ব্যবহৃত প্রধান কাঁচামালের দাম হঠাৎ ৩০% বৃদ্ধি পেলে ওই পণ্যের বাজার যোগান রেখার (Supply Curve) কী পরিবর্তন হবে? (If the price of a primary raw material used in an industry suddenly rises by 30%, what change occurs to the market supply curve of that finished product?)",
+opts:["যোগান রেখা বরাবর নিচের দিকে সঞ্চালন হবে (Downwards movement along curve)","যোগান রেখা সমান্তরালভাবে বামদিকে স্থানান্তরিত হবে (Leftward shift of supply)","যোগান রেখা সমান্তরালভাবে ডানদিকে স্থানান্তরিত হবে (Rightward shift of supply)","যোগান রেখা সম্পূর্ণ আনুভূমিক হয়ে যাবে (Becomes horizontal)"],ans:1,
+exp:"কাঁচামালের দাম বৃদ্ধি → উৎপাদন ব্যয় বৃদ্ধি → যোগান হ্রাস → যোগান রেখা বামে সরে।"},
+
+{q:"একই সময়ে যদি সরকার কোনো শিল্পের ওপর নতুন পরিবেশ কর (Tax) আরোপ করে এবং বিদ্যুৎ বিল বৃদ্ধি পায়, তবে পণ্যের যোগান সূচি ও রেখায় কী পরিবর্তন আসবে? (If the government imposes a new environmental tax on an industry while electricity tariffs rise simultaneously, what will happen to the supply curve?)",
+opts:["যোগানের বৃদ্ধি ঘটবে এবং রেখা ডানে স্থানান্তরিত হবে (Increase in supply with rightward shift)","যোগানের হ্রাস ঘটবে এবং রেখা বামে স্থানান্তরিত হবে (Decrease in supply with leftward shift)","যোগানের প্রসারণ ঘটবে এবং রেখা অপরিবর্তিত থাকবে (Extension of supply with unchanged curve)","যোগানের সংকোচন ঘটবে এবং রেখা ডানে স্থানান্তরিত হবে (Contraction of supply with rightward shift)"],ans:1,
+exp:"কর ও বিদ্যুৎ বিল উভয়ই উৎপাদন ব্যয় বাড়ায় → যোগান হ্রাস → যোগান রেখা বামে সরে।"},
+
+{q:"একটি প্রতিযোগিতামূলক বাজারে চাহিদা সমীকরণ Qd = 100 − 3P এবং যোগান সমীকরণ Qs = −20 + 5P হলে, বাজার ভারসাম্য দাম (P*) এবং ভারসাম্য পরিমাণ (Q*) কত? (In a competitive market, demand is Qd = 100 − 3P and supply is Qs = −20 + 5P. What are the equilibrium price (P*) and equilibrium quantity (Q*)?)",
+opts:["P* = 10 টাকা, Q* = 70 একক","P* = 15 টাকা, Q* = 55 একক","P* = 20 টাকা, Q* = 40 একক","P* = 12 টাকা, Q* = 64 একক"],ans:1,
+exp:"100 − 3P = −20 + 5P → 120 = 8P → P* = 15। Q* = 100 − 3(15) = 55 একক।"},
+
+{q:"পূর্ববর্তী প্রশ্ন (১৭)-এর বাজারে সরকার যদি সর্বোচ্চ দাম সীমা (Price Ceiling) P = 10 টাকা নির্ধারণ করে দেয়, তবে বাজারে কী পরিস্থিতি সৃষ্টি হবে? (In the market from question (17), if the government legally imposes a price ceiling of P = Tk 10, what condition will be created in the market?)",
+opts:["৪০ এককের অতিরিক্ত যোগান বা উদ্বৃত্ত (Surplus of 40 units)","৪০ এককের অতিরিক্ত চাহিদা বা ঘাটতি (Shortage of 40 units)","২০ এককের অতিরিক্ত যোগান (Surplus of 20 units)","বাজার স্বয়ংক্রিয় ভারসাম্যে থাকবে (Remains in equilibrium)"],ans:1,
+exp:"P = 10 → Qd = 100 − 30 = 70, Qs = −20 + 50 = 30। ঘাটতি = 70 − 30 = 40 একক।"},
+
+{q:"যদি কোনো পণ্যের বাজারে ভারসাম্য দাম P* = 50 টাকা হয় এবং সরকার উৎপাদকদের স্বার্থে সর্বনিম্ন দাম (Price Floor) P = 60 টাকা নির্ধারণ করে, তবে এর প্রত্যক্ষ ফলাফল কী হবে? (If the equilibrium price in a market is P* = Tk 50 and the government enforces a price floor of P = Tk 60 to support producers, what will be the direct outcome?)",
+opts:["বাজারে দ্রব্যের তীব্র সংকট ও কালোবাজারি সৃষ্টি হবে (Acute market shortage and black marketing)","বাজারে অবিক্রীত দ্রব্যের উদ্বৃত্ত (Surplus) তৈরি হবে (Unsold market surplus of goods will be created)","ভারসাম্য দাম স্বয়ংক্রিয়ভাবে ৭০ টাকায় উন্নীত হবে (Equilibrium price will rise automatically to Tk 70)","ভোক্তার উদ্বৃত্ত বহুগুণ বৃদ্ধি পাবে (Consumer surplus will increase multifold)"],ans:1,
+exp:"Price Floor > Equilibrium Price → Qs > Qd → উদ্বৃত্ত (Surplus) সৃষ্টি।"},
+
+{q:"যদি কোনো দ্রব্যের যোগান সম্পূর্ণ অস্থিতিস্থাপক (Perfectly Inelastic, Es = 0) হয় এবং বাজারে ক্রেতার সংখ্যা বৃদ্ধির কারণে চাহিদা রেখা ডানদিকে স্থানান্তরিত হয়, তবে নতুন ভারসাম্যে কী ঘটবে? (If the supply of a commodity is perfectly inelastic (Es = 0) and the demand curve shifts to the right due to an increase in buyers, what will happen at the new equilibrium?)",
+opts:["ভারসাম্য দাম অপরিবর্তিত থাকবে কিন্তু পরিমাণ বৃদ্ধি পাবে (Equilibrium price remains unchanged but quantity increases)","ভারসাম্য দাম বৃদ্ধি পাবে কিন্তু ভারসাম্য পরিমাণ অপরিবর্তিত থাকবে (Equilibrium price increases while equilibrium quantity remains constant)","ভারসাম্য দাম ও পরিমাণ উভয়ই সমহারে বৃদ্ধি পাবে (Both equilibrium price and quantity increase equally)","ভারসাম্য দাম হ্রাস পাবে এবং পরিমাণ অপরিবর্তিত থাকবে (Equilibrium price falls and quantity remains unchanged)"],ans:1,
+exp:"যোগান রেখা উল্লম্ব → চাহিদা ডানে সরলে শুধু দাম বাড়ে, পরিমাণ স্থির থাকে।"},
+
+{q:"যদি বাজারে কোনো দ্রব্যের চাহিদা সম্পূর্ণ স্থিতিস্থাপক (Perfectly Elastic, Ed = ∞) হয় এবং প্রযুক্তিগত অগ্রগতির কারণে যোগান রেখা ডানদিকে স্থানান্তরিত হয়, তবে ভারসাম্যের ওপর কী প্রভাব পড়বে? (If market demand for a product is perfectly elastic (Ed = ∞) and the supply curve shifts to the right due to technological progress, what is the effect on equilibrium?)",
+opts:["ভারসাম্য দাম হ্রাস পাবে কিন্তু পরিমাণ অপরিবর্তিত থাকবে (Equilibrium price decreases while quantity remains unchanged)","ভারসাম্য দাম অপরিবর্তিত থাকবে কিন্তু ভারসাম্য পরিমাণ বৃদ্ধি পাবে (Equilibrium price remains unchanged while equilibrium quantity increases)","ভারসাম্য দাম ও পরিমাণ উভয়ই বৃদ্ধি পাবে (Both equilibrium price and quantity increase)","ভারসাম্য দাম ও পরিমাণ উভয়ই হ্রাস পাবে (Both equilibrium price and quantity decrease)"],ans:1,
+exp:"চাহিদা রেখা আনুভূমিক → যোগান ডানে সরলে দাম একই থাকে, শুধু পরিমাণ বাড়ে।"},
+
+{q:"একটি বাজারে একই সময়ে চাহিদা রেখা এবং যোগান রেখা উভয়ই ডানদিকে সমপরিমাণে স্থানান্তরিত (Shift) হলে নতুন ভারসাম্যের ক্ষেত্রে কোনটি নিশ্চিতভাবে সত্য? (If both the demand curve and the supply curve shift to the right by an identical magnitude simultaneously, which of the following is definitively true about the new equilibrium?)",
+opts:["ভারসাম্য দাম বৃদ্ধি পাবে কিন্তু পরিমাণ অপরিবর্তিত থাকবে (Equilibrium price rises while quantity remains unchanged)","ভারসাম্য দাম হ্রাস পাবে কিন্তু পরিমাণ বৃদ্ধি পাবে (Equilibrium price falls while quantity increases)","ভারসাম্য পরিমাণ বৃদ্ধি পাবে এবং ভারসাম্য দাম সম্পূর্ণ অপরিবর্তিত থাকবে (Equilibrium quantity increases while equilibrium price remains unchanged)","ভারসাম্য দাম ও পরিমাণ উভয়ই অনিশ্চিত থাকবে (Both equilibrium price and quantity remain indeterminate)"],ans:2,
+exp:"D ও S সমপরিমাণে ডানে সরলে দাম অপরিবর্তিত, কিন্তু পরিমাণ নিশ্চিতভাবে বাড়ে।"},
+
+{q:"যদি বাজারে কোনো পণ্যের চাহিদা হ্রাস পায় (চাহিদা রেখা বামে সরে) এবং একই সময়ে যোগান বৃদ্ধি পায় (যোগান রেখা ডানে সরে), তবে নতুন ভারসাম্য দামে কী পরিবর্তন ঘটবে? (If demand for a product decreases (shifts left) and simultaneously supply increases (shifts right), what will unambiguously happen to the equilibrium price?)",
+opts:["ভারসাম্য দাম নিশ্চিতভাবে বৃদ্ধি পাবে (Price will definitely rise)","ভারসাম্য দাম নিশ্চিতভাবে হ্রাস পাবে (Price will definitely fall)","ভারসাম্য দাম সম্পূর্ণ অপরিবর্তিত থাকবে (Price remains unchanged)","ভারসাম্য দামের পরিবর্তন অনির্ধারিত থাকবে (Price change is indeterminate)"],ans:1,
+exp:"চাহিদা বামে সরলে দাম কমে, যোগান ডানে সরলেও দাম কমে → দাম নিশ্চিতভাবে হ্রাস পাবে।"},
+
+{q:"সরকার যখন কোনো পণ্যের ওপর প্রতি এককে নির্দিষ্ট পরিমাণ পরোক্ষ কর আরোপ করে, তখন ভোক্তার তুলনায় উৎপাদককে বেশি করভার বহন করতে হবে যদি— (When the government levies a specific indirect tax on a good, the seller/producer will bear a greater share of the tax burden than the consumer if:)",
+opts:["চাহিদার স্থিতিস্থাপকতা যোগানের স্থিতিস্থাপকতা অপেক্ষা বেশি হয় (|Ed| > Es)","চাহিদার স্থিতিস্থাপকতা যোগানের স্থিতিস্থাপকতা অপেক্ষা কম হয় (|Ed| < Es)","চাহিদা ও যোগানের স্থিতিস্থাপকতা উভয়ই শূন্য হয় (Both demand and supply elasticities are zero)","দ্রব্যটি বিলাসবহুল না হয়ে নিত্যপ্রয়োজনীয় হয় (The commodity is a necessity rather than luxury)"],ans:0,
+exp:"যে পক্ষ কম স্থিতিস্থাপক, সে বেশি করভার বহন করে। |Ed| > Es হলে উৎপাদক বেশি করভার বহন করবে।"}
+];
+
+/* ================= STATE & HELPERS ================= */
+const TOTAL = QUESTIONS.length;
+const LETTERS = ['A','B','C','D'];
+let state = {};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function showScreen(id){['startScreen','examScreen','resultScreen'].forEach(s=>{document.getElementById(s).style.display=(s===id)?'block':'none';});window.scrollTo({top:0,behavior:'smooth'});}
+function fmtTime(sec){const m=Math.floor(Math.max(sec,0)/60);const s=Math.max(sec,0)%60;return m+':'+String(s).padStart(2,'0');}
+
+/* ================= EXAM FLOW ================= */
+function startExam(){
+    const name=document.getElementById('nameInput').value.trim();
+    const college=document.getElementById('collegeInput').value.trim();
+    const email=document.getElementById('emailInput').value.trim();
+    const number=document.getElementById('numberInput').value.trim();
+
+    if(name.length<2){alert('Please enter your full name.');return;}
+    if(college.length<2){alert('Please enter your college name.');return;}
+    if(email.length<5||!email.includes('@')){alert('Please enter a valid email address.');return;}
+    if(number.length<5){alert('Please enter your contact number.');return;}
+
+    state={
+        name,email,college,number,
+        answers:new Array(TOTAL).fill(null),
+        answerTimes:new Array(TOTAL).fill(null),
+        current:0,
+        timeLeft:CONFIG.EXAM_MINUTES*60,
+        startTime:Date.now(),
+        timerId:null,
+        tabSwitches:0,
+        submitted:false
+    };
+
+    document.getElementById('tabCount').textContent='0';
+    document.getElementById('tabPill').classList.remove('alert');
+    showScreen('examScreen');
+    renderAllQuestions();
+    updateProgress();
+    startTimer();
+}
+
+function startTimer(){
+    clearInterval(state.timerId);
+    updateTimerDisplay();
+    state.timerId=setInterval(()=>{
+        state.timeLeft--;
+        updateTimerDisplay();
+        if(state.timeLeft<=0){clearInterval(state.timerId);submitExam(true);}
+    },1000);
+}
+
+function updateTimerDisplay(){
+    document.getElementById('timerText').textContent=fmtTime(state.timeLeft);
+    document.getElementById('timer').classList.toggle('warn',state.timeLeft<=60);
+}
+
+function renderAllQuestions(){
+    const body=document.getElementById('examBody');
+    body.innerHTML=QUESTIONS.map((q,qi)=>`
+        <div class="q-card" id="q${qi}" data-qi="${qi}">
+            <div class="q-header">
+                <span class="q-num">Question ${qi+1} of ${TOTAL}</span>
+                <span class="q-status" id="qStatus${qi}">Not answered</span>
+            </div>
+            <div class="q-text">${esc(q.q)}</div>
+            <div class="options" id="opts${qi}">
+                ${q.opts.map((opt,oi)=>`
+                    <div class="option" data-qi="${qi}" data-oi="${oi}" onclick="selectOption(${qi},${oi})">
+                        <span class="option-letter">${LETTERS[oi]}</span>
+                        <span class="option-text">${esc(opt)}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qi,oi){
+    if(state.submitted) return;
+    if(state.answerTimes[qi]===null){
+        state.answerTimes[qi]=Math.round((Date.now()-state.startTime)/1000);
+    }
+    state.answers[qi]=oi;
+    document.querySelectorAll(`#opts${qi} .option`).forEach((el,idx)=>{
+        el.classList.toggle('selected',idx===oi);
+    });
+    const st=document.getElementById(`qStatus${qi}`);
+    st.textContent='Answered';
+    st.className='q-status answered';
+    document.getElementById(`q${qi}`).classList.add('answered');
+    updateProgress();
+}
+
+function updateProgress(){
+    const done=state.answers.filter(a=>a!==null).length;
+    document.getElementById('progressFill').style.width=(done/TOTAL*100)+'%';
+}
+
+function confirmSubmit(){
+    const done=state.answers.filter(a=>a!==null).length;
+    const left=TOTAL-done;
+    let msg=left===0?'Are you sure you want to submit your exam?':`You have ${left} unanswered question(s). Submit anyway?`;
+    if(state.tabSwitches>0) msg+=`\n\n⚠️ Tab switches recorded: ${state.tabSwitches}`;
+    if(confirm(msg)) submitExam(false);
+}
+
+/* ================= SCROLL SPY ================= */
+function updateScrollSpy(){
+    const cards=document.querySelectorAll('.q-card');
+    if(!cards.length) return;
+    const barH=document.getElementById('stickyBar').offsetHeight;
+    let closest=0,minDist=Infinity;
+    cards.forEach((el,i)=>{
+        const rect=el.getBoundingClientRect();
+        const dist=Math.abs(rect.top-barH-8);
+        if(dist<minDist){minDist=dist;closest=i;}
+    });
+    state.current=closest;
+}
+window.addEventListener('scroll',()=>{ if(state.answers) updateScrollSpy(); },{passive:true});
+window.addEventListener('scroll',()=>{
+    const btn=document.getElementById('backTop');
+    if(btn) btn.classList.toggle('show',window.scrollY>600);
+},{passive:true});
+
+/* ================= TAB SWITCH ================= */
+document.addEventListener('visibilitychange',function(){
+    if(!state||!state.answers||state.submitted) return;
+    if(document.getElementById('examScreen').style.display==='none') return;
+    if(document.hidden){
+        state.tabSwitches++;
+        document.getElementById('tabCount').textContent=state.tabSwitches;
+        document.getElementById('tabPill').classList.add('alert');
+    } else {
+        const t=document.getElementById('tabToast');
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'),4000);
+    }
+});
+
+/* ================= SUBMIT ================= */
+function submitExam(auto){
+    if(state.submitted) return;
+    state.submitted=true;
+    clearInterval(state.timerId);
+
+    let correct=0,wrong=0,skipped=0;
+    state.answers.forEach((a,i)=>{
+        if(a===null) skipped++;
+        else if(a===QUESTIONS[i].ans) correct++;
+        else wrong++;
+    });
+
+    const rawScore=correct-(CONFIG.NEGATIVE_MARK*wrong);
+    const score=Math.round(rawScore*100)/100;
+    const timeTaken=auto?CONFIG.EXAM_MINUTES*60:Math.min(CONFIG.EXAM_MINUTES*60,Math.round((Date.now()-state.startTime)/1000));
+
+    renderResult(correct,wrong,skipped,timeTaken,auto,score);
+    showScreen('resultScreen');
+
+    saveToSheet({
+        exam:'Econ 2',
+        name:state.name,
+        college:state.college,
+        email:state.email,
+        number:state.number,
+        score:score,
+        correct:correct,
+        wrong:wrong,
+        skipped:skipped,
+        total:TOTAL,
+        timeTaken:timeTaken,
+        timeTakenText:fmtTime(timeTaken),
+        tabSwitches:state.tabSwitches,
+        autoSubmitted:auto,
+        answers:state.answers,
+        answersText:answersText(),
+        qTime:state.answerTimes,
+        qTimeText:state.answerTimes.map(t=>t===null?'-':t+'s').join('|')
+    });
+}
+
+function answersText(){
+    return state.answers.map((a,i)=>(i+1)+':'+(a===null?'-':LETTERS[a])).join(', ');
+}
+
+function renderResult(correct,wrong,skipped,timeTaken,auto,score){
+    const pct=Math.round((score/TOTAL)*100);
+    document.getElementById('resultUser').textContent=state.name+'  •  '+state.college+'  •  '+state.number;
+    document.getElementById('scoreRing').style.setProperty('--p',Math.max(0,pct)+'%');
+    document.getElementById('scoreBig').textContent=score+'/'+TOTAL;
+    document.getElementById('scorePct').textContent=pct+'%';
+
+    let verdict,sub;
+    if(pct>=80){verdict='🏆 Outstanding!';sub='Excellent command over Economics concepts.';}
+    else if(pct>=60){verdict='🎯 Very Good!';sub='Strong performance — keep it up.';}
+    else if(pct>=40){verdict='📈 Good Effort';sub='Review the weak areas and try again.';}
+    else{verdict='📚 Needs Practice';sub='Go through the explanations below carefully.';}
+    if(auto) sub+=' (Time expired — auto submitted.)';
+    if(state.tabSwitches>0) sub+=` Tab switches: ${state.tabSwitches}.`;
+    document.getElementById('verdict').innerHTML=verdict+'<small>'+esc(sub)+'</small>';
+
+    document.getElementById('statCorrect').textContent=correct;
+    document.getElementById('statWrong').textContent=wrong;
+    document.getElementById('statSkipped').textContent=skipped;
+    document.getElementById('statTime').textContent=fmtTime(timeTaken);
+    document.getElementById('statTabs').textContent=state.tabSwitches;
+
+    document.getElementById('review').innerHTML=buildReview();
+}
+
+function buildReview(){
+    return QUESTIONS.map((q,i)=>{
+        const ua=state.answers[i];
+        const isCorrect=ua===q.ans;
+        const cls=ua===null?'skip':(isCorrect?'ok':'bad');
+        const label=ua===null?'Skipped':(isCorrect?'Correct':'Wrong');
+        const t=state.answerTimes[i];
+        const spent=t===null?'—':'answered at '+fmtTime(t);
+        return `
+            <div class="review-item ${cls}">
+                <div class="review-head">
+                    <span class="review-num">Q${i+1}</span>
+                    <span class="review-time"><i class="fas fa-stopwatch"></i> ${spent}</span>
+                    <span class="review-badge ${cls}">${label}</span>
+                </div>
+                <div class="review-q">${esc(q.q)}</div>
+                <div class="review-line"><b>Your answer:</b> ${ua===null?'—':LETTERS[ua]+'. '+esc(q.opts[ua])}</div>
+                <div class="review-line"><b>Correct answer:</b> ${LETTERS[q.ans]}. ${esc(q.opts[q.ans])}</div>
+                <div class="review-exp"><i class="fas fa-lightbulb"></i>${esc(q.exp)}</div>
+            </div>`;
+    }).join('');
+}
+
+/* ================= GOOGLE SHEETS ================= */
+async function saveToSheet(payload){
+    const el=document.getElementById('saveStatus');
+    el.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving your score…';
+    try{
+        const res=await fetch(CONFIG.WEB_APP_URL,{
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body:JSON.stringify(payload),
+            redirect:'follow'
+        });
+        const data=await res.json();
+        if(data.success){
+            el.innerHTML=`<i class="fas fa-check-circle" style="color:#16a34a"></i> Score saved to ${CONFIG.SHEET_NAME} sheet! Your rank: <b>#${data.rank}</b>`;
+        }else{
+            el.innerHTML='<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Could not save score.';
+        }
+    }catch(err){
+        console.error(err);
+        el.innerHTML='<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Network error — score not saved.';
+    }
+    loadLeaderboard();
+}
+
+async function loadLeaderboard(){
+    const box=document.getElementById('leaderboard');
+    box.innerHTML='<div class="lb-empty">Loading leaderboard…</div>';
+    try{
+        const res=await fetch(CONFIG.WEB_APP_URL+'?action=leaderboard&limit='+CONFIG.LEADERBOARD_LIMIT);
+        const data=await res.json();
+        if(!data.success||!data.leaderboard||data.leaderboard.length===0){
+            box.innerHTML='<div class="lb-empty">No entries yet. Be the first!</div>';
+            return;
+        }
+        let html=`<table class="lb-table">
+            <thead><tr>
+                <th style="width:52px">#</th><th>Name</th><th>College</th><th>Contact</th>
+                <th style="width:70px">Score</th><th style="width:80px">Time</th>
+            </tr></thead><tbody>`;
+        data.leaderboard.forEach((r,i)=>{
+            const rank=i+1;
+            const medal=rank===1?'g1':rank===2?'g2':rank===3?'g3':'';
+            const isMe=(String(r.number)===String(state.number)&&r.name===state.name);
+            const t=Number(r.time)||0;
+            html+=`<tr class="${isMe?'me':''}">
+                <td><span class="rank-badge ${medal}">${rank}</span></td>
+                <td>${esc(r.name)}</td>
+                <td>${esc(r.college)}</td>
+                <td>${esc(r.number)}</td>
+                <td><b>${r.score}/${r.total}</b></td>
+                <td>${fmtTime(t)}</td>
+            </tr>`;
+        });
+        html+='</tbody></table>';
+        box.innerHTML=html;
+    }catch(err){
+        console.error(err);
+        box.innerHTML='<div class="lb-empty">Could not load leaderboard. Tap “Refresh Board”.</div>';
+    }
+}
+
+function refreshLeaderboard(){loadLeaderboard();}
+
+/* ================= INPUT HELPERS ================= */
+document.getElementById('numberInput').addEventListener('input',function(){
+    this.value=this.value.replace(/[^0-9+\-()\s]/g,'');
+});
+
+document.addEventListener('keydown',function(e){
+    if(!state||!state.answers) return;
+    if(document.getElementById('examScreen').style.display==='none') return;
+    if(['1','2','3','4'].includes(e.key)){
+        selectOption(state.current,parseInt(e.key)-1);
+        const card=document.getElementById('q'+state.current);
+        if(card) card.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+});
+
+window.addEventListener('beforeunload',function(e){
+    if(state&&!state.submitted&&document.getElementById('examScreen').style.display!=='none'){
+        e.preventDefault();e.returnValue='';
+    }
+});
+</script>
+</body>
+</html>
