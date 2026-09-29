@@ -124,7 +124,7 @@ button,input,select{font:inherit;color:inherit}
   font-weight:800;letter-spacing:.4px;font-size:14px;cursor:pointer;
   transition:.25s;opacity:1;
 }
-.enter:hover{transform:translateY(-2px);border-color:rgba(34,211,238,.5)}
+.enter:hover:not(:disabled){transform:translateY(-2px);border-color:rgba(34,211,238,.5)}
 .enter.ready{
   background:linear-gradient(135deg,var(--cyan),var(--violet));
   color:#04121a;border-color:transparent;
@@ -132,6 +132,9 @@ button,input,select{font:inherit;color:inherit}
 .enter:disabled{cursor:progress;opacity:.5}
 .error{margin:12px 0 0;font-size:12px;color:#ff9aa2;line-height:1.55;text-align:center;display:none}
 .error.show{display:block}
+
+/* VIEWS */
+.view{display:block}
 
 /* LOGIN FORM */
 .login-form{display:grid;gap:10px;margin-top:6px}
@@ -205,8 +208,10 @@ select option{background:#0e1420;color:#e9eefc}
   background:rgba(255,255,255,.04);cursor:pointer;font-size:16px;
   display:grid;place-items:center;transition:.2s;
 }
-.icon-btn:hover{border-color:rgba(34,211,238,.5);color:var(--cyan);transform:rotate(90deg)}
-#calBtn:hover{transform:scale(1.05);color:var(--cyan);border-color:rgba(34,211,238,.5)}
+.icon-btn:hover{border-color:rgba(34,211,238,.5);color:var(--cyan)}
+#reload:hover{transform:rotate(90deg)}
+#calBtn:hover{transform:scale(1.05)}
+#signOut:hover{color:#f472b6;border-color:rgba(244,114,182,.5)}
 
 .chips{
   max-width:1400px;margin:0 auto;padding:0 18px 12px;
@@ -252,8 +257,8 @@ main{max-width:1400px;margin:0 auto;padding:22px 18px 80px}
   border-color:hsl(var(--h) 80% 60% / .45);
   box-shadow:0 18px 42px rgba(0,0,0,.45), 0 0 0 1px hsl(var(--h) 80% 60% / .12);
 }
-.card.locked{opacity:.72}
-.card.locked::before{background:linear-gradient(90deg,#fcd34d,transparent 70%);opacity:.55}
+.card.locked{opacity:.78}
+.card.locked::before{background:linear-gradient(90deg,#fcd34d,transparent 70%);opacity:.6}
 .card.live{
   border-color:rgba(52,211,153,.55);
   box-shadow:0 0 0 1px rgba(52,211,153,.18), 0 18px 42px rgba(52,211,153,.08);
@@ -288,7 +293,7 @@ main{max-width:1400px;margin:0 auto;padding:22px 18px 80px}
 }
 .card-foot{margin-top:auto;display:flex;align-items:center;gap:10px;flex-direction:column}
 
-/* LIVE STATE BANNER */
+/* LIVE BANNER */
 .live-banner{
   width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
   padding:7px 12px;border-radius:10px;
@@ -373,7 +378,7 @@ footer b{
   -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;
 }
 
-/* ═══════════ CALENDAR MODAL ═══════════ */
+/* CALENDAR MODAL */
 .cal-modal{
   position:fixed;inset:0;z-index:800;
   display:none;place-items:center;padding:20px;
@@ -400,9 +405,7 @@ footer b{
   background:linear-gradient(135deg,var(--cyan),var(--violet));
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.cal-nav{
-  display:flex;gap:6px;
-}
+.cal-nav{display:flex;gap:6px}
 .cal-nav button{
   width:34px;height:34px;border-radius:10px;
   border:1px solid var(--line);background:rgba(255,255,255,.04);
@@ -410,9 +413,7 @@ footer b{
   display:grid;place-items:center;transition:.18s;
 }
 .cal-nav button:hover{color:var(--cyan);border-color:rgba(34,211,238,.5)}
-.cal-grid{
-  display:grid;grid-template-columns:repeat(7,1fr);gap:5px;
-}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
 .cal-dow{
   text-align:center;font-size:10.5px;font-weight:800;letter-spacing:1px;
   color:#5d6b88;padding:6px 0;text-transform:uppercase;
@@ -448,17 +449,13 @@ footer b{
 .cal-day .dot-row i.up{background:#fcd34d;box-shadow:0 0 6px #fcd34d}
 .cal-day .dot-row i.live{background:#34d399;box-shadow:0 0 6px #34d399}
 .cal-day .dot-row i.past{background:#a78bfa;box-shadow:0 0 6px #a78bfa}
-.cal-day .d-num{
-  font-size:12.5px;font-weight:800;line-height:1;
-}
+.cal-day .d-num{font-size:12.5px;font-weight:800;line-height:1}
 .cal-legend{
   display:flex;gap:14px;justify-content:center;margin-top:14px;
   font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.4px;
 }
 .cal-legend span{display:flex;align-items:center;gap:5px}
-.cal-legend i{
-  width:7px;height:7px;border-radius:50%;display:block;
-}
+.cal-legend i{width:7px;height:7px;border-radius:50%;display:block}
 .cal-legend i.up{background:#fcd34d}
 .cal-legend i.live{background:#34d399}
 .cal-legend i.past{background:#a78bfa}
@@ -498,7 +495,7 @@ footer b{
 </head>
 <body>
 
-<!-- ═══════════ LOADER + SNAKE + LOGIN ═══════════ -->
+<!-- ═══════════ LOADER: LOGIN → SNAKE ═══════════ -->
 <div class="loader" id="loader">
   <div class="loader-panel">
     <div class="brand">
@@ -508,24 +505,32 @@ footer b{
       </div>
       <div>
         <h1>Plan C<span>Exam Portal</span></h1>
-        <p class="status" id="loadStatus"><span class="dot"></span> Sign in to enter</p>
+        <p class="status" id="loadStatus"><span class="dot"></span> Sign in to continue</p>
       </div>
     </div>
-    <div class="game-wrap">
-      <canvas id="snake" width="320" height="320"></canvas>
-      <div class="game-hud">
-        <span>SCORE <b id="score">0</b></span>
-        <span>BEST <b id="best">0</b></span>
-      </div>
-      <p class="hint">↑ ↓ ← → / WASD / swipe — play while you sign in</p>
-    </div>
-    <div class="progress"><div class="bar" id="bar"></div></div>
 
-    <form class="login-form" id="loginForm" autocomplete="off">
-      <input id="emailInput" type="email" placeholder="your@email.com" autocomplete="email" required>
-      <input id="codeInput" type="password" placeholder="Access code" autocomplete="off" required>
-      <button class="enter ready" id="enterBtn" type="submit">Sign In →</button>
-    </form>
+    <!-- VIEW 1: LOGIN -->
+    <div class="view" id="viewLogin">
+      <form class="login-form" id="loginForm" autocomplete="off">
+        <input id="emailInput" type="email" placeholder="your@email.com" autocomplete="email" required>
+        <input id="codeInput" type="password" placeholder="Access code" autocomplete="off" required>
+        <button class="enter ready" id="submitBtn" type="submit">Sign In →</button>
+      </form>
+    </div>
+
+    <!-- VIEW 2: LOADING (snake) -->
+    <div class="view" id="viewLoading" style="display:none">
+      <div class="game-wrap">
+        <canvas id="snake" width="320" height="320"></canvas>
+        <div class="game-hud">
+          <span>SCORE <b id="score">0</b></span>
+          <span>BEST <b id="best">0</b></span>
+        </div>
+        <p class="hint">↑ ↓ ← → / WASD / swipe — play while we load your exams</p>
+      </div>
+      <div class="progress"><div class="bar loading" id="bar"></div></div>
+      <button class="enter" id="enterBtn" disabled>Preparing…</button>
+    </div>
 
     <p class="error" id="errorBox"></p>
   </div>
@@ -599,20 +604,19 @@ footer b{
 
 <script>
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  CONFIG  ▓▓▓
+   CONFIG
    ═══════════════════════════════════════════════════════════════════ */
 const API_URL = "https://script.google.com/macros/s/AKfycbw8Y6JUXLxV9kfmW6RJyJnpA7dMyUNzL2ZL95n-zOZki9K8lEESoVTHoe9PQ3lzoELv8A/exec";
-
-const LIVE_WINDOW_MS = 24 * 60 * 60 * 1000;   // 24 hours
+const LIVE_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  STATE  ▓▓▓
+   STATE
    ═══════════════════════════════════════════════════════════════════ */
 const state = { all:[], q:"", subject:"All", type:"All", sort:"sheet", user:null };
 let ready = false;
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  HELPERS  ▓▓▓
+   HELPERS
    ═══════════════════════════════════════════════════════════════════ */
 const $ = s => document.querySelector(s);
 
@@ -644,10 +648,8 @@ function parseDate(str){
   if(typeof str === "number") return new Date(str);
   str = String(str).trim();
   if(!str) return null;
-  // MM/DD/YYYY
   let m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if(m) return new Date(+m[3], +m[1]-1, +m[2]);
-  // YYYY-MM-DD
   m = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
   if(m) return new Date(+m[1], +m[2]-1, +m[3]);
   const d = new Date(str);
@@ -655,7 +657,7 @@ function parseDate(str){
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  BACKEND  ▓▓▓
+   BACKEND
    ═══════════════════════════════════════════════════════════════════ */
 async function login(email, code){
   const res = await fetch(API_URL, {
@@ -709,25 +711,26 @@ function normalizeRow(raw, i){
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  EXAM STATE  ▓▓▓
+   EXAM STATE
    ═══════════════════════════════════════════════════════════════════ */
 function examState(r){
   const now = Date.now();
   const start = r.starts ? r.starts.getTime() : null;
-  if(!start) return "unlocked";                 // no date → always available
+  if(!start) return "unlocked";
   if(now < start) return "locked";
   if(now < start + LIVE_WINDOW_MS) return "live";
   return "unlocked";
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  SNAKE GAME  ▓▓▓
+   SNAKE
    ═══════════════════════════════════════════════════════════════════ */
 const Snake = (() => {
   const N = 16, SIZE = 320, STEP = 118;
   let canvas, ctx, cell, raf, last = 0, acc = 0;
   let snake, dir, queue, food, score, best, dead, deadAt = 0, alive = false;
   let scoreEl, bestEl;
+  let bound = false;
 
   function init(cv, sEl, bEl){
     canvas = cv; scoreEl = sEl; bestEl = bEl;
@@ -739,21 +742,29 @@ const Snake = (() => {
     cell = SIZE / N;
     best = +(localStorage.getItem("planc_snake_best") || 0);
     bestEl.textContent = best;
-    bindControls();
+    if(!bound){ bindControls(); bound = true; }
     reset();
+  }
+
+  function start(){
+    if(alive) return;
     alive = true;
     last = performance.now();
     raf = requestAnimationFrame(loop);
   }
 
-  function stop(){ alive = false; if(raf) cancelAnimationFrame(raf); raf = null; }
+  function stop(){
+    alive = false;
+    if(raf) cancelAnimationFrame(raf);
+    raf = null;
+  }
 
   function reset(){
     snake = [{x:8,y:8},{x:7,y:8},{x:6,y:8}];
     dir = {x:1,y:0}; queue = [];
     score = 0; dead = false; acc = 0;
     placeFood();
-    scoreEl.textContent = "0";
+    if(scoreEl) scoreEl.textContent = "0";
   }
 
   function placeFood(){
@@ -765,6 +776,7 @@ const Snake = (() => {
   }
 
   function push(d){
+    if(!alive) return;
     const ref = queue.length ? queue[queue.length-1] : dir;
     if(d.x === -ref.x && d.y === -ref.y) return;
     if(d.x ===  ref.x && d.y ===  ref.y) return;
@@ -802,6 +814,7 @@ const Snake = (() => {
   }
 
   function draw(){
+    if(!ctx) return;
     ctx.fillStyle = "#080c16";
     ctx.fillRect(0,0,SIZE,SIZE);
 
@@ -811,13 +824,15 @@ const Snake = (() => {
       ctx.beginPath(); ctx.moveTo(0,i*cell); ctx.lineTo(SIZE,i*cell); ctx.stroke();
     }
 
-    const fx = food.x*cell, fy = food.y*cell;
-    ctx.save();
-    ctx.shadowColor = "#f472b6"; ctx.shadowBlur = 16;
-    ctx.fillStyle = "#f472b6";
-    rrect(fx + cell*0.22, fy + cell*0.22, cell*0.56, cell*0.56, cell*0.28);
-    ctx.fill();
-    ctx.restore();
+    if(food){
+      const fx = food.x*cell, fy = food.y*cell;
+      ctx.save();
+      ctx.shadowColor = "#f472b6"; ctx.shadowBlur = 16;
+      ctx.fillStyle = "#f472b6";
+      rrect(fx + cell*0.22, fy + cell*0.22, cell*0.56, cell*0.56, cell*0.28);
+      ctx.fill();
+      ctx.restore();
+    }
 
     for(let i = snake.length - 1; i >= 0; i--){
       const s = snake[i];
@@ -893,11 +908,11 @@ const Snake = (() => {
     }, { passive:true });
   }
 
-  return { init, stop };
+  return { init, start, stop };
 })();
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  UI  ▓▓▓
+   UI REFS
    ═══════════════════════════════════════════════════════════════════ */
 const loader     = $("#loader");
 const enterBtn   = $("#enterBtn");
@@ -911,31 +926,61 @@ const searchEl   = $("#search");
 const sortEl     = $("#sort");
 const appEl      = $("#app");
 
-/* ── DOMContentLoaded ── */
-document.addEventListener("DOMContentLoaded", () => {
-  Snake.init($("#snake"), $("#score"), $("#best"));
+/* ═══════════════════════════════════════════════════════════════════
+   VIEW SWITCHING
+   ═══════════════════════════════════════════════════════════════════ */
+function showView(name){
+  $("#viewLogin").style.display   = name === "login"   ? "block" : "none";
+  $("#viewLoading").style.display = name === "loading" ? "block" : "none";
+}
 
-  // Login
+/* ═══════════════════════════════════════════════════════════════════
+   BOOT
+   ═══════════════════════════════════════════════════════════════════ */
+document.addEventListener("DOMContentLoaded", () => {
+  // Init snake hidden, keep it stopped until login
+  Snake.init($("#snake"), $("#score"), $("#best"));
+  Snake.stop();
+  showView("login");
+
+  /* ── Login submit ── */
   $("#loginForm").addEventListener("submit", async e => {
     e.preventDefault();
     const email = $("#emailInput").value.trim();
     const code  = $("#codeInput").value.trim();
     if(!email || !code) return;
+
+    errorBox.classList.remove("show");
+    showView("loading");
+    Snake.start();
+
     await doLogin(email, code);
   });
 
-  // Reload
+  /* ── Enter portal ── */
+  enterBtn.addEventListener("click", () => { if(ready) enterPortal(); });
+
+  /* ── Reload ── */
   $("#reload").addEventListener("click", () => {
-    if(state.user) doLogin(state.user.email, state.user.code, true);
+    if(!state.user) return;
+    showView("loading");
+    Snake.start();
+    enterBtn.disabled = true;
+    enterBtn.classList.remove("ready");
+    enterBtn.textContent = "Preparing…";
+    bar.className = "bar loading";
+    bar.style.width = "38%";
+    ready = false;
+    doLogin(state.user.email, state.user.code, true);
   });
 
-  // Sign out
+  /* ── Sign out ── */
   $("#signOut").addEventListener("click", () => {
     state.user = null; state.all = []; ready = false;
     location.reload();
   });
 
-  // Search / sort / filters
+  /* ── Search / filters ── */
   searchEl.addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
   sortEl.addEventListener("change", e => { state.sort = e.target.value; render(); });
 
@@ -960,14 +1005,13 @@ document.addEventListener("DOMContentLoaded", () => {
     b.textContent = card.classList.contains("expanded") ? "Show less ▴" : "Show more ▾";
   });
 
-  // "/" focuses search
   window.addEventListener("keydown", e => {
     if(e.key === "/" && document.activeElement !== searchEl && loader.classList.contains("hidden")){
       e.preventDefault(); searchEl.focus();
     }
   });
 
-  // Calendar modal
+  /* ── Calendar ── */
   $("#calBtn").addEventListener("click", openCalendar);
   $("#calClose").addEventListener("click", () => $("#calModal").classList.remove("open"));
   $("#calModal").addEventListener("click", e => {
@@ -976,17 +1020,17 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#calPrev").addEventListener("click", () => shiftCalMonth(-1));
   $("#calNext").addEventListener("click", () => shiftCalMonth(1));
 
-  // Tick countdowns every second
+  /* ── Live ticker ── */
   setInterval(tick, 1000);
 });
 
-/* ── Login flow ── */
+/* ═══════════════════════════════════════════════════════════════════
+   LOGIN FLOW
+   ═══════════════════════════════════════════════════════════════════ */
 async function doLogin(email, code, silent){
-  if(!silent){
-    bar.className = "bar loading";
-    bar.style.width = "38%";
-    bar.style.background = "linear-gradient(90deg,var(--cyan),var(--violet))";
-  }
+  bar.className = "bar loading";
+  bar.style.width = "38%";
+  bar.style.background = "linear-gradient(90deg,var(--cyan),var(--violet))";
   errorBox.classList.remove("show");
   loadStatus.innerHTML = '<span class="dot"></span> Verifying…';
 
@@ -1003,12 +1047,10 @@ async function doLogin(email, code, silent){
     renderUpcoming();
 
     loadStatus.innerHTML = '<span class="dot"></span> ' + state.all.length + " entries loaded ✓";
-    enterBtn.textContent = "Enter Portal →";
+    enterBtn.disabled = false;
     enterBtn.classList.add("ready");
+    enterBtn.textContent = "Enter Portal →";
     ready = true;
-
-    // auto enter on success
-    if(!silent) setTimeout(enterPortal, 350);
 
   } catch(err){
     bar.className = "bar";
@@ -1017,8 +1059,19 @@ async function doLogin(email, code, silent){
     loadStatus.innerHTML = '<span class="dot" style="background:#f472b6;box-shadow:0 0 10px #f472b6"></span> Access denied';
     errorBox.textContent = err.message;
     errorBox.classList.add("show");
-    enterBtn.textContent = "Try Again →";
-    enterBtn.classList.add("ready");
+
+    Snake.stop();
+    enterBtn.disabled = true;
+    enterBtn.classList.remove("ready");
+    enterBtn.textContent = "Preparing…";
+    ready = false;
+
+    setTimeout(() => {
+      showView("login");
+      loadStatus.innerHTML = '<span class="dot"></span> Sign in to continue';
+      bar.className = "bar";
+      bar.style.width = "0%";
+    }, 900);
   }
 }
 
@@ -1029,7 +1082,9 @@ function enterPortal(){
   setTimeout(() => { loader.style.display = "none"; Snake.stop(); }, 700);
 }
 
-/* ── Chips / filtering ── */
+/* ═══════════════════════════════════════════════════════════════════
+   CHIPS / FILTER
+   ═══════════════════════════════════════════════════════════════════ */
 function buildChips(){
   const subjects = [...new Set(state.all.map(r => r.subject).filter(Boolean))].sort();
   chipsEl.innerHTML =
@@ -1064,7 +1119,9 @@ function getFiltered(){
   return list;
 }
 
-/* ── Card HTML with 3 states ── */
+/* ═══════════════════════════════════════════════════════════════════
+   CARD
+   ═══════════════════════════════════════════════════════════════════ */
 function cardHTML(r){
   const hue = hueOf(r.subject);
   const typeClass = (r.type || "other").toLowerCase();
@@ -1075,7 +1132,6 @@ function cardHTML(r){
   let footHTML = "";
 
   if(st === "locked"){
-    // show countdown to start
     const ms = r.starts.getTime() - now;
     footHTML = `<span class="open-btn locked" data-start="${r.starts.getTime()}">
         🔒 Opens in&nbsp;<span class="cd">${fmtDuration(ms)}</span>
@@ -1093,7 +1149,6 @@ function cardHTML(r){
       : `<span class="open-btn disabled">Link coming soon</span>`;
     footHTML = live + btn;
   } else {
-    // unlocked → practice mode
     const btn = hasLink
       ? `<a class="open-btn practice" href="${esc(r.link)}" target="_blank" rel="noopener noreferrer">
            Practice <span class="arw">↗</span>
@@ -1152,12 +1207,13 @@ function render(){
   });
 }
 
-/* ── Upcoming banner ── */
+/* ═══════════════════════════════════════════════════════════════════
+   UPCOMING BANNER
+   ═══════════════════════════════════════════════════════════════════ */
 function renderUpcoming(){
   const slot = $("#upcomingSlot");
   const now = Date.now();
 
-  // find next upcoming (locked) exam
   const upcoming = state.all
     .filter(r => r.starts && r.starts.getTime() > now)
     .sort((a,b) => a.starts - b.starts)[0];
@@ -1188,7 +1244,9 @@ function renderUpcoming(){
   slot.innerHTML = "";
 }
 
-/* ── Live tick: updates all countdown elements ── */
+/* ═══════════════════════════════════════════════════════════════════
+   LIVE TICKER
+   ═══════════════════════════════════════════════════════════════════ */
 let needsRerender = false;
 function tick(){
   const now = Date.now();
@@ -1215,10 +1273,9 @@ function tick(){
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  CALENDAR  ▓▓▓
+   CALENDAR
    ═══════════════════════════════════════════════════════════════════ */
 let calMonth = new Date(); calMonth.setDate(1);
-let calSelectedDay = null;
 
 function openCalendar(){
   calMonth = new Date(); calMonth.setDate(1);
@@ -1243,13 +1300,11 @@ function examsOnDay(d){
 function renderCalendar(){
   const y = calMonth.getFullYear();
   const m = calMonth.getMonth();
-  const title = calMonth.toLocaleString("en", { month:"long", year:"numeric" });
-  $("#calTitle").textContent = title;
+  $("#calTitle").textContent = calMonth.toLocaleString("en", { month:"long", year:"numeric" });
 
   const first = new Date(y, m, 1);
-  const startDow = first.getDay();           // 0=Sun
+  const startDow = first.getDay();
   const daysInMonth = new Date(y, m+1, 0).getDate();
-
   const today = new Date();
   const isThisMonth = today.getFullYear() === y && today.getMonth() === m;
 
@@ -1274,8 +1329,7 @@ function renderCalendar(){
     }
 
     const cls = ["cal-day", list.length ? "has" : "", isToday ? "today" : ""].filter(Boolean).join(" ");
-    const count = list.length ? ` title="${list.length} exam${list.length>1?'s':''}"` : "";
-    html += `<div class="${cls}" data-day="${day}"${count}>
+    html += `<div class="${cls}" data-day="${day}">
       <span class="d-num">${day}</span>
       ${dotRow}
     </div>`;
@@ -1287,18 +1341,13 @@ function renderCalendar(){
     el.addEventListener("click", () => {
       const day = +el.dataset.day;
       const date = new Date(y, m, day);
-      // Filter the main list to this day
       const matches = examsOnDay(date);
       if(matches.length === 1){
-        // jump straight to that card
         state.q = matches[0].index.toLowerCase();
         searchEl.value = matches[0].index;
         render();
-        $("#calModal").classList.remove("open");
-      } else {
-        // leave the filter as-is; just close and let them browse
-        $("#calModal").classList.remove("open");
       }
+      $("#calModal").classList.remove("open");
     });
   });
 }
