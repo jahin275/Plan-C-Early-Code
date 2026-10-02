@@ -3,38 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- ★ Speed: preconnect to Google/JS backends -->
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <title>The C Unit Arc Monthly Exam -1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
   --main-font: Arial, sans-serif;
-  --neon-pink: #c62828;
-  --neon-cyan: #3b7cbf;
-  --neon-yellow: #ef6c00;
-  --neon-green: #2e7d32;
-  --neon-purple: #6a4c93;
-  --neon-red: #c62828;
-  --bg-dark: #f5f2eb;
-  --bg-card: #ffffff;
-  --bg-card-alt: #f9f7f2;
-  --text: #2e3b4e;
-  --border: #d8d4c8;
-  --exam-header-h: 140px;
+  --neon-pink: #c62828; --neon-cyan: #3b7cbf; --neon-yellow: #ef6c00;
+  --neon-green: #2e7d32; --neon-purple: #6a4c93; --neon-red: #c62828;
+  --bg-dark: #f5f2eb; --bg-card: #ffffff; --bg-card-alt: #f9f7f2;
+  --text: #2e3b4e; --border: #d8d4c8; --exam-header-h: 140px;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body {
-  font-family: var(--main-font), Arial, sans-serif;
-  background: var(--bg-dark);
-  color: var(--text);
-  min-height: 100vh;
-  -webkit-tap-highlight-color: transparent;
-}
-body::after {
-  content: ''; position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 4px);
-  pointer-events: none; z-index: 9998;
-}
+html, body { font-family: var(--main-font), Arial, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; -webkit-tap-highlight-color: transparent; }
+body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 4px); pointer-events: none; z-index: 9998; }
 .neon-title { font-size: clamp(1.8rem,6vw,3.2rem); text-align:center; color:var(--neon-cyan); letter-spacing:.1em; margin:.5rem 0; font-weight:bold; }
 .container { max-width:1000px; margin:0 auto; padding:1rem; }
 .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:1.5rem; margin-bottom:1rem; box-shadow:0 2px 8px rgba(0,0,0,.04); }
@@ -126,17 +112,7 @@ body::after {
 .score-big.fail { color:var(--neon-red); }
 .score-label { font-size:.9rem; color:var(--neon-cyan); letter-spacing:.1em; margin-bottom:.4rem; font-weight:bold; }
 .result-status { font-size:1rem; line-height:1.7; margin:1rem 0 0; }
-.written-notice {
-  margin-top:1rem;
-  padding:.9rem 1rem;
-  background:rgba(59,124,191,.08);
-  border:1px dashed var(--neon-cyan);
-  border-radius:8px;
-  font-size:.95rem;
-  line-height:1.6;
-  color:var(--neon-cyan);
-  font-weight:bold;
-}
+.written-notice { margin-top:1rem; padding:.9rem 1rem; background:rgba(59,124,191,.08); border:1px dashed var(--neon-cyan); border-radius:8px; font-size:.95rem; line-height:1.6; color:var(--neon-cyan); font-weight:bold; }
 .stat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; margin-top:1.2rem; }
 .stat-item { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:8px; padding:.8rem; text-align:center; }
 .stat-item .label { font-size:.75rem; color:var(--neon-cyan); margin-bottom:.4rem; font-weight:bold; }
@@ -374,6 +350,11 @@ body::after {
    ============================================================ */
 const API_URL = 'https://script.google.com/macros/s/AKfycbzDnIbf-50WWiYrRq6kh82O6DrQ_ztqaIDIpClFUZ2cJj3YhjGzkFQfEiYVok-yVCx8dA/exec';
 
+/* ★ Cache version — bump this if you edit questions in the sheet
+     so returning students don't get stale data */
+const CACHE_VERSION = 'v1';
+const CACHE_TTL_MS  = 10 * 60 * 1000; // 10 minutes
+
 /* ============================================================
    STATE
    ============================================================ */
@@ -429,50 +410,93 @@ window.addEventListener('blur', () => {
 });
 
 /* ============================================================
-   API
+   API  — ★ retry + timeout + sessionStorage cache
    ============================================================ */
-async function apiGet(action) {
-  const res = await fetch(API_URL + '?action=' + encodeURIComponent(action), {
-    method: 'GET',
-    redirect: 'follow'
-  });
-  const text = await res.text();
-
-  if (text.trim().startsWith('<')) {
-    throw new Error(
-      'Backend returned HTML instead of JSON. ' +
-      'In Apps Script: Deploy → Manage deployments → ' +
-      'set Execute as: Me, Who has access: Anyone, then Deploy a NEW VERSION.'
-    );
-  }
-
-  let data;
-  try { data = JSON.parse(text); }
-  catch (e) { throw new Error('Invalid JSON: ' + text.slice(0, 80)); }
-
-  if (!data.success) throw new Error(data.error || 'API error');
-  return data;
+function getCached(key) {
+  try {
+    const raw = sessionStorage.getItem(key);
+    if (!raw) return null;
+    const obj = JSON.parse(raw);
+    if (Date.now() - obj.t > CACHE_TTL_MS) { sessionStorage.removeItem(key); return null; }
+    return obj.d;
+  } catch (e) { return null; }
+}
+function setCached(key, data) {
+  try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data })); } catch (e) {}
 }
 
-async function apiSubmit(payload) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(payload),
-    redirect: 'follow'
-  });
-  const text = await res.text();
-
-  if (text.trim().startsWith('<')) {
-    throw new Error('Backend returned HTML on submit. Check deployment settings.');
+async function fetchWithTimeout(url, opts, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, Object.assign({}, opts, { signal: controller.signal }));
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
   }
+}
 
-  let data;
-  try { data = JSON.parse(text); }
-  catch (e) { throw new Error('Invalid JSON: ' + text.slice(0, 80)); }
+async function apiGet(action, retries = 3) {
+  const cacheKey = 'exam_' + CACHE_VERSION + '_' + action;
+  const cached = getCached(cacheKey);
+  if (cached) { console.log('[cache] ' + action); return cached; }
 
-  if (!data.success) throw new Error(data.error || 'API error');
-  return data;
+  let lastErr;
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const text = await fetchWithTimeout(
+        API_URL + '?action=' + encodeURIComponent(action),
+        { method: 'GET', redirect: 'follow' },
+        attempt === 0 ? 12000 : 20000   // faster timeout first try
+      );
+
+      if (text.trim().startsWith('<')) {
+        throw new Error('Backend returned HTML — check Apps Script deployment (Execute as: Me, Access: Anyone, New version).');
+      }
+
+      let data;
+      try { data = JSON.parse(text); }
+      catch (e) { throw new Error('Invalid JSON: ' + text.slice(0, 80)); }
+
+      if (!data.success) throw new Error(data.error || 'API error');
+
+      setCached(cacheKey, data);
+      return data;
+    } catch (err) {
+      lastErr = err;
+      console.warn('[attempt ' + (attempt+1) + '/' + retries + '] ' + action + ' failed:', err.message);
+      if (attempt < retries - 1) await new Promise(r => setTimeout(r, 800 * (attempt + 1)));
+    }
+  }
+  throw lastErr;
+}
+
+async function apiSubmit(payload, retries = 2) {
+  let lastErr;
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const text = await fetchWithTimeout(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      }, 25000);
+
+      if (text.trim().startsWith('<')) throw new Error('Backend returned HTML on submit.');
+
+      let data;
+      try { data = JSON.parse(text); }
+      catch (e) { throw new Error('Invalid JSON: ' + text.slice(0, 80)); }
+
+      if (!data.success) throw new Error(data.error || 'API error');
+      return data;
+    } catch (err) {
+      lastErr = err;
+      console.warn('[submit attempt ' + (attempt+1) + '/' + retries + '] failed:', err.message);
+      if (attempt < retries - 1) await new Promise(r => setTimeout(r, 1200));
+    }
+  }
+  throw lastErr;
 }
 
 /* ============================================================
@@ -519,7 +543,7 @@ window.addEventListener('resize', () => { if (!document.getElementById('examScre
 window.addEventListener('orientationchange', () => { setTimeout(() => { if (!document.getElementById('examScreen').classList.contains('hidden')) updateHeaderHeight(); }, 300); });
 
 /* ============================================================
-   START
+   START  — ★ single request, no config call
    ============================================================ */
 async function startExam() {
   const name    = document.getElementById('name').value.trim();
@@ -552,33 +576,50 @@ async function startExam() {
   startFlappy();
 
   try {
-    const [qData, cData] = await Promise.all([
-      apiGet('questions'),
-      apiGet('config').catch(() => null)
-    ]);
+    /* ★ Only ONE request now — config values live in this file already */
+    const qData = await apiGet('questions');
 
-    if (cData && cData.config) {
-      MANDATORY    = cData.config.mandatory       || MANDATORY;
-      OPTIONAL     = cData.config.optional        || OPTIONAL;
-      DURATION_MIN = cData.config.durationMinutes || DURATION_MIN;
+    if (!qData.questions || !qData.questions.length) {
+      throw new Error('No questions returned from server (sheet may be empty or headers wrong).');
     }
 
     status.classList.add('ready');
     spinner.style.display = 'none';
     loadingText.textContent = '✓ QUESTIONS LOADED — STARTING EXAM…';
-    setTimeout(() => { stopFlappy(); onQuestionsLoaded(qData.questions); }, 700);
+    setTimeout(() => { stopFlappy(); onQuestionsLoaded(qData.questions); }, 400);
   } catch (err) {
     status.classList.remove('ready');
     spinner.style.display = 'none';
     loadingText.textContent = '✗ FAILED TO LOAD — ' + err.message;
     loadingText.style.color = 'var(--neon-red)';
+
+    // ★ Add a retry-in-place button before falling back to the form
+    const retryBtn = document.createElement('button');
+    retryBtn.id = 'retryBtn';
+    retryBtn.className = 'btn btn-primary mt-1';
+    retryBtn.style.width = '100%'; retryBtn.style.marginTop = '1rem';
+    retryBtn.textContent = '↻ RETRY LOADING';
+    retryBtn.onclick = () => {
+      retryBtn.remove();
+      // Clear cache in case the previous fetch cached a bad response
+      try { sessionStorage.removeItem('exam_' + CACHE_VERSION + '_questions'); } catch(e) {}
+      startExam();
+    };
+    status.parentNode.insertBefore(retryBtn, status.nextSibling);
+
     const btn = document.createElement('button');
-    btn.id = 'retryBtn';
+    btn.id = 'backBtn';
     btn.className = 'btn btn-danger mt-1';
-    btn.style.width = '100%'; btn.style.marginTop = '1rem';
+    btn.style.width = '100%'; btn.style.marginTop = '.5rem';
     btn.textContent = '◀ BACK TO FORM';
-    btn.onclick = () => { stopFlappy(); document.getElementById('loadingScreen').classList.add('hidden'); document.getElementById('startScreen').classList.remove('hidden'); loadingText.style.color = ''; };
-    status.parentNode.insertBefore(btn, status.nextSibling);
+    btn.onclick = () => {
+      stopFlappy();
+      retryBtn.remove(); btn.remove();
+      document.getElementById('loadingScreen').classList.add('hidden');
+      document.getElementById('startScreen').classList.remove('hidden');
+      loadingText.style.color = '';
+    };
+    status.parentNode.insertBefore(btn, retryBtn.nextSibling);
   }
 }
 
@@ -802,7 +843,7 @@ async function doSubmit(auto) {
   } catch (err) {
     const badge = document.getElementById('syncBadge');
     badge.className = 'sync-badge error';
-    document.getElementById('syncText').textContent = 'SYNC FAILED';
+    document.getElementById('syncText').textContent = 'SYNC FAILED (result is local)';
     console.error('Sync failed:', err);
   }
 }
@@ -838,7 +879,6 @@ function showResult(result, auto, isSynced) {
   const ratio = maxSec ? tSec / maxSec : 0;
   if (ratio <= 0.5) tRow.classList.add('fast'); else if (ratio >= 0.9) tRow.classList.add('slow');
 
-  /* ★ Section-wise marks — uses raw sheet subject names */
   const sectionMarks = {}, sectionCorrect = {}, sectionWrong = {};
   [...MANDATORY, ...OPTIONAL].forEach(s => { sectionMarks[s] = 0; sectionCorrect[s] = 0; sectionWrong[s] = 0; });
   QUESTIONS.forEach((q, i) => {
