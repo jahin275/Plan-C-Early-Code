@@ -126,7 +126,6 @@ body::after {
 .score-big.fail { color:var(--neon-red); }
 .score-label { font-size:.9rem; color:var(--neon-cyan); letter-spacing:.1em; margin-bottom:.4rem; font-weight:bold; }
 .result-status { font-size:1rem; line-height:1.7; margin:1rem 0 0; }
-/* ★ MONTHLY 1 — notice about written section */
 .written-notice {
   margin-top:1rem;
   padding:.9rem 1rem;
@@ -338,7 +337,6 @@ body::after {
       <div class="score-label">YOUR SCORE</div>
       <div class="score-big" id="finalScore">0</div>
       <div class="result-status" id="finalStatus"></div>
-      <!-- ★ MONTHLY 1 — written section notice -->
       <div class="written-notice" id="writtenNotice">
         📝 Thanks for attending MCQ section. Written Section will be given soon.
       </div>
@@ -372,7 +370,7 @@ body::after {
 
 <script>
 /* ============================================================
-   APPS SCRIPT BACKEND URL — ★ MONTHLY 1
+   APPS SCRIPT BACKEND URL
    ============================================================ */
 const API_URL = 'https://script.google.com/macros/s/AKfycbzDnIbf-50WWiYrRq6kh82O6DrQ_ztqaIDIpClFUZ2cJj3YhjGzkFQfEiYVok-yVCx8dA/exec';
 
@@ -389,11 +387,22 @@ let studentInfo = {};
 let examStartTime = null;
 let examEndTime = null;
 let timeTakenSeconds = 0;
+
+/* ★ Subject names MUST match the sheet's SUBJECT column exactly */
 let MANDATORY = ['Bangla', 'English', 'ICT'];
-let OPTIONAL  = ['HM', 'Stat', 'Econ'];
+let OPTIONAL  = ['Higher Math', 'Statistics', 'Economics'];
 let DURATION_MIN = 45;
 let SECTION_RANGES = {};
-const SECTION_LABELS = { Bangla: 'বাংলা', English: 'English', ICT: 'ICT', HM: 'HM', Stat: 'STAT', Econ: 'ECON' };
+
+/* ★ Sheet subject name → short display label */
+const SECTION_LABELS = {
+  'Bangla':      'বাংলা',
+  'English':     'English',
+  'ICT':         'ICT',
+  'Higher Math': 'HM',
+  'Statistics':  'STAT',
+  'Economics':   'ECON'
+};
 
 /* ============================================================
    ANTI-CHEAT
@@ -675,7 +684,8 @@ function renderAllQuestions() {
 
     const head = document.createElement('div');
     head.className = 'q-head';
-    head.innerHTML = `<span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(q.subject)}</span>`;
+    const subjectLabel = SECTION_LABELS[q.subject] || q.subject;
+    head.innerHTML = `<span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(subjectLabel)}</span>`;
     block.appendChild(head);
 
     const qText = document.createElement('div');
@@ -828,6 +838,7 @@ function showResult(result, auto, isSynced) {
   const ratio = maxSec ? tSec / maxSec : 0;
   if (ratio <= 0.5) tRow.classList.add('fast'); else if (ratio >= 0.9) tRow.classList.add('slow');
 
+  /* ★ Section-wise marks — uses raw sheet subject names */
   const sectionMarks = {}, sectionCorrect = {}, sectionWrong = {};
   [...MANDATORY, ...OPTIONAL].forEach(s => { sectionMarks[s] = 0; sectionCorrect[s] = 0; sectionWrong[s] = 0; });
   QUESTIONS.forEach((q, i) => {
@@ -880,7 +891,8 @@ function renderReview() {
     const head = document.createElement('div');
     head.className = 'review-head';
     const statusText = status === 'correct' ? '✓ CORRECT' : status === 'wrong' ? '✗ WRONG' : '— SKIPPED';
-    head.innerHTML = `<span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(q.subject)}</span><span class="review-status ${status}">${statusText}</span>`;
+    const subjectLabel = SECTION_LABELS[q.subject] || q.subject;
+    head.innerHTML = `<span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(subjectLabel)}</span><span class="review-status ${status}">${statusText}</span>`;
     block.appendChild(head);
 
     const qDiv = document.createElement('div');
