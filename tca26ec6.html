@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics 6 Daily Test – Plan C Academy</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Noto Sans Bengali',Tahoma,Geneva,Verdana,sans-serif}
+    body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px}
+    .container{background:#fff;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.15);width:100%;max-width:760px;margin:auto;animation:fadeIn .45s ease-out;position:relative}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    .bn, .q-text, .option-text, .review-q, .review-line, .review-exp, .rules{
+        font-family:'Segoe UI','Noto Sans Bengali',Tahoma,sans-serif;
+        line-height:1.85;
+    }
+
+    .header{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);padding:28px 20px;text-align:center;color:#fff;border-radius:20px 20px 0 0}
+    .logos{display:flex;justify-content:center;gap:18px;margin-bottom:16px}
+    .logo{width:58px;height:58px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px rgba(0,0,0,.2);font-size:1.5rem;color:#0ea5e9}
+    .logo.alt{color:#6a11cb}
+    .title{font-size:1.75rem;font-weight:700;margin-bottom:6px;text-shadow:1px 1px 3px rgba(0,0,0,.2)}
+    .subtitle{font-size:.95rem;opacity:.92}
+
+    .content{padding:28px}
+    .input-group{margin-bottom:18px}
+    .input-label{display:block;font-size:.95rem;color:#333;margin-bottom:8px;font-weight:600}
+    .input-wrapper{position:relative;width:100%}
+    .input-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#0ea5e9;font-size:1.05rem}
+    .input-wrapper input{width:100%;padding:13px 14px 13px 44px;font-size:1rem;border:2px solid #e0e0e0;border-radius:10px;outline:none;transition:.25s}
+    .input-wrapper input:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+
+    .search-btn{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);color:#fff;border:none;padding:15px 30px;font-size:1.05rem;font-weight:600;border-radius:10px;cursor:pointer;width:100%;transition:.3s;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.4px}
+    .search-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(14,165,233,.35)}
+    .search-btn:active{transform:translateY(0)}
+    .search-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+    .rules{background:#f8f9fa;border-left:4px solid #0ea5e9;border-radius:10px;padding:16px 18px;margin-bottom:22px;font-size:.92rem;color:#444;line-height:1.85}
+    .rules b{color:#0ea5e9}
+    .footer{text-align:center;padding:18px;color:#666;font-size:.85rem;background:#f8f9fa;border-top:1px solid #eee;border-radius:0 0 20px 20px}
+
+    .sticky-bar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-radius:20px 20px 0 0;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+    .bar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .bar-title{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px}
+    .bar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+    .timer{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:8px 14px;border-radius:30px;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums}
+    .timer.warn{background:rgba(234,67,53,.9);border-color:#ea4335;animation:pulse 1s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+    .tab-pill{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 12px;border-radius:30px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:6px}
+    .tab-pill.alert{background:rgba(234,67,53,.9);border-color:#ea4335}
+
+    .top-submit{background:#fff;color:#0ea5e9;border:none;padding:9px 16px;border-radius:30px;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s}
+    .top-submit:hover{background:#f0f9ff;transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+
+    .progress-bar{height:5px;background:#e9ecf5;width:100%}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,#6a11cb);transition:width .3s}
+
+    .tab-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#fef3c7;color:#92400e;padding:10px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.18);font-size:.88rem;font-weight:700;z-index:300;display:none;border-left:4px solid #f59e0b}
+    .tab-toast.show{display:block;animation:slideDown .3s ease-out}
+    @keyframes slideDown{from{opacity:0;transform:translate(-50%,-10px)}to{opacity:1;transform:translate(-50%,0)}}
+
+    .exam-body{padding:22px 22px 10px}
+    .q-card{background:#fcfdff;border:1px solid #eef0f6;border-left:4px solid #0ea5e9;border-radius:12px;padding:18px 18px 8px;margin-bottom:18px;scroll-margin-top:90px;transition:.2s}
+    .q-card.answered{border-left-color:#16a34a}
+    .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+    .q-num{font-weight:700;color:#0ea5e9;font-size:.92rem}
+    .q-status{font-size:.74rem;padding:3px 11px;border-radius:20px;background:#eef0f6;color:#777;font-weight:600}
+    .q-status.answered{background:#e6f4ea;color:#137333}
+    .q-text{font-size:1.02rem;line-height:1.85;color:#1f2430;margin-bottom:14px;font-weight:500}
+
+    .option{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:.18s;background:#fff}
+    .option:hover{border-color:#7dd3fc;background:#f0f9ff;transform:translateX(3px)}
+    .option.selected{border-color:#0ea5e9;background:#e0f2fe;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+    .option-letter{width:30px;height:30px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0ea5e9;flex-shrink:0;transition:.18s}
+    .option.selected .option-letter{background:#0ea5e9;color:#fff}
+    .option-text{font-size:.96rem;color:#2b3140;word-break:break-word;line-height:1.8}
+
+    .end-submit-wrap{padding:10px 22px 26px}
+    .back-top{position:fixed;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#6a11cb);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 6px 18px rgba(14,165,233,.4);z-index:150}
+    .back-top.show{display:flex}
+    .back-top:hover{transform:translateY(-2px)}
+
+    .score-ring{width:170px;height:170px;border-radius:50%;background:conic-gradient(#0ea5e9 var(--p,0%),#e9ecf5 0);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;transition:background .6s}
+    .score-inner{width:138px;height:138px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 2px 10px rgba(0,0,0,.07)}
+    .score-big{font-size:1.9rem;font-weight:800;color:#2b3140;line-height:1}
+    .score-pct{font-size:.9rem;color:#7a8194;margin-top:5px;font-weight:600}
+    .verdict{text-align:center;font-size:1.15rem;font-weight:700;margin-bottom:22px;color:#0ea5e9}
+    .verdict small{display:block;font-weight:500;font-size:.85rem;color:#7a8194;margin-top:5px}
+
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:10px;margin-bottom:22px}
+    .stat{background:#f8f9fa;border-radius:12px;padding:14px 8px;text-align:center;border:1px solid #eef0f6}
+    .stat .v{font-size:1.35rem;font-weight:800;line-height:1}
+    .stat .l{font-size:.72rem;color:#7a8194;margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+    .stat.g .v{color:#16a34a}.stat.r .v{color:#ea4335}.stat.y .v{color:#f59e0b}.stat.b .v{color:#0ea5e9}.stat.p .v{color:#6a11cb}
+
+    .save-status{text-align:center;font-size:.9rem;color:#555;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:20px}
+    .section-title{font-size:1.02rem;font-weight:700;color:#2b3140;margin:24px 0 12px;display:flex;align-items:center;gap:9px}
+    .section-title i{color:#0ea5e9}
+
+    .lb-table{width:100%;border-collapse:collapse;font-size:.88rem;border-radius:12px;overflow:hidden}
+    .lb-table th{background:#0ea5e9;color:#fff;padding:11px 9px;text-align:left;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+    .lb-table td{padding:10px 9px;border-bottom:1px solid #eef0f6;color:#3a4152}
+    .lb-table tr:nth-child(even) td{background:#fafbff}
+    .lb-table tr.me td{background:#e0f2fe;font-weight:700}
+    .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#eef0f6;color:#0ea5e9;font-weight:700;font-size:.8rem}
+    .rank-badge.g1{background:#ffd54f;color:#7a5c00}
+    .rank-badge.g2{background:#cfd8dc;color:#455a64}
+    .rank-badge.g3{background:#ffcc9c;color:#7a4200}
+    .lb-empty{text-align:center;color:#8b93a7;padding:24px;font-size:.9rem}
+
+    .review-item{border:1px solid #eef0f6;border-left:5px solid #cbd2e0;border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fcfdff}
+    .review-item.ok{border-left-color:#16a34a}
+    .review-item.bad{border-left-color:#ea4335}
+    .review-item.skip{border-left-color:#f59e0b}
+    .review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+    .review-num{font-weight:800;color:#0ea5e9;font-size:.85rem}
+    .review-time{font-size:.72rem;color:#8b93a7;font-weight:600}
+    .review-badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+    .review-badge.ok{background:#e6f4ea;color:#137333}
+    .review-badge.bad{background:#fce8e6;color:#c5221f}
+    .review-badge.skip{background:#fef3c7;color:#92400e}
+    .review-q{font-size:.95rem;color:#2b3140;margin-bottom:9px;line-height:1.85;font-weight:500}
+    .review-line{font-size:.85rem;color:#5a6274;margin-bottom:4px;line-height:1.75}
+    .review-line b{color:#3a4152}
+    .review-exp{font-size:.83rem;color:#4a5568;background:#f0f9ff;border-radius:8px;padding:9px 11px;margin-top:8px;line-height:1.8}
+    .review-exp i{color:#f59e0b;margin-right:5px}
+
+    .btn-row{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+    .btn-row .search-btn{flex:1;min-width:150px}
+    .btn-outline{background:#fff;border:2px solid #0ea5e9;color:#0ea5e9;padding:15px 24px;border-radius:10px;font-weight:600;cursor:pointer;flex:1;min-width:150px;transition:.2s;font-size:1rem}
+    .btn-outline:hover{background:#f0f9ff}
+
+    @media(max-width:520px){
+        body{padding:10px}
+        .container{border-radius:14px}
+        .content{padding:20px 16px}
+        .exam-body{padding:16px 14px 10px}
+        .end-submit-wrap{padding:10px 14px 22px}
+        .title{font-size:1.4rem}
+        .sticky-bar{border-radius:14px 14px 0 0;padding:10px 12px}
+        .bar-title{font-size:.82rem}
+        .timer{font-size:.9rem;padding:7px 11px}
+        .top-submit{font-size:.78rem;padding:8px 12px}
+        .option{padding:11px 12px}
+        .option-text{font-size:.9rem;line-height:1.8}
+        .q-text{font-size:.96rem;line-height:1.85}
+    }
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ================= START SCREEN ================= -->
+    <section id="startScreen">
+        <div class="header">
+            <div class="logos">
+                <div class="logo"><i class="fas fa-chart-line"></i></div>
+                <div class="logo alt"><i class="fas fa-coins"></i></div>
+            </div>
+            <h1 class="title">Economics 6 – Daily Test</h1>
+            <p class="subtitle" id="startSubtitle">—</p>
+        </div>
+        <div class="content">
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-user"></i> Full Name</label>
+                <div class="input-wrapper"><i class="fas fa-user input-icon"></i>
+                    <input type="text" id="nameInput" placeholder="e.g. Rahim Uddin" maxlength="60" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-building-columns"></i> College</label>
+                <div class="input-wrapper"><i class="fas fa-building-columns input-icon"></i>
+                    <input type="text" id="collegeInput" placeholder="e.g. Dhaka College" maxlength="100" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-envelope"></i> Email</label>
+                <div class="input-wrapper"><i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="emailInput" placeholder="e.g. rahim@example.com" maxlength="80" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-phone"></i> Contact No.</label>
+                <div class="input-wrapper"><i class="fas fa-phone input-icon"></i>
+                    <input type="text" id="numberInput" placeholder="e.g. 01712345678" maxlength="20" autocomplete="off"></div>
+            </div>
+
+            <div class="rules">
+                <b><i class="fas fa-circle-info"></i> Instructions</b><br>
+                • Total <b id="ruleTotal">—</b> MCQ questions, each carries <b>1</b> mark.<br>
+                • <b>Negative marking:</b> −0.25 for each wrong answer. Skipped = 0.<br>
+                • Time limit is <b>24 minutes</b> — the exam auto-submits when time is up.<br>
+                • All questions are on one page — just scroll and answer.<br>
+                • ⚠️ <b>Tab switching is monitored</b> and recorded with your result.<br>
+                • Your score will be saved to the <b>Econ6</b> leaderboard automatically.
+            </div>
+
+            <button class="search-btn" onclick="startExam()">
+                <i class="fas fa-play"></i> Start Exam
+            </button>
+        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | Economics 6 Daily Test Portal</p></div>
+    </section>
+
+    <!-- ================= EXAM SCREEN ================= -->
+    <section id="examScreen" style="display:none">
+        <div class="sticky-bar" id="stickyBar">
+            <div class="bar-left">
+                <span class="bar-title"><i class="fas fa-file-pen"></i> Economics 6 • Daily Test</span>
+                <span class="tab-pill" id="tabPill"><i class="fas fa-eye"></i> Tabs: <span id="tabCount">0</span></span>
+            </div>
+            <div class="bar-right">
+                <div class="timer" id="timer"><i class="fas fa-clock"></i> <span id="timerText">24:00</span></div>
+                <button class="top-submit" onclick="confirmSubmit()"><i class="fas fa-paper-plane"></i> Submit</button>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <div class="exam-body" id="examBody"></div>
+
+        <div class="end-submit-wrap">
+            <button class="search-btn" onclick="confirmSubmit()">
+                <i class="fas fa-paper-plane"></i> Submit Exam
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= RESULT SCREEN ================= -->
+    <section id="resultScreen" style="display:none">
+        <div class="header">
+            <h1 class="title" style="font-size:1.45rem">Exam Completed</h1>
+            <p class="subtitle" id="resultUser">—</p>
+        </div>
+        <div class="content">
+            <div class="score-ring" id="scoreRing" style="--p:0%">
+                <div class="score-inner">
+                    <div class="score-big" id="scoreBig">0/0</div>
+                    <div class="score-pct" id="scorePct">0%</div>
+                </div>
+            </div>
+            <div class="verdict" id="verdict"></div>
+
+            <div class="stats">
+                <div class="stat g"><div class="v" id="statCorrect">0</div><div class="l">Correct</div></div>
+                <div class="stat r"><div class="v" id="statWrong">0</div><div class="l">Wrong</div></div>
+                <div class="stat y"><div class="v" id="statSkipped">0</div><div class="l">Skipped</div></div>
+                <div class="stat b"><div class="v" id="statTime">0:00</div><div class="l">Time</div></div>
+                <div class="stat p"><div class="v" id="statTabs">0</div><div class="l">Tab Switch</div></div>
+            </div>
+
+            <div class="save-status" id="saveStatus"><i class="fas fa-spinner fa-spin"></i> Saving your score…</div>
+
+            <div class="section-title"><i class="fas fa-trophy"></i> Econ6 Leaderboard</div>
+            <div id="leaderboard"><div class="lb-empty">Loading leaderboard…</div></div>
+
+            <div class="section-title"><i class="fas fa-list-check"></i> Answer Review</div>
+            <div id="review"></div>
+
+            <div class="btn-row">
+                <button class="search-btn" onclick="location.reload()"><i class="fas fa-rotate-right"></i> Retake Exam</button>
+                <button class="btn-outline" onclick="refreshLeaderboard()"><i class="fas fa-arrows-rotate"></i> Refresh Board</button>
+            </div>
+        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | Economics 6 Daily Test Portal</p></div>
+    </section>
+
+</div>
+
+<div class="tab-toast" id="tabToast">
+    <i class="fas fa-triangle-exclamation"></i> Tab switch detected — this is being recorded.
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+/* ================= CONFIG ================= */
+const CONFIG = {
+    WEB_APP_URL: "https://script.google.com/macros/s/AKfycbxJ_CvDjxbWr_Q-yVQnvUp0CArnHDjb5H_VOSgKwop4_DoL2mnalGtfSyhnXk6_pZNE/exec",
+    SHEET_NAME: "Econ6",
+    EXAM_NAME: "Economics 6",
+    EXAM_MINUTES: 24,
+    LEADERBOARD_LIMIT: 20,
+    NEGATIVE_MARK: 0.25
+};
+
+/* ================= QUESTION BANK ================= */
+const QUESTIONS = [
+  {q:"ম্যালথাসের জনসংখ্যা তত্ত্ব অনুসারে জনসংখ্যা এবং খাদ্য উৎপাদন যথাক্রমে কোন হারে বৃদ্ধি পায়? (According to Malthusian population theory, population and food production increase at which respective rates?)",
+   opts:["গাণিতিক ও জ্যামিতিক হারে (Arithmetic and geometric rate)","জ্যামিতিক ও গাণিতিক হারে (Geometric and arithmetic rate)","সূচকীয় ও স্থির হারে (Exponential and constant rate)","সমানুপাতিক ও ক্রমহ্রাসমান হারে (Proportional and diminishing rate)"], ans:1,
+   exp:"ম্যালথাসের মতে জনসংখ্যা জ্যামিতিক হারে এবং খাদ্য উৎপাদন গাণিতিক হারে বৃদ্ধি পায়।"},
+
+  {q:"কাম্য জনসংখ্যা তত্ত্বে (Optimum Theory of Population) কোন অবস্থায় একটি দেশকে কাম্য জনসংখ্যার স্তরে গণ্য করা হয়? (Under the Optimum Theory of Population, at which condition is a country considered to be at the optimum population level?)",
+   opts:["মাথাপিছু আয় সর্বোচ্চ হলে (Per capita income is maximized)","মোট জনসংখ্যা সর্বনিম্ন হলে (Total population is minimized)","মোট উৎপাদন স্থির থাকলে (Total output remains constant)","জন্মহার ও মৃত্যুহার শূন্য হলে (Birth rate and death rate become zero)"], ans:0,
+   exp:"কাম্য জনসংখ্যা তত্ত্বে মাথাপিছু আয় সর্বোচ্চ হলে সেটিকে কাম্য জনসংখ্যা স্তর ধরা হয়।"},
+
+  {q:"ডাল্টনের জনসংখ্যা ভারসাম্যহীনতার পরিমাপক সূত্র কোনটি? (যেখানে M = অসামঞ্জস্য সূচক, A = প্রকৃত জনসংখ্যা, O = কাম্য জনসংখ্যা)",
+   opts:["M = (A - O) / O","M = (O - A) / A","M = (A + O) / O","M = (A - O) / A"], ans:0,
+   exp:"ডাল্টনের সূত্র: M = (A − O) / O, যেখানে A = প্রকৃত ও O = কাম্য জনসংখ্যা।"},
+
+  {q:"কৃষিক্ষেত্রে প্রয়োজনের অতিরিক্ত শ্রমিক নিয়োজিত থাকার ফলে যাদের প্রান্তিক উৎপাদন শূন্য হয়, তাদের কোন ধরনের বেকার বলা হয়? (In agriculture, surplus laborers whose marginal productivity is zero are classified under which type of unemployment?)",
+   opts:["মৌসুমি বেকারত্ব (Seasonal unemployment)","সংঘাতজনিত বেকারত্ব (Frictional unemployment)","ছদ্মবেশী বেকারত্ব (Disguised unemployment)","কাঠামোগত বেকারত্ব (Structural unemployment)"], ans:2,
+   exp:"কৃষিক্ষেত্রে অতিরিক্ত শ্রমিক যাদের প্রান্তিক উৎপাদন শূন্য, তাদের ছদ্মবেশী বেকার (Disguised unemployment) বলে।"},
+
+  {q:"জনমিতিক রূপান্তর তত্ত্বের (Demographic Transition Theory) কোন পর্যায়ে উচ্চ জন্মহার এবং দ্রুত হ্রাসমান মৃত্যুহারের কারণে ‘জনসংখ্যা বিস্ফোরণ’ ঘটে? (In which stage of the Demographic Transition Theory does a 'population explosion' occur due to high birth rates and rapidly declining death rates?)",
+   opts:["প্রথম পর্যায় (First stage)","দ্বিতীয় পর্যায় (Second stage)","তৃতীয় পর্যায় (Third stage)","চতুর্থ পর্যায় (Fourth stage)"], ans:1,
+   exp:"দ্বিতীয় পর্যায়ে জন্মহার উচ্চ ও মৃত্যুহার দ্রুত কমে যাওয়ায় জনসংখ্যা বিস্ফোরণ ঘটে।"},
+
+  {q:"স্থূল জন্মহার (Crude Birth Rate - CBR) নির্ণয়ের সঠিক গাণিতিক সূত্র কোনটি? (B = জীবন্ত জন্ম, P = বছরের মধ্যবর্তী মোট জনসংখ্যা)",
+   opts:["CBR = (B / P) × ১০০","CBR = (B / P) × ১,০০০","CBR = (P / B) × ১,০০০","CBR = (B / P) × ১০,০০০"], ans:1,
+   exp:"CBR = (জীবিত জন্ম / মোট জনসংখ্যা) × 1000।"},
+
+  {q:"কোনো দেশে নির্ভরশীলতার অনুপাত (Dependency Ratio) পরিমাপে সাধারণত কোন বয়সগোষ্ঠীকে নির্ভরশীল হিসেবে বিবেচনা করা হয়? (In measuring a nation's Dependency Ratio, which age groups are conventionally categorized as dependent population?)",
+   opts:["০-১৪ বছর এবং ৬৫+ বছর (0-14 years and 65+ years)","১৫-৫৯ বছর (15-59 years)","১৮-৬০ বছর (18-60 years)","০-১৮ বছর এবং ৭০+ বছর (0-18 years and 70+ years)"], ans:0,
+   exp:"০-১৪ ও ৬৫+ বছর বয়সীদের নির্ভরশীল জনগোষ্ঠী হিসেবে ধরা হয়।"},
+
+  {q:"জাতিসংঘ উন্নয়ন কর্মসূচি (UNDP) কর্তৃক প্রণীত মানব উন্নয়ন সূচক (HDI) পরিমাপে নিচের কোন মাত্রাটি অন্তর্ভুক্ত নয়? (Which of the following dimensions is NOT included in the calculation of the Human Development Index (HDI) by UNDP?)",
+   opts:["প্রত্যাশিত আয়ুষ্কাল ও সুস্বাস্থ্য (Life expectancy and good health)","শিক্ষার বিস্তার ও গড় পাঠকাল (Education and mean years of schooling)","মাথাপিছু স্থূল জাতীয় আয় (GNI per capita)","সামরিক ব্যয় ও প্রতিরক্ষা সামর্থ্য (Military expenditure and defense capability)"], ans:3,
+   exp:"HDI-তে আয়ুষ্কাল, শিক্ষা ও মাথাপিছু GNI অন্তর্ভুক্ত; সামরিক ব্যয় নয়।"},
+
+  {q:"জনমিতিক লভ্যাংশ বা ডেমোগ্রাফিক ডিভিডেন্ড (Demographic Dividend) বলতে কী বোঝায়? (What is precisely meant by the term 'Demographic Dividend' in economics?)",
+   opts:["জনসংখ্যার মধ্যে মোট প্রবীণ ব্যক্তির অনুপাত বৃদ্ধি পাওয়া (Rise in the proportion of elderly citizens)","নির্ভরশীল জনসংখ্যার তুলনায় কর্মক্ষম জনগোষ্ঠীর অনুপাত অধিক হওয়া (Working-age population exceeding the dependent population)","জনসংখ্যা বৃদ্ধির হার শূন্যের কোঠায় নেমে আসা (Population growth rate dropping to zero)","বিদেশ থেকে প্রবাসী আয়ের পরিমাণ বৃদ্ধি পাওয়া (Growth in the inflow of foreign remittances)"], ans:1,
+   exp:"কর্মক্ষম জনগোষ্ঠী নির্ভরশীল জনসংখ্যার তুলনায় বেশি হলে তাকে Demographic Dividend বলে।"},
+
+  {q:"উৎপাদন ব্যবস্থার প্রযুক্তিগত বা পদ্ধতিগত পরিবর্তনের কারণে প্রাচীন দক্ষতার শ্রমিকরা কাজ হারালে তাকে কী ধরনের বেকারত্ব বলে? (When workers lose jobs due to technological advancements or long-term structural shifts in production methods, what type of unemployment is it?)",
+   opts:["সংঘাতজনিত বেকারত্ব (Frictional unemployment)","চক্রাকার বেকারত্ব (Cyclical unemployment)","কাঠামোগত বেকারত্ব (Structural unemployment)","স্বেচ্ছাপ্রণোদিত বেকারত্ব (Voluntary unemployment)"], ans:2,
+   exp:"প্রযুক্তিগত বা কাঠামোগত পরিবর্তনের কারণে সৃষ্ট বেকারত্বকে Structural unemployment বলে।"},
+
+  {q:"কোনো দেশের জনসংখ্যার ঘনত্ব (Density of Population) পরিমাপের সঠিক উপায় কোনটি? (Which is the correct method for determining the Population Density of a geographic region?)",
+   opts:["মোট জনসংখ্যা ÷ দেশের মোট ভৌগোলিক আয়তন","মোট ভৌগোলিক আয়তন ÷ মোট কর্মক্ষম জনসংখ্যা","মোট জাতীয় আয় ÷ মোট জনসংখ্যা","মোট জনসংখ্যা ÷ মোট চাষযোগ্য আবাদি জমি"], ans:0,
+   exp:"জনসংখ্যার ঘনত্ব = মোট জনসংখ্যা ÷ মোট ভৌগোলিক আয়তন।"},
+
+  {q:"মানব সম্পদ উন্নয়নের (Human Resource Development) সর্বাপেক্ষা কার্যকর মৌলিক মাধ্যম কোনটি? (Which is considered the most fundamental and effective vehicle for Human Resource Development?)",
+   opts:["নগদ অর্থ ও ভাতার প্রত্যক্ষ বিতরণ (Direct cash handouts and allowances)","শিক্ষা, বৃত্তিমূলক প্রশিক্ষণ ও স্বাস্থ্যসেবা (Education, vocational training, and healthcare)","বিদেশি শ্রমশক্তি অবাধে আমদানি করা (Unrestricted import of foreign labor)","শ্রমবাজারের কর্মঘণ্টা হ্রাস করা (Reduction in legal working hours)"], ans:1,
+   exp:"শিক্ষা, প্রশিক্ষণ ও স্বাস্থ্যসেবা মানব সম্পদ উন্নয়নের প্রধান মাধ্যম।"},
+
+  {q:"সরকারি অর্থব্যবস্থার মূল লক্ষ্য ও উদ্দেশ্যের ক্ষেত্রে কোনটি সর্বাধিক প্রযোজ্য? (Which statement is most applicable regarding the primary objective of public finance?)",
+   opts:["ব্যক্তিগত মুনাফা সর্বোচ্চকরণ (Maximization of private profits)","সামাজিক ও সামগ্রিক জনকল্যাণ নিশ্চিতকরণ (Ensuring social and collective welfare)","ব্যয়ের সাথে সামঞ্জস্য রেখে আয়ের সংকোচন (Shrinking revenue in line with spending)","বিদেশি ঋণের ওপর পূর্ণ নির্ভরতা সৃষ্টি (Creating total reliance on foreign borrowings)"], ans:1,
+   exp:"সরকারি অর্থব্যবস্থার মূল লক্ষ্য সামাজিক ও সামগ্রিক জনকল্যাণ নিশ্চিতকরণ।"},
+
+  {q:"করদাতার করের পরিমাণ বৃদ্ধি পাওয়ার সাথে সাথে যদি করের হারের কোনো পরিবর্তন না হয়ে স্থির থাকে, তবে তাকে কোন কর বলে? (If the tax rate remains constant regardless of increases or decreases in the taxpayer's total income base, what type of tax is it?)",
+   opts:["প্রগতিশীল কর (Progressive tax)","অধোগতিশীল কর (Regressive tax)","সমানুপাতিক কর (Proportional tax)","পরোক্ষ কর (Indirect tax)"], ans:2,
+   exp:"আয়ের সাথে করের হার অপরিবর্তিত থাকলে সেটি সমানুপাতিক কর।"},
+
+  {q:"যে কর ব্যবস্থায় করঘাত (Tax Impact) এবং করপাত (Tax Incidence) ভিন্ন ভিন্ন ব্যক্তির ওপর বর্তায়, তাকে কী বলে? (When the initial impact of a tax and the final economic incidence fall on different persons, what is that tax called?)",
+   opts:["প্রত্যক্ষ কর (Direct tax)","পরোক্ষ কর (Indirect tax)","সম্পদ কর (Wealth tax)","মূলধন লাভ কর (Capital gains tax)"], ans:1,
+   exp:"পরোক্ষ করের ক্ষেত্রে করঘাত ও করপাত ভিন্ন ব্যক্তির ওপর বর্তায়।"},
+
+  {q:"নিচের কোনটি বাংলাদেশ সরকারের রাজস্ব আয়ের প্রত্যক্ষ কর (Direct Tax)-এর অন্তর্ভুক্ত? (Which of the following belongs to Direct Tax revenue sources for the Government of Bangladesh?)",
+   opts:["মূল্য সংযোজন কর (মূসক/VAT)","আমদানি ও রপ্তানি শুল্ক (Customs / Import duties)","ব্যক্তিগত আয়কর ও কর্পোরেট কর (Personal income and corporate tax)","সম্পূরক শুল্ক (Supplementary duty)"], ans:2,
+   exp:"ব্যক্তিগত আয়কর ও কর্পোরেট কর প্রত্যক্ষ করের অন্তর্ভুক্ত।"},
+
+  {q:"বাংলাদেশ সরকারের আয়ের ‘কর-বহির্ভূত রাজস্ব’ (Non-tax Revenue) উৎস নিচের কোনটি? (Which of the following constitutes a Non-tax Revenue source for the Government of Bangladesh?)",
+   opts:["আবগারি শুল্ক (Excise duty)","সরকারি বাণিজ্যিক প্রতিষ্ঠানের লভ্যাংশ ও মুনাফা (Dividends and profits from public enterprises)","মূল্য সংযোজন কর (Value Added Tax)","স্ট্যাম্প শুল্ক (Stamp duty)"], ans:1,
+   exp:"সরকারি প্রতিষ্ঠানের লভ্যাংশ/মুনাফা কর-বহির্ভূত রাজস্বের প্রধান উৎস।"},
+
+  {q:"কোনো অর্থবছরে সরকারের প্রত্যাশিত সামগ্রিক ব্যয় যদি তার সম্ভাব্য মোট রাজস্ব আয়ের চেয়ে বেশি হয়, তবে সেই বাজেটকে কী বলা হয়? (When government's projected total public expenditure exceeds its estimated aggregate revenue receipts in a fiscal year, what is that budget termed?)",
+   opts:["উদ্বৃত্ত বাজেট (Surplus budget)","ঘাটতি বাজেট (Deficit budget)","সুষম বাজেট (Balanced budget)","কার্যভিত্তিক বাজেট (Performance budget)"], ans:1,
+   exp:"ব্যয় আয়ের চেয়ে বেশি হলে সেটি ঘাটতি বাজেট।"},
+
+  {q:"অর্থনীতিবিদ এডাম স্মিথ কর্তৃক প্রদত্ত করের চারটি বিখ্যাত অনুশাসনের (Canons of Taxation) মধ্যে কোনটি অন্তর্ভুক্ত নয়? (Which of the following is NOT one of Adam Smith's four celebrated Canons of Taxation?)",
+   opts:["সমতার বা সামর্থ্যের অনুশাসন (Canon of Equality or Ability)","নিশ্চয়তার অনুশাসন (Canon of Certainty)","স্বেচ্ছাচারিতার অনুশাসন (Canon of Arbitrariness)","মিতব্যয়িতার অনুশাসন (Canon of Economy)"], ans:2,
+   exp:"এডাম স্মিথের চারটি অনুশাসন — Equality, Certainty, Convenience ও Economy। স্বেচ্ছাচারিতা নয়।"},
+
+  {q:"বাংলাদেশ সরকারের বার্ষিক উন্নয়ন কর্মসূচি (ADP) অর্থায়নের অভ্যন্তরীণ অ-ব্যাংক উৎসের প্রধান উদাহরণ কোনটি? (Which instrument serves as a prime non-bank domestic borrowing source for financing Bangladesh's Annual Development Programme (ADP)?)",
+   opts:["জাতীয় সঞ্চয়পত্র ও প্রাইজবন্ড বিক্রয় (Sale of National Savings Certificates & Prize bonds)","কেন্দ্রীয় ব্যাংক কর্তৃক নতুন মুদ্রা মুদ্রণ (Printing high-powered money by central bank)","আন্তর্জাতিক মুদ্রা তহবিল (IMF) থেকে ঋণ গ্রহণ (Borrowing from International Monetary Fund)","বাণিজ্যিক ব্যাংকের ট্রেজারি বিল নিলাম (Treasury bill auctions to commercial banks)"], ans:0,
+   exp:"জাতীয় সঞ্চয়পত্র ও প্রাইজবন্ড বিক্রয় ADP-এর প্রধান অভ্যন্তরীণ অ-ব্যাংক উৎস।"},
+
+  {q:"বাংলাদেশে রাজস্ব সংগ্রহের দায়িত্বপ্রাপ্ত কেন্দ্রীয় ও শীর্ষ প্রশাসনিক কর্তৃপক্ষ কোনটি? (Which is the apex statutory administrative body responsible for collecting revenue and taxes in Bangladesh?)",
+   opts:["বাংলাদেশ ব্যাংক (Bangladesh Bank)","অর্থনৈতিক সম্পর্ক বিভাগ (ERD)","জাতীয় রাজস্ব বোর্ড (NBR)","বাংলাদেশ পরিকল্পনা কমিশন (Bangladesh Planning Commission)"], ans:2,
+   exp:"জাতীয় রাজস্ব বোর্ড (NBR) বাংলাদেশে কর ও রাজস্ব সংগ্রহের শীর্ষ সংস্থা।"},
+
+  {q:"সরকার কর্তৃক কোনো নির্দিষ্ট জনকল্যাণমূলক সেবা বা সনদ প্রদানের সরাসরি বিনিময়ে যে বাধ্যতামূলক অর্থ নেওয়া হয়, তাকে কী বলে? (A compulsory payment charged by the government in direct exchange for providing a specific public service or legal permit is known as:)",
+   opts:["কর (Tax)","ফি (Fee)","জরিমানা (Fine / Penalty)","উপহার ও অনুদান (Gift and Grant)"], ans:1,
+   exp:"নির্দিষ্ট সেবা বা সনদের বিনিময়ে নেওয়া বাধ্যতামূলক অর্থকে ফি (Fee) বলে।"},
+
+  {q:"সরকারের রাজস্ব বাজেট (Revenue Budget)-এর ‘অনুন্নয়নমূলক ব্যয়ের’ সর্ববৃহৎ ও প্রধান খাত কোনটি? (Which sector consistently constitutes the largest single expenditure head under the government's non-development Revenue Budget?)",
+   opts:["সরকারি কর্মকর্তা-কর্মচারীদের বেতন-ভাতা ও অভ্যন্তরীণ/বৈদেশিক ঋণের সুদ পরিশোধ (Salaries-allowances and interest payments on public debts)","নতুন মহাসড়ক ও সেতু নির্মাণ (Construction of new mega highways and bridges)","নতুন বিশ্ববিদ্যালয় ও হাসপাতাল স্থাপন (Establishment of new universities and hospitals)","বিদ্যুৎ উৎপাদন কেন্দ্র নির্মাণ (Construction of power generation plants)"], ans:0,
+   exp:"বেতন-ভাতা ও সুদ পরিশোধই রাজস্ব বাজেটের সর্ববৃহৎ ব্যয় খাত।"},
+
+  {q:"অর্থনৈতিক মন্দাকালে সামগ্রিক চাহিদা বৃদ্ধি ও কর্মসংস্থান সৃষ্টির উদ্দেশ্যে জন কেইনসের প্রস্তাবিত বাজেট নীতি কোনটি? (During economic recessions, which budgetary policy was championed by John Maynard Keynes to boost aggregate demand and generate employment?)",
+   opts:["কঠোর সুষম বাজেট নীতি প্রণয়ন (Strict balanced budget doctrine)","উদ্বৃত্ত বাজেট নীতি অনুসরণ (Surplus budgetary stance)","ঘাটতি অর্থায়ন ও সম্প্রসারণমূলক ব্যয় নীতি (Deficit financing and expansionary public expenditure)","সরকারি উন্নয়ন ব্যয় সম্পূর্ণ স্থগিত রাখা (Complete freeze on public development outlay)"], ans:2,
+   exp:"কেইনস মন্দাকালে ঘাটতি অর্থায়ন ও সম্প্রসারণমূলক বাজেট নীতির পক্ষে মত দিয়েছেন।"}
+];
+
+/* ================= STATE & HELPERS ================= */
+const TOTAL = QUESTIONS.length;
+const LETTERS = ['A','B','C','D'];
+let state = {};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function showScreen(id){['startScreen','examScreen','resultScreen'].forEach(s=>{document.getElementById(s).style.display=(s===id)?'block':'none';});window.scrollTo({top:0,behavior:'smooth'});}
+function fmtTime(sec){const m=Math.floor(Math.max(sec,0)/60);const s=Math.max(sec,0)%60;return m+':'+String(s).padStart(2,'0');}
+
+/* ================= EXAM FLOW ================= */
+function startExam(){
+    const name=document.getElementById('nameInput').value.trim();
+    const college=document.getElementById('collegeInput').value.trim();
+    const email=document.getElementById('emailInput').value.trim();
+    const number=document.getElementById('numberInput').value.trim();
+
+    if(name.length<2){alert('Please enter your full name.');return;}
+    if(college.length<2){alert('Please enter your college name.');return;}
+    if(email.length<5||!email.includes('@')){alert('Please enter a valid email address.');return;}
+    if(number.length<5){alert('Please enter your contact number.');return;}
+
+    state={
+        name,email,college,number,
+        answers:new Array(TOTAL).fill(null),
+        answerTimes:new Array(TOTAL).fill(null),
+        current:0,
+        timeLeft:CONFIG.EXAM_MINUTES*60,
+        startTime:Date.now(),
+        timerId:null,
+        tabSwitches:0,
+        submitted:false
+    };
+
+    document.getElementById('tabCount').textContent='0';
+    document.getElementById('tabPill').classList.remove('alert');
+    showScreen('examScreen');
+    renderAllQuestions();
+    updateProgress();
+    startTimer();
+}
+
+function startTimer(){
+    clearInterval(state.timerId);
+    updateTimerDisplay();
+    state.timerId=setInterval(()=>{
+        state.timeLeft--;
+        updateTimerDisplay();
+        if(state.timeLeft<=0){clearInterval(state.timerId);submitExam(true);}
+    },1000);
+}
+
+function updateTimerDisplay(){
+    document.getElementById('timerText').textContent=fmtTime(state.timeLeft);
+    document.getElementById('timer').classList.toggle('warn',state.timeLeft<=60);
+}
+
+function renderAllQuestions(){
+    const body=document.getElementById('examBody');
+    body.innerHTML=QUESTIONS.map((q,qi)=>`
+        <div class="q-card" id="q${qi}" data-qi="${qi}">
+            <div class="q-header">
+                <span class="q-num">Question ${qi+1} of ${TOTAL}</span>
+                <span class="q-status" id="qStatus${qi}">Not answered</span>
+            </div>
+            <div class="q-text">${esc(q.q)}</div>
+            <div class="options" id="opts${qi}">
+                ${q.opts.map((opt,oi)=>`
+                    <div class="option" data-qi="${qi}" data-oi="${oi}" onclick="selectOption(${qi},${oi})">
+                        <span class="option-letter">${LETTERS[oi]}</span>
+                        <span class="option-text">${esc(opt)}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qi,oi){
+    if(state.submitted) return;
+    if(state.answerTimes[qi]===null){
+        state.answerTimes[qi]=Math.round((Date.now()-state.startTime)/1000);
+    }
+    state.answers[qi]=oi;
+    document.querySelectorAll(`#opts${qi} .option`).forEach((el,idx)=>{
+        el.classList.toggle('selected',idx===oi);
+    });
+    const st=document.getElementById(`qStatus${qi}`);
+    st.textContent='Answered';
+    st.className='q-status answered';
+    document.getElementById(`q${qi}`).classList.add('answered');
+    updateProgress();
+}
+
+function updateProgress(){
+    const done=state.answers.filter(a=>a!==null).length;
+    document.getElementById('progressFill').style.width=(done/TOTAL*100)+'%';
+}
+
+function confirmSubmit(){
+    const done=state.answers.filter(a=>a!==null).length;
+    const left=TOTAL-done;
+    let msg=left===0?'Are you sure you want to submit your exam?':`You have ${left} unanswered question(s). Submit anyway?`;
+    if(state.tabSwitches>0) msg+=`\n\n⚠️ Tab switches recorded: ${state.tabSwitches}`;
+    if(confirm(msg)) submitExam(false);
+}
+
+/* ================= SCROLL SPY ================= */
+function updateScrollSpy(){
+    const cards=document.querySelectorAll('.q-card');
+    if(!cards.length) return;
+    const barH=document.getElementById('stickyBar').offsetHeight;
+    let closest=0,minDist=Infinity;
+    cards.forEach((el,i)=>{
+        const rect=el.getBoundingClientRect();
+        const dist=Math.abs(rect.top-barH-8);
+        if(dist<minDist){minDist=dist;closest=i;}
+    });
+    state.current=closest;
+}
+window.addEventListener('scroll',()=>{ if(state.answers) updateScrollSpy(); },{passive:true});
+
+window.addEventListener('scroll',()=>{
+    const btn=document.getElementById('backTop');
+    if(btn) btn.classList.toggle('show',window.scrollY>600);
+},{passive:true});
+
+/* ================= TAB SWITCH ================= */
+document.addEventListener('visibilitychange',function(){
+    if(!state||!state.answers||state.submitted) return;
+    if(document.getElementById('examScreen').style.display==='none') return;
+    if(document.hidden){
+        state.tabSwitches++;
+        document.getElementById('tabCount').textContent=state.tabSwitches;
+        document.getElementById('tabPill').classList.add('alert');
+    } else {
+        const t=document.getElementById('tabToast');
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'),4000);
+    }
+});
+
+/* ================= SUBMIT ================= */
+function submitExam(auto){
+    if(state.submitted) return;
+    state.submitted=true;
+    clearInterval(state.timerId);
+
+    let correct=0,wrong=0,skipped=0;
+    state.answers.forEach((a,i)=>{
+        if(a===null) skipped++;
+        else if(a===QUESTIONS[i].ans) correct++;
+        else wrong++;
+    });
+
+    const rawScore=correct-(CONFIG.NEGATIVE_MARK*wrong);
+    const score=Math.round(rawScore*100)/100;
+    const timeTaken=auto?CONFIG.EXAM_MINUTES*60:Math.min(CONFIG.EXAM_MINUTES*60,Math.round((Date.now()-state.startTime)/1000));
+
+    renderResult(correct,wrong,skipped,timeTaken,auto,score);
+    showScreen('resultScreen');
+
+    saveToSheet({
+        exam:CONFIG.EXAM_NAME,
+        name:state.name,
+        college:state.college,
+        email:state.email,
+        number:state.number,
+        score:score,
+        correct:correct,
+        wrong:wrong,
+        skipped:skipped,
+        total:TOTAL,
+        timeTaken:timeTaken,
+        timeTakenText:fmtTime(timeTaken),
+        tabSwitches:state.tabSwitches,
+        autoSubmitted:auto,
+        answers:state.answers,
+        answersText:answersText(),
+        qTime:state.answerTimes,
+        qTimeText:state.answerTimes.map(t=>t===null?'-':t+'s').join('|')
+    });
+}
+
+function answersText(){
+    return state.answers.map((a,i)=>(i+1)+':'+(a===null?'-':LETTERS[a])).join(', ');
+}
+
+function renderResult(correct,wrong,skipped,timeTaken,auto,score){
+    const pct=Math.round((score/TOTAL)*100);
+    document.getElementById('resultUser').textContent=state.name+'  •  '+state.college+'  •  '+state.number;
+    document.getElementById('scoreRing').style.setProperty('--p',Math.max(0,pct)+'%');
+    document.getElementById('scoreBig').textContent=score+'/'+TOTAL;
+    document.getElementById('scorePct').textContent=pct+'%';
+
+    let verdict,sub;
+    if(pct>=80){verdict='🏆 Outstanding!';sub='Excellent command over the Economics 6 syllabus.';}
+    else if(pct>=60){verdict='🎯 Very Good!';sub='Strong performance — keep it up.';}
+    else if(pct>=40){verdict='📈 Good Effort';sub='Review the weak areas and try again.';}
+    else{verdict='📚 Needs Practice';sub='Go through the explanations below carefully.';}
+    if(auto) sub+=' (Time expired — auto submitted.)';
+    if(state.tabSwitches>0) sub+=` Tab switches: ${state.tabSwitches}.`;
+    document.getElementById('verdict').innerHTML=verdict+'<small>'+esc(sub)+'</small>';
+
+    document.getElementById('statCorrect').textContent=correct;
+    document.getElementById('statWrong').textContent=wrong;
+    document.getElementById('statSkipped').textContent=skipped;
+    document.getElementById('statTime').textContent=fmtTime(timeTaken);
+    document.getElementById('statTabs').textContent=state.tabSwitches;
+
+    document.getElementById('review').innerHTML=buildReview();
+}
+
+function buildReview(){
+    return QUESTIONS.map((q,i)=>{
+        const ua=state.answers[i];
+        const isCorrect=ua===q.ans;
+        const cls=ua===null?'skip':(isCorrect?'ok':'bad');
+        const label=ua===null?'Skipped':(isCorrect?'Correct':'Wrong');
+        const t=state.answerTimes[i];
+        const spent=t===null?'—':'answered at '+fmtTime(t);
+        return `
+            <div class="review-item ${cls}">
+                <div class="review-head">
+                    <span class="review-num">Q${i+1}</span>
+                    <span class="review-time"><i class="fas fa-stopwatch"></i> ${spent}</span>
+                    <span class="review-badge ${cls}">${label}</span>
+                </div>
+                <div class="review-q">${esc(q.q)}</div>
+                <div class="review-line"><b>Your answer:</b> ${ua===null?'—':LETTERS[ua]+'. '+esc(q.opts[ua])}</div>
+                <div class="review-line"><b>Correct answer:</b> ${LETTERS[q.ans]}. ${esc(q.opts[q.ans])}</div>
+                <div class="review-exp"><i class="fas fa-lightbulb"></i>${esc(q.exp)}</div>
+            </div>`;
+    }).join('');
+}
+
+/* ================= GOOGLE SHEETS ================= */
+async function saveToSheet(payload){
+    const el=document.getElementById('saveStatus');
+    el.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving your score…';
+    try{
+        const res=await fetch(CONFIG.WEB_APP_URL,{
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body:JSON.stringify(payload),
+            redirect:'follow'
+        });
+        const data=await res.json();
+        if(data.success){
+            el.innerHTML=`<i class="fas fa-check-circle" style="color:#16a34a"></i> Score saved to ${CONFIG.SHEET_NAME} sheet! Your rank: <b>#${data.rank}</b>`;
+        }else{
+            el.innerHTML='<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Could not save score.';
+        }
+    }catch(err){
+        console.error(err);
+        el.innerHTML='<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Network error — score not saved.';
+    }
+    loadLeaderboard();
+}
+
+async function loadLeaderboard(){
+    const box=document.getElementById('leaderboard');
+    box.innerHTML='<div class="lb-empty">Loading leaderboard…</div>';
+    try{
+        const res=await fetch(CONFIG.WEB_APP_URL+'?action=leaderboard&limit='+CONFIG.LEADERBOARD_LIMIT);
+        const data=await res.json();
+        if(!data.success||!data.leaderboard||data.leaderboard.length===0){
+            box.innerHTML='<div class="lb-empty">No entries yet. Be the first!</div>';
+            return;
+        }
+        let html=`<table class="lb-table">
+            <thead><tr>
+                <th style="width:52px">#</th><th>Name</th><th>College</th><th>Contact</th>
+                <th style="width:70px">Score</th><th style="width:80px">Time</th>
+            </tr></thead><tbody>`;
+        data.leaderboard.forEach((r,i)=>{
+            const rank=i+1;
+            const medal=rank===1?'g1':rank===2?'g2':rank===3?'g3':'';
+            const isMe=(String(r.number)===String(state.number)&&r.name===state.name);
+            const t=Number(r.time)||0;
+            html+=`<tr class="${isMe?'me':''}">
+                <td><span class="rank-badge ${medal}">${rank}</span></td>
+                <td>${esc(r.name)}</td>
+                <td>${esc(r.college)}</td>
+                <td>${esc(r.number)}</td>
+                <td><b>${r.score}/${r.total}</b></td>
+                <td>${fmtTime(t)}</td>
+            </tr>`;
+        });
+        html+='</tbody></table>';
+        box.innerHTML=html;
+    }catch(err){
+        console.error(err);
+        box.innerHTML='<div class="lb-empty">Could not load leaderboard. Tap “Refresh Board”.</div>';
+    }
+}
+
+function refreshLeaderboard(){loadLeaderboard();}
+
+/* ================= INPUT HELPERS ================= */
+document.getElementById('numberInput').addEventListener('input',function(){
+    this.value=this.value.replace(/[^0-9+\-()\s]/g,'');
+});
+
+document.addEventListener('keydown',function(e){
+    if(!state||!state.answers) return;
+    if(document.getElementById('examScreen').style.display==='none') return;
+    if(['1','2','3','4'].includes(e.key)){
+        selectOption(state.current,parseInt(e.key)-1);
+        const card=document.getElementById('q'+state.current);
+        if(card) card.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+});
+
+window.addEventListener('beforeunload',function(e){
+    if(state&&!state.submitted&&document.getElementById('examScreen').style.display!=='none'){
+        e.preventDefault();e.returnValue='';
+    }
+});
+
+/* ================= DYNAMIC LABELS ================= */
+document.getElementById('startSubtitle').textContent =
+    `Daily Test • ${TOTAL} Questions • ${CONFIG.EXAM_MINUTES} Minutes`;
+document.getElementById('ruleTotal').textContent = TOTAL;
+document.getElementById('timerText').textContent = fmtTime(CONFIG.EXAM_MINUTES*60);
+</script>
+</body>
+</html>
