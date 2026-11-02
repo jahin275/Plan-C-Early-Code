@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top"><meta charset="utf-8">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size:14px}
+  .wrap{max-width:960px;margin:0 auto;padding:16px}
+  header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:14px 18px;border-radius:16px;margin-bottom:12px}
+  header h1{font-size:18px;margin:0}
+  .pills{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+  .pill{background:rgba(255,255,255,.18);padding:5px 11px;border-radius:999px;font-size:12px;font-weight:600}
+  .tabs{display:flex;gap:8px;margin-bottom:12px}
+  .tabs button{font:inherit;font-weight:600;padding:9px 18px;border-radius:11px;border:1px solid #cbd5e1;
+    background:#fff;cursor:pointer;color:#475569}
+  .tabs button.active{background:#4f46e5;border-color:#4f46e5;color:#fff}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#fff;padding:10px 12px;
+    border-radius:12px;box-shadow:0 1px 3px rgba(15,23,42,.08);margin-bottom:14px}
+  .bar select,.bar button{font:inherit;border-radius:9px;border:1px solid #cbd5e1;padding:7px 10px;background:#fff;cursor:pointer}
+  .bar label{display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer}
+  .bar .primary{background:#4f46e5;color:#fff;border-color:#4f46e5;font-weight:600;margin-left:auto}
+  .cardwrap{perspective:1400px}
+  .card{background:#fff;border-radius:20px;min-height:340px;box-shadow:0 10px 30px rgba(15,23,42,.10);
+    padding:34px 30px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;transition:.18s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(15,23,42,.14)}
+  .card .back{display:none}.card.revealed .front{display:none}.card.revealed .back{display:block;animation:fade .25s}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .front{text-align:center}
+  .word{font-size:44px;font-weight:800;color:#1e293b;word-break:break-word}
+  .pos{display:inline-block;margin-top:10px;background:#eef2ff;color:#4338ca;font-size:12px;font-weight:700;
+    padding:4px 12px;border-radius:999px}
+  .hint{margin-top:26px;color:#94a3b8;font-size:13px}
+  .bn{font-size:26px;font-weight:700;color:#0f766e;margin-bottom:6px;line-height:1.45}
+  .en{font-size:15px;color:#475569;margin-bottom:18px}
+  .rows{border-top:1px solid #e2e8f0;padding-top:14px;display:grid;gap:9px}
+  .rows>div{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:13.5px;line-height:1.5}
+  .rows b{color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+  .grades{display:flex;gap:10px;margin-top:16px}
+  .grades button{flex:1;font:inherit;font-weight:700;padding:14px;border-radius:13px;border:none;cursor:pointer;color:#fff}
+  .grades button:hover{filter:brightness(1.06);transform:translateY(-2px)}
+  .grades small{display:block;font-weight:400;opacity:.8;font-size:11px}
+  .g-again{background:#ef4444}.g-good{background:#10b981}.g-easy{background:#3b82f6}
+  .foot{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center}
+  .foot button{font:inherit;background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:7px 12px;cursor:pointer}
+  .foot .muted{color:#94a3b8;font-size:12px;margin-left:auto}
+  .empty{text-align:center;padding:60px 20px;color:#64748b}
+  .empty .big{font-size:40px;margin-bottom:10px}
+  .empty h3{margin:0 0 8px;color:#0f172a}
+
+  /* Quiz */
+  #quizStage{background:#fff;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(15,23,42,.10)}
+  .qmeta{display:flex;justify-content:space-between;font-size:12px;color:#64748b;margin-bottom:10px;font-weight:600}
+  .qtext{font-size:20px;font-weight:700;line-height:1.5;color:#1e293b;margin-bottom:18px}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;padding:13px 16px;margin-bottom:10px;
+    border:2px solid #e2e8f0;border-radius:12px;background:#fff;cursor:pointer;transition:.15s}
+  .opt:hover:not(:disabled){border-color:#a5b4fc;background:#f5f3ff}
+  .opt:disabled{cursor:default}
+  .opt.correct{border-color:#10b981;background:#ecfdf5}
+  .opt.wrong{border-color:#ef4444;background:#fef2f2}
+  .opt .tag{float:right;font-size:11px;font-weight:700;opacity:.7;margin-left:8px}
+  .next{font:inherit;font-weight:700;padding:11px 22px;border-radius:11px;border:none;background:#4f46e5;
+    color:#fff;cursor:pointer;margin-top:8px;display:none}
+  .next.show{display:inline-block}
+  .result{text-align:center;padding:20px}
+  .result .score{font-size:64px;font-weight:800;color:#4f46e5;line-height:1}
+  .result .pct{font-size:18px;color:#64748b;margin-bottom:20px}
+  #saveStatus{margin-top:14px;font-size:13px}
+  .progress{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:16px}
+  .progress>div{height:100%;background:#4f46e5;width:0;transition:width .3s}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📚 Vocabulary Trainer</h1>
+    <div class="pills">
+      <span class="pill">Due <b id="sDue">0</b></span>
+      <span class="pill">New <b id="sNew">0</b></span>
+      <span class="pill">Mastered <b id="sMaster">0</b></span>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="flash" class="active">🃏 Flashcards</button>
+    <button data-tab="quiz">✏️ Quiz</button>
+  </nav>
+
+  <!-- ==================== FLASHCARDS ==================== -->
+  <section id="tab-flash">
+    <div class="bar">
+      <select id="fLetter"><option value="">All letters</option></select>
+      <select id="fPos"><option value="">All types</option></select>
+      <label><input type="checkbox" id="fDue"> Due only</label>
+      <label><input type="checkbox" id="fShuffle" checked> Shuffle</label>
+      <button class="primary" id="startBtn">▶ Start / Restart</button>
+    </div>
+    <div id="stage"><div class="empty" id="loading">Loading vocabulary…</div></div>
+    <div class="foot">
+      <button id="exportBtn">⬇ Export progress</button>
+      <button id="importBtn">⬆ Import progress</button>
+      <button id="resetBtn">🗑 Reset progress</button>
+      <span class="muted" id="storeNote">Flashcard progress is saved locally in this browser.</span>
+    </div>
+  </section>
+
+  <!-- ==================== QUIZ ==================== -->
+  <section id="tab-quiz" hidden>
+    <div class="bar" id="quizSetup">
+      <select id="qType">
+        <option value="Mixed">Mixed (all types)</option>
+        <option value="Vocabulary">Vocabulary meaning</option>
+        <option value="Synonym">Synonyms</option>
+        <option value="Antonym">Antonyms</option>
+        <option value="Spelling">Spelling</option>
+        <option value="Analogy">Analogy</option>
+      </select>
+      <select id="qCount">
+        <option value="5">5 questions</option>
+        <option value="10" selected>10 questions</option>
+        <option value="20">20 questions</option>
+        <option value="30">30 questions</option>
+      </select>
+      <button class="primary" id="qStart">▶ Start Quiz</button>
+    </div>
+    <div id="quizStage">
+      <div class="empty"><div class="big">✏️</div><h3>Pick a quiz type and start</h3>
+        <p>Results are saved to a <b>QuizResults</b> tab in your spreadsheet.</p></div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ============================================================
+   SHARED
+   ============================================================ */
+var WORDS = [];
+function $(id){return document.getElementById(id);}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function uniqueOptions(correct, wrongPool){
+  var opts=[correct], seen=new Set([correct]);
+  for(var i=0;i<wrongPool.length && opts.length<4;i++){
+    var w=wrongPool[i];
+    if(w && !seen.has(w)){seen.add(w);opts.push(w);}
+  }
+  return shuffle(opts);
+}
+
+/* ============================================================
+   TAB SWITCH
+   ============================================================ */
+document.querySelectorAll('.tabs button').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    $('tab-flash').hidden = b.dataset.tab!=='flash';
+    $('tab-quiz').hidden  = b.dataset.tab!=='quiz';
+  };
+});
+
+/* ============================================================
+   LOAD WORD BANK
+   ============================================================ */
+var progress = {};
+var memoryOnly = false;
+var KEY = 'vocab_flashcards_v1';
+function loadProgress(){try{var r=localStorage.getItem(KEY);progress=r?JSON.parse(r):{};}catch(e){memoryOnly=true;progress={};}}
+function saveProgress(){if(memoryOnly)return;try{localStorage.setItem(KEY,JSON.stringify(progress));}catch(e){memoryOnly=true;$('storeNote').textContent='⚠ Storage blocked — session only.';}}
+loadProgress();
+
+google.script.run
+  .withSuccessHandler(function(bank){
+    WORDS = bank || [];
+    if(!WORDS.length){
+      $('loading').innerHTML='<div class="big">📄</div><h3>No words found</h3>'+
+        '<p>Check that the spreadsheet has a tab with Word, Part of Speech, Bangla Meaning, Simple English Meaning, Synonym(s), Antonym(s), Example.</p>';
+      return;
+    }
+    buildFilters(); refreshStats(); renderIdle();
+  })
+  .withFailureHandler(function(err){
+    $('loading').innerHTML='<div class="big">⚠️</div><h3>Could not load</h3><p>'+esc(err.message)+'</p>';
+  })
+  .getWordBank();
+
+/* ============================================================
+   FLASHCARDS (Leitner)
+   ============================================================ */
+var IV={1:0,2:1,3:2,4:4,5:8}, DAY=86400000;
+var queue=[], current=null, revealed=false, againCount={}, sessionCount=0;
+
+function refreshStats(){
+  var now=Date.now(),due=0,neu=0,mast=0;
+  WORDS.forEach(function(w){
+    var r=progress[w.w];
+    if(!r){neu++;due++;return;}
+    if(r.box>=4)mast++;
+    if(r.due<=now)due++;
+  });
+  $('sDue').textContent=due; $('sNew').textContent=neu; $('sMaster').textContent=mast;
+}
+
+function buildFilters(){
+  var L={},P={};
+  WORDS.forEach(function(w){
+    var c=w.w.charAt(0).toUpperCase();
+    if(/[A-Z]/.test(c))L[c]=1;
+    if(w.pos)P[w.pos]=1;
+  });
+  Object.keys(L).sort().forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;$('fLetter').appendChild(o);});
+  Object.keys(P).sort().forEach(function(p){var o=document.createElement('option');o.value=p;o.textContent=p;$('fPos').appendChild(o);});
+}
+
+function renderIdle(){
+  var due=WORDS.filter(function(w){var r=progress[w.w];return !r||r.due<=Date.now();}).length;
+  $('stage').innerHTML='<div class="empty"><div class="big">🃏</div><h3>'+WORDS.length+' words ready</h3>'+
+    '<p>'+due+' card'+(due===1?'':'s')+' due right now.</p><p>Press <b>▶ Start / Restart</b>.</p></div>';
+}
+
+$('startBtn').onclick=function(){
+  var L=$('fLetter').value, P=$('fPos').value, dueOnly=$('fDue').checked, now=Date.now();
+  queue = WORDS.filter(function(w){
+    if(L && w.w.charAt(0).toUpperCase()!==L) return false;
+    if(P && w.pos!==P) return false;
+    if(dueOnly){var r=progress[w.w]; if(r && r.due>now) return false;}
+    return true;
+  });
+  if($('fShuffle').checked) shuffle(queue);
+  againCount={}; sessionCount=0;
+  if(!queue.length){ $('stage').innerHTML='<div class="empty"><div class="big">🎉</div><h3>Nothing due</h3><p>Uncheck “Due only” to keep practising.</p></div>'; return; }
+  renderCard(); refreshStats();
+};
+
+function renderCard(){
+  if(!queue.length) return renderDone();
+  current=queue[0]; revealed=false;
+  $('stage').innerHTML =
+    '<div class="cardwrap"><div class="card" id="card">'+
+      '<div class="front"><div class="word">'+esc(current.w)+'</div>'+
+        '<div class="pos">'+esc(current.pos)+'</div>'+
+        '<div class="hint">Click / press Space to reveal</div></div>'+
+      '<div class="back">'+
+        '<div class="bn">'+esc(current.bn||'—')+'</div>'+
+        '<div class="en">'+esc(current.en||'')+'</div>'+
+        '<div class="rows">'+
+          '<div><b>Synonyms</b><span>'+esc(current.syn.join(', ')||'—')+'</span></div>'+
+          '<div><b>Antonyms</b><span>'+esc(current.ant.join(', ')||'—')+'</span></div>'+
+          '<div><b>Example</b><span>'+esc(current.ex||'—')+'</span></div>'+
+        '</div>'+
+      '</div>'+
+    '</div></div>'+
+    '<div class="grades" id="grades" style="display:none">'+
+      '<button class="g-again" onclick="grade(\'again\')">Again<small>1</small></button>'+
+      '<button class="g-good" onclick="grade(\'good\')">Good<small>2</small></button>'+
+      '<button class="g-easy" onclick="grade(\'easy\')">Easy<small>3</small></button>'+
+    '</div>';
+  $('card').onclick=reveal;
+  refreshStats();
+}
+function reveal(){ if(revealed)return; revealed=true; $('card').classList.add('revealed'); $('grades').style.display='flex'; }
+function grade(kind){
+  if(!revealed||!current)return;
+  var w=current.w, r=progress[w]||{box:1,seen:0,correct:0,wrong:0,last:0,due:0};
+  r.seen++;
+  if(kind==='again'){r.wrong++;r.box=1;r.due=Date.now();}
+  else if(kind==='good'){r.correct++;r.box=Math.min(5,r.box+1);r.due=Date.now()+IV[r.box]*DAY;}
+  else {r.correct++;r.box=Math.min(5,r.box+2);r.due=Date.now()+IV[r.box]*DAY;}
+  r.last=Date.now(); progress[w]=r; saveProgress();
+  sessionCount++;
+  var card=queue.shift();
+  if(kind==='again'){var n=againCount[w]||0; if(n<2){againCount[w]=n+1; queue.push(card);}}
+  renderCard();
+}
+function renderDone(){
+  $('stage').innerHTML='<div class="empty"><div class="big">✅</div><h3>Session complete!</h3>'+
+    '<p>Reviewed <b>'+sessionCount+'</b> card'+(sessionCount===1?'':'s')+'.</p></div>';
+  refreshStats();
+}
+document.addEventListener('keydown',function(e){
+  if($('tab-quiz').hidden===false) return;   // ignore while on quiz tab
+  if(!current||!$('card')) return;
+  if(e.code==='Space'){e.preventDefault();reveal();}
+  if(revealed&&e.key==='1')grade('again');
+  if(revealed&&e.key==='2')grade('good');
+  if(revealed&&e.key==='3')grade('easy');
+});
+
+/* export/import/reset */
+$('exportBtn').onclick=function(){
+  var txt=JSON.stringify(progress,null,2);
+  var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');alert('Progress JSON copied ('+Object.keys(progress).length+' words).');}
+  catch(e){alert(txt);}
+  document.body.removeChild(ta);
+};
+$('importBtn').onclick=function(){
+  var txt=prompt('Paste progress JSON:'); if(!txt)return;
+  try{var o=JSON.parse(txt);if(typeof o!=='object'||Array.isArray(o))throw new Error('not an object');
+    progress=o;saveProgress();refreshStats();alert('Imported '+Object.keys(progress).length+' words.');}
+  catch(e){alert('Invalid JSON: '+e.message);}
+};
+$('resetBtn').onclick=function(){
+  if(!confirm('Delete ALL local flashcard progress?'))return;
+  progress={};saveProgress();refreshStats();renderIdle();
+};
+
+/* ============================================================
+   QUIZ ENGINE
+   ============================================================ */
+var quiz=null;
+
+function misspell(word){
+  var w=word, v=new Set();
+  for(var i=0;i<w.length-1;i++){var a=w.split('');var t=a[i];a[i]=a[i+1];a[i+1]=t;v.add(a.join(''));}
+  for(var i=0;i<w.length;i++) v.add(w.slice(0,i)+w[i]+w.slice(i));
+  for(var i=0;i<w.length;i++) v.add(w.slice(0,i)+w.slice(i+1));
+  return [...v].filter(function(x){return x!==w && x.length>2;});
+}
+
+function makeVocabQ(pool){
+  var w=pick(pool); if(!w.bn)return null;
+  var others=shuffle(pool.filter(function(x){return x.w!==w.w && x.bn && x.bn!==w.bn;}));
+  var wrong=others.slice(0,6).map(function(x){return x.bn;});
+  if(wrong.length<3)return null;
+  return {type:'Vocabulary',word:w.w,q:'What is the Bangla meaning of "'+w.w+'"?',
+    options:uniqueOptions(w.bn,wrong),correct:w.bn};
+}
+function makeSynQ(pool){
+  var cands=pool.filter(function(x){return x.syn.length>0;});
+  if(cands.length<4)return null;
+  var w=pick(cands), correct=pick(w.syn), wrong=[];
+  var others=shuffle(pool.filter(function(x){return x.w!==w.w;}));
+  for(var i=0;i<others.length && wrong.length<6;i++) if(others[i].syn.length) wrong.push(pick(others[i].syn));
+  if(wrong.length<3)return null;
+  return {type:'Synonym',word:w.w,q:'Which of these is a synonym of "'+w.w+'"?',
+    options:uniqueOptions(correct,wrong),correct:correct};
+}
+function makeAntQ(pool){
+  var cands=pool.filter(function(x){return x.ant.length>0;});
+  if(cands.length<4)return null;
+  var w=pick(cands), correct=pick(w.ant), wrong=[];
+  var others=shuffle(pool.filter(function(x){return x.w!==w.w;}));
+  for(var i=0;i<others.length && wrong.length<6;i++) if(others[i].ant.length) wrong.push(pick(others[i].ant));
+  if(wrong.length<3)return null;
+  return {type:'Antonym',word:w.w,q:'Which of these is an antonym of "'+w.w+'"?',
+    options:uniqueOptions(correct,wrong),correct:correct};
+}
+function makeSpellQ(pool){
+  var cands=pool.filter(function(x){return x.w.length>=5 && /^[a-zA-Z]+$/.test(x.w);});
+  if(cands.length<1)return null;
+  var w=pick(cands), correct=w.w;
+  var real=new Set(pool.map(function(x){return x.w.toLowerCase();}));
+  var variants=shuffle(misspell(correct)).filter(function(v){return !real.has(v.toLowerCase());});
+  if(variants.length<3)return null;
+  return {type:'Spelling',word:correct,q:'Which is the correct spelling?',
+    options:shuffle([correct,variants[0],variants[1],variants[2]]),correct:correct};
+}
+function makeAnalogyQ(pool){
+  var cands=pool.filter(function(x){return x.syn.length>0;});
+  if(cands.length<4)return null;
+  var w1=pick(cands);
+  var w2=pick(cands.filter(function(x){return x.w!==w1.w;}));
+  if(!w2)return null;
+  var syn1=pick(w1.syn), correct=pick(w2.syn), wrong=[];
+  var others=shuffle(pool.filter(function(x){return x.w!==w2.w;}));
+  for(var i=0;i<others.length && wrong.length<6;i++) if(others[i].syn.length) wrong.push(pick(others[i].syn));
+  if(wrong.length<3)return null;
+  return {type:'Analogy',word:w1.w+'/'+w2.w,
+    q:'"'+w1.w+'" is to "'+syn1+'" as "'+w2.w+'" is to …',
+    options:uniqueOptions(correct,wrong),correct:correct};
+}
+
+function buildQuiz(type,count){
+  if(WORDS.length<5){alert('Need at least 5 words in the sheet.');return null;}
+  var types = type==='Mixed' ? ['Vocabulary','Synonym','Antonym','Spelling','Analogy'] : [type];
+  var qs=[], tries=0;
+  while(qs.length<count && tries<count*30){
+    tries++;
+    var t=pick(types), q=null;
+    if(t==='Vocabulary') q=makeVocabQ(WORDS);
+    else if(t==='Synonym') q=makeSynQ(WORDS);
+    else if(t==='Antonym') q=makeAntQ(WORDS);
+    else if(t==='Spelling') q=makeSpellQ(WORDS);
+    else if(t==='Analogy') q=makeAnalogyQ(WORDS);
+    if(q) qs.push(q);
+  }
+  if(!qs.length){alert('Could not generate questions from this sheet — check columns.');return null;}
+  return {questions:qs,index:0,score:0,answers:[],startTime:Date.now(),type:type,total:qs.length};
+}
+
+$('qStart').onclick=function(){
+  quiz=buildQuiz($('qType').value, parseInt($('qCount').value,10));
+  if(!quiz)return;
+  renderQuiz();
+};
+
+function renderQuiz(){
+  if(!quiz)return;
+  if(quiz.index>=quiz.questions.length) return finishQuiz();
+  var q=quiz.questions[quiz.index];
+  var pct=Math.round((quiz.index/quiz.total)*100);
+
+  var html='<div class="progress"><div style="width:'+pct+'%"></div></div>'+
+    '<div class="qmeta"><span>Question '+(quiz.index+1)+' of '+quiz.total+'</span>'+
+      '<span>Type: '+q.type+'</span></div>'+
+    '<div class="qtext">'+esc(q.q)+'</div>';
+  q.options.forEach(function(opt,i){
+    html+='<button class="opt" data-i="'+i+'">'+esc(opt)+'</button>';
+  });
+  html+='<button class="next" id="qNext">Next →</button>';
+  $('quizStage').innerHTML=html;
+
+  var opts=$('quizStage').querySelectorAll('.opt');
+  opts.forEach(function(btn){
+    btn.onclick=function(){
+      var chosen=btn.textContent;
+      var correct=chosen===q.correct;
+      opts.forEach(function(b){b.disabled=true; if(b.textContent===q.correct) b.classList.add('correct');});
+      if(!correct) btn.classList.add('wrong');
+      if(correct) quiz.score++;
+      quiz.answers.push({type:q.type,word:q.word,question:q.q,chosen:chosen,correct:q.correct,ok:correct});
+      $('qNext').classList.add('show');
+    };
+  });
+  $('qNext').onclick=function(){ quiz.index++; renderQuiz(); };
+}
+
+function finishQuiz(){
+  var pct=Math.round((quiz.score/quiz.total)*100);
+  var msg = pct>=80 ? '🏆 Excellent!' : pct>=60 ? '👍 Good job!' : '📚 Keep practising!';
+  $('quizStage').innerHTML='<div class="result">'+
+    '<h3>'+msg+'</h3>'+
+    '<div class="score">'+quiz.score+' / '+quiz.total+'</div>'+
+    '<div class="pct">'+pct+'%</div>'+
+    '<div id="saveStatus">Saving to sheet…</div>'+
+    '<button class="next show" onclick="startQuizAgain()" style="margin-top:20px">Try another quiz</button>'+
+    '</div>';
+
+  var payload={
+    type: quiz.type,
+    score: quiz.score,
+    total: quiz.total,
+    durationSec: Math.round((Date.now()-quiz.startTime)/1000),
+    answers: quiz.answers
+  };
+  google.script.run
+    .withSuccessHandler(function(r){
+      $('saveStatus').textContent='✅ Saved to "'+ 'QuizResults' +'" tab (row '+r.row+')';
+    })
+    .withFailureHandler(function(e){
+      $('saveStatus').textContent='⚠ Could not save: '+e.message;
+    })
+    .saveQuizResult(payload);
+}
+
+function startQuizAgain(){
+  quiz=buildQuiz($('qType').value, parseInt($('qCount').value,10));
+  if(quiz) renderQuiz();
+}
+</script>
+</body>
+</html>
