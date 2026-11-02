@@ -663,7 +663,6 @@ function handleLogin() {
   user = { name: name.slice(0, 40), email: email.slice(0, 80) };
   saveUser();
 
-  // Register on server (fire-and-forget)
   fetch(API_URL + '?action=register', {
     method: 'POST',
     mode: 'cors',
@@ -771,7 +770,6 @@ function flushEvents() {
   })
   .then(function(r){ return r.json(); })
   .catch(function() {
-    // Restore on failure
     pendingEvents = toSend.concat(pendingEvents);
     savePendingEvents();
   });
@@ -806,7 +804,6 @@ function startWordsLoad() {
   if (wordsLoadStarted) return;
   wordsLoadStarted = true;
 
-  // Cache first
   try {
     var raw = localStorage.getItem(WORDS_CACHE_KEY);
     if (raw) {
@@ -1007,15 +1004,19 @@ function renderDeckGrid() {
 }
 
 /* ============================================================
-   STUDY (flashcards per deck)
+   STUDY (flashcards per deck) — AGAIN requeues indefinitely
    ============================================================ */
 var IV = { 1: 0, 2: 1, 3: 2, 4: 4, 5: 8 }, DAY = 86400000;
-var queue = [], current = null, revealed = false, againCount = {}, sessionCount = 0;
+var queue = [], current = null, revealed = false;
 var studyingDeck = null;
+var sessionTotal = 0;
+var sessionLearned = {};
+var sessionReviewed = 0;
 
 function enterDeck(i) {
   if (!canAccessDeck(i)) { showToast('🔒 COMPLETE PREVIOUS DECK FIRST'); return; }
   studyingDeck = i;
+  window._deckCompleteToastShown = null;
   $('deckView').hidden = true;
   $('studyView').hidden = false;
   var r = deckRange(i);
@@ -1036,8 +1037,9 @@ function startDeckSession(i) {
   var words = [];
   for (var j = r.start; j < r.end; j++) words.push(WORDS[j]);
   queue = shuffle(words);
-  againCount = {};
-  sessionCount = 0;
+  sessionTotal    = words.length;
+  sessionLearned  = {};
+  sessionReviewed = 0;
   renderCard();
 }
 
@@ -1045,11 +1047,14 @@ function renderCard() {
   if (!queue.length) return renderDeckDone();
   current = queue[0];
   revealed = false;
-  var pct = (sessionCount + queue.length) ?
-    Math.round(sessionCount / (sessionCount + queue.length) * 100) : 0;
+
+  var done      = Object.keys(sessionLearned).length;
+  var remaining = sessionTotal - done;
+  var pct       = sessionTotal ? Math.round(done / sessionTotal * 100) : 0;
+
   $('fcStage').innerHTML =
-    '<div class="fc-progress"><span>REVIEWED <b>' + sessionCount + '</b></span>' +
-      '<span>REMAINING <b>' + queue.length + '</b></span></div>' +
+    '<div class="fc-progress"><span>LEARNED <b>' + done + '</b>/' + sessionTotal + '</span>' +
+      '<span>REMAINING <b>' + remaining + '</b></span></div>' +
     '<div class="q-bar"><div class="q-bar-fill" style="width:' + pct + '%"></div></div>' +
     '<div class="fc" id="fc">' +
       '<div class="fc-word">' + esc(current.w) + '</div>' +
@@ -1058,8 +1063,8 @@ function renderCard() {
     '</div>' +
     '<div class="grades" id="grades" style="display:none">' +
       '<button class="btn btn-danger" onclick="grade(\'again\')">↺ AGAIN<small>1</small></button>' +
-      '<button class="btn btn-green" onclick="grade(\'good\')">✓ GOOD<small>2</small></button>' +
-      '<button class="btn btn-blue" onclick="grade(\'easy\')">★ EASY<small>3</small></button>' +
+      '<button class="btn btn-green"  onclick="grade(\'good\')">✓ GOOD<small>2</small></button>' +
+      '<button class="btn btn-blue"   onclick="grade(\'easy\')">★ EASY<small>3</small></button>' +
     '</div>';
   $('fc').addEventListener('click', reveal);
 }
@@ -1083,43 +1088,42 @@ function reveal() {
 function grade(kind) {
   if (!revealed || !current) return;
   var w = current.w;
-  var existed = !!progress[w];
-  var prevBox = existed ? progress[w].box : 0;
+  var prevBox = progress[w] ? progress[w].box : 0;
   var r = progress[w] || { box: 1, seen: 0, correct: 0, wrong: 0, last: 0, due: 0 };
   r.seen++;
-  if (kind === 'again') { r.wrong++; r.box = 1; r.due = Date.now(); }
-  else if (kind === 'good') { r.correct++; r.box = Math.min(5, r.box + 1); r.due = Date.now() + IV[r.box] * DAY; }
-  else { r.correct++; r.box = Math.min(5, r.box + 2); r.due = Date.now() + IV[r.box] * DAY; }
+  sessionReviewed++;
+
+  if (kind === 'again') {
+    r.wrong++;  r.box = 1;                        r.due = Date.now();
+  } else if (kind === 'good') {
+    r.correct++; r.box = Math.min(5, r.box + 1);  r.due = Date.now() + IV[r.box] * DAY;
+    sessionLearned[w] = 1;
+  } else {
+    r.correct++; r.box = Math.min(5, r.box + 2);  r.due = Date.now() + IV[r.box] * DAY;
+    sessionLearned[w] = 1;
+  }
   r.last = Date.now();
   progress[w] = r;
   saveProgress();
 
-  // Word crossed "learned" threshold (box >= 2) for first time today?
-  var newBox = r.box;
-  if (prevBox < 2 && newBox >= 2 && !today.wordsLearned[w]) {
+  if (prevBox < 2 && r.box >= 2 && !today.wordsLearned[w]) {
     today.wordsLearned[w] = 1;
-    saveToday();
-    updateHeader();
+    saveToday(); updateHeader();
     queueEvent({ type: 'word', data: { word: w } });
   }
 
-  sessionCount++;
   var card = queue.shift();
+
+  // 🔑 KEY FIX: AGAIN requeues indefinitely (no cap) until GOOD/EASY.
   if (kind === 'again') {
-    var n = againCount[w] || 0;
-    if (n < 2) { againCount[w] = n + 1; queue.push(card); }
+    var pos = Math.min(queue.length, 2 + Math.floor(Math.random() * 2));
+    queue.splice(pos, 0, card);
   }
 
-  // Check deck completion
-  if (studyingDeck !== null && isDeckComplete(studyingDeck)) {
-    if (!queue.length) {
-      // Session already done; will show done message
-    } else {
-      // Just completed mid-session
-      if (!window._deckCompleteToastShown || window._deckCompleteToastShown !== studyingDeck) {
-        window._deckCompleteToastShown = studyingDeck;
-        showToast('🎉 DECK ' + (studyingDeck + 1) + ' COMPLETE!');
-      }
+  if (studyingDeck !== null && queue.length && isDeckComplete(studyingDeck)) {
+    if (window._deckCompleteToastShown !== studyingDeck) {
+      window._deckCompleteToastShown = studyingDeck;
+      showToast('🎉 DECK ' + (studyingDeck + 1) + ' COMPLETE!');
     }
   }
 
@@ -1129,12 +1133,13 @@ function grade(kind) {
 
 function renderDeckDone() {
   var complete = isDeckComplete(studyingDeck);
-  var next = studyingDeck + 1 < totalDecks() ? studyingDeck + 1 : null;
+  var next     = studyingDeck + 1 < totalDecks() ? studyingDeck + 1 : null;
+  var done     = Object.keys(sessionLearned).length;
   var html = '<div class="result">';
   if (complete) {
     html += '<div class="result-title">🎉 DECK COMPLETE!</div>' +
-      '<div class="result-score">' + sessionCount + '</div>' +
-      '<div class="result-pct">CARDS REVIEWED</div>';
+      '<div class="result-score">' + done + '/' + sessionTotal + '</div>' +
+      '<div class="result-pct">CARDS LEARNED (' + sessionReviewed + ' REVIEWS)</div>';
     if (next !== null) {
       html += '<div class="result-note ok">DECK ' + (next + 1) + ' UNLOCKED!</div>' +
         '<button class="btn btn-gold" onclick="enterDeck(' + next + ')" ' +
@@ -1144,8 +1149,8 @@ function renderDeckDone() {
     }
   } else {
     html += '<div class="result-title">SESSION CLEAR</div>' +
-      '<div class="result-score">' + sessionCount + '</div>' +
-      '<div class="result-pct">CARDS REVIEWED</div>' +
+      '<div class="result-score">' + done + '/' + sessionTotal + '</div>' +
+      '<div class="result-pct">CARDS LEARNED (' + sessionReviewed + ' REVIEWS)</div>' +
       '<div class="result-note">' + deckLearned(studyingDeck) + '/' +
       deckRange(studyingDeck).size + ' LEARNED IN THIS DECK</div>';
   }
@@ -1204,7 +1209,6 @@ function uniqueOptions(correct, wrongPool) {
   return shuffle(opts);
 }
 function quizPool() {
-  // Words from unlocked decks only
   var cur = currentDeckIndex();
   var end = deckRange(Math.min(cur, totalDecks() - 1)).end;
   return WORDS.slice(0, end);
@@ -1346,17 +1350,14 @@ function finishQuiz() {
     '<button class="btn btn-gold" onclick="startQuiz()" style="width:100%;margin-top:8px">▶ PLAY AGAIN</button>' +
     '</div></div>';
 
-  // Update today stats
   today.quizzesPlayed++;
   today.marks += quiz.score;
   saveToday();
   updateHeader();
 
-  // Log events (quiz event + one for the sheet record)
   queueEvent({ type: 'quiz', data: { marks: quiz.score, total: quiz.total, type: quiz.type } });
   flushEvents();
 
-  // Save to QuizResults sheet
   var payload = {
     type: quiz.type, score: quiz.score, total: quiz.total,
     durationSec: Math.round((Date.now() - quiz.startTime) / 1000), answers: quiz.answers
@@ -1390,7 +1391,7 @@ function startQuiz() {
 }
 
 /* ============================================================
-   RANK TAB (leaderboard + personal stats)
+   RANK TAB
    ============================================================ */
 var rankRefreshTimer = null;
 
@@ -1449,7 +1450,6 @@ function renderMyStats(s) {
   var quizzes = s.quizzes || 0;
   var marks = s.marks || 0;
 
-  // Deck progress
   var done = 0, nDecks = totalDecks();
   for (var i = 0; i < nDecks; i++) if (isDeckComplete(i)) done++;
   var mastered = 0;
