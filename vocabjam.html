@@ -28,7 +28,6 @@ body{font-family:var(--font-body);color:var(--text);min-height:100vh;line-height
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.02) 2px,rgba(255,255,255,.02) 4px)}
 
-/* ===== Login ===== */
 #loginScreen{position:fixed;inset:0;z-index:200;background:var(--bg);
   display:flex;align-items:center;justify-content:center;padding:16px}
 #loginScreen.hidden{display:none}
@@ -46,7 +45,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .login-error{font-family:var(--font-pixel);font-size:8px;color:var(--danger);text-align:center;
   min-height:16px;margin-bottom:10px;letter-spacing:.3px}
 
-/* ===== Loading / Flappy ===== */
 #loadingScreen{position:fixed;inset:0;z-index:100;background:var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:16px;transition:opacity .45s ease,visibility .45s}
@@ -67,7 +65,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .load-hint{font-family:var(--font-pixel);font-size:7px;color:var(--text-dim);
   margin-top:6px;opacity:.6;letter-spacing:.3px;text-align:center}
 
-/* ===== App ===== */
 #app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:12px;
   padding-bottom:max(12px,env(safe-area-inset-bottom))}
 #app.hidden{display:none}
@@ -136,7 +133,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   text-shadow:1px 1px 0 rgba(255,255,255,.3)}
 .btn-blue{background:linear-gradient(180deg,var(--mp),#3b82f6);color:#fff;text-shadow:2px 2px 0 #000}
 
-/* ===== Deck grid ===== */
 .deck-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
 .deck-card{background:var(--panel2);border:3px solid #000;padding:12px 8px;text-align:center;
   cursor:pointer;transition:transform .15s,filter .15s;position:relative;
@@ -164,7 +160,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .study-heading{font-family:var(--font-pixel);font-size:10px;color:var(--gold);
   text-align:center;letter-spacing:.5px;margin-bottom:14px;text-shadow:2px 2px 0 #000}
 
-/* Flashcard */
 .fc{background:var(--panel);border:4px solid #000;min-height:280px;padding:28px 20px;
   display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
   cursor:pointer;position:relative;transition:filter .15s;animation:fadeIn .25s ease;
@@ -199,7 +194,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   font-size:8px;color:var(--text-dim);margin-bottom:10px;letter-spacing:.5px}
 .fc-progress b{color:var(--gold)}
 
-/* Quiz */
 .q-setup{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .q-select{font-family:var(--font-pixel);font-size:9px;padding:12px;background:var(--bg);
   color:var(--text);border:3px solid #000;box-shadow:inset 0 0 0 3px var(--border-dark);
@@ -237,7 +231,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .q-next{width:100%;margin-top:8px;display:none}
 .q-next.show{display:block}
 
-/* Rank tab */
 .my-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
 .my-rank{background:var(--bg);border:3px solid #000;padding:14px;text-align:center;
   box-shadow:inset 0 0 0 3px var(--gold2)}
@@ -269,7 +262,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .lb-pts{font-family:var(--font-pixel);font-size:9px;color:var(--gold);text-align:right;
   text-shadow:1px 1px 0 #000}
 
-/* Result / Empty */
 .result{text-align:center;padding:20px 10px}
 .result-title{font-family:var(--font-pixel);font-size:clamp(16px,4vw,22px);color:var(--gold);
   text-shadow:3px 3px 0 #000,5px 5px 0 rgba(255,153,0,.25);margin-bottom:14px;
@@ -1114,7 +1106,6 @@ function grade(kind) {
 
   var card = queue.shift();
 
-  // 🔑 KEY FIX: AGAIN requeues indefinitely (no cap) until GOOD/EASY.
   if (kind === 'again') {
     var pos = Math.min(queue.length, 2 + Math.floor(Math.random() * 2));
     queue.splice(pos, 0, card);
@@ -1419,13 +1410,40 @@ function refreshRankTabSilent() {
 function loadLeaderboard() {
   var url = API_URL + '?action=leaderboard&date=' + encodeURIComponent(today.date);
   fetch(url, { method: 'GET', mode: 'cors' })
-    .then(function(r){ return r.json(); })
+    .then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
     .then(function(list){
-      renderLeaderboard(Array.isArray(list) ? list : []);
+      if (!Array.isArray(list)) {
+        $('leaderboardView').innerHTML =
+          '<div class="empty"><span class="icon">⚠</span>' +
+          '<span class="big">BAD RESPONSE FROM SERVER</span>' +
+          '<div>' + esc(String(list && list.error || list)) + '</div></div>';
+        return;
+      }
+      if (!list.length) {
+        var wc = Object.keys(today.wordsLearned).length;
+        var localPts = wc * 10 + today.quizzesPlayed * 5 + today.marks * 2;
+        if (localPts > 0) {
+          $('leaderboardView').innerHTML =
+            '<div class="empty"><span class="icon">⏳</span>' +
+            '<span class="big">SERVER HASN\'T SEEN YOUR EVENTS YET</span>' +
+            '<div>YOUR LOCAL: ' + localPts + ' PTS</div>' +
+            '<div style="font-size:7px;opacity:.7;margin-top:8px">' +
+            'TAP REFRESH IN A FEW SECONDS</div></div>';
+          return;
+        }
+      }
+      renderLeaderboard(list);
     })
     .catch(function(err){
-      $('leaderboardView').innerHTML = '<div class="empty"><span class="icon">⚠</span>' +
-        '<div>FAILED TO LOAD: ' + esc(err.message) + '</div></div>';
+      $('leaderboardView').innerHTML =
+        '<div class="empty"><span class="icon">⚠</span>' +
+        '<span class="big">FETCH FAILED</span>' +
+        '<div>' + esc(err.message) + '</div>' +
+        '<div style="font-size:7px;opacity:.7;margin-top:8px">' +
+        'OPEN DEVTOOLS → NETWORK TAB</div></div>';
     });
 }
 
