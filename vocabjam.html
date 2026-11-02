@@ -28,10 +28,29 @@ body{font-family:var(--font-body);color:var(--text);min-height:100vh;line-height
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.02) 2px,rgba(255,255,255,.02) 4px)}
 
-/* ===== Flappy Loader ===== */
+/* ===== Login ===== */
+#loginScreen{position:fixed;inset:0;z-index:200;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:16px}
+#loginScreen.hidden{display:none}
+.login-panel{background:var(--panel);border:4px solid #000;padding:24px 20px;max-width:420px;width:100%;
+  box-shadow:inset 0 0 0 4px var(--border),inset 0 0 0 8px var(--bg),0 8px 0 rgba(0,0,0,.5)}
+.login-title{font-family:var(--font-pixel);font-size:16px;color:var(--gold);text-align:center;
+  text-shadow:3px 3px 0 #000;letter-spacing:1px;margin-bottom:8px}
+.login-sub{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);text-align:center;
+  letter-spacing:.5px;margin-bottom:24px}
+.login-input{width:100%;font-family:var(--font-body);font-size:14px;padding:14px 12px;margin-bottom:10px;
+  background:var(--bg);color:var(--text);border:3px solid #000;
+  box-shadow:inset 0 0 0 3px var(--border-dark);outline:none}
+.login-input:focus{box-shadow:inset 0 0 0 3px var(--gold)}
+.login-input::placeholder{color:var(--text-dim);font-size:11px;letter-spacing:.5px}
+.login-error{font-family:var(--font-pixel);font-size:8px;color:var(--danger);text-align:center;
+  min-height:16px;margin-bottom:10px;letter-spacing:.3px}
+
+/* ===== Loading / Flappy ===== */
 #loadingScreen{position:fixed;inset:0;z-index:100;background:var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:16px;transition:opacity .45s ease,visibility .45s}
+#loadingScreen.hidden{display:none}
 #loadingScreen.gone{opacity:0;visibility:hidden;pointer-events:none}
 .load-title{font-family:var(--font-pixel);font-size:clamp(12px,3vw,18px);color:var(--gold);
   text-shadow:3px 3px 0 #000,5px 5px 0 rgba(255,153,0,.3);letter-spacing:1px;
@@ -54,6 +73,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 #app.hidden{display:none}
 .panel{background:var(--panel);border:4px solid #000;padding:16px;margin-bottom:12px;
   box-shadow:inset 0 0 0 4px var(--border),inset 0 0 0 8px var(--bg),0 6px 0 rgba(0,0,0,.4)}
+.panel-heading{font-family:var(--font-pixel);font-size:10px;color:var(--gold);letter-spacing:.5px;
+  margin-bottom:14px;text-shadow:2px 2px 0 #000}
+
 .hdr{display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:12px;
   background:linear-gradient(180deg,var(--panel2),var(--panel));
   border:4px solid #000;position:relative;overflow:hidden;
@@ -65,11 +87,18 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   image-rendering:pixelated;position:relative;overflow:hidden}
 .logo img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;display:block}
 .logo-fallback{font-family:var(--font-pixel);font-size:26px;color:var(--gold);
-  text-shadow:2px 2px 0 #000,4px 4px 0 rgba(255,153,0,.4);line-height:1;display:none}
+  text-shadow:2px 2px 0 #000;line-height:1;display:none}
 .hdr-text{flex:1;min-width:0}
 .hdr-title{font-family:var(--font-pixel);font-size:clamp(11px,2.6vw,14px);color:var(--gold);
-  text-shadow:2px 2px 0 #000;letter-spacing:.5px;line-height:1.4;margin-bottom:4px}
+  text-shadow:2px 2px 0 #000;letter-spacing:.5px;line-height:1.4;margin-bottom:4px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hdr-sub{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);letter-spacing:.3px}
+.hdr-pill{background:var(--bg);border:3px solid #000;padding:8px 10px;text-align:center;
+  box-shadow:inset 0 0 0 3px var(--gold2);flex-shrink:0}
+.hdr-pill-label{font-family:var(--font-pixel);font-size:7px;color:var(--text-dim);
+  letter-spacing:.5px;margin-bottom:3px}
+.hdr-pill-val{font-family:var(--font-pixel);font-size:14px;color:var(--gold);
+  text-shadow:1px 1px 0 #000}
 
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
 .stat{background:var(--panel);border:3px solid #000;
@@ -82,9 +111,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .bar-fill{height:100%;background:linear-gradient(180deg,var(--hp),var(--hp-dark));
   width:0;transition:width .4s ease;box-shadow:inset 0 2px 0 rgba(255,255,255,.3)}
 
-.tabs{display:grid;grid-template-columns:1fr 1fr;margin-bottom:12px;border:3px solid #000;
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:12px;border:3px solid #000;
   box-shadow:inset 0 0 0 3px var(--border-dark);background:var(--panel)}
-.tab{font-family:var(--font-pixel);font-size:9px;padding:14px 10px;border:none;
+.tab{font-family:var(--font-pixel);font-size:9px;padding:14px 4px;border:none;
   background:transparent;color:var(--text-dim);cursor:pointer;transition:.15s;
   text-transform:uppercase;letter-spacing:.3px}
 .tab + .tab{border-left:2px solid var(--border-dark)}
@@ -106,6 +135,34 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .btn-green{background:linear-gradient(180deg,var(--hp),var(--hp-dark));color:#000;
   text-shadow:1px 1px 0 rgba(255,255,255,.3)}
 .btn-blue{background:linear-gradient(180deg,var(--mp),#3b82f6);color:#fff;text-shadow:2px 2px 0 #000}
+
+/* ===== Deck grid ===== */
+.deck-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.deck-card{background:var(--panel2);border:3px solid #000;padding:12px 8px;text-align:center;
+  cursor:pointer;transition:transform .15s,filter .15s;position:relative;
+  box-shadow:inset 0 0 0 3px var(--border-dark);min-height:110px;
+  display:flex;flex-direction:column;justify-content:center}
+.deck-card:hover:not(.deck-locked){transform:translateY(-2px);filter:brightness(1.12)}
+.deck-num{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);
+  letter-spacing:.5px;margin-bottom:4px}
+.deck-icon{font-size:22px;margin:4px 0}
+.deck-count{font-family:var(--font-pixel);font-size:9px;color:var(--text);margin-bottom:6px;
+  text-shadow:1px 1px 0 #000}
+.deck-bar{height:5px;background:#000;overflow:hidden;border:1px solid var(--border-dark)}
+.deck-bar-fill{height:100%;background:var(--hp);transition:width .3s}
+.deck-locked{opacity:.35;cursor:not-allowed;filter:grayscale(.9)}
+.deck-current{border-color:var(--gold);
+  box-shadow:inset 0 0 0 3px var(--gold2),0 0 20px rgba(255,204,0,.35);
+  animation:deckPulse 2s ease-in-out infinite}
+@keyframes deckPulse{0%,100%{box-shadow:inset 0 0 0 3px var(--gold2),0 0 20px rgba(255,204,0,.35)}
+  50%{box-shadow:inset 0 0 0 3px var(--gold2),0 0 30px rgba(255,204,0,.55)}}
+.deck-current .deck-icon{color:var(--gold)}
+.deck-complete{border-color:var(--hp)}
+.deck-complete .deck-icon{color:var(--hp)}
+
+.back-btn{width:100%;margin-bottom:12px}
+.study-heading{font-family:var(--font-pixel);font-size:10px;color:var(--gold);
+  text-align:center;letter-spacing:.5px;margin-bottom:14px;text-shadow:2px 2px 0 #000}
 
 /* Flashcard */
 .fc{background:var(--panel);border:4px solid #000;min-height:280px;padding:28px 20px;
@@ -168,11 +225,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   color:var(--gold);font-size:12px;opacity:0;transition:opacity .15s}
 .q-opt:hover:not(:disabled){filter:brightness(1.15)}
 .q-opt:hover:not(:disabled)::before{opacity:1}
-.q-opt:active:not(:disabled){transform:translate(0,3px);
-  box-shadow:inset 0 -3px 0 rgba(0,0,0,.4),inset 0 3px 0 rgba(255,255,255,.06)}
+.q-opt:active:not(:disabled){transform:translate(0,3px);box-shadow:inset 0 -3px 0 rgba(0,0,0,.4),inset 0 3px 0 rgba(255,255,255,.06)}
 .q-opt:disabled{cursor:default}
-.q-opt.correct{background:linear-gradient(180deg,var(--hp),var(--hp-dark));
-  color:#000;text-shadow:1px 1px 0 rgba(255,255,255,.3)}
+.q-opt.correct{background:linear-gradient(180deg,var(--hp),var(--hp-dark));color:#000;
+  text-shadow:1px 1px 0 rgba(255,255,255,.3)}
 .q-opt.correct::after{content:'✓';position:absolute;right:14px;top:50%;
   transform:translateY(-50%);font-size:16px;color:#000;font-weight:700}
 .q-opt.wrong{background:linear-gradient(180deg,#ff5b5b,#c81e1e);color:#fff;text-shadow:2px 2px 0 #000}
@@ -180,6 +236,38 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   transform:translateY(-50%);font-size:16px;color:#fff}
 .q-next{width:100%;margin-top:8px;display:none}
 .q-next.show{display:block}
+
+/* Rank tab */
+.my-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+.my-rank{background:var(--bg);border:3px solid #000;padding:14px;text-align:center;
+  box-shadow:inset 0 0 0 3px var(--gold2)}
+.my-rank-num{font-family:var(--font-pixel);font-size:28px;color:var(--gold);
+  text-shadow:2px 2px 0 #000;line-height:1.1}
+.my-rank-label{font-family:var(--font-pixel);font-size:7px;color:var(--text-dim);
+  margin-top:4px;letter-spacing:.5px}
+.my-points{background:var(--bg);border:3px solid #000;padding:14px;text-align:center;
+  box-shadow:inset 0 0 0 3px var(--hp-dark)}
+.my-points-val{font-family:var(--font-pixel);font-size:28px;color:var(--hp);
+  text-shadow:2px 2px 0 #000;line-height:1.1}
+.my-points-label{font-family:var(--font-pixel);font-size:7px;color:var(--text-dim);
+  margin-top:4px;letter-spacing:.5px}
+.my-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px}
+.my-breakdown > div{background:var(--bg);border:2px solid var(--border-dark);
+  padding:8px 4px;text-align:center;font-family:var(--font-pixel);font-size:8px;color:var(--text-dim)}
+.my-breakdown b{color:var(--gold);font-size:12px;display:block;margin-bottom:2px;
+  text-shadow:1px 1px 0 #000}
+
+.lb-header,.lb-row{display:grid;grid-template-columns:44px 1fr 70px;gap:8px;
+  padding:8px 10px;font-size:12px;align-items:center}
+.lb-header{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);
+  border-bottom:2px solid var(--border-dark);letter-spacing:.5px}
+.lb-row{border-bottom:1px solid rgba(74,95,193,.15)}
+.lb-row.me{background:rgba(255,204,0,.1);border-left:3px solid var(--gold);padding-left:7px}
+.lb-rank{font-family:var(--font-pixel);font-size:10px;color:var(--gold);
+  text-align:center;text-shadow:1px 1px 0 #000}
+.lb-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-pts{font-family:var(--font-pixel);font-size:9px;color:var(--gold);text-align:right;
+  text-shadow:1px 1px 0 #000}
 
 /* Result / Empty */
 .result{text-align:center;padding:20px 10px}
@@ -199,12 +287,26 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .empty .icon{font-size:32px;margin-bottom:14px;display:block}
 .empty .big{font-size:12px;color:var(--gold);margin-bottom:10px;display:block}
 
+.footer{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.footer .btn{flex:1;min-width:130px;font-size:8px}
+
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);
+  background:var(--panel);border:3px solid #000;padding:12px 20px;
+  box-shadow:inset 0 0 0 3px var(--gold2),0 8px 0 rgba(0,0,0,.5);
+  font-family:var(--font-pixel);font-size:9px;color:var(--gold);letter-spacing:.5px;
+  z-index:300;transition:transform .3s ease;pointer-events:none;max-width:calc(100% - 32px);
+  text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
 @media (max-width:480px){
   .hdr{padding:8px 10px;gap:8px}
   .logo{width:44px;height:44px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .panel{padding:12px}
   .fc{min-height:240px;padding:22px 14px}
+  .my-stats{grid-template-columns:1fr 1fr;gap:10px}
+  .my-rank-num,.my-points-val{font-size:22px}
+  .deck-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
@@ -214,7 +316,18 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </head>
 <body>
 
-<div id="loadingScreen">
+<div id="loginScreen" class="hidden">
+  <div class="login-panel">
+    <div class="login-title">VOCAB QUEST</div>
+    <div class="login-sub">ENTER YOUR DETAILS TO BEGIN</div>
+    <input type="text" id="loginName" class="login-input" placeholder="YOUR NAME" maxlength="40" autocomplete="off">
+    <input type="email" id="loginEmail" class="login-input" placeholder="EMAIL ADDRESS" maxlength="80" autocomplete="off">
+    <div id="loginError" class="login-error"></div>
+    <button id="loginBtn" class="btn btn-gold" style="width:100%">▶ START ADVENTURE</button>
+  </div>
+</div>
+
+<div id="loadingScreen" class="hidden">
   <h1 class="load-title">VOCAB QUEST</h1>
   <div class="canvas-wrap"><canvas id="flappy"></canvas></div>
   <div class="loading-status" id="loadStatus">LOADING WORDS…</div>
@@ -229,8 +342,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       <div id="logoFallback" class="logo-fallback">C</div>
     </div>
     <div class="hdr-text">
-      <div class="hdr-title">VOCAB QUEST</div>
+      <div class="hdr-title" id="hdrName">VOCAB QUEST</div>
       <div class="hdr-sub" id="hdrSub">READY</div>
+    </div>
+    <div class="hdr-pill">
+      <div class="hdr-pill-label">TODAY</div>
+      <div class="hdr-pill-val" id="hdrToday">0</div>
     </div>
   </header>
 
@@ -244,23 +361,25 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   </div>
 
   <nav class="tabs" role="tablist">
-    <button class="tab active" data-tab="flash" role="tab">⚔ FLASHCARDS</button>
+    <button class="tab active" data-tab="study" role="tab">⚔ STUDY</button>
     <button class="tab" data-tab="quiz" role="tab">✦ QUIZ</button>
+    <button class="tab" data-tab="rank" role="tab">🏆 RANK</button>
   </nav>
 
-  <section id="tab-flash">
-    <div class="panel">
-      <div class="q-setup">
-        <select class="q-select" id="fLetter"><option value="">ALL LETTERS</option></select>
-        <select class="q-select" id="fPos"><option value="">ALL TYPES</option></select>
-        <label class="q-select" style="display:flex;align-items:center;gap:8px;cursor:pointer">
-          <input type="checkbox" id="fDue" style="width:16px;height:16px;accent-color:var(--gold)">
-          <span>DUE ONLY</span>
-        </label>
-        <button class="btn btn-gold" id="startBtn" style="flex:1 1 100%">▶ START</button>
+  <section id="tab-study">
+    <div id="deckView">
+      <div class="panel">
+        <div class="panel-heading">YOUR DECKS</div>
+        <div id="deckGrid" class="deck-grid"></div>
       </div>
     </div>
-    <div id="fcStage"></div>
+    <div id="studyView" hidden>
+      <button class="btn back-btn" onclick="exitStudy()">◀ BACK TO DECKS</button>
+      <div class="panel">
+        <div class="study-heading" id="studyHeading"></div>
+        <div id="fcStage"></div>
+      </div>
+    </div>
   </section>
 
   <section id="tab-quiz" hidden>
@@ -286,20 +405,36 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div id="quizStage"></div>
   </section>
 
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
-    <button class="btn btn-danger" id="resetBtn" style="flex:1;font-size:8px">🗑 RESET PROGRESS</button>
-  </div>
-  <div style="text-align:center;margin-top:10px;font-family:var(--font-pixel);font-size:7px;
-              color:var(--text-dim);letter-spacing:.5px" id="storeNote">
-    PROGRESS SAVED AUTOMATICALLY IN THIS BROWSER
+  <section id="tab-rank" hidden>
+    <div class="panel">
+      <div class="panel-heading">YOUR PROGRESS TODAY</div>
+      <div id="myStatsView">
+        <div class="empty"><span class="icon">✦</span><div>LOADING…</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-heading">TODAY'S LEADERBOARD</div>
+      <div id="leaderboardView">
+        <div class="empty"><span class="icon">✦</span><div>LOADING…</div></div>
+      </div>
+      <button class="btn" onclick="refreshRankTab()" style="width:100%;margin-top:12px">↻ REFRESH</button>
+    </div>
+  </section>
+
+  <div class="footer">
+    <button class="btn btn-danger" onclick="resetProgress()">🗑 RESET PROGRESS</button>
+    <button class="btn" onclick="switchUser()">👤 SWITCH USER</button>
   </div>
 </div>
+
+<div id="toast"></div>
 
 <script>
 /* ============================================================
    ⚠️ SET THIS TO YOUR APPS SCRIPT /exec URL
    ============================================================ */
 var API_URL = 'https://script.google.com/macros/s/AKfycbxpyBIkycTk0Lqlitn5Zd9_oWQzCvrJOdCVWlo-HFG8vnx8GAsGTjm_4rSEDWYWx7HB3w/exec';
+var DECK_SIZE = 80;
 
 /* ================= UTILS ================= */
 function $(id){return document.getElementById(id);}
@@ -308,8 +443,14 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));
   var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function todayDate(){return new Date().toISOString().slice(0,10);}
+function showToast(msg){
+  var el=$('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show');},3500);
+}
 
 /* ================= FLAPPY LOADER ================= */
+var flappyControl = {running:false,stop:function(){}};
 (function(){
   var canvas=document.getElementById('flappy');
   if(!canvas)return;
@@ -317,7 +458,6 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
   var W=0,H=0;
   var dpr=window.innerWidth<600?1:Math.min(window.devicePixelRatio||1,2);
   var birdImg=null,birdReady=false;
-
   var img=new Image();
   img.crossOrigin='anonymous';
   img.onload=function(){birdImg=img;birdReady=true;};
@@ -326,7 +466,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
 
   var state='ready',bird=null,pipes=[],stars=[],score=0,best=0;
   try{best=parseInt(localStorage.getItem('flappy_best')||'0',10)||0;}catch(e){}
-  var spawnTimer=0,deathFlash=0,groundScroll=0,rafId=null,running=true;
+  var spawnTimer=0,deathFlash=0,groundScroll=0,rafId=null,running=false;
 
   var GRAVITY=.55,JUMP_V=-8.4,PIPE_W=56,PIPE_SPEED=2.6,PIPE_GAP=140,PIPE_SPACING=95;
 
@@ -334,49 +474,37 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
     bird={x:Math.max(70,W*.28),y:H*.45,vy:0,rot:0,w:36,h:36};
     pipes=[];score=0;spawnTimer=0;deathFlash=0;state='ready';
   }
-
   function resize(){
     var rect=canvas.getBoundingClientRect();
     W=Math.max(180,Math.round(rect.width));
     H=Math.max(260,Math.round(rect.height));
-    canvas.width=Math.round(W*dpr);
-    canvas.height=Math.round(H*dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.imageSmoothingEnabled=false;
+    canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=false;
     stars=[];
     for(var i=0;i<40;i++)stars.push({x:Math.random()*W,y:Math.random()*(H*.75),
       s:Math.random()<.7?1:2,sp:.08+Math.random()*.22});
     if(!bird)reset();else bird.x=Math.max(70,W*.28);
   }
-
   function flap(){
     if(state==='ready'){state='playing';bird.vy=JUMP_V;}
     else if(state==='playing'){bird.vy=JUMP_V;}
     else if(state==='dead'){reset();state='playing';bird.vy=JUMP_V;}
   }
-
   function spawnPipe(){
     var minTop=45,maxTop=H-100-PIPE_GAP;
     var gapY=minTop+Math.random()*Math.max(40,maxTop-minTop);
     pipes.push({x:W+PIPE_W,gapY:gapY,passed:false});
   }
-
-  function die(){
-    state='dead';deathFlash=12;
-    if(score>best){best=score;try{localStorage.setItem('flappy_best',best);}catch(e){}}
-  }
-
+  function die(){state='dead';deathFlash=12;
+    if(score>best){best=score;try{localStorage.setItem('flappy_best',best);}catch(e){}}}
   function update(){
     groundScroll=(groundScroll+PIPE_SPEED)%20;
-    for(var i=0;i<stars.length;i++){
-      var s=stars[i];s.x-=s.sp;
-      if(s.x<-2){s.x=W+2;s.y=Math.random()*(H*.75);}
-    }
+    for(var i=0;i<stars.length;i++){var s=stars[i];s.x-=s.sp;
+      if(s.x<-2){s.x=W+2;s.y=Math.random()*(H*.75);}}
     if(state==='ready'){bird.y=H*.45+Math.sin(Date.now()/260)*6;return;}
     if(state==='dead'){
       if(deathFlash>0)deathFlash--;
-      bird.vy+=GRAVITY;bird.y+=bird.vy;
-      bird.rot=Math.min(bird.rot+.08,1.4);
+      bird.vy+=GRAVITY;bird.y+=bird.vy;bird.rot=Math.min(bird.rot+.08,1.4);
       var floor=H-24;
       if(bird.y+bird.h/2>floor){bird.y=floor-bird.h/2;bird.vy=0;}
       return;
@@ -392,13 +520,10 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
       if(!p.passed&&p.x+PIPE_W<bird.x-bird.w/2){p.passed=true;score++;}
       var bx1=bird.x-bird.w/2+3,bx2=bird.x+bird.w/2-3;
       var by1=bird.y-bird.h/2+3,by2=bird.y+bird.h/2-3;
-      if(bx2>p.x&&bx1<p.x+PIPE_W){
-        if(by1<p.gapY||by2>p.gapY+PIPE_GAP){die();return;}
-      }
+      if(bx2>p.x&&bx1<p.x+PIPE_W){if(by1<p.gapY||by2>p.gapY+PIPE_GAP){die();return;}}
       if(p.x+PIPE_W<-10)pipes.splice(j,1);
     }
   }
-
   function drawPipeBody(x,y,w,h,topCap){
     ctx.fillStyle='#22c55e';ctx.fillRect(x,y,w,h);
     ctx.fillStyle='#15803d';ctx.fillRect(x+w-8,y,8,h);
@@ -410,7 +535,6 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
     ctx.fillStyle='#4ade80';ctx.fillRect(x-2,capY,4,capH);
     ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.strokeRect(x-5,capY+1,w+10,capH-2);
   }
-
   function drawFallbackBird(size){
     var px=Math.max(3,Math.floor(size/8));
     var pat=[[0,1,1,1,1,1,0,0],[1,1,0,0,0,0,0,0],[1,1,0,0,0,0,0,0],
@@ -424,22 +548,17 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
     for(var r2=0;r2<8;r2++)for(var c2=0;c2<8;c2++)if(pat[r2][c2])
       ctx.fillRect(ox+c2*px,oy+r2*px,px,px);
   }
-
   function draw(){
     var g=ctx.createLinearGradient(0,0,0,H);
     g.addColorStop(0,'#0a0e27');g.addColorStop(.55,'#141830');g.addColorStop(1,'#232a4a');
     ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(var i=0;i<stars.length;i++){
-      var s=stars[i];
+    for(var i=0;i<stars.length;i++){var s=stars[i];
       ctx.fillStyle='rgba(255,255,255,'+(.35+s.sp*2)+')';
-      ctx.fillRect(s.x,s.y,s.s,s.s);
-    }
-    for(var j=0;j<pipes.length;j++){
-      var p=pipes[j];
+      ctx.fillRect(s.x,s.y,s.s,s.s);}
+    for(var j=0;j<pipes.length;j++){var p=pipes[j];
       if(p.x>W||p.x+PIPE_W<0)continue;
       drawPipeBody(p.x,0,PIPE_W,p.gapY,true);
-      drawPipeBody(p.x,p.gapY+PIPE_GAP,PIPE_W,H-24-(p.gapY+PIPE_GAP),false);
-    }
+      drawPipeBody(p.x,p.gapY+PIPE_GAP,PIPE_W,H-24-(p.gapY+PIPE_GAP),false);}
     ctx.fillStyle='#166534';ctx.fillRect(0,H-24,W,24);
     ctx.fillStyle='#22c55e';ctx.fillRect(0,H-24,W,4);
     ctx.fillStyle='#15803d';
@@ -477,459 +596,771 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
       ctx.strokeText('TAP TO RETRY',W/2,H*.48);
       ctx.fillText('TAP TO RETRY',W/2,H*.48);
     }
-    if(deathFlash>0){
-      ctx.fillStyle='rgba(255,255,255,'+(deathFlash/12)+')';
-      ctx.fillRect(0,0,W,H);
-    }
+    if(deathFlash>0){ctx.fillStyle='rgba(255,255,255,'+(deathFlash/12)+')';
+      ctx.fillRect(0,0,W,H);}
   }
-
   function loop(){if(!running)return;update();draw();rafId=requestAnimationFrame(loop);}
 
   canvas.addEventListener('pointerdown',function(e){e.preventDefault();flap();});
   window.addEventListener('keydown',function(e){
     if(!running)return;
     if(e.code==='Space'||e.code==='ArrowUp'){
-      if(document.getElementById('loadingScreen').classList.contains('gone'))return;
+      if($('loadingScreen').classList.contains('gone'))return;
       e.preventDefault();flap();
     }
   });
   var rt;
-  window.addEventListener('resize',function(){
-    clearTimeout(rt);rt=setTimeout(resize,120);
-  });
+  window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(resize,120);});
 
-  resize();reset();loop();
-
-  window._stopFlappy=function(){
-    running=false;
-    if(rafId)cancelAnimationFrame(rafId);
+  flappyControl.start = function(){
+    if(running)return;
+    running=true;resize();reset();loop();
+  };
+  flappyControl.stop = function(){
+    running=false;if(rafId)cancelAnimationFrame(rafId);rafId=null;
   };
 })();
 
-/* ================= VOCAB APP ================= */
-var WORDS=[];
-var KEY='vocab_quest_v1';
-var WORDS_CACHE_KEY='vocab_words_cache_v1';
-var WORDS_CACHE_TTL=1800000; /* 30 min */
-var progress={};
-var memoryOnly=false;
+/* ============================================================
+   USER + LOGIN
+   ============================================================ */
+var user = null;
 
-function loadProgress(){
-  try{var r=localStorage.getItem(KEY);progress=r?JSON.parse(r):{};}
-  catch(e){memoryOnly=true;progress={};}
+function loadUser() {
+  try {
+    var raw = localStorage.getItem('vocab_user_v1');
+    if (raw) {
+      var u = JSON.parse(raw);
+      if (u && u.name && u.email) { user = u; return; }
+    }
+  } catch (e) {}
+  user = null;
 }
-function saveProgress(){
-  if(memoryOnly)return;
-  try{localStorage.setItem(KEY,JSON.stringify(progress));}
-  catch(e){memoryOnly=true;$('storeNote').textContent='⚠ STORAGE BLOCKED — SESSION ONLY';}
-}
-loadProgress();
-
-function setLoadStatus(msg){var el=$('loadStatus');if(el)el.textContent=msg;}
-
-var loadTimeout=setTimeout(function(){
-  setLoadStatus('STILL LOADING… SLOW NETWORK');
-},8000);
-
-/* ---------- Fetch words from Apps Script API ---------- */
-function fetchWords(){
-  fetch(API_URL + '?action=words', { method: 'GET', mode: 'cors' })
-    .then(function(r){
-      if(!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function(bank){
-      clearTimeout(loadTimeout);
-      if(!bank || !bank.length) {
-        setLoadStatus('⚠ NO WORDS FOUND');
-        showAppError('The sheet returned no words. Make sure the <b>Words</b> tab has a <b>Word</b> column with data.');
-        return;
-      }
-      WORDS = bank;
-      try { localStorage.setItem(WORDS_CACHE_KEY, JSON.stringify({_ts: Date.now(), data: bank})); } catch(e){}
-      bootApp();
-    })
-    .catch(function(err){
-      clearTimeout(loadTimeout);
-      setLoadStatus('⚠ COULD NOT LOAD');
-      showAppError('Could not load words: ' + esc(err.message || err));
-    });
+function saveUser() {
+  if (user) localStorage.setItem('vocab_user_v1', JSON.stringify(user));
 }
 
-function showAppError(msg){
-  if(window._stopFlappy)window._stopFlappy();
-  $('loadingScreen').classList.add('gone');
-  $('app').classList.remove('hidden');
-  $('hdrSub').textContent='ERROR';
-  $('fcStage').innerHTML='<div class="panel"><div class="empty">'+
-    '<span class="icon">⚠</span><span class="big">DATA UNAVAILABLE</span>'+
-    '<div>'+msg+'</div>'+
-    '<div style="margin-top:14px"><button class="btn btn-gold" onclick="location.reload()" '+
-    'style="width:100%">↻ RETRY</button></div></div></div>';
+function showLogin() {
+  $('loginScreen').classList.remove('hidden');
+  $('loadingScreen').classList.add('hidden');
+  $('app').classList.add('hidden');
+  setTimeout(function() { $('loginName').focus(); }, 200);
+}
+function hideLogin() { $('loginScreen').classList.add('hidden'); }
+
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function bootApp(){
-  if(window._stopFlappy)window._stopFlappy();
-  setLoadStatus('✓ READY');
-  buildFilters();
-  refreshStats();
-  renderIdle();
-  renderQuizIdle();
-  var ls=$('loadingScreen');
-  ls.classList.add('gone');
-  setTimeout(function(){ls.style.display='none';$('app').classList.remove('hidden');},450);
+function handleLogin() {
+  var name = ($('loginName').value || '').trim();
+  var email = ($('loginEmail').value || '').trim().toLowerCase();
+  var err = $('loginError');
+  if (name.length < 2) { err.textContent = 'PLEASE ENTER YOUR NAME'; return; }
+  if (!validateEmail(email)) { err.textContent = 'PLEASE ENTER A VALID EMAIL'; return; }
+  err.textContent = '';
+
+  user = { name: name.slice(0, 40), email: email.slice(0, 80) };
+  saveUser();
+
+  // Register on server (fire-and-forget)
+  fetch(API_URL + '?action=register', {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ name: user.name, email: user.email })
+  }).catch(function() {});
+
+  hideLogin();
+  startApp();
 }
 
-(function loadWords(){
-  /* Client cache first — instant on repeat visits */
-  try{
-    var raw=localStorage.getItem(WORDS_CACHE_KEY);
-    if(raw){
-      var parsed=JSON.parse(raw);
-      if(parsed&&parsed.data&&parsed.data.length&&
-         (Date.now()-parsed._ts)<WORDS_CACHE_TTL){
-        WORDS=parsed.data;
+function switchUser() {
+  if (!confirm('Switch user? Your progress is saved.')) return;
+  localStorage.removeItem('vocab_user_v1');
+  location.reload();
+}
+
+/* ============================================================
+   PROGRESS (per-user) + TODAY TRACKING
+   ============================================================ */
+var progress = {};
+var memoryOnly = false;
+var today = null;
+var pendingEvents = [];
+
+function progressKey() { return user ? 'vocab_progress_v1_' + user.email : 'vocab_progress_v1_anon'; }
+function todayKey()    { return user ? 'vocab_today_v1_'    + user.email : 'vocab_today_v1_anon'; }
+function pendingKey()  { return user ? 'vocab_pending_v1_'  + user.email : 'vocab_pending_v1_anon'; }
+
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(progressKey());
+    progress = raw ? JSON.parse(raw) : {};
+  } catch (e) { memoryOnly = true; progress = {}; }
+}
+function saveProgress() {
+  if (memoryOnly) return;
+  try { localStorage.setItem(progressKey(), JSON.stringify(progress)); }
+  catch (e) { memoryOnly = true; }
+}
+
+function newToday() {
+  return { date: todayDate(), wordsLearned: {}, quizzesPlayed: 0, marks: 0 };
+}
+function loadToday() {
+  var t = newToday();
+  try {
+    var raw = localStorage.getItem(todayKey());
+    if (raw) {
+      var saved = JSON.parse(raw);
+      if (saved && saved.date === t.date) today = saved;
+      else today = t;
+    } else today = t;
+  } catch (e) { today = t; }
+}
+function saveToday() {
+  try { localStorage.setItem(todayKey(), JSON.stringify(today)); } catch (e) {}
+}
+function checkDayRollover() {
+  if (!today) return;
+  if (today.date !== todayDate()) {
+    today = newToday();
+    saveToday();
+    updateHeader();
+  }
+}
+
+function loadPendingEvents() {
+  try {
+    var raw = localStorage.getItem(pendingKey());
+    pendingEvents = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(pendingEvents)) pendingEvents = [];
+  } catch (e) { pendingEvents = []; }
+}
+function savePendingEvents() {
+  try { localStorage.setItem(pendingKey(), JSON.stringify(pendingEvents)); } catch (e) {}
+}
+
+/* ============================================================
+   EVENT SYNC
+   ============================================================ */
+var syncTimer = null;
+function queueEvent(ev) {
+  if (!user) return;
+  ev.date = ev.date || today.date;
+  pendingEvents.push(ev);
+  savePendingEvents();
+  if (pendingEvents.length >= 5) {
+    flushEvents();
+  } else if (!syncTimer) {
+    syncTimer = setTimeout(flushEvents, 8000);
+  }
+}
+function flushEvents() {
+  clearTimeout(syncTimer); syncTimer = null;
+  if (!pendingEvents.length || !user) return Promise.resolve();
+  var toSend = pendingEvents.slice();
+  pendingEvents = [];
+  savePendingEvents();
+  return fetch(API_URL + '?action=syncEvents', {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ email: user.email, name: user.name, events: toSend })
+  })
+  .then(function(r){ return r.json(); })
+  .catch(function() {
+    // Restore on failure
+    pendingEvents = toSend.concat(pendingEvents);
+    savePendingEvents();
+  });
+}
+window.addEventListener('beforeunload', function(){ flushEvents(); });
+window.addEventListener('pagehide', function(){ flushEvents(); });
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+var WORDS = [];
+var wordsLoadStarted = false;
+var WORDS_CACHE_KEY = 'vocab_words_cache_v1';
+var WORDS_CACHE_TTL = 1800000;
+
+loadUser();
+
+if (!user) {
+  showLogin();
+} else {
+  startApp();
+}
+
+function startApp() {
+  loadProgress();
+  loadToday();
+  loadPendingEvents();
+  startWordsLoad();
+}
+
+function startWordsLoad() {
+  if (wordsLoadStarted) return;
+  wordsLoadStarted = true;
+
+  // Cache first
+  try {
+    var raw = localStorage.getItem(WORDS_CACHE_KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (parsed && parsed.data && parsed.data.length &&
+          (Date.now() - parsed._ts) < WORDS_CACHE_TTL) {
+        WORDS = parsed.data;
         bootApp();
+        fetchWordsSilent();
         return;
       }
     }
-  }catch(e){}
+  } catch (e) {}
 
-  /* No cache → fetch from API (Flappy game covers this) */
+  showLoading();
   fetchWords();
-})();
-
-/* --------- Stats --------- */
-function refreshStats(){
-  var now=Date.now(),due=0,neu=0,mast=0,total=WORDS.length;
-  for(var i=0;i<total;i++){
-    var r=progress[WORDS[i].w];
-    if(!r){neu++;due++;continue;}
-    if(r.box>=4)mast++;
-    if(r.due<=now)due++;
-  }
-  $('sDue').textContent=due;
-  $('sNew').textContent=neu;
-  $('sMaster').textContent=mast;
-  $('sTotal').textContent=total;
-  $('barMaster').style.width=total?Math.round(mast/total*100)+'%':'0%';
-  $('hdrSub').textContent=total+' WORDS · '+mast+' MASTERED';
 }
 
-/* --------- Filters --------- */
-function buildFilters(){
-  var L={},P={};
-  for(var i=0;i<WORDS.length;i++){
-    var w=WORDS[i];
-    var c=w.w.charAt(0).toUpperCase();
-    if(/[A-Z]/.test(c))L[c]=1;
-    if(w.pos)P[w.pos]=1;
-  }
-  var l=$('fLetter');
-  Object.keys(L).sort().forEach(function(c){
-    var o=document.createElement('option');o.value=c;o.textContent=c;l.appendChild(o);
-  });
-  var p=$('fPos');
-  Object.keys(P).sort().forEach(function(x){
-    var o=document.createElement('option');o.value=x;o.textContent=x.toUpperCase();p.appendChild(o);
-  });
+function showLoading() {
+  $('loadingScreen').classList.remove('hidden');
+  $('loadingScreen').classList.remove('gone');
+  $('app').classList.add('hidden');
+  flappyControl.start();
 }
 
-/* --------- Tabs --------- */
-document.querySelectorAll('.tab').forEach(function(t){
-  t.addEventListener('click',function(){
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
-    t.classList.add('active');
-    $('tab-flash').hidden=t.dataset.tab!=='flash';
-    $('tab-quiz').hidden=t.dataset.tab!=='quiz';
-  });
-});
-
-/* ================= FLASHCARDS ================= */
-var IV={1:0,2:1,3:2,4:4,5:8},DAY=86400000;
-var queue=[],current=null,revealed=false,againCount={},sessionCount=0;
-
-function renderIdle(){
-  var due=0;
-  for(var i=0;i<WORDS.length;i++){
-    var r=progress[WORDS[i].w];
-    if(!r||r.due<=Date.now())due++;
-  }
-  $('fcStage').innerHTML='<div class="panel"><div class="empty">'+
-    '<span class="icon">⚔</span><span class="big">'+WORDS.length+' WORDS READY</span>'+
-    '<div>'+due+' CARD'+(due===1?'':'S')+' DUE</div>'+
-    '<div style="margin-top:14px;font-size:7px;opacity:.7">PRESS ▶ START</div>'+
-    '</div></div>';
+function hideLoading() {
+  var ls = $('loadingScreen');
+  ls.classList.add('gone');
+  flappyControl.stop();
+  setTimeout(function() {
+    ls.classList.add('hidden');
+    ls.classList.remove('gone');
+    $('app').classList.remove('hidden');
+  }, 450);
 }
 
-function buildQueue(){
-  var L=$('fLetter').value,P=$('fPos').value,dueOnly=$('fDue').checked,now=Date.now();
-  var out=[];
-  for(var i=0;i<WORDS.length;i++){
-    var w=WORDS[i];
-    if(L&&w.w.charAt(0).toUpperCase()!==L)continue;
-    if(P&&w.pos!==P)continue;
-    if(dueOnly){var r=progress[w.w];if(r&&r.due>now)continue;}
-    out.push(w);
-  }
-  return shuffle(out);
+function fetchWords() {
+  var timeout = setTimeout(function() {
+    $('loadStatus').textContent = 'STILL LOADING… SLOW NETWORK';
+  }, 8000);
+
+  fetch(API_URL + '?action=words', { method: 'GET', mode: 'cors' })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(bank){
+      clearTimeout(timeout);
+      if (!bank || !bank.length) {
+        $('loadStatus').textContent = '⚠ NO WORDS FOUND';
+        setTimeout(function() {
+          bootApp();
+          $('fcStage').innerHTML = '<div class="panel"><div class="empty">' +
+            '<span class="icon">⚠</span><span class="big">NO WORDS IN SHEET</span>' +
+            '<div>CHECK THE "Words" TAB</div></div></div>';
+        }, 800);
+        return;
+      }
+      WORDS = bank;
+      try {
+        localStorage.setItem(WORDS_CACHE_KEY,
+          JSON.stringify({ _ts: Date.now(), data: bank }));
+      } catch (e) {}
+      $('loadStatus').textContent = '✓ READY';
+      setTimeout(bootApp, 300);
+    })
+    .catch(function(err){
+      clearTimeout(timeout);
+      $('loadStatus').textContent = '⚠ COULD NOT LOAD';
+      setTimeout(function() {
+        bootApp();
+        $('fcStage').innerHTML = '<div class="panel"><div class="empty">' +
+          '<span class="icon">⚠</span><span class="big">DATA UNAVAILABLE</span>' +
+          '<div>' + esc(err.message) + '</div>' +
+          '<div style="margin-top:14px"><button class="btn btn-gold" ' +
+          'onclick="location.reload()" style="width:100%">↻ RETRY</button></div>' +
+          '</div></div>';
+      }, 800);
+    });
 }
 
-function startSession(){
-  queue=buildQueue();againCount={};sessionCount=0;
-  if(!queue.length){
-    $('fcStage').innerHTML='<div class="panel"><div class="empty">'+
-      '<span class="icon">🎉</span><span class="big">NOTHING DUE</span>'+
-      '<div>UNCHECK "DUE ONLY" TO PRACTISE</div></div></div>';
-    return;
+function fetchWordsSilent() {
+  fetch(API_URL + '?action=words', { method: 'GET', mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(bank){
+      if (bank && bank.length) {
+        WORDS = bank;
+        try {
+          localStorage.setItem(WORDS_CACHE_KEY,
+            JSON.stringify({ _ts: Date.now(), data: bank }));
+        } catch (e) {}
+        renderDeckGrid();
+        refreshStats();
+      }
+    }).catch(function(){});
+}
+
+function bootApp() {
+  hideLoading();
+  if (!WORDS.length) return;
+  buildFilters();
+  refreshStats();
+  renderDeckGrid();
+  renderQuizIdle();
+  updateHeader();
+  setTimeout(function(){
+    if (pendingEvents.length) flushEvents();
+  }, 1500);
+}
+
+/* ============================================================
+   HEADER + STATS
+   ============================================================ */
+function updateHeader() {
+  if (!user) return;
+  $('hdrName').textContent = user.name.toUpperCase();
+  var wc = Object.keys(today.wordsLearned).length;
+  var pts = wc * 10 + today.quizzesPlayed * 5 + today.marks * 2;
+  $('hdrToday').textContent = pts;
+}
+
+function refreshStats() {
+  var now = Date.now(), due = 0, neu = 0, mast = 0, total = WORDS.length;
+  for (var i = 0; i < total; i++) {
+    var r = progress[WORDS[i].w];
+    if (!r) { neu++; due++; continue; }
+    if (r.box >= 4) mast++;
+    if (r.due <= now) due++;
   }
+  $('sDue').textContent = due;
+  $('sNew').textContent = neu;
+  $('sMaster').textContent = mast;
+  $('sTotal').textContent = total;
+  $('barMaster').style.width = total ? Math.round(mast / total * 100) + '%' : '0%';
+  $('hdrSub').textContent = total + ' WORDS · ' + mast + ' MASTERED';
+}
+
+function buildFilters() {}
+
+/* ============================================================
+   DECK SYSTEM
+   ============================================================ */
+function totalDecks() { return Math.ceil(WORDS.length / DECK_SIZE); }
+function deckRange(i) {
+  var start = i * DECK_SIZE;
+  var end = Math.min(start + DECK_SIZE, WORDS.length);
+  return { start: start, end: end, size: end - start };
+}
+function deckLearned(i) {
+  var r = deckRange(i), count = 0;
+  for (var j = r.start; j < r.end; j++) {
+    var p = progress[WORDS[j].w];
+    if (p && p.box >= 2) count++;
+  }
+  return count;
+}
+function isDeckComplete(i) {
+  var r = deckRange(i);
+  for (var j = r.start; j < r.end; j++) {
+    var p = progress[WORDS[j].w];
+    if (!p || p.box < 2) return false;
+  }
+  return true;
+}
+function currentDeckIndex() {
+  var n = totalDecks();
+  for (var i = 0; i < n; i++) if (!isDeckComplete(i)) return i;
+  return n - 1;
+}
+function canAccessDeck(i) { return i === 0 || isDeckComplete(i - 1); }
+
+function renderDeckGrid() {
+  var grid = $('deckGrid');
+  if (!grid) return;
+  var n = totalDecks();
+  var cur = currentDeckIndex();
+  var html = '';
+  for (var i = 0; i < n; i++) {
+    var r = deckRange(i);
+    var learned = deckLearned(i);
+    var complete = isDeckComplete(i);
+    var accessible = canAccessDeck(i);
+    var isCur = (i === cur);
+
+    var cls = 'deck-card';
+    var icon = '★';
+    if (!accessible) { cls += ' deck-locked'; icon = '🔒'; }
+    else if (isCur && !complete) { cls += ' deck-current'; icon = '▶'; }
+    else if (complete) { cls += ' deck-complete'; icon = '✓'; }
+
+    var onclick = accessible ? 'onclick="enterDeck(' + i + ')"' : '';
+    var pct = r.size ? Math.round(learned / r.size * 100) : 0;
+    html += '<div class="' + cls + '" ' + onclick + '>' +
+      '<div class="deck-num">DECK ' + (i + 1) + '</div>' +
+      '<div class="deck-icon">' + icon + '</div>' +
+      '<div class="deck-count">' + learned + '/' + r.size + '</div>' +
+      '<div class="deck-bar"><div class="deck-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+/* ============================================================
+   STUDY (flashcards per deck)
+   ============================================================ */
+var IV = { 1: 0, 2: 1, 3: 2, 4: 4, 5: 8 }, DAY = 86400000;
+var queue = [], current = null, revealed = false, againCount = {}, sessionCount = 0;
+var studyingDeck = null;
+
+function enterDeck(i) {
+  if (!canAccessDeck(i)) { showToast('🔒 COMPLETE PREVIOUS DECK FIRST'); return; }
+  studyingDeck = i;
+  $('deckView').hidden = true;
+  $('studyView').hidden = false;
+  var r = deckRange(i);
+  $('studyHeading').textContent = 'DECK ' + (i + 1) + ' · ' +
+    deckLearned(i) + '/' + r.size + ' LEARNED';
+  startDeckSession(i);
+}
+
+function exitStudy() {
+  studyingDeck = null;
+  $('deckView').hidden = false;
+  $('studyView').hidden = true;
+  renderDeckGrid();
+}
+
+function startDeckSession(i) {
+  var r = deckRange(i);
+  var words = [];
+  for (var j = r.start; j < r.end; j++) words.push(WORDS[j]);
+  queue = shuffle(words);
+  againCount = {};
+  sessionCount = 0;
   renderCard();
 }
 
-function renderCard(){
-  if(!queue.length)return renderDone();
-  current=queue[0];revealed=false;
-  var pct=sessionCount?Math.round(sessionCount/(sessionCount+queue.length)*100):0;
-  $('fcStage').innerHTML=
-    '<div class="fc-progress"><span>REVIEWED <b>'+sessionCount+'</b></span>'+
-      '<span>REMAINING <b>'+queue.length+'</b></span></div>'+
-    '<div class="q-bar"><div class="q-bar-fill" style="width:'+pct+'%"></div></div>'+
-    '<div class="fc" id="fc">'+
-      '<div class="fc-word">'+esc(current.w)+'</div>'+
-      (current.pos?'<div class="fc-pos">'+esc(current.pos)+'</div>':'')+
-      '<div class="fc-hint">TAP TO REVEAL</div>'+
-    '</div>'+
-    '<div class="grades" id="grades" style="display:none">'+
-      '<button class="btn btn-danger" onclick="grade(\'again\')">↺ AGAIN<small>PRESS 1</small></button>'+
-      '<button class="btn btn-green" onclick="grade(\'good\')">✓ GOOD<small>PRESS 2</small></button>'+
-      '<button class="btn btn-blue" onclick="grade(\'easy\')">★ EASY<small>PRESS 3</small></button>'+
+function renderCard() {
+  if (!queue.length) return renderDeckDone();
+  current = queue[0];
+  revealed = false;
+  var pct = (sessionCount + queue.length) ?
+    Math.round(sessionCount / (sessionCount + queue.length) * 100) : 0;
+  $('fcStage').innerHTML =
+    '<div class="fc-progress"><span>REVIEWED <b>' + sessionCount + '</b></span>' +
+      '<span>REMAINING <b>' + queue.length + '</b></span></div>' +
+    '<div class="q-bar"><div class="q-bar-fill" style="width:' + pct + '%"></div></div>' +
+    '<div class="fc" id="fc">' +
+      '<div class="fc-word">' + esc(current.w) + '</div>' +
+      (current.pos ? '<div class="fc-pos">' + esc(current.pos) + '</div>' : '') +
+      '<div class="fc-hint">TAP TO REVEAL</div>' +
+    '</div>' +
+    '<div class="grades" id="grades" style="display:none">' +
+      '<button class="btn btn-danger" onclick="grade(\'again\')">↺ AGAIN<small>1</small></button>' +
+      '<button class="btn btn-green" onclick="grade(\'good\')">✓ GOOD<small>2</small></button>' +
+      '<button class="btn btn-blue" onclick="grade(\'easy\')">★ EASY<small>3</small></button>' +
     '</div>';
-  $('fc').addEventListener('click',reveal);
-  refreshStats();
+  $('fc').addEventListener('click', reveal);
 }
 
-function reveal(){
-  if(revealed||!current)return;
-  revealed=true;
-  var c=current;
-  var syn=(c.syn&&c.syn.length)?c.syn.join(', '):'—';
-  var ant=(c.ant&&c.ant.length)?c.ant.join(', '):'—';
-  $('fc').innerHTML='<div class="fc-back">'+
-    '<div class="fc-bn">'+esc(c.bn||'—')+'</div>'+
-    (c.en?'<div class="fc-en">'+esc(c.en)+'</div>':'')+
-    '<div class="fc-row"><span class="lbl">SYN</span><span class="val">'+esc(syn)+'</span></div>'+
-    '<div class="fc-row"><span class="lbl">ANT</span><span class="val">'+esc(ant)+'</span></div>'+
-    (c.ex?'<div class="fc-row"><span class="lbl">EX</span><span class="val fc-ex">'+esc(c.ex)+'</span></div>':'')+
+function reveal() {
+  if (revealed || !current) return;
+  revealed = true;
+  var c = current;
+  var syn = (c.syn && c.syn.length) ? c.syn.join(', ') : '—';
+  var ant = (c.ant && c.ant.length) ? c.ant.join(', ') : '—';
+  $('fc').innerHTML = '<div class="fc-back">' +
+    '<div class="fc-bn">' + esc(c.bn || '—') + '</div>' +
+    (c.en ? '<div class="fc-en">' + esc(c.en) + '</div>' : '') +
+    '<div class="fc-row"><span class="lbl">SYN</span><span class="val">' + esc(syn) + '</span></div>' +
+    '<div class="fc-row"><span class="lbl">ANT</span><span class="val">' + esc(ant) + '</span></div>' +
+    (c.ex ? '<div class="fc-row"><span class="lbl">EX</span><span class="val fc-ex">' + esc(c.ex) + '</span></div>' : '') +
     '</div>';
-  $('grades').style.display='grid';
+  $('grades').style.display = 'grid';
 }
 
-function grade(kind){
-  if(!revealed||!current)return;
-  var w=current.w;
-  var r=progress[w]||{box:1,seen:0,correct:0,wrong:0,last:0,due:0};
+function grade(kind) {
+  if (!revealed || !current) return;
+  var w = current.w;
+  var existed = !!progress[w];
+  var prevBox = existed ? progress[w].box : 0;
+  var r = progress[w] || { box: 1, seen: 0, correct: 0, wrong: 0, last: 0, due: 0 };
   r.seen++;
-  if(kind==='again'){r.wrong++;r.box=1;r.due=Date.now();}
-  else if(kind==='good'){r.correct++;r.box=Math.min(5,r.box+1);r.due=Date.now()+IV[r.box]*DAY;}
-  else{r.correct++;r.box=Math.min(5,r.box+2);r.due=Date.now()+IV[r.box]*DAY;}
-  r.last=Date.now();
-  progress[w]=r;saveProgress();
-  sessionCount++;
-  var card=queue.shift();
-  if(kind==='again'){
-    var n=againCount[w]||0;
-    if(n<2){againCount[w]=n+1;queue.push(card);}
-  }
-  renderCard();
-}
+  if (kind === 'again') { r.wrong++; r.box = 1; r.due = Date.now(); }
+  else if (kind === 'good') { r.correct++; r.box = Math.min(5, r.box + 1); r.due = Date.now() + IV[r.box] * DAY; }
+  else { r.correct++; r.box = Math.min(5, r.box + 2); r.due = Date.now() + IV[r.box] * DAY; }
+  r.last = Date.now();
+  progress[w] = r;
+  saveProgress();
 
-function renderDone(){
-  $('fcStage').innerHTML='<div class="panel"><div class="result">'+
-    '<div class="result-title">✓ SESSION CLEAR!</div>'+
-    '<div class="result-score">'+sessionCount+'</div>'+
-    '<div class="result-pct">CARD'+(sessionCount===1?'':'S')+' REVIEWED</div>'+
-    '<div class="result-note ok">PROGRESS SAVED LOCALLY</div>'+
-    '<button class="btn btn-gold" onclick="startSession()" style="width:100%;margin-top:8px">▶ NEW SESSION</button>'+
-    '</div></div>';
+  // Word crossed "learned" threshold (box >= 2) for first time today?
+  var newBox = r.box;
+  if (prevBox < 2 && newBox >= 2 && !today.wordsLearned[w]) {
+    today.wordsLearned[w] = 1;
+    saveToday();
+    updateHeader();
+    queueEvent({ type: 'word', data: { word: w } });
+  }
+
+  sessionCount++;
+  var card = queue.shift();
+  if (kind === 'again') {
+    var n = againCount[w] || 0;
+    if (n < 2) { againCount[w] = n + 1; queue.push(card); }
+  }
+
+  // Check deck completion
+  if (studyingDeck !== null && isDeckComplete(studyingDeck)) {
+    if (!queue.length) {
+      // Session already done; will show done message
+    } else {
+      // Just completed mid-session
+      if (!window._deckCompleteToastShown || window._deckCompleteToastShown !== studyingDeck) {
+        window._deckCompleteToastShown = studyingDeck;
+        showToast('🎉 DECK ' + (studyingDeck + 1) + ' COMPLETE!');
+      }
+    }
+  }
+
+  renderCard();
   refreshStats();
 }
 
-document.addEventListener('keydown',function(e){
-  if($('loadingScreen').classList.contains('gone')===false)return;
-  if(!$('tab-quiz').hidden)return;
-  if(!current||!$('fc'))return;
-  if(e.code==='Space'){e.preventDefault();reveal();}
-  if(revealed&&e.key==='1')grade('again');
-  if(revealed&&e.key==='2')grade('good');
-  if(revealed&&e.key==='3')grade('easy');
+function renderDeckDone() {
+  var complete = isDeckComplete(studyingDeck);
+  var next = studyingDeck + 1 < totalDecks() ? studyingDeck + 1 : null;
+  var html = '<div class="result">';
+  if (complete) {
+    html += '<div class="result-title">🎉 DECK COMPLETE!</div>' +
+      '<div class="result-score">' + sessionCount + '</div>' +
+      '<div class="result-pct">CARDS REVIEWED</div>';
+    if (next !== null) {
+      html += '<div class="result-note ok">DECK ' + (next + 1) + ' UNLOCKED!</div>' +
+        '<button class="btn btn-gold" onclick="enterDeck(' + next + ')" ' +
+        'style="width:100%;margin-bottom:8px">▶ START DECK ' + (next + 1) + '</button>';
+    } else {
+      html += '<div class="result-note ok">★ ALL DECKS COMPLETE! ★</div>';
+    }
+  } else {
+    html += '<div class="result-title">SESSION CLEAR</div>' +
+      '<div class="result-score">' + sessionCount + '</div>' +
+      '<div class="result-pct">CARDS REVIEWED</div>' +
+      '<div class="result-note">' + deckLearned(studyingDeck) + '/' +
+      deckRange(studyingDeck).size + ' LEARNED IN THIS DECK</div>';
+  }
+  html += '<button class="btn" onclick="exitStudy()" style="width:100%">◀ BACK TO DECKS</button></div>';
+  $('fcStage').innerHTML = '<div class="panel">' + html + '</div>';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (!current || !$('fc')) return;
+  if ($('app').classList.contains('hidden')) return;
+  if ($('tab-quiz').hidden === false || $('tab-rank').hidden === false) return;
+  if (e.code === 'Space') { e.preventDefault(); reveal(); }
+  if (revealed && e.key === '1') grade('again');
+  if (revealed && e.key === '2') grade('good');
+  if (revealed && e.key === '3') grade('easy');
 });
 
-/* ================= QUIZ ================= */
-var quiz=null;
+/* ============================================================
+   TABS
+   ============================================================ */
+document.querySelectorAll('.tab').forEach(function(t) {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(function(x) { x.classList.remove('active'); });
+    t.classList.add('active');
+    var tab = t.dataset.tab;
+    $('tab-study').hidden = tab !== 'study';
+    $('tab-quiz').hidden  = tab !== 'quiz';
+    $('tab-rank').hidden  = tab !== 'rank';
+    if (tab === 'rank') refreshRankTab();
+  });
+});
 
-function misspell(word){
-  var w=word,v={};
-  for(var i=0;i<w.length-1;i++){
-    var a=w.split(''),t=a[i];a[i]=a[i+1];a[i+1]=t;
-    var s=a.join('');if(s!==w)v[s]=1;
+/* ============================================================
+   QUIZ
+   ============================================================ */
+var quiz = null;
+
+function misspell(word) {
+  var w = word, v = {};
+  for (var i = 0; i < w.length - 1; i++) {
+    var a = w.split(''), t = a[i]; a[i] = a[i + 1]; a[i + 1] = t;
+    var s = a.join(''); if (s !== w) v[s] = 1;
   }
-  for(var k=0;k<w.length;k++){
-    var d=w.slice(0,k)+w.slice(k+1);
-    if(d!==w&&d.length>2)v[d]=1;
+  for (var k = 0; k < w.length; k++) {
+    var d = w.slice(0, k) + w.slice(k + 1);
+    if (d !== w && d.length > 2) v[d] = 1;
   }
   return Object.keys(v);
 }
-function uniqueOptions(correct,wrongPool){
-  var opts=[correct],seen={};seen[correct]=1;
-  for(var i=0;i<wrongPool.length&&opts.length<4;i++){
-    var w=wrongPool[i];
-    if(w&&!seen[w]){seen[w]=1;opts.push(w);}
+function uniqueOptions(correct, wrongPool) {
+  var opts = [correct], seen = {}; seen[correct] = 1;
+  for (var i = 0; i < wrongPool.length && opts.length < 4; i++) {
+    var w = wrongPool[i];
+    if (w && !seen[w]) { seen[w] = 1; opts.push(w); }
   }
   return shuffle(opts);
 }
-function sampleWrong(field,exclude,n){
-  var out=[],tries=0;
-  while(out.length<n&&tries<n*40){
+function quizPool() {
+  // Words from unlocked decks only
+  var cur = currentDeckIndex();
+  var end = deckRange(Math.min(cur, totalDecks() - 1)).end;
+  return WORDS.slice(0, end);
+}
+function sampleWrong(field, exclude, n, pool) {
+  var out = [], tries = 0;
+  while (out.length < n && tries < n * 40) {
     tries++;
-    var o=WORDS[(Math.random()*WORDS.length)|0];
-    if(o.w===exclude)continue;
-    if(!o[field]||!o[field].length)continue;
+    var o = pool[(Math.random() * pool.length) | 0];
+    if (o.w === exclude) continue;
+    if (!o[field] || !o[field].length) continue;
     out.push(pick(o[field]));
   }
   return out;
 }
 
-function makeVocabQ(){
-  var w=pick(WORDS);if(!w.bn)return null;
-  var wrong=[];
-  for(var i=0;i<WORDS.length&&wrong.length<6;i++){
-    var o=WORDS[(Math.random()*WORDS.length)|0];
-    if(o.w!==w.w&&o.bn&&o.bn!==w.bn)wrong.push(o.bn);
+function makeVocabQ(pool) {
+  var w = pick(pool); if (!w.bn) return null;
+  var wrong = [];
+  for (var i = 0; i < pool.length && wrong.length < 6; i++) {
+    var o = pool[(Math.random() * pool.length) | 0];
+    if (o.w !== w.w && o.bn && o.bn !== w.bn) wrong.push(o.bn);
   }
-  if(wrong.length<3)return null;
-  return{type:'Vocabulary',word:w.w,q:'MEANING OF "'+w.w+'"?',
-    options:uniqueOptions(w.bn,wrong),correct:w.bn};
+  if (wrong.length < 3) return null;
+  return { type: 'Vocabulary', word: w.w, q: 'MEANING OF "' + w.w + '"?',
+    options: uniqueOptions(w.bn, wrong), correct: w.bn };
 }
-function makeSynQ(){
-  var c=[];
-  for(var i=0;i<WORDS.length;i++)if(WORDS[i].syn&&WORDS[i].syn.length)c.push(WORDS[i]);
-  if(c.length<4)return null;
-  var w=pick(c),correct=pick(w.syn),wrong=sampleWrong('syn',w.w,6);
-  if(wrong.length<3)return null;
-  return{type:'Synonym',word:w.w,q:'SYNONYM OF "'+w.w+'"?',
-    options:uniqueOptions(correct,wrong),correct:correct};
+function makeSynQ(pool) {
+  var c = [];
+  for (var i = 0; i < pool.length; i++) if (pool[i].syn && pool[i].syn.length) c.push(pool[i]);
+  if (c.length < 4) return null;
+  var w = pick(c), correct = pick(w.syn), wrong = sampleWrong('syn', w.w, 6, pool);
+  if (wrong.length < 3) return null;
+  return { type: 'Synonym', word: w.w, q: 'SYNONYM OF "' + w.w + '"?',
+    options: uniqueOptions(correct, wrong), correct: correct };
 }
-function makeAntQ(){
-  var c=[];
-  for(var i=0;i<WORDS.length;i++)if(WORDS[i].ant&&WORDS[i].ant.length)c.push(WORDS[i]);
-  if(c.length<4)return null;
-  var w=pick(c),correct=pick(w.ant),wrong=sampleWrong('ant',w.w,6);
-  if(wrong.length<3)return null;
-  return{type:'Antonym',word:w.w,q:'ANTONYM OF "'+w.w+'"?',
-    options:uniqueOptions(correct,wrong),correct:correct};
+function makeAntQ(pool) {
+  var c = [];
+  for (var i = 0; i < pool.length; i++) if (pool[i].ant && pool[i].ant.length) c.push(pool[i]);
+  if (c.length < 4) return null;
+  var w = pick(c), correct = pick(w.ant), wrong = sampleWrong('ant', w.w, 6, pool);
+  if (wrong.length < 3) return null;
+  return { type: 'Antonym', word: w.w, q: 'ANTONYM OF "' + w.w + '"?',
+    options: uniqueOptions(correct, wrong), correct: correct };
 }
-function makeSpellQ(){
-  var c=[];
-  for(var i=0;i<WORDS.length;i++){
-    var w=WORDS[i].w;
-    if(w.length>=5&&/^[a-zA-Z]+$/.test(w))c.push(w);
+function makeSpellQ(pool) {
+  var c = [];
+  for (var i = 0; i < pool.length; i++) {
+    var w = pool[i].w;
+    if (w.length >= 5 && /^[a-zA-Z]+$/.test(w)) c.push(w);
   }
-  if(!c.length)return null;
-  var correct=pick(c),v=misspell(correct),real={};
-  for(var k=0;k<WORDS.length;k++)real[WORDS[k].w.toLowerCase()]=1;
-  v=shuffle(v.filter(function(x){return !real[x.toLowerCase()];}));
-  if(v.length<3)return null;
-  return{type:'Spelling',word:correct,q:'CORRECT SPELLING?',
-    options:shuffle([correct,v[0],v[1],v[2]]),correct:correct};
+  if (!c.length) return null;
+  var correct = pick(c), v = misspell(correct), real = {};
+  for (var k = 0; k < pool.length; k++) real[pool[k].w.toLowerCase()] = 1;
+  v = shuffle(v.filter(function(x) { return !real[x.toLowerCase()]; }));
+  if (v.length < 3) return null;
+  return { type: 'Spelling', word: correct, q: 'CORRECT SPELLING?',
+    options: shuffle([correct, v[0], v[1], v[2]]), correct: correct };
 }
-function makeAnalogyQ(){
-  var c=[];
-  for(var i=0;i<WORDS.length;i++)if(WORDS[i].syn&&WORDS[i].syn.length)c.push(WORDS[i]);
-  if(c.length<4)return null;
-  var w1=pick(c),w2=pick(c);
-  if(w1.w===w2.w)return null;
-  var syn1=pick(w1.syn),correct=pick(w2.syn),wrong=sampleWrong('syn',w2.w,6);
-  if(wrong.length<3)return null;
-  return{type:'Analogy',word:w1.w+'/'+w2.w,
-    q:'"'+w1.w+'" : "'+syn1+'"\n"'+w2.w+'" : ?',
-    options:uniqueOptions(correct,wrong),correct:correct};
+function makeAnalogyQ(pool) {
+  var c = [];
+  for (var i = 0; i < pool.length; i++) if (pool[i].syn && pool[i].syn.length) c.push(pool[i]);
+  if (c.length < 4) return null;
+  var w1 = pick(c), w2 = pick(c);
+  if (w1.w === w2.w) return null;
+  var syn1 = pick(w1.syn), correct = pick(w2.syn), wrong = sampleWrong('syn', w2.w, 6, pool);
+  if (wrong.length < 3) return null;
+  return { type: 'Analogy', word: w1.w + '/' + w2.w,
+    q: '"' + w1.w + '" : "' + syn1 + '"\n"' + w2.w + '" : ?',
+    options: uniqueOptions(correct, wrong), correct: correct };
 }
 
-function buildQuiz(type,count){
-  if(WORDS.length<5)return null;
-  var types=type==='Mixed'?['Vocabulary','Synonym','Antonym','Spelling','Analogy']:[type];
-  var qs=[],tries=0;
-  while(qs.length<count&&tries<count*40){
+function buildQuiz(type, count) {
+  var pool = quizPool();
+  if (pool.length < 5) return null;
+  var types = type === 'Mixed' ? ['Vocabulary', 'Synonym', 'Antonym', 'Spelling', 'Analogy'] : [type];
+  var qs = [], tries = 0;
+  while (qs.length < count && tries < count * 40) {
     tries++;
-    var t=pick(types),q=null;
-    if(t==='Vocabulary')q=makeVocabQ();
-    else if(t==='Synonym')q=makeSynQ();
-    else if(t==='Antonym')q=makeAntQ();
-    else if(t==='Spelling')q=makeSpellQ();
-    else if(t==='Analogy')q=makeAnalogyQ();
-    if(q)qs.push(q);
+    var t = pick(types), q = null;
+    if (t === 'Vocabulary') q = makeVocabQ(pool);
+    else if (t === 'Synonym') q = makeSynQ(pool);
+    else if (t === 'Antonym') q = makeAntQ(pool);
+    else if (t === 'Spelling') q = makeSpellQ(pool);
+    else if (t === 'Analogy') q = makeAnalogyQ(pool);
+    if (q) qs.push(q);
   }
-  if(!qs.length)return null;
-  return{questions:qs,index:0,score:0,answers:[],startTime:Date.now(),type:type,total:qs.length};
+  if (!qs.length) return null;
+  return { questions: qs, index: 0, score: 0, answers: [], startTime: Date.now(), type: type, total: qs.length };
 }
 
-function renderQuizIdle(){
-  $('quizStage').innerHTML='<div class="panel"><div class="empty">'+
-    '<span class="icon">✦</span><span class="big">CHOOSE A MODE</span>'+
-    '<div>SELECT TYPE + COUNT, THEN PRESS START</div>'+
-    '<div style="margin-top:14px;font-size:7px;opacity:.7">RESULTS SAVE TO "QuizResults" TAB</div>'+
+function renderQuizIdle() {
+  $('quizStage').innerHTML = '<div class="panel"><div class="empty">' +
+    '<span class="icon">✦</span><span class="big">CHOOSE A MODE</span>' +
+    '<div>QUIZ USES WORDS FROM UNLOCKED DECKS</div>' +
     '</div></div>';
 }
 
-function renderQuiz(){
-  if(!quiz)return;
-  if(quiz.index>=quiz.questions.length)return finishQuiz();
-  var q=quiz.questions[quiz.index];
-  var pct=Math.round(quiz.index/quiz.total*100);
-  var h='<div class="panel">'+
-    '<div class="q-prog"><span>Q <b>'+(quiz.index+1)+'</b> / '+quiz.total+'</span>'+
-      '<span>SCORE <b>'+quiz.score+'</b></span><span>'+q.type.toUpperCase()+'</span></div>'+
-    '<div class="q-bar"><div class="q-bar-fill" style="width:'+pct+'%"></div></div>'+
-    '<div class="q-text">'+esc(q.q)+'</div><div class="q-opts" id="qOpts">';
-  for(var i=0;i<q.options.length;i++)
-    h+='<button class="q-opt" data-i="'+i+'">'+esc(q.options[i])+'</button>';
-  h+='</div><button class="btn btn-gold q-next" id="qNext">NEXT ▶</button></div>';
-  $('quizStage').innerHTML=h;
+function renderQuiz() {
+  if (!quiz) return;
+  if (quiz.index >= quiz.questions.length) return finishQuiz();
+  var q = quiz.questions[quiz.index];
+  var pct = Math.round(quiz.index / quiz.total * 100);
+  var h = '<div class="panel">' +
+    '<div class="q-prog"><span>Q <b>' + (quiz.index + 1) + '</b> / ' + quiz.total + '</span>' +
+      '<span>SCORE <b>' + quiz.score + '</b></span><span>' + q.type.toUpperCase() + '</span></div>' +
+    '<div class="q-bar"><div class="q-bar-fill" style="width:' + pct + '%"></div></div>' +
+    '<div class="q-text">' + esc(q.q) + '</div><div class="q-opts" id="qOpts">';
+  for (var i = 0; i < q.options.length; i++)
+    h += '<button class="q-opt" data-i="' + i + '">' + esc(q.options[i]) + '</button>';
+  h += '</div><button class="btn btn-gold q-next" id="qNext">NEXT ▶</button></div>';
+  $('quizStage').innerHTML = h;
 
-  var opts=$('quizStage').querySelectorAll('.q-opt');
-  opts.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var chosen=btn.textContent,correct=chosen===q.correct;
-      opts.forEach(function(b){
-        b.disabled=true;
-        if(b.textContent===q.correct)b.classList.add('correct');
+  var opts = $('quizStage').querySelectorAll('.q-opt');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var chosen = btn.textContent, correct = chosen === q.correct;
+      opts.forEach(function(b) {
+        b.disabled = true;
+        if (b.textContent === q.correct) b.classList.add('correct');
       });
-      if(!correct)btn.classList.add('wrong');
-      if(correct)quiz.score++;
-      quiz.answers.push({type:q.type,word:q.word,question:q.q,chosen:chosen,correct:q.correct,ok:correct});
+      if (!correct) btn.classList.add('wrong');
+      if (correct) quiz.score++;
+      quiz.answers.push({ type: q.type, word: q.word, question: q.q, chosen: chosen, correct: q.correct, ok: correct });
       $('qNext').classList.add('show');
     });
   });
-  $('qNext').addEventListener('click',function(){quiz.index++;renderQuiz();});
+  $('qNext').addEventListener('click', function() { quiz.index++; renderQuiz(); });
 }
 
-function finishQuiz(){
-  var pct=Math.round(quiz.score/quiz.total*100);
-  var title=pct>=90?'★ LEGENDARY!':pct>=70?'✓ VICTORY!':pct>=50?'◈ NICE TRY':'✗ KEEP TRAINING';
-  $('quizStage').innerHTML='<div class="panel"><div class="result">'+
-    '<div class="result-title">'+title+'</div>'+
-    '<div class="result-score">'+quiz.score+'/'+quiz.total+'</div>'+
-    '<div class="result-pct">'+pct+'% ACCURACY</div>'+
-    '<div class="result-note" id="saveStatus">SAVING TO SHEET…</div>'+
-    '<button class="btn btn-gold" onclick="startQuiz()" style="width:100%;margin-top:8px">▶ PLAY AGAIN</button>'+
+function finishQuiz() {
+  var pct = Math.round(quiz.score / quiz.total * 100);
+  var title = pct >= 90 ? '★ LEGENDARY!' : pct >= 70 ? '✓ VICTORY!' : pct >= 50 ? '◈ NICE TRY' : '✗ KEEP TRAINING';
+  $('quizStage').innerHTML = '<div class="panel"><div class="result">' +
+    '<div class="result-title">' + title + '</div>' +
+    '<div class="result-score">' + quiz.score + '/' + quiz.total + '</div>' +
+    '<div class="result-pct">' + pct + '% ACCURACY</div>' +
+    '<div class="result-note" id="saveStatus">SAVING…</div>' +
+    '<button class="btn btn-gold" onclick="startQuiz()" style="width:100%;margin-top:8px">▶ PLAY AGAIN</button>' +
     '</div></div>';
 
-  var payload={
-    type:quiz.type,score:quiz.score,total:quiz.total,
-    durationSec:Math.round((Date.now()-quiz.startTime)/1000),answers:quiz.answers
-  };
+  // Update today stats
+  today.quizzesPlayed++;
+  today.marks += quiz.score;
+  saveToday();
+  updateHeader();
 
-  /* POST to Apps Script — text/plain avoids CORS preflight[reference:0] */
+  // Log events (quiz event + one for the sheet record)
+  queueEvent({ type: 'quiz', data: { marks: quiz.score, total: quiz.total, type: quiz.type } });
+  flushEvents();
+
+  // Save to QuizResults sheet
+  var payload = {
+    type: quiz.type, score: quiz.score, total: quiz.total,
+    durationSec: Math.round((Date.now() - quiz.startTime) / 1000), answers: quiz.answers
+  };
   fetch(API_URL + '?action=saveQuiz', {
     method: 'POST',
     mode: 'cors',
@@ -938,34 +1369,176 @@ function finishQuiz(){
   })
   .then(function(r){ return r.json(); })
   .then(function(res){
-    var el=$('saveStatus');
-    if(el){el.textContent='✓ SAVED TO "QuizResults" (ROW '+res.row+')';el.className='result-note ok';}
+    var el = $('saveStatus');
+    if (el) { el.textContent = '✓ SAVED · +' + (quiz.score * 2 + 5) + ' PTS'; el.className = 'result-note ok'; }
   })
   .catch(function(err){
-    var el=$('saveStatus');
-    if(el){el.textContent='⚠ SAVE FAILED: '+err.message;el.className='result-note err';}
+    var el = $('saveStatus');
+    if (el) { el.textContent = '⚠ SAVE FAILED: ' + err.message; el.className = 'result-note err'; }
   });
 }
 
-function startQuiz(){
-  quiz=buildQuiz($('qType').value,parseInt($('qCount').value,10));
-  if(!quiz){
-    $('quizStage').innerHTML='<div class="panel"><div class="empty">'+
-      '<span class="icon">⚠</span><span class="big">CANNOT BUILD QUIZ</span>'+
-      '<div>CHECK YOUR SHEET HAS ENOUGH WORDS</div></div></div>';
+function startQuiz() {
+  quiz = buildQuiz($('qType').value, parseInt($('qCount').value, 10));
+  if (!quiz) {
+    $('quizStage').innerHTML = '<div class="panel"><div class="empty">' +
+      '<span class="icon">⚠</span><span class="big">CANNOT BUILD QUIZ</span>' +
+      '<div>LEARN SOME WORDS FIRST</div></div></div>';
     return;
   }
   renderQuiz();
 }
 
-/* ================= RESET ================= */
-$('resetBtn').addEventListener('click',function(){
-  if(!confirm('Delete ALL flashcard progress stored in this browser?'))return;
-  progress={};saveProgress();refreshStats();renderIdle();
-});
+/* ============================================================
+   RANK TAB (leaderboard + personal stats)
+   ============================================================ */
+var rankRefreshTimer = null;
 
-$('startBtn').addEventListener('click',startSession);
-$('qStart').addEventListener('click',startQuiz);
+function refreshRankTab() {
+  flushEvents().then(function() {
+    setTimeout(function() {
+      loadLeaderboard();
+      loadMyStats();
+    }, 300);
+  });
+
+  if (rankRefreshTimer) clearInterval(rankRefreshTimer);
+  rankRefreshTimer = setInterval(refreshRankTabSilent, 30000);
+}
+
+function refreshRankTabSilent() {
+  if ($('tab-rank').hidden) {
+    if (rankRefreshTimer) { clearInterval(rankRefreshTimer); rankRefreshTimer = null; }
+    return;
+  }
+  loadLeaderboard();
+  loadMyStats();
+}
+
+function loadLeaderboard() {
+  var url = API_URL + '?action=leaderboard&date=' + encodeURIComponent(today.date);
+  fetch(url, { method: 'GET', mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(list){
+      renderLeaderboard(Array.isArray(list) ? list : []);
+    })
+    .catch(function(err){
+      $('leaderboardView').innerHTML = '<div class="empty"><span class="icon">⚠</span>' +
+        '<div>FAILED TO LOAD: ' + esc(err.message) + '</div></div>';
+    });
+}
+
+function loadMyStats() {
+  var url = API_URL + '?action=myStats&email=' +
+    encodeURIComponent(user.email) + '&date=' + encodeURIComponent(today.date);
+  fetch(url, { method: 'GET', mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(stats){
+      renderMyStats(stats || {});
+    })
+    .catch(function(){
+      renderMyStatsLocal();
+    });
+}
+
+function renderMyStats(s) {
+  var points = s.points || 0;
+  var rank = s.rank;
+  var total = s.totalPlayers || 0;
+  var words = s.words || 0;
+  var quizzes = s.quizzes || 0;
+  var marks = s.marks || 0;
+
+  // Deck progress
+  var done = 0, nDecks = totalDecks();
+  for (var i = 0; i < nDecks; i++) if (isDeckComplete(i)) done++;
+  var mastered = 0;
+  for (var j = 0; j < WORDS.length; j++) {
+    if (progress[WORDS[j].w] && progress[WORDS[j].w].box >= 4) mastered++;
+  }
+
+  var html =
+    '<div class="my-stats">' +
+      '<div class="my-rank">' +
+        '<div class="my-rank-num">' + (rank ? '#' + rank : '—') + '</div>' +
+        '<div class="my-rank-label">OF ' + total + ' TODAY</div>' +
+      '</div>' +
+      '<div class="my-points">' +
+        '<div class="my-points-val">' + points + '</div>' +
+        '<div class="my-points-label">POINTS TODAY</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="my-breakdown">' +
+      '<div><b>' + words + '</b>WORDS<br><span style="color:var(--text)">' + (words * 10) + ' PTS</span></div>' +
+      '<div><b>' + quizzes + '</b>QUIZZES<br><span style="color:var(--text)">' + (quizzes * 5) + ' PTS</span></div>' +
+      '<div><b>' + marks + '</b>MARKS<br><span style="color:var(--text)">' + (marks * 2) + ' PTS</span></div>' +
+    '</div>' +
+    '<div style="margin-top:14px;padding:10px;background:var(--bg);border:2px solid var(--border-dark);' +
+      'font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);line-height:1.8">' +
+      '<div>DECKS: <b style="color:var(--gold)">' + done + '/' + nDecks + ' COMPLETE</b></div>' +
+      '<div>WORDS MASTERED: <b style="color:var(--hp)">' + mastered + '/' + WORDS.length + '</b></div>' +
+    '</div>';
+
+  $('myStatsView').innerHTML = html;
+}
+
+function renderMyStatsLocal() {
+  var wc = Object.keys(today.wordsLearned).length;
+  renderMyStats({
+    words: wc, quizzes: today.quizzesPlayed, marks: today.marks,
+    points: wc * 10 + today.quizzesPlayed * 5 + today.marks * 2,
+    rank: null, totalPlayers: 0
+  });
+}
+
+function renderLeaderboard(list) {
+  if (!list || !list.length) {
+    $('leaderboardView').innerHTML = '<div class="empty">' +
+      '<span class="icon">🏆</span><div>NO PLAYERS TODAY</div>' +
+      '<div style="margin-top:8px;font-size:7px;opacity:.7">BE THE FIRST!</div></div>';
+    return;
+  }
+  var html = '<div class="lb-header">' +
+    '<div class="lb-rank">#</div>' +
+    '<div class="lb-name">PLAYER</div>' +
+    '<div class="lb-pts">PTS</div>' +
+    '</div>';
+  var myEmail = user.email.toLowerCase();
+  for (var i = 0; i < list.length; i++) {
+    var u = list[i];
+    var isMe = (u.email || '').toLowerCase() === myEmail;
+    var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+    html += '<div class="lb-row' + (isMe ? ' me' : '') + '">' +
+      '<div class="lb-rank">' + (medal || u.rank) + '</div>' +
+      '<div class="lb-name">' + esc(u.name || '(no name)') + (isMe ? ' ⬅' : '') + '</div>' +
+      '<div class="lb-pts">' + (u.points || 0) + '</div>' +
+      '</div>';
+  }
+  $('leaderboardView').innerHTML = html;
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+function resetProgress() {
+  if (!confirm('Delete ALL your progress? This cannot be undone.')) return;
+  try {
+    localStorage.removeItem(progressKey());
+    localStorage.removeItem(todayKey());
+    localStorage.removeItem(pendingKey());
+  } catch (e) {}
+  location.reload();
+}
+
+/* ============================================================
+   WIRING
+   ============================================================ */
+$('loginBtn').addEventListener('click', handleLogin);
+$('loginName').addEventListener('keypress', function(e){ if(e.key === 'Enter') $('loginEmail').focus(); });
+$('loginEmail').addEventListener('keypress', function(e){ if(e.key === 'Enter') handleLogin(); });
+$('qStart').addEventListener('click', startQuiz);
+
+setInterval(function(){ checkDayRollover(); }, 60000);
 </script>
 </body>
 </html>
