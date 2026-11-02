@@ -1,464 +1,712 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<base target="_top"><meta charset="utf-8">
-<style>
-  *{box-sizing:border-box}
-  body{margin:0;font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size:14px}
-  .wrap{max-width:960px;margin:0 auto;padding:16px}
-  header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-    background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:14px 18px;border-radius:16px;margin-bottom:12px}
-  header h1{font-size:18px;margin:0}
-  .pills{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
-  .pill{background:rgba(255,255,255,.18);padding:5px 11px;border-radius:999px;font-size:12px;font-weight:600}
-  .tabs{display:flex;gap:8px;margin-bottom:12px}
-  .tabs button{font:inherit;font-weight:600;padding:9px 18px;border-radius:11px;border:1px solid #cbd5e1;
-    background:#fff;cursor:pointer;color:#475569}
-  .tabs button.active{background:#4f46e5;border-color:#4f46e5;color:#fff}
-  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#fff;padding:10px 12px;
-    border-radius:12px;box-shadow:0 1px 3px rgba(15,23,42,.08);margin-bottom:14px}
-  .bar select,.bar button{font:inherit;border-radius:9px;border:1px solid #cbd5e1;padding:7px 10px;background:#fff;cursor:pointer}
-  .bar label{display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer}
-  .bar .primary{background:#4f46e5;color:#fff;border-color:#4f46e5;font-weight:600;margin-left:auto}
-  .cardwrap{perspective:1400px}
-  .card{background:#fff;border-radius:20px;min-height:340px;box-shadow:0 10px 30px rgba(15,23,42,.10);
-    padding:34px 30px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;transition:.18s}
-  .card:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(15,23,42,.14)}
-  .card .back{display:none}.card.revealed .front{display:none}.card.revealed .back{display:block;animation:fade .25s}
-  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .front{text-align:center}
-  .word{font-size:44px;font-weight:800;color:#1e293b;word-break:break-word}
-  .pos{display:inline-block;margin-top:10px;background:#eef2ff;color:#4338ca;font-size:12px;font-weight:700;
-    padding:4px 12px;border-radius:999px}
-  .hint{margin-top:26px;color:#94a3b8;font-size:13px}
-  .bn{font-size:26px;font-weight:700;color:#0f766e;margin-bottom:6px;line-height:1.45}
-  .en{font-size:15px;color:#475569;margin-bottom:18px}
-  .rows{border-top:1px solid #e2e8f0;padding-top:14px;display:grid;gap:9px}
-  .rows>div{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:13.5px;line-height:1.5}
-  .rows b{color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
-  .grades{display:flex;gap:10px;margin-top:16px}
-  .grades button{flex:1;font:inherit;font-weight:700;padding:14px;border-radius:13px;border:none;cursor:pointer;color:#fff}
-  .grades button:hover{filter:brightness(1.06);transform:translateY(-2px)}
-  .grades small{display:block;font-weight:400;opacity:.8;font-size:11px}
-  .g-again{background:#ef4444}.g-good{background:#10b981}.g-easy{background:#3b82f6}
-  .foot{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center}
-  .foot button{font:inherit;background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:7px 12px;cursor:pointer}
-  .foot .muted{color:#94a3b8;font-size:12px;margin-left:auto}
-  .empty{text-align:center;padding:60px 20px;color:#64748b}
-  .empty .big{font-size:40px;margin-bottom:10px}
-  .empty h3{margin:0 0 8px;color:#0f172a}
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e27">
+<title>Vocab Quest</title>
 
-  /* Quiz */
-  #quizStage{background:#fff;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(15,23,42,.10)}
-  .qmeta{display:flex;justify-content:space-between;font-size:12px;color:#64748b;margin-bottom:10px;font-weight:600}
-  .qtext{font-size:20px;font-weight:700;line-height:1.5;color:#1e293b;margin-bottom:18px}
-  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;padding:13px 16px;margin-bottom:10px;
-    border:2px solid #e2e8f0;border-radius:12px;background:#fff;cursor:pointer;transition:.15s}
-  .opt:hover:not(:disabled){border-color:#a5b4fc;background:#f5f3ff}
-  .opt:disabled{cursor:default}
-  .opt.correct{border-color:#10b981;background:#ecfdf5}
-  .opt.wrong{border-color:#ef4444;background:#fef2f2}
-  .opt .tag{float:right;font-size:11px;font-weight:700;opacity:.7;margin-left:8px}
-  .next{font:inherit;font-weight:700;padding:11px 22px;border-radius:11px;border:none;background:#4f46e5;
-    color:#fff;cursor:pointer;margin-top:8px;display:none}
-  .next.show{display:inline-block}
-  .result{text-align:center;padding:20px}
-  .result .score{font-size:64px;font-weight:800;color:#4f46e5;line-height:1}
-  .result .pct{font-size:18px;color:#64748b;margin-bottom:20px}
-  #saveStatus{margin-top:14px;font-size:13px}
-  .progress{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:16px}
-  .progress>div{height:100%;background:#4f46e5;width:0;transition:width .3s}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0a0e27; --bg2:#141830;
+  --panel:#1a1f3a; --panel2:#232a4a;
+  --border:#4a5fc1; --border-dark:#1e2a5c;
+  --text:#f0e6d2; --text-dim:#8a94b8;
+  --gold:#ffcc00; --gold2:#ff9900;
+  --hp:#4ade80; --hp-dark:#22c55e;
+  --mp:#60a5fa; --danger:#ef4444;
+  --font-pixel:'Press Start 2P','Courier New',monospace;
+  --font-body:system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans Bengali',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--font-body);color:var(--text);min-height:100vh;line-height:1.4;
+  background:
+    radial-gradient(ellipse at 15% 5%, rgba(74,95,193,0.20), transparent 45%),
+    radial-gradient(ellipse at 85% 95%, rgba(239,68,68,0.10), transparent 45%),
+    var(--bg);
+  overflow-x:hidden;touch-action:manipulation;-webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.02) 2px,rgba(255,255,255,0.02) 4px);
+}
+#app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:12px;
+  padding-bottom:max(12px,env(safe-area-inset-bottom))}
+
+/* Pixel panel */
+.panel{
+  background:var(--panel);border:4px solid #000;padding:16px;margin-bottom:12px;
+  box-shadow:inset 0 0 0 4px var(--border), inset 0 0 0 8px var(--bg), 0 6px 0 rgba(0,0,0,0.4);
+}
+
+/* Header */
+.hdr{
+  display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:12px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:4px solid #000;position:relative;overflow:hidden;
+  box-shadow:inset 0 0 0 4px var(--border), inset 0 0 0 8px var(--bg), 0 6px 0 rgba(0,0,0,0.4);
+}
+.hdr::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.5}
+.logo{width:52px;height:52px;flex-shrink:0;display:grid;place-items:center;
+  background:var(--bg);border:3px solid #000;box-shadow:inset 0 0 0 3px var(--gold2);
+  image-rendering:pixelated;position:relative}
+.logo img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.logo-fallback{font-family:var(--font-pixel);font-size:26px;color:var(--gold);
+  text-shadow:2px 2px 0 #000,4px 4px 0 rgba(255,153,0,0.4);line-height:1;display:none}
+.hdr-text{flex:1;min-width:0}
+.hdr-title{font-family:var(--font-pixel);font-size:clamp(11px,2.6vw,14px);color:var(--gold);
+  text-shadow:2px 2px 0 #000;letter-spacing:0.5px;line-height:1.4;margin-bottom:4px}
+.hdr-sub{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);letter-spacing:0.3px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
+.stat{background:var(--panel);border:3px solid #000;box-shadow:inset 0 0 0 3px var(--border-dark);
+  padding:8px 10px}
+.stat-label{font-family:var(--font-pixel);font-size:7px;color:var(--text-dim);
+  letter-spacing:0.5px;display:block;margin-bottom:5px}
+.stat-val{font-family:var(--font-pixel);font-size:14px;color:var(--gold);
+  text-shadow:1px 1px 0 #000;display:inline-block}
+.bar{height:8px;background:#000;margin-top:6px;border:2px solid var(--border-dark);overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(180deg,var(--hp),var(--hp-dark));
+  width:0;transition:width 0.4s ease;box-shadow:inset 0 2px 0 rgba(255,255,255,0.3)}
+
+/* Tabs */
+.tabs{display:grid;grid-template-columns:1fr 1fr;margin-bottom:12px;
+  border:3px solid #000;box-shadow:inset 0 0 0 3px var(--border-dark);background:var(--panel)}
+.tab{font-family:var(--font-pixel);font-size:9px;padding:14px 10px;border:none;
+  background:transparent;color:var(--text-dim);cursor:pointer;transition:0.15s;
+  text-transform:uppercase;letter-spacing:0.3px}
+.tab + .tab{border-left:2px solid var(--border-dark)}
+.tab:hover{color:var(--text)}
+.tab.active{background:linear-gradient(180deg,var(--border),var(--border-dark));
+  color:#fff;text-shadow:2px 2px 0 #000}
+
+/* Buttons */
+.btn{
+  font-family:var(--font-pixel);font-size:10px;padding:12px 14px;border:3px solid #000;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));color:var(--text);
+  cursor:pointer;min-height:44px;user-select:none;letter-spacing:0.3px;
+  text-transform:uppercase;transition:transform 0.08s,box-shadow 0.08s,filter 0.15s;
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,0.4),inset 0 4px 0 rgba(255,255,255,0.08),0 4px 0 #000;
+}
+.btn:hover{filter:brightness(1.15)}
+.btn:active{transform:translate(0,4px);
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,0.4),inset 0 4px 0 rgba(255,255,255,0.08)}
+.btn-primary{background:linear-gradient(180deg,#5b7cff,var(--border));color:#fff;text-shadow:2px 2px 0 #000}
+.btn-gold{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#000;
+  text-shadow:1px 1px 0 rgba(255,255,255,0.3)}
+.btn-danger{background:linear-gradient(180deg,#ff5b5b,#c81e1e);color:#fff;text-shadow:2px 2px 0 #000}
+.btn-green{background:linear-gradient(180deg,var(--hp),var(--hp-dark));color:#000;
+  text-shadow:1px 1px 0 rgba(255,255,255,0.3)}
+.btn-blue{background:linear-gradient(180deg,var(--mp),#3b82f6);color:#fff;text-shadow:2px 2px 0 #000}
+
+/* Flashcard */
+.fc{
+  background:var(--panel);border:4px solid #000;min-height:280px;padding:28px 20px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;cursor:pointer;position:relative;transition:filter 0.15s;
+  box-shadow:inset 0 0 0 4px var(--border),inset 0 0 0 8px var(--bg),0 6px 0 rgba(0,0,0,0.4);
+  animation:fadeIn 0.25s ease;
+}
+.fc:hover{filter:brightness(1.08)}
+.fc:active{transform:scale(0.995)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fc-word{font-family:var(--font-pixel);font-size:clamp(22px,6vw,40px);color:var(--gold);
+  text-shadow:3px 3px 0 #000,5px 5px 0 rgba(255,153,0,0.25);
+  word-break:break-word;line-height:1.3;padding:0 8px}
+.fc-pos{font-family:var(--font-pixel);font-size:8px;color:var(--border);background:var(--bg);
+  padding:5px 10px;margin-top:12px;border:2px solid var(--border-dark);
+  display:inline-block;text-transform:lowercase;letter-spacing:0.5px}
+.fc-hint{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);
+  margin-top:20px;letter-spacing:1px;animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:0.3}}
+.fc-back{width:100%;text-align:left;display:flex;flex-direction:column;gap:12px}
+.fc-bn{font-family:var(--font-body);font-size:clamp(20px,4.5vw,26px);color:var(--hp);
+  font-weight:700;text-align:center;line-height:1.4;text-shadow:2px 2px 0 #000;
+  padding-bottom:10px;border-bottom:2px dashed var(--border-dark)}
+.fc-en{font-family:var(--font-body);font-size:14px;color:var(--text);text-align:center;
+  opacity:0.9;margin-top:-4px}
+.fc-row{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:13px;
+  line-height:1.5;align-items:start}
+.fc-row .lbl{font-family:var(--font-pixel);font-size:7px;color:var(--gold);
+  padding-top:4px;letter-spacing:0.5px;white-space:nowrap}
+.fc-row .val{font-family:var(--font-body);color:var(--text)}
+.fc-ex{font-style:italic;opacity:0.85}
+.grades{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.grades .btn{padding:12px 6px;font-size:9px}
+.grades .btn small{display:block;font-size:7px;opacity:0.7;margin-top:3px;font-weight:normal}
+.fc-progress{display:flex;justify-content:space-between;font-family:var(--font-pixel);
+  font-size:8px;color:var(--text-dim);margin-bottom:10px;letter-spacing:0.5px}
+.fc-progress b{color:var(--gold)}
+
+/* Quiz setup / bar */
+.q-setup{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.q-select{font-family:var(--font-pixel);font-size:9px;padding:12px;background:var(--bg);
+  color:var(--text);border:3px solid #000;box-shadow:inset 0 0 0 3px var(--border-dark);
+  cursor:pointer;min-height:44px;flex:1;min-width:130px}
+.q-prog{display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);
+  margin-bottom:14px;letter-spacing:0.5px;gap:8px;flex-wrap:wrap}
+.q-prog b{color:var(--gold)}
+.q-bar{height:10px;background:#000;border:2px solid var(--border-dark);
+  margin-bottom:18px;overflow:hidden}
+.q-bar-fill{height:100%;background:linear-gradient(90deg,var(--mp),#3b82f6);
+  width:0;transition:width 0.3s ease;box-shadow:inset 0 2px 0 rgba(255,255,255,0.3)}
+.q-text{font-family:var(--font-body);font-size:clamp(15px,3.5vw,18px);color:var(--text);
+  font-weight:700;line-height:1.5;margin-bottom:18px;padding:12px;
+  background:var(--bg);border:3px solid #000;box-shadow:inset 0 0 0 3px var(--border-dark);
+  min-height:70px;display:flex;align-items:center;justify-content:center;
+  text-align:center;white-space:pre-line}
+.q-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.q-opt{
+  font-family:var(--font-body);font-size:14px;padding:14px 16px 14px 36px;
+  border:3px solid #000;background:linear-gradient(180deg,var(--panel2),var(--panel));
+  color:var(--text);cursor:pointer;text-align:left;position:relative;min-height:44px;
+  line-height:1.4;transition:transform 0.08s,box-shadow 0.08s,filter 0.15s;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,0.4),inset 0 3px 0 rgba(255,255,255,0.06),0 3px 0 #000;
+}
+.q-opt::before{content:'▶';position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  color:var(--gold);font-size:12px;opacity:0;transition:opacity 0.15s}
+.q-opt:hover:not(:disabled){filter:brightness(1.15)}
+.q-opt:hover:not(:disabled)::before{opacity:1}
+.q-opt:active:not(:disabled){transform:translate(0,3px);
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,0.4),inset 0 3px 0 rgba(255,255,255,0.06)}
+.q-opt:disabled{cursor:default}
+.q-opt.correct{background:linear-gradient(180deg,var(--hp),var(--hp-dark));
+  color:#000;text-shadow:1px 1px 0 rgba(255,255,255,0.3)}
+.q-opt.correct::after{content:'✓';position:absolute;right:14px;top:50%;
+  transform:translateY(-50%);font-size:16px;color:#000;font-weight:700}
+.q-opt.wrong{background:linear-gradient(180deg,#ff5b5b,#c81e1e);color:#fff;
+  text-shadow:2px 2px 0 #000}
+.q-opt.wrong::after{content:'✗';position:absolute;right:14px;top:50%;
+  transform:translateY(-50%);font-size:16px;color:#fff}
+.q-next{width:100%;margin-top:8px;display:none}
+.q-next.show{display:block}
+
+/* Result */
+.result{text-align:center;padding:20px 10px}
+.result-title{font-family:var(--font-pixel);font-size:clamp(16px,4vw,22px);color:var(--gold);
+  text-shadow:3px 3px 0 #000,5px 5px 0 rgba(255,153,0,0.25);
+  margin-bottom:14px;letter-spacing:1px;animation:popIn 0.4s cubic-bezier(0.5,1.6,0.5,1)}
+@keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+.result-score{font-family:var(--font-pixel);font-size:clamp(36px,10vw,56px);
+  color:var(--hp);text-shadow:3px 3px 0 #000;margin-bottom:8px;line-height:1}
+.result-pct{font-family:var(--font-pixel);font-size:12px;color:var(--text-dim);margin-bottom:18px}
+.result-note{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);
+  margin-bottom:14px;letter-spacing:0.5px}
+.result-note.ok{color:var(--hp)}
+.result-note.err{color:var(--danger)}
+
+/* Empty state */
+.empty{text-align:center;padding:40px 20px;font-family:var(--font-pixel);
+  font-size:9px;color:var(--text-dim);line-height:2;letter-spacing:0.5px}
+.empty .icon{font-size:32px;margin-bottom:14px;display:block}
+.empty .big{font-size:12px;color:var(--gold);margin-bottom:10px;display:block}
+
+/* Mobile */
+@media (max-width:480px){
+  .hdr{padding:8px 10px;gap:8px}
+  .logo{width:44px;height:44px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .panel{padding:12px}
+  .fc{min-height:240px;padding:22px 14px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;
+    transition-duration:0.01ms!important}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>📚 Vocabulary Trainer</h1>
-    <div class="pills">
-      <span class="pill">Due <b id="sDue">0</b></span>
-      <span class="pill">New <b id="sNew">0</b></span>
-      <span class="pill">Mastered <b id="sMaster">0</b></span>
+<div id="app">
+
+  <header class="hdr">
+    <div class="logo">
+      <img id="logoImg" src="<?= logoUrl || 'C.png' ?>" alt=""
+           onerror="this.style.display='none';var f=document.getElementById('logoFallback');if(f)f.style.display='block'">
+      <div id="logoFallback" class="logo-fallback">C</div>
+    </div>
+    <div class="hdr-text">
+      <div class="hdr-title">VOCAB QUEST</div>
+      <div class="hdr-sub" id="hdrSub">LOADING…</div>
     </div>
   </header>
 
-  <nav class="tabs">
-    <button data-tab="flash" class="active">🃏 Flashcards</button>
-    <button data-tab="quiz">✏️ Quiz</button>
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-label">MASTERED</span>
+      <span class="stat-val" id="sMaster">0</span>
+      <div class="bar"><div class="bar-fill" id="barMaster" style="width:0%"></div></div>
+    </div>
+    <div class="stat"><span class="stat-label">DUE</span><span class="stat-val" id="sDue">0</span></div>
+    <div class="stat"><span class="stat-label">NEW</span><span class="stat-val" id="sNew">0</span></div>
+    <div class="stat"><span class="stat-label">TOTAL</span><span class="stat-val" id="sTotal">0</span></div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="flash" role="tab">⚔ FLASHCARDS</button>
+    <button class="tab" data-tab="quiz" role="tab">✦ QUIZ</button>
   </nav>
 
-  <!-- ==================== FLASHCARDS ==================== -->
   <section id="tab-flash">
-    <div class="bar">
-      <select id="fLetter"><option value="">All letters</option></select>
-      <select id="fPos"><option value="">All types</option></select>
-      <label><input type="checkbox" id="fDue"> Due only</label>
-      <label><input type="checkbox" id="fShuffle" checked> Shuffle</label>
-      <button class="primary" id="startBtn">▶ Start / Restart</button>
+    <div class="panel">
+      <div class="q-setup">
+        <select class="q-select" id="fLetter"><option value="">ALL LETTERS</option></select>
+        <select class="q-select" id="fPos"><option value="">ALL TYPES</option></select>
+        <label class="q-select" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" id="fDue" style="width:16px;height:16px;accent-color:var(--gold)">
+          <span>DUE ONLY</span>
+        </label>
+        <button class="btn btn-gold" id="startBtn" style="flex:1 1 100%">▶ START</button>
+      </div>
     </div>
-    <div id="stage"><div class="empty" id="loading">Loading vocabulary…</div></div>
-    <div class="foot">
-      <button id="exportBtn">⬇ Export progress</button>
-      <button id="importBtn">⬆ Import progress</button>
-      <button id="resetBtn">🗑 Reset progress</button>
-      <span class="muted" id="storeNote">Flashcard progress is saved locally in this browser.</span>
-    </div>
+    <div id="fcStage"></div>
   </section>
 
-  <!-- ==================== QUIZ ==================== -->
   <section id="tab-quiz" hidden>
-    <div class="bar" id="quizSetup">
-      <select id="qType">
-        <option value="Mixed">Mixed (all types)</option>
-        <option value="Vocabulary">Vocabulary meaning</option>
-        <option value="Synonym">Synonyms</option>
-        <option value="Antonym">Antonyms</option>
-        <option value="Spelling">Spelling</option>
-        <option value="Analogy">Analogy</option>
-      </select>
-      <select id="qCount">
-        <option value="5">5 questions</option>
-        <option value="10" selected>10 questions</option>
-        <option value="20">20 questions</option>
-        <option value="30">30 questions</option>
-      </select>
-      <button class="primary" id="qStart">▶ Start Quiz</button>
+    <div class="panel">
+      <div class="q-setup">
+        <select class="q-select" id="qType">
+          <option value="Mixed">MIXED</option>
+          <option value="Vocabulary">MEANING</option>
+          <option value="Synonym">SYNONYM</option>
+          <option value="Antonym">ANTONYM</option>
+          <option value="Spelling">SPELLING</option>
+          <option value="Analogy">ANALOGY</option>
+        </select>
+        <select class="q-select" id="qCount">
+          <option value="5">5 Q</option>
+          <option value="10" selected>10 Q</option>
+          <option value="20">20 Q</option>
+          <option value="30">30 Q</option>
+        </select>
+        <button class="btn btn-gold" id="qStart" style="flex:1 1 100%">▶ START QUIZ</button>
+      </div>
     </div>
-    <div id="quizStage">
-      <div class="empty"><div class="big">✏️</div><h3>Pick a quiz type and start</h3>
-        <p>Results are saved to a <b>QuizResults</b> tab in your spreadsheet.</p></div>
-    </div>
+    <div id="quizStage"></div>
   </section>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+    <button class="btn" id="exportBtn" style="flex:1;font-size:8px">⬇ EXPORT</button>
+    <button class="btn" id="importBtn" style="flex:1;font-size:8px">⬆ IMPORT</button>
+    <button class="btn btn-danger" id="resetBtn" style="flex:1;font-size:8px">🗑 RESET</button>
+  </div>
+  <div style="text-align:center;margin-top:10px;font-family:var(--font-pixel);font-size:7px;
+              color:var(--text-dim);letter-spacing:0.5px" id="storeNote">
+    PROGRESS SAVED LOCALLY IN THIS BROWSER
+  </div>
 </div>
 
 <script>
-/* ============================================================
-   SHARED
-   ============================================================ */
-var WORDS = [];
+/* ============== DATA (inlined by server) ============== */
+var WORDS = <?!= wordBankJson ?>;
+
+/* ============== UTILS ============== */
 function $(id){return document.getElementById(id);}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
-function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-function uniqueOptions(correct, wrongPool){
-  var opts=[correct], seen=new Set([correct]);
-  for(var i=0;i<wrongPool.length && opts.length<4;i++){
-    var w=wrongPool[i];
-    if(w && !seen.has(w)){seen.add(w);opts.push(w);}
-  }
-  return shuffle(opts);
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+/* ============== LOCAL PROGRESS ============== */
+var KEY='vocab_quest_v1';
+var progress={};
+var memoryOnly=false;
+function loadProgress(){
+  try{var r=localStorage.getItem(KEY);progress=r?JSON.parse(r):{};}
+  catch(e){memoryOnly=true;progress={};}
 }
-
-/* ============================================================
-   TAB SWITCH
-   ============================================================ */
-document.querySelectorAll('.tabs button').forEach(function(b){
-  b.onclick=function(){
-    document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('active');});
-    b.classList.add('active');
-    $('tab-flash').hidden = b.dataset.tab!=='flash';
-    $('tab-quiz').hidden  = b.dataset.tab!=='quiz';
-  };
-});
-
-/* ============================================================
-   LOAD WORD BANK
-   ============================================================ */
-var progress = {};
-var memoryOnly = false;
-var KEY = 'vocab_flashcards_v1';
-function loadProgress(){try{var r=localStorage.getItem(KEY);progress=r?JSON.parse(r):{};}catch(e){memoryOnly=true;progress={};}}
-function saveProgress(){if(memoryOnly)return;try{localStorage.setItem(KEY,JSON.stringify(progress));}catch(e){memoryOnly=true;$('storeNote').textContent='⚠ Storage blocked — session only.';}}
+function saveProgress(){
+  if(memoryOnly)return;
+  try{localStorage.setItem(KEY,JSON.stringify(progress));}
+  catch(e){memoryOnly=true;$('storeNote').textContent='⚠ STORAGE BLOCKED — SESSION ONLY';}
+}
 loadProgress();
 
-google.script.run
-  .withSuccessHandler(function(bank){
-    WORDS = bank || [];
-    if(!WORDS.length){
-      $('loading').innerHTML='<div class="big">📄</div><h3>No words found</h3>'+
-        '<p>Check that the spreadsheet has a tab with Word, Part of Speech, Bangla Meaning, Simple English Meaning, Synonym(s), Antonym(s), Example.</p>';
-      return;
-    }
-    buildFilters(); refreshStats(); renderIdle();
-  })
-  .withFailureHandler(function(err){
-    $('loading').innerHTML='<div class="big">⚠️</div><h3>Could not load</h3><p>'+esc(err.message)+'</p>';
-  })
-  .getWordBank();
-
-/* ============================================================
-   FLASHCARDS (Leitner)
-   ============================================================ */
-var IV={1:0,2:1,3:2,4:4,5:8}, DAY=86400000;
-var queue=[], current=null, revealed=false, againCount={}, sessionCount=0;
-
+/* ============== STATS ============== */
 function refreshStats(){
-  var now=Date.now(),due=0,neu=0,mast=0;
-  WORDS.forEach(function(w){
-    var r=progress[w.w];
-    if(!r){neu++;due++;return;}
+  var now=Date.now(),due=0,neu=0,mast=0,total=WORDS.length;
+  for(var i=0;i<total;i++){
+    var r=progress[WORDS[i].w];
+    if(!r){neu++;due++;continue;}
     if(r.box>=4)mast++;
     if(r.due<=now)due++;
-  });
-  $('sDue').textContent=due; $('sNew').textContent=neu; $('sMaster').textContent=mast;
+  }
+  $('sDue').textContent=due;
+  $('sNew').textContent=neu;
+  $('sMaster').textContent=mast;
+  $('sTotal').textContent=total;
+  $('barMaster').style.width=total?Math.round(mast/total*100)+'%':'0%';
+  $('hdrSub').textContent=total+' WORDS · '+mast+' MASTERED';
 }
 
+/* ============== FILTERS ============== */
 function buildFilters(){
   var L={},P={};
-  WORDS.forEach(function(w){
+  for(var i=0;i<WORDS.length;i++){
+    var w=WORDS[i];
     var c=w.w.charAt(0).toUpperCase();
     if(/[A-Z]/.test(c))L[c]=1;
     if(w.pos)P[w.pos]=1;
-  });
-  Object.keys(L).sort().forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;$('fLetter').appendChild(o);});
-  Object.keys(P).sort().forEach(function(p){var o=document.createElement('option');o.value=p;o.textContent=p;$('fPos').appendChild(o);});
+  }
+  var l=$('fLetter');
+  Object.keys(L).sort().forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;l.appendChild(o);});
+  var p=$('fPos');
+  Object.keys(P).sort().forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x.toUpperCase();p.appendChild(o);});
 }
+
+/* ============== TABS ============== */
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+    t.classList.add('active');
+    $('tab-flash').hidden=t.dataset.tab!=='flash';
+    $('tab-quiz').hidden=t.dataset.tab!=='quiz';
+  });
+});
+
+/* ============== FLASHCARDS ============== */
+var IV={1:0,2:1,3:2,4:4,5:8}, DAY=86400000;
+var queue=[], current=null, revealed=false, againCount={}, sessionCount=0;
 
 function renderIdle(){
-  var due=WORDS.filter(function(w){var r=progress[w.w];return !r||r.due<=Date.now();}).length;
-  $('stage').innerHTML='<div class="empty"><div class="big">🃏</div><h3>'+WORDS.length+' words ready</h3>'+
-    '<p>'+due+' card'+(due===1?'':'s')+' due right now.</p><p>Press <b>▶ Start / Restart</b>.</p></div>';
+  var due=0;
+  for(var i=0;i<WORDS.length;i++){var r=progress[WORDS[i].w];if(!r||r.due<=Date.now())due++;}
+  $('fcStage').innerHTML='<div class="panel"><div class="empty">'+
+    '<span class="icon">⚔</span><span class="big">'+WORDS.length+' WORDS READY</span>'+
+    '<div>'+due+' CARD'+(due===1?'':'S')+' DUE</div>'+
+    '<div style="margin-top:14px;font-size:7px;opacity:0.7">PRESS ▶ START TO BEGIN</div>'+
+    '</div></div>';
 }
 
-$('startBtn').onclick=function(){
-  var L=$('fLetter').value, P=$('fPos').value, dueOnly=$('fDue').checked, now=Date.now();
-  queue = WORDS.filter(function(w){
-    if(L && w.w.charAt(0).toUpperCase()!==L) return false;
-    if(P && w.pos!==P) return false;
-    if(dueOnly){var r=progress[w.w]; if(r && r.due>now) return false;}
-    return true;
-  });
-  if($('fShuffle').checked) shuffle(queue);
-  againCount={}; sessionCount=0;
-  if(!queue.length){ $('stage').innerHTML='<div class="empty"><div class="big">🎉</div><h3>Nothing due</h3><p>Uncheck “Due only” to keep practising.</p></div>'; return; }
-  renderCard(); refreshStats();
-};
+function buildQueue(){
+  var L=$('fLetter').value,P=$('fPos').value,dueOnly=$('fDue').checked,now=Date.now();
+  var out=[];
+  for(var i=0;i<WORDS.length;i++){
+    var w=WORDS[i];
+    if(L&&w.w.charAt(0).toUpperCase()!==L)continue;
+    if(P&&w.pos!==P)continue;
+    if(dueOnly){var r=progress[w.w];if(r&&r.due>now)continue;}
+    out.push(w);
+  }
+  return shuffle(out);
+}
+
+function startSession(){
+  queue=buildQueue();againCount={};sessionCount=0;
+  if(!queue.length){
+    $('fcStage').innerHTML='<div class="panel"><div class="empty">'+
+      '<span class="icon">🎉</span><span class="big">NOTHING DUE</span>'+
+      '<div>UNCHECK "DUE ONLY" TO PRACTISE</div></div></div>';
+    return;
+  }
+  renderCard();
+}
 
 function renderCard(){
-  if(!queue.length) return renderDone();
-  current=queue[0]; revealed=false;
-  $('stage').innerHTML =
-    '<div class="cardwrap"><div class="card" id="card">'+
-      '<div class="front"><div class="word">'+esc(current.w)+'</div>'+
-        '<div class="pos">'+esc(current.pos)+'</div>'+
-        '<div class="hint">Click / press Space to reveal</div></div>'+
-      '<div class="back">'+
-        '<div class="bn">'+esc(current.bn||'—')+'</div>'+
-        '<div class="en">'+esc(current.en||'')+'</div>'+
-        '<div class="rows">'+
-          '<div><b>Synonyms</b><span>'+esc(current.syn.join(', ')||'—')+'</span></div>'+
-          '<div><b>Antonyms</b><span>'+esc(current.ant.join(', ')||'—')+'</span></div>'+
-          '<div><b>Example</b><span>'+esc(current.ex||'—')+'</span></div>'+
-        '</div>'+
-      '</div>'+
-    '</div></div>'+
+  if(!queue.length)return renderDone();
+  current=queue[0];revealed=false;
+  var total=sessionCount+queue.length;
+  var pct=total?Math.round(sessionCount/total*100):0;
+
+  $('fcStage').innerHTML=
+    '<div class="fc-progress"><span>REVIEWED <b>'+sessionCount+'</b></span>'+
+      '<span>REMAINING <b>'+queue.length+'</b></span></div>'+
+    '<div class="q-bar"><div class="q-bar-fill" style="width:'+pct+'%"></div></div>'+
+    '<div class="fc" id="fc">'+
+      '<div class="fc-word">'+esc(current.w)+'</div>'+
+      (current.pos?'<div class="fc-pos">'+esc(current.pos)+'</div>':'')+
+      '<div class="fc-hint">TAP TO REVEAL</div>'+
+    '</div>'+
     '<div class="grades" id="grades" style="display:none">'+
-      '<button class="g-again" onclick="grade(\'again\')">Again<small>1</small></button>'+
-      '<button class="g-good" onclick="grade(\'good\')">Good<small>2</small></button>'+
-      '<button class="g-easy" onclick="grade(\'easy\')">Easy<small>3</small></button>'+
+      '<button class="btn btn-danger" onclick="grade(\'again\')">↺ AGAIN<small>PRESS 1</small></button>'+
+      '<button class="btn btn-green" onclick="grade(\'good\')">✓ GOOD<small>PRESS 2</small></button>'+
+      '<button class="btn btn-blue" onclick="grade(\'easy\')">★ EASY<small>PRESS 3</small></button>'+
     '</div>';
-  $('card').onclick=reveal;
+  $('fc').addEventListener('click',reveal);
   refreshStats();
 }
-function reveal(){ if(revealed)return; revealed=true; $('card').classList.add('revealed'); $('grades').style.display='flex'; }
+
+function reveal(){
+  if(revealed||!current)return;
+  revealed=true;
+  var c=current;
+  var syn=c.syn&&c.syn.length?c.syn.join(', '):'—';
+  var ant=c.ant&&c.ant.length?c.ant.join(', '):'—';
+  $('fc').innerHTML='<div class="fc-back">'+
+    '<div class="fc-bn">'+esc(c.bn||'—')+'</div>'+
+    (c.en?'<div class="fc-en">'+esc(c.en)+'</div>':'')+
+    '<div class="fc-row"><span class="lbl">SYN</span><span class="val">'+esc(syn)+'</span></div>'+
+    '<div class="fc-row"><span class="lbl">ANT</span><span class="val">'+esc(ant)+'</span></div>'+
+    (c.ex?'<div class="fc-row"><span class="lbl">EX</span><span class="val fc-ex">'+esc(c.ex)+'</span></div>':'')+
+    '</div>';
+  var el=$('fc');el.style.animation='none';void el.offsetWidth;el.style.animation='fadeIn 0.25s ease';
+  $('grades').style.display='grid';
+}
+
 function grade(kind){
   if(!revealed||!current)return;
-  var w=current.w, r=progress[w]||{box:1,seen:0,correct:0,wrong:0,last:0,due:0};
+  var w=current.w;
+  var r=progress[w]||{box:1,seen:0,correct:0,wrong:0,last:0,due:0};
   r.seen++;
   if(kind==='again'){r.wrong++;r.box=1;r.due=Date.now();}
   else if(kind==='good'){r.correct++;r.box=Math.min(5,r.box+1);r.due=Date.now()+IV[r.box]*DAY;}
-  else {r.correct++;r.box=Math.min(5,r.box+2);r.due=Date.now()+IV[r.box]*DAY;}
-  r.last=Date.now(); progress[w]=r; saveProgress();
+  else{r.correct++;r.box=Math.min(5,r.box+2);r.due=Date.now()+IV[r.box]*DAY;}
+  r.last=Date.now();
+  progress[w]=r;saveProgress();
   sessionCount++;
   var card=queue.shift();
-  if(kind==='again'){var n=againCount[w]||0; if(n<2){againCount[w]=n+1; queue.push(card);}}
+  if(kind==='again'){var n=againCount[w]||0;if(n<2){againCount[w]=n+1;queue.push(card);}}
   renderCard();
 }
+
 function renderDone(){
-  $('stage').innerHTML='<div class="empty"><div class="big">✅</div><h3>Session complete!</h3>'+
-    '<p>Reviewed <b>'+sessionCount+'</b> card'+(sessionCount===1?'':'s')+'.</p></div>';
+  $('fcStage').innerHTML='<div class="panel"><div class="result">'+
+    '<div class="result-title">✓ SESSION CLEAR!</div>'+
+    '<div class="result-score">'+sessionCount+'</div>'+
+    '<div class="result-pct">CARD'+(sessionCount===1?'':'S')+' REVIEWED</div>'+
+    '<div class="result-note ok">PROGRESS SAVED LOCALLY</div>'+
+    '<button class="btn btn-gold" onclick="startSession()" style="width:100%;margin-top:8px">▶ NEW SESSION</button>'+
+    '</div></div>';
   refreshStats();
 }
+
 document.addEventListener('keydown',function(e){
-  if($('tab-quiz').hidden===false) return;   // ignore while on quiz tab
-  if(!current||!$('card')) return;
+  if($('tab-quiz').hidden===false)return;
+  if(!current||!$('fc'))return;
   if(e.code==='Space'){e.preventDefault();reveal();}
   if(revealed&&e.key==='1')grade('again');
   if(revealed&&e.key==='2')grade('good');
   if(revealed&&e.key==='3')grade('easy');
 });
 
-/* export/import/reset */
-$('exportBtn').onclick=function(){
-  var txt=JSON.stringify(progress,null,2);
-  var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
-  try{document.execCommand('copy');alert('Progress JSON copied ('+Object.keys(progress).length+' words).');}
-  catch(e){alert(txt);}
-  document.body.removeChild(ta);
-};
-$('importBtn').onclick=function(){
-  var txt=prompt('Paste progress JSON:'); if(!txt)return;
-  try{var o=JSON.parse(txt);if(typeof o!=='object'||Array.isArray(o))throw new Error('not an object');
-    progress=o;saveProgress();refreshStats();alert('Imported '+Object.keys(progress).length+' words.');}
-  catch(e){alert('Invalid JSON: '+e.message);}
-};
-$('resetBtn').onclick=function(){
-  if(!confirm('Delete ALL local flashcard progress?'))return;
-  progress={};saveProgress();refreshStats();renderIdle();
-};
-
-/* ============================================================
-   QUIZ ENGINE
-   ============================================================ */
+/* ============== QUIZ ============== */
 var quiz=null;
 
 function misspell(word){
-  var w=word, v=new Set();
-  for(var i=0;i<w.length-1;i++){var a=w.split('');var t=a[i];a[i]=a[i+1];a[i+1]=t;v.add(a.join(''));}
-  for(var i=0;i<w.length;i++) v.add(w.slice(0,i)+w[i]+w.slice(i));
-  for(var i=0;i<w.length;i++) v.add(w.slice(0,i)+w.slice(i+1));
-  return [...v].filter(function(x){return x!==w && x.length>2;});
+  var w=word,v={};
+  for(var i=0;i<w.length-1;i++){
+    var a=w.split(''),t=a[i];a[i]=a[i+1];a[i+1]=t;
+    var s=a.join('');if(s!==w)v[s]=1;
+  }
+  for(var i=0;i<w.length;i++){
+    var d=w.slice(0,i)+w.slice(i+1);
+    if(d!==w&&d.length>2)v[d]=1;
+  }
+  return Object.keys(v);
 }
 
-function makeVocabQ(pool){
-  var w=pick(pool); if(!w.bn)return null;
-  var others=shuffle(pool.filter(function(x){return x.w!==w.w && x.bn && x.bn!==w.bn;}));
-  var wrong=others.slice(0,6).map(function(x){return x.bn;});
+function uniqueOptions(correct,wrongPool){
+  var opts=[correct],seen={};seen[correct]=1;
+  for(var i=0;i<wrongPool.length&&opts.length<4;i++){
+    var w=wrongPool[i];
+    if(w&&!seen[w]){seen[w]=1;opts.push(w);}
+  }
+  return shuffle(opts);
+}
+
+function makeVocabQ(){
+  var w=pick(WORDS);if(!w.bn)return null;
+  var wrong=[];
+  for(var i=0;i<WORDS.length&&wrong.length<8;i++){
+    var o=WORDS[(Math.random()*WORDS.length)|0];
+    if(o.w!==w.w&&o.bn&&o.bn!==w.bn)wrong.push(o.bn);
+  }
   if(wrong.length<3)return null;
-  return {type:'Vocabulary',word:w.w,q:'What is the Bangla meaning of "'+w.w+'"?',
+  return {type:'Vocabulary',word:w.w,q:'MEANING OF "'+w.w+'"?',
     options:uniqueOptions(w.bn,wrong),correct:w.bn};
 }
-function makeSynQ(pool){
-  var cands=pool.filter(function(x){return x.syn.length>0;});
-  if(cands.length<4)return null;
-  var w=pick(cands), correct=pick(w.syn), wrong=[];
-  var others=shuffle(pool.filter(function(x){return x.w!==w.w;}));
-  for(var i=0;i<others.length && wrong.length<6;i++) if(others[i].syn.length) wrong.push(pick(others[i].syn));
+
+function makeSynQ(){
+  var c=[];for(var i=0;i<WORDS.length;i++)if(WORDS[i].syn&&WORDS[i].syn.length)c.push(WORDS[i]);
+  if(c.length<4)return null;
+  var w=pick(c),correct=pick(w.syn),wrong=[];
+  for(var i=0;i<WORDS.length&&wrong.length<8;i++){
+    var o=WORDS[(Math.random()*WORDS.length)|0];
+    if(o.w!==w.w&&o.syn&&o.syn.length)wrong.push(pick(o.syn));
+  }
   if(wrong.length<3)return null;
-  return {type:'Synonym',word:w.w,q:'Which of these is a synonym of "'+w.w+'"?',
+  return {type:'Synonym',word:w.w,q:'SYNONYM OF "'+w.w+'"?',
     options:uniqueOptions(correct,wrong),correct:correct};
 }
-function makeAntQ(pool){
-  var cands=pool.filter(function(x){return x.ant.length>0;});
-  if(cands.length<4)return null;
-  var w=pick(cands), correct=pick(w.ant), wrong=[];
-  var others=shuffle(pool.filter(function(x){return x.w!==w.w;}));
-  for(var i=0;i<others.length && wrong.length<6;i++) if(others[i].ant.length) wrong.push(pick(others[i].ant));
+
+function makeAntQ(){
+  var c=[];for(var i=0;i<WORDS.length;i++)if(WORDS[i].ant&&WORDS[i].ant.length)c.push(WORDS[i]);
+  if(c.length<4)return null;
+  var w=pick(c),correct=pick(w.ant),wrong=[];
+  for(var i=0;i<WORDS.length&&wrong.length<8;i++){
+    var o=WORDS[(Math.random()*WORDS.length)|0];
+    if(o.w!==w.w&&o.ant&&o.ant.length)wrong.push(pick(o.ant));
+  }
   if(wrong.length<3)return null;
-  return {type:'Antonym',word:w.w,q:'Which of these is an antonym of "'+w.w+'"?',
+  return {type:'Antonym',word:w.w,q:'ANTONYM OF "'+w.w+'"?',
     options:uniqueOptions(correct,wrong),correct:correct};
 }
-function makeSpellQ(pool){
-  var cands=pool.filter(function(x){return x.w.length>=5 && /^[a-zA-Z]+$/.test(x.w);});
-  if(cands.length<1)return null;
-  var w=pick(cands), correct=w.w;
-  var real=new Set(pool.map(function(x){return x.w.toLowerCase();}));
-  var variants=shuffle(misspell(correct)).filter(function(v){return !real.has(v.toLowerCase());});
-  if(variants.length<3)return null;
-  return {type:'Spelling',word:correct,q:'Which is the correct spelling?',
-    options:shuffle([correct,variants[0],variants[1],variants[2]]),correct:correct};
+
+function makeSpellQ(){
+  var c=[];for(var i=0;i<WORDS.length;i++){var w=WORDS[i].w;if(w.length>=5&&/^[a-zA-Z]+$/.test(w))c.push(w);}
+  if(!c.length)return null;
+  var correct=pick(c),v=misspell(correct),real={};
+  for(var i=0;i<WORDS.length;i++)real[WORDS[i].w.toLowerCase()]=1;
+  v=shuffle(v.filter(function(x){return !real[x.toLowerCase()];}));
+  if(v.length<3)return null;
+  return {type:'Spelling',word:correct,q:'CORRECT SPELLING?',
+    options:shuffle([correct,v[0],v[1],v[2]]),correct:correct};
 }
-function makeAnalogyQ(pool){
-  var cands=pool.filter(function(x){return x.syn.length>0;});
-  if(cands.length<4)return null;
-  var w1=pick(cands);
-  var w2=pick(cands.filter(function(x){return x.w!==w1.w;}));
-  if(!w2)return null;
-  var syn1=pick(w1.syn), correct=pick(w2.syn), wrong=[];
-  var others=shuffle(pool.filter(function(x){return x.w!==w2.w;}));
-  for(var i=0;i<others.length && wrong.length<6;i++) if(others[i].syn.length) wrong.push(pick(others[i].syn));
+
+function makeAnalogyQ(){
+  var c=[];for(var i=0;i<WORDS.length;i++)if(WORDS[i].syn&&WORDS[i].syn.length)c.push(WORDS[i]);
+  if(c.length<4)return null;
+  var w1=pick(c),w2=pick(c);if(w1.w===w2.w)return null;
+  var syn1=pick(w1.syn),correct=pick(w2.syn),wrong=[];
+  for(var i=0;i<WORDS.length&&wrong.length<8;i++){
+    var o=WORDS[(Math.random()*WORDS.length)|0];
+    if(o.w!==w2.w&&o.syn&&o.syn.length)wrong.push(pick(o.syn));
+  }
   if(wrong.length<3)return null;
   return {type:'Analogy',word:w1.w+'/'+w2.w,
-    q:'"'+w1.w+'" is to "'+syn1+'" as "'+w2.w+'" is to …',
+    q:'"'+w1.w+'" : "'+syn1+'"\n"'+w2.w+'" : ?',
     options:uniqueOptions(correct,wrong),correct:correct};
 }
 
 function buildQuiz(type,count){
-  if(WORDS.length<5){alert('Need at least 5 words in the sheet.');return null;}
-  var types = type==='Mixed' ? ['Vocabulary','Synonym','Antonym','Spelling','Analogy'] : [type];
-  var qs=[], tries=0;
-  while(qs.length<count && tries<count*30){
+  if(WORDS.length<5)return null;
+  var types=type==='Mixed'?['Vocabulary','Synonym','Antonym','Spelling','Analogy']:[type];
+  var qs=[],tries=0;
+  while(qs.length<count&&tries<count*40){
     tries++;
-    var t=pick(types), q=null;
-    if(t==='Vocabulary') q=makeVocabQ(WORDS);
-    else if(t==='Synonym') q=makeSynQ(WORDS);
-    else if(t==='Antonym') q=makeAntQ(WORDS);
-    else if(t==='Spelling') q=makeSpellQ(WORDS);
-    else if(t==='Analogy') q=makeAnalogyQ(WORDS);
-    if(q) qs.push(q);
+    var t=pick(types),q=null;
+    if(t==='Vocabulary')q=makeVocabQ();
+    else if(t==='Synonym')q=makeSynQ();
+    else if(t==='Antonym')q=makeAntQ();
+    else if(t==='Spelling')q=makeSpellQ();
+    else if(t==='Analogy')q=makeAnalogyQ();
+    if(q)qs.push(q);
   }
-  if(!qs.length){alert('Could not generate questions from this sheet — check columns.');return null;}
+  if(!qs.length)return null;
   return {questions:qs,index:0,score:0,answers:[],startTime:Date.now(),type:type,total:qs.length};
 }
 
-$('qStart').onclick=function(){
-  quiz=buildQuiz($('qType').value, parseInt($('qCount').value,10));
-  if(!quiz)return;
-  renderQuiz();
-};
-
 function renderQuiz(){
   if(!quiz)return;
-  if(quiz.index>=quiz.questions.length) return finishQuiz();
+  if(quiz.index>=quiz.questions.length)return finishQuiz();
   var q=quiz.questions[quiz.index];
   var pct=Math.round((quiz.index/quiz.total)*100);
+  var h='<div class="panel">'+
+    '<div class="q-prog"><span>Q <b>'+(quiz.index+1)+'</b> / '+quiz.total+'</span>'+
+      '<span>SCORE <b>'+quiz.score+'</b></span><span>'+q.type.toUpperCase()+'</span></div>'+
+    '<div class="q-bar"><div class="q-bar-fill" style="width:'+pct+'%"></div></div>'+
+    '<div class="q-text">'+esc(q.q)+'</div><div class="q-opts" id="qOpts">';
+  for(var i=0;i<q.options.length;i++)h+='<button class="q-opt" data-i="'+i+'">'+esc(q.options[i])+'</button>';
+  h+='</div><button class="btn btn-gold q-next" id="qNext">NEXT ▶</button></div>';
+  $('quizStage').innerHTML=h;
 
-  var html='<div class="progress"><div style="width:'+pct+'%"></div></div>'+
-    '<div class="qmeta"><span>Question '+(quiz.index+1)+' of '+quiz.total+'</span>'+
-      '<span>Type: '+q.type+'</span></div>'+
-    '<div class="qtext">'+esc(q.q)+'</div>';
-  q.options.forEach(function(opt,i){
-    html+='<button class="opt" data-i="'+i+'">'+esc(opt)+'</button>';
-  });
-  html+='<button class="next" id="qNext">Next →</button>';
-  $('quizStage').innerHTML=html;
-
-  var opts=$('quizStage').querySelectorAll('.opt');
+  var opts=$('quizStage').querySelectorAll('.q-opt');
   opts.forEach(function(btn){
-    btn.onclick=function(){
-      var chosen=btn.textContent;
-      var correct=chosen===q.correct;
-      opts.forEach(function(b){b.disabled=true; if(b.textContent===q.correct) b.classList.add('correct');});
-      if(!correct) btn.classList.add('wrong');
-      if(correct) quiz.score++;
+    btn.addEventListener('click',function(){
+      var chosen=btn.textContent,correct=chosen===q.correct;
+      opts.forEach(function(b){b.disabled=true;if(b.textContent===q.correct)b.classList.add('correct');});
+      if(!correct)btn.classList.add('wrong');
+      if(correct)quiz.score++;
       quiz.answers.push({type:q.type,word:q.word,question:q.q,chosen:chosen,correct:q.correct,ok:correct});
       $('qNext').classList.add('show');
-    };
+    });
   });
-  $('qNext').onclick=function(){ quiz.index++; renderQuiz(); };
+  $('qNext').addEventListener('click',function(){quiz.index++;renderQuiz();});
 }
 
 function finishQuiz(){
   var pct=Math.round((quiz.score/quiz.total)*100);
-  var msg = pct>=80 ? '🏆 Excellent!' : pct>=60 ? '👍 Good job!' : '📚 Keep practising!';
-  $('quizStage').innerHTML='<div class="result">'+
-    '<h3>'+msg+'</h3>'+
-    '<div class="score">'+quiz.score+' / '+quiz.total+'</div>'+
-    '<div class="pct">'+pct+'%</div>'+
-    '<div id="saveStatus">Saving to sheet…</div>'+
-    '<button class="next show" onclick="startQuizAgain()" style="margin-top:20px">Try another quiz</button>'+
-    '</div>';
+  var title=pct>=90?'★ LEGENDARY!':pct>=70?'✓ VICTORY!':pct>=50?'◈ NICE TRY':'✗ KEEP TRAINING';
+  $('quizStage').innerHTML='<div class="panel"><div class="result">'+
+    '<div class="result-title">'+title+'</div>'+
+    '<div class="result-score">'+quiz.score+'/'+quiz.total+'</div>'+
+    '<div class="result-pct">'+pct+'% ACCURACY</div>'+
+    '<div class="result-note" id="saveStatus">SAVING TO SHEET…</div>'+
+    '<button class="btn btn-gold" onclick="startQuiz()" style="width:100%;margin-top:8px">▶ PLAY AGAIN</button>'+
+    '</div></div>';
 
-  var payload={
-    type: quiz.type,
-    score: quiz.score,
-    total: quiz.total,
-    durationSec: Math.round((Date.now()-quiz.startTime)/1000),
-    answers: quiz.answers
-  };
-  google.script.run
-    .withSuccessHandler(function(r){
-      $('saveStatus').textContent='✅ Saved to "'+ 'QuizResults' +'" tab (row '+r.row+')';
-    })
-    .withFailureHandler(function(e){
-      $('saveStatus').textContent='⚠ Could not save: '+e.message;
-    })
-    .saveQuizResult(payload);
+  var payload={type:quiz.type,score:quiz.score,total:quiz.total,
+    durationSec:Math.round((Date.now()-quiz.startTime)/1000),answers:quiz.answers};
+  try{
+    google.script.run
+      .withSuccessHandler(function(r){
+        var el=$('saveStatus');
+        if(el){el.textContent='✓ SAVED TO "QuizResults" (ROW '+r.row+')';el.className='result-note ok';}
+      })
+      .withFailureHandler(function(e){
+        var el=$('saveStatus');
+        if(el){el.textContent='⚠ SAVE FAILED: '+e.message;el.className='result-note err';}
+      })
+      .saveQuizResult(payload);
+  }catch(e){
+    var el=$('saveStatus');
+    if(el){el.textContent='⚠ SAVE FAILED';el.className='result-note err';}
+  }
 }
 
-function startQuizAgain(){
-  quiz=buildQuiz($('qType').value, parseInt($('qCount').value,10));
-  if(quiz) renderQuiz();
+function startQuiz(){
+  quiz=buildQuiz($('qType').value,parseInt($('qCount').value,10));
+  if(!quiz){
+    $('quizStage').innerHTML='<div class="panel"><div class="empty">'+
+      '<span class="icon">⚠</span><span class="big">CANNOT BUILD QUIZ</span>'+
+      '<div>CHECK YOUR SHEET HAS ENOUGH WORDS</div></div></div>';
+    return;
+  }
+  renderQuiz();
 }
+
+/* ============== EXPORT/IMPORT/RESET ============== */
+$('exportBtn').addEventListener('click',function(){
+  var txt=JSON.stringify(progress,null,2);
+  try{
+    navigator.clipboard.writeText(txt).then(function(){
+      alert('✓ Progress copied ('+Object.keys(progress).length+' words).');
+    },function(){prompt('Copy your progress:',txt);});
+  }catch(e){prompt('Copy your progress:',txt);}
+});
+$('importBtn').addEventListener('click',function(){
+  var txt=prompt('Paste progress JSON:');if(!txt)return;
+  try{
+    var o=JSON.parse(txt);
+    if(typeof o!=='object'||Array.isArray(o))throw new Error('not an object');
+    progress=o;saveProgress();refreshStats();
+    alert('✓ Imported '+Object.keys(progress).length+' words.');
+  }catch(e){alert('Invalid JSON: '+e.message);}
+});
+$('resetBtn').addEventListener('click',function(){
+  if(!confirm('Delete ALL flashcard progress stored in this browser?'))return;
+  progress={};saveProgress();refreshStats();renderIdle();
+});
+
+/* ============== WIRE & BOOT ============== */
+$('startBtn').addEventListener('click',startSession);
+$('qStart').addEventListener('click',startQuiz);
+
+(function boot(){
+  if(!WORDS||!WORDS.length){
+    $('fcStage').innerHTML='<div class="panel"><div class="empty">'+
+      '<span class="icon">📄</span><span class="big">NO WORDS FOUND</span>'+
+      '<div>CHECK THE "Words" SHEET IN YOUR SPREADSHEET</div></div></div>';
+    $('hdrSub').textContent='NO DATA';
+    return;
+  }
+  buildFilters();
+  refreshStats();
+  renderIdle();
+  $('quizStage').innerHTML='<div class="panel"><div class="empty">'+
+    '<span class="icon">✦</span><span class="big">CHOOSE A MODE</span>'+
+    '<div>SELECT TYPE + COUNT, THEN PRESS START</div>'+
+    '<div style="margin-top:14px;font-size:7px;opacity:0.7">RESULTS SAVE TO "QuizResults" TAB</div>'+
+    '</div></div>';
+})();
 </script>
 </body>
 </html>
