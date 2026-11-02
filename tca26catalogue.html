@@ -8,23 +8,22 @@
 <style>
 :root{
   --bg:#070a12;
+  --panel:#0e1420;
   --line:rgba(255,255,255,.08);
   --line-2:rgba(255,255,255,.14);
   --txt:#e9eefc;
   --muted:#8a99b8;
   --cyan:#22d3ee;
   --violet:#a78bfa;
+  --green:#34d399;
   --radius:18px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
-  background:var(--bg);
-  color:var(--txt);
+  background:var(--bg);color:var(--txt);
   font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -44,7 +43,7 @@ body::after{
 a{color:inherit;text-decoration:none}
 button,input,select{font:inherit;color:inherit}
 
-/* LOGO */
+/* ── LOGO ── */
 .logo{
   width:46px;height:46px;flex:0 0 auto;border-radius:14px;
   display:grid;place-items:center;position:relative;
@@ -61,22 +60,17 @@ button,input,select{font:inherit;color:inherit}
 }
 .logo.fallback .logo-fallback{display:block}
 
-/* LOADER */
+/* ── LOADER ── */
 .loader{
-  position:fixed;inset:0;z-index:999;
-  display:grid;place-items:center;padding:20px;
+  position:fixed;inset:0;z-index:999;display:grid;place-items:center;padding:20px;
   background:radial-gradient(900px 600px at 50% 20%, #0c1524 0%, #05070d 70%);
   transition:opacity .6s ease, transform .6s ease, visibility .6s;
 }
 .loader.hidden{opacity:0;visibility:hidden;transform:scale(1.04);pointer-events:none}
 .loader-panel{
-  width:min(430px,94vw);
-  background:rgba(13,19,31,.86);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:22px;
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  width:min(430px,94vw);background:rgba(13,19,31,.86);
+  border:1px solid var(--line);border-radius:24px;padding:22px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05);
   animation:pop .5s cubic-bezier(.2,.9,.3,1.2);
 }
@@ -130,12 +124,11 @@ button,input,select{font:inherit;color:inherit}
 .error{margin:12px 0 0;font-size:12px;color:#ff9aa2;line-height:1.55;text-align:center;display:none}
 .error.show{display:block}
 
-/* APP */
+/* ── APP ── */
 .app{position:relative;z-index:1;opacity:0;transition:opacity .6s ease .15s}
 body.ready .app{opacity:1}
 .topbar{
-  position:sticky;top:0;z-index:50;
-  background:rgba(7,10,18,.82);
+  position:sticky;top:0;z-index:50;background:rgba(7,10,18,.82);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--line);
 }
@@ -149,8 +142,8 @@ body.ready .app{opacity:1}
 .topbar .logo{width:38px;height:38px;border-radius:12px}
 .search{flex:1 1 240px;min-width:180px;position:relative;display:flex;align-items:center}
 .search svg{
-  position:absolute;left:13px;width:16px;height:16px;stroke:var(--muted);fill:none;
-  stroke-width:2;pointer-events:none;
+  position:absolute;left:13px;width:16px;height:16px;stroke:var(--muted);
+  fill:none;stroke-width:2;pointer-events:none;
 }
 .search input{
   width:100%;padding:11px 14px 11px 38px;border-radius:12px;
@@ -212,13 +205,13 @@ main{max-width:1400px;margin:0 auto;padding:22px 18px 80px}
 .meta b{color:var(--txt);font-weight:800}
 .cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
 @media(max-width:520px){.cards{grid-template-columns:1fr}}
+
+/* ── CARD ── */
 .card{
   position:relative;
   background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:16px;
-  display:flex;flex-direction:column;gap:12px;
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;display:flex;flex-direction:column;gap:12px;
   transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;
   overflow:hidden;
 }
@@ -258,32 +251,57 @@ main{max-width:1400px;margin:0 auto;padding:22px 18px 80px}
   mask-image:linear-gradient(#000 62%,transparent 100%);
   -webkit-mask-image:linear-gradient(#000 62%,transparent 100%);
 }
-.card-foot{margin-top:auto;display:flex;align-items:center;gap:10px}
-.open-btn{
-  flex:1;text-align:center;padding:11px 14px;border-radius:12px;
-  font-size:12.8px;font-weight:800;letter-spacing:.3px;
-  background:linear-gradient(135deg,hsl(var(--h) 85% 60% / .18),rgba(255,255,255,.03));
-  border:1px solid hsl(var(--h) 80% 60% / .35);
-  color:hsl(var(--h) 90% 78%);
-  transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:7px;
-}
-.open-btn:hover{
-  background:linear-gradient(135deg,hsl(var(--h) 90% 62%),hsl(var(--h) 90% 48%));
-  color:#04121a;border-color:transparent;transform:translateY(-1px);
-  box-shadow:0 8px 22px hsl(var(--h) 85% 55% / .3);
-}
-.open-btn .arw{transition:transform .2s}
-.open-btn:hover .arw{transform:translate(2px,-2px)}
-.open-btn.disabled{
-  background:rgba(255,255,255,.03);border:1px dashed var(--line-2);
-  color:#5d6b88;cursor:not-allowed;pointer-events:none;
-}
 .more-btn{
   border:0;background:transparent;color:var(--cyan);font-size:11.5px;font-weight:800;
   cursor:pointer;padding:0;letter-spacing:.4px;text-align:left;align-self:flex-start;display:none;
 }
 .more-btn:hover{text-decoration:underline}
 .card.has-more .more-btn{display:block}
+
+/* ── ACTION BUTTONS ── */
+.card-foot{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap}
+.action-btn{
+  flex:1 1 80px;min-width:80px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 12px;border-radius:11px;
+  font-size:12px;font-weight:800;letter-spacing:.3px;cursor:pointer;
+  border:1px solid;transition:.2s;font-family:inherit;text-decoration:none;
+}
+.action-btn svg{width:14px;height:14px;flex-shrink:0}
+.action-btn:active{transform:scale(.97)}
+.class-btn{
+  background:linear-gradient(135deg,rgba(34,211,238,.15),rgba(34,211,238,.05));
+  border-color:rgba(34,211,238,.35);color:#67e8f9;
+}
+.class-btn:hover{
+  background:linear-gradient(135deg,#22d3ee,#06b6d4);
+  color:#04121a;border-color:transparent;
+  box-shadow:0 8px 22px rgba(34,211,238,.3);
+}
+.slide-btn{
+  background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(167,139,250,.05));
+  border-color:rgba(167,139,250,.35);color:#c4b5fd;
+}
+.slide-btn:hover{
+  background:linear-gradient(135deg,#a78bfa,#8b5cf6);
+  color:#04121a;border-color:transparent;
+  box-shadow:0 8px 22px rgba(167,139,250,.3);
+}
+.exam-btn{
+  background:linear-gradient(135deg,rgba(52,211,153,.15),rgba(52,211,153,.05));
+  border-color:rgba(52,211,153,.35);color:#6ee7b7;
+}
+.exam-btn:hover{
+  background:linear-gradient(135deg,#34d399,#10b981);
+  color:#04121a;border-color:transparent;
+  box-shadow:0 8px 22px rgba(52,211,153,.3);
+}
+.action-btn.disabled{
+  background:rgba(255,255,255,.03);border:1px dashed var(--line-2);
+  color:var(--muted);cursor:not-allowed;pointer-events:none;
+}
+
+/* ── GROUP HEADERS ── */
 .group{margin-bottom:34px}
 .group-title{
   display:flex;align-items:center;gap:10px;
@@ -309,6 +327,85 @@ footer b{
   background:linear-gradient(135deg,var(--cyan),var(--violet));
   -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;
 }
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(5,7,13,.88);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:grid;place-items:center;padding:16px;
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.modal-card{
+  position:relative;width:min(960px,100%);max-height:92vh;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:20px;overflow:hidden;
+  display:flex;flex-direction:column;
+  transform:scale(.94) translateY(20px);
+  transition:transform .3s cubic-bezier(.2,.9,.3,1.2);
+}
+.modal-overlay.show .modal-card{transform:none}
+.modal-close{
+  position:absolute;top:12px;right:12px;z-index:10;
+  width:36px;height:36px;border-radius:10px;
+  border:1px solid var(--line-2);
+  background:rgba(13,19,31,.85);backdrop-filter:blur(8px);
+  font-size:16px;cursor:pointer;display:grid;place-items:center;transition:.2s;
+}
+.modal-close:hover{
+  background:rgba(244,114,182,.15);
+  border-color:rgba(244,114,182,.4);color:#f472b6;
+}
+.modal-inner{overflow-y:auto;display:flex;flex-direction:column}
+
+/* video modal */
+.video-frame{
+  position:relative;width:100%;aspect-ratio:16/9;background:#000;
+}
+.video-frame iframe,
+.video-frame > div{
+  width:100% !important;height:100% !important;border:0;display:block;
+}
+.video-meta{padding:14px 20px 18px;display:flex;flex-direction:column;gap:12px}
+.video-title{font-size:14px;font-weight:700;color:var(--txt)}
+.speed-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.speed-label{
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);font-weight:700;margin-right:6px;
+}
+.speed-btn{
+  padding:6px 11px;border-radius:8px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);color:var(--muted);
+  font-size:11.5px;font-weight:700;cursor:pointer;transition:.18s;font-family:inherit;
+}
+.speed-btn:hover{color:var(--txt);border-color:var(--line-2)}
+.speed-btn.active{
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  color:#04121a;border-color:transparent;
+  box-shadow:0 4px 14px rgba(34,211,238,.25);
+}
+
+/* pdf modal */
+.pdf-frame{
+  width:100%;height:78vh;border:0;display:block;background:#fff;
+}
+.pdf-meta{
+  padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  border-top:1px solid var(--line);font-size:12px;color:var(--muted);
+}
+.pdf-meta a{color:var(--cyan);font-weight:700}
+.pdf-meta a:hover{text-decoration:underline}
+
+/* toast */
+.toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--panel);border:1px solid var(--line-2);color:var(--txt);
+  padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;
+  z-index:1000;box-shadow:0 10px 30px rgba(0,0,0,.5);
+  opacity:0;transition:.3s;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -383,19 +480,65 @@ footer b{
   <footer>Plan C · <b>Exam Portal</b> · Live from the <b>Exam</b> sheet</footer>
 </div>
 
+<!-- ═══════════ MODAL ═══════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div class="modal-inner" id="modalInner"></div>
+  </div>
+</div>
+
+<!-- ═══════════ TOAST ═══════════ -->
+<div class="toast" id="toast"></div>
+
 <script>
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  1. CONFIG — paste your Apps Script /exec URL here  ▓▓▓
+   ▓▓▓  1. CONFIG  ▓▓▓
    ═══════════════════════════════════════════════════════════════════ */
 const API_URL = "https://script.google.com/macros/s/AKfycbwqAtBTuXF-sG1lEqVO4L9B6xia5S3ZQVjXt0Ev289J-57EiYNn_z6h3C7gTK6fvipbmw/exec";
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  2. FETCH & NORMALIZE  ▓▓▓
+   ▓▓▓  2. HELPERS  ▓▓▓
+   ═══════════════════════════════════════════════════════════════════ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s)
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+
+function hueOf(s){
+  let h = 0;
+  for(let i = 0; i < (s||"").length; i++) h = (h*31 + s.charCodeAt(i)) % 360;
+  return h;
+}
+
+function ytVideoId(url){
+  const m = String(url||"").match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|live\/|v\/|shorts\/))([\w-]{11})/
+  );
+  return m ? m[1] : null;
+}
+
+function driveEmbedUrl(url){
+  const m = String(url||"").match(/\/file\/d\/([^\/?#]+)/) ||
+            String(url||"").match(/[?&]id=([^&#]+)/);
+  return m ? `https://drive.google.com/file/d/${m[1]}/preview` : url;
+}
+
+let toastTimer;
+function showToast(msg){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ▓▓▓  3. FETCH & NORMALIZE  ▓▓▓
    ═══════════════════════════════════════════════════════════════════ */
 async function fetchSheet(){
   const url = API_URL + (API_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
   const res = await fetch(url, { method:"GET", redirect:"follow", cache:"no-store" });
-
   if(!res.ok) throw new Error("HTTP " + res.status + " — the script didn't respond.");
 
   const text = await res.text();
@@ -404,13 +547,11 @@ async function fetchSheet(){
   catch(e){
     throw new Error("Response wasn't JSON. Make sure the Apps Script is deployed as a Web App with access = Anyone.");
   }
-
   if(json && json.ok === false) throw new Error(json.error || "Unknown backend error.");
   if(json && json.error)         throw new Error(json.error);
 
   const rows = Array.isArray(json) ? json : (json.data || []);
   if(!rows.length) throw new Error('No rows found in the "Exam" sheet.');
-
   return rows.map(normalizeRow).filter(Boolean);
 }
 
@@ -424,10 +565,12 @@ function normalizeRow(raw, i){
     return "";
   };
 
-  const index    = g(raw, "index", "Index");
-  const syllabus = g(raw, "syllabus", "Syllabus");
-  const link     = g(raw, "link", "examlink", "Exam Link", "ExamLink", "url");
-  let   subject  = g(raw, "subject", "Subject") || "All";
+  const index     = g(raw, "index");
+  const syllabus  = g(raw, "syllabus");
+  const classLink = g(raw, "classLink", "class", "video");
+  const slideLink = g(raw, "slideLink", "slide", "slides", "pdf");
+  const examLink  = g(raw, "examLink", "exam", "test", "link", "url");
+  let   subject   = g(raw, "subject") || "All";
 
   const subMap = {
     "statisitcs":"Statistics","statistics":"Statistics","stat":"Statistics",
@@ -444,11 +587,11 @@ function normalizeRow(raw, i){
   const type = m ? (m[1][0].toUpperCase() + m[1].slice(1).toLowerCase()) : "Other";
   const num  = m ? +m[2] : 9999;
 
-  return { index, syllabus, link, subject, type, num, order:i };
+  return { index, syllabus, classLink, slideLink, examLink, subject, type, num, order:i };
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  3. SNAKE GAME  ▓▓▓
+   ▓▓▓  4. SNAKE GAME  ▓▓▓
    ═══════════════════════════════════════════════════════════════════ */
 const Snake = (() => {
   const N = 16, SIZE = 320, STEP = 118;
@@ -459,24 +602,19 @@ const Snake = (() => {
   function init(cv, sEl, bEl){
     canvas = cv; scoreEl = sEl; bestEl = bEl;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width  = SIZE * dpr;
-    canvas.height = SIZE * dpr;
+    canvas.width = SIZE * dpr; canvas.height = SIZE * dpr;
     ctx = canvas.getContext("2d");
     ctx.scale(dpr, dpr);
     cell = SIZE / N;
-
     best = +(localStorage.getItem("planc_snake_best") || 0);
     bestEl.textContent = best;
-
     bindControls();
     reset();
     alive = true;
     last = performance.now();
     raf = requestAnimationFrame(loop);
   }
-
   function stop(){ alive = false; if(raf) cancelAnimationFrame(raf); raf = null; }
-
   function reset(){
     snake = [{x:8,y:8},{x:7,y:8},{x:6,y:8}];
     dir = {x:1,y:0}; queue = [];
@@ -484,22 +622,17 @@ const Snake = (() => {
     placeFood();
     scoreEl.textContent = "0";
   }
-
   function placeFood(){
-    let guard = 0;
-    do {
-      food = { x: Math.floor(Math.random()*N), y: Math.floor(Math.random()*N) };
-      guard++;
-    } while(guard < 400 && snake.some(s => s.x === food.x && s.y === food.y));
+    let g = 0;
+    do { food = { x: Math.floor(Math.random()*N), y: Math.floor(Math.random()*N) }; g++; }
+    while(g < 400 && snake.some(s => s.x === food.x && s.y === food.y));
   }
-
   function push(d){
     const ref = queue.length ? queue[queue.length-1] : dir;
     if(d.x === -ref.x && d.y === -ref.y) return;
     if(d.x ===  ref.x && d.y ===  ref.y) return;
     if(queue.length < 2) queue.push(d);
   }
-
   function step(){
     if(queue.length){
       const d = queue.shift();
@@ -510,62 +643,44 @@ const Snake = (() => {
     const eating  = head.x === food.x && head.y === food.y;
     const body    = eating ? snake : snake.slice(0, -1);
     const hitSelf = body.some(s => s.x === head.x && s.y === head.y);
-
     if(hitWall || hitSelf){ dead = true; deadAt = performance.now(); return; }
-
     snake.unshift(head);
     if(eating){
-      score++;
-      scoreEl.textContent = score;
+      score++; scoreEl.textContent = score;
       if(score > best){ best = score; bestEl.textContent = best; localStorage.setItem("planc_snake_best", best); }
       placeFood();
-    } else {
-      snake.pop();
-    }
+    } else snake.pop();
   }
-
   function rrect(x,y,w,h,r){
-    ctx.beginPath();
-    ctx.moveTo(x+r,y);
-    ctx.arcTo(x+w,y,x+w,y+h,r);
-    ctx.arcTo(x+w,y+h,x,y+h,r);
-    ctx.arcTo(x,y+h,x,y,r);
-    ctx.arcTo(x,y,x+w,y,r);
+    ctx.beginPath(); ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);     ctx.arcTo(x,y,x+w,y,r);
     ctx.closePath();
   }
-
   function draw(){
-    ctx.fillStyle = "#080c16";
-    ctx.fillRect(0,0,SIZE,SIZE);
-
+    ctx.fillStyle = "#080c16"; ctx.fillRect(0,0,SIZE,SIZE);
     ctx.strokeStyle = "rgba(255,255,255,.035)"; ctx.lineWidth = 1;
     for(let i=1;i<N;i++){
       ctx.beginPath(); ctx.moveTo(i*cell,0); ctx.lineTo(i*cell,SIZE); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(0,i*cell); ctx.lineTo(SIZE,i*cell); ctx.stroke();
     }
-
     const fx = food.x*cell, fy = food.y*cell;
-    ctx.save();
-    ctx.shadowColor = "#f472b6"; ctx.shadowBlur = 16;
+    ctx.save(); ctx.shadowColor = "#f472b6"; ctx.shadowBlur = 16;
     ctx.fillStyle = "#f472b6";
     rrect(fx + cell*0.22, fy + cell*0.22, cell*0.56, cell*0.56, cell*0.28);
-    ctx.fill();
-    ctx.restore();
-
+    ctx.fill(); ctx.restore();
     for(let i = snake.length - 1; i >= 0; i--){
       const s = snake[i];
       const t = i / Math.max(snake.length - 1, 1);
-      const hue   = 185 + t * 80;
+      const hue = 185 + t * 80;
       const light = i === 0 ? 66 : 58 - t * 12;
       ctx.save();
       if(i === 0){ ctx.shadowColor = "#22d3ee"; ctx.shadowBlur = 14; }
       ctx.fillStyle = `hsl(${hue} 88% ${light}%)`;
       const pad = i === 0 ? cell*0.06 : cell*0.13;
       rrect(s.x*cell + pad, s.y*cell + pad, cell - pad*2, cell - pad*2, cell*0.3);
-      ctx.fill();
-      ctx.restore();
+      ctx.fill(); ctx.restore();
     }
-
     if(snake.length && !dead){
       const h = snake[0];
       const cx = h.x*cell + cell/2, cy = h.y*cell + cell/2;
@@ -576,48 +691,36 @@ const Snake = (() => {
       ctx.beginPath(); ctx.arc(cx + fx2 + ox, cy + fy2 + oy, cell*0.09, 0, 7); ctx.fill();
       ctx.beginPath(); ctx.arc(cx + fx2 - ox, cy + fy2 - oy, cell*0.09, 0, 7); ctx.fill();
     }
-
     if(dead){
-      ctx.fillStyle = "rgba(5,7,13,.78)";
-      ctx.fillRect(0,0,SIZE,SIZE);
+      ctx.fillStyle = "rgba(5,7,13,.78)"; ctx.fillRect(0,0,SIZE,SIZE);
       ctx.textAlign = "center";
-      ctx.fillStyle = "#f472b6";
-      ctx.font = "800 22px Inter, system-ui, sans-serif";
+      ctx.fillStyle = "#f472b6"; ctx.font = "800 22px Inter, system-ui, sans-serif";
       ctx.fillText("GAME OVER", SIZE/2, SIZE/2 - 8);
-      ctx.fillStyle = "#8a99b8";
-      ctx.font = "700 12px Inter, system-ui, sans-serif";
+      ctx.fillStyle = "#8a99b8"; ctx.font = "700 12px Inter, system-ui, sans-serif";
       ctx.fillText("SCORE " + score + "  ·  RESTARTING", SIZE/2, SIZE/2 + 18);
     }
   }
-
   function loop(t){
     if(!alive) return;
     raf = requestAnimationFrame(loop);
-    const dt = Math.min(t - last, 200);
-    last = t;
-
+    const dt = Math.min(t - last, 200); last = t;
     if(!dead){
       acc += dt;
       while(acc >= STEP){ acc -= STEP; step(); if(dead) break; }
-    } else if(t - deadAt > 1300){
-      reset();
-    }
+    } else if(t - deadAt > 1300) reset();
     draw();
   }
-
   function bindControls(){
     window.addEventListener("keydown", e => {
       if(!alive) return;
       const k = e.key;
-      const loaderVisible = !document.getElementById("loader").classList.contains("hidden");
-      if(loaderVisible && ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(k)) e.preventDefault();
-
+      const lv = !document.getElementById("loader").classList.contains("hidden");
+      if(lv && ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(k)) e.preventDefault();
       if(k === "ArrowUp"    || k === "w" || k === "W") push({x:0,y:-1});
       else if(k === "ArrowDown"  || k === "s" || k === "S") push({x:0,y:1});
       else if(k === "ArrowLeft"  || k === "a" || k === "A") push({x:-1,y:0});
       else if(k === "ArrowRight" || k === "d" || k === "D") push({x:1,y:0});
     }, { passive:false });
-
     let sx=0, sy=0;
     canvas.addEventListener("touchstart", e => {
       const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY;
@@ -630,14 +733,131 @@ const Snake = (() => {
       else                            push({ x: 0, y: dy > 0 ? 1 : -1 });
     }, { passive:true });
   }
-
   return { init, stop };
 })();
 
 /* ═══════════════════════════════════════════════════════════════════
-   ▓▓▓  4. UI  ▓▓▓
+   ▓▓▓  5. MODAL SYSTEM  ▓▓▓
    ═══════════════════════════════════════════════════════════════════ */
-const $ = s => document.querySelector(s);
+const modalOverlay = $("#modalOverlay");
+const modalInner   = $("#modalInner");
+const modalClose   = $("#modalClose");
+
+let ytPlayer = null;
+let ytApiLoaded = false;
+
+function openModal(html){
+  modalInner.innerHTML = html;
+  modalOverlay.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(){
+  if(ytPlayer && typeof ytPlayer.destroy === "function"){
+    try { ytPlayer.destroy(); } catch(e){}
+    ytPlayer = null;
+  }
+  modalOverlay.classList.remove("show");
+  document.body.style.overflow = "";
+  setTimeout(() => { modalInner.innerHTML = ""; }, 300);
+}
+
+modalClose.addEventListener("click", closeModal);
+modalOverlay.addEventListener("click", e => {
+  if(e.target === modalOverlay) closeModal();
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && modalOverlay.classList.contains("show")) closeModal();
+});
+
+/* ── YouTube API loader ── */
+function loadYTAPI(){
+  if(ytApiLoaded && window.YT && window.YT.Player) return Promise.resolve();
+  return new Promise(resolve => {
+    window.onYouTubeIframeAPIReady = () => { ytApiLoaded = true; resolve(); };
+    const s = document.createElement("script");
+    s.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(s);
+  });
+}
+
+/* ── Class modal (YouTube + speed) ── */
+async function openClassModal(url, title){
+  const vid = ytVideoId(url);
+  if(!vid){ showToast("Invalid YouTube URL"); return; }
+
+  await loadYTAPI();
+
+  const speeds = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3, 3.5, 4];
+
+  openModal(`
+    <div class="video-frame"><div id="ytPlayer"></div></div>
+    <div class="video-meta">
+      <div class="video-title">${esc(title || "Class")}</div>
+      <div class="speed-bar">
+        <span class="speed-label">Speed</span>
+        ${speeds.map(r => `<button class="speed-btn" data-speed="${r}">${r}×</button>`).join("")}
+      </div>
+    </div>
+  `);
+
+  requestAnimationFrame(() => {
+    ytPlayer = new YT.Player("ytPlayer", {
+      videoId: vid,
+      playerVars: {
+        autoplay: 1,
+        controls: 1,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1
+      },
+      events: {
+        onReady: e => { try { e.target.setPlaybackRate(1); } catch(_){} },
+        onPlaybackRateChange: e => updateSpeedActive(e.data)
+      }
+    });
+  });
+
+  // wire speed buttons (delegated on modalInner)
+  modalInner.querySelectorAll(".speed-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const rate = parseFloat(btn.dataset.speed);
+      if(!ytPlayer || typeof ytPlayer.setPlaybackRate !== "function") return;
+      try {
+        ytPlayer.setPlaybackRate(rate);
+        setTimeout(() => {
+          const actual = ytPlayer.getPlaybackRate();
+          if(Math.abs(actual - rate) > 0.01){
+            showToast(`YouTube caps at ${actual}× for this video`);
+          }
+        }, 250);
+      } catch(_){ showToast("Speed not supported on this device"); }
+    });
+  });
+}
+
+function updateSpeedActive(rate){
+  modalInner.querySelectorAll(".speed-btn").forEach(b => {
+    const r = parseFloat(b.dataset.speed);
+    b.classList.toggle("active", Math.abs(r - rate) < 0.01);
+  });
+}
+
+/* ── Slides modal (Drive PDF) ── */
+function openSlideModal(url, title){
+  const embed = driveEmbedUrl(url);
+  openModal(`
+    <iframe class="pdf-frame" src="${esc(embed)}" allow="autoplay"></iframe>
+    <div class="pdf-meta">
+      <span>${esc(title || "Slides")}</span>
+      <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open in Drive ↗</a>
+    </div>
+  `);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ▓▓▓  6. APP STATE  ▓▓▓
+   ═══════════════════════════════════════════════════════════════════ */
 const loader     = $("#loader");
 const enterBtn   = $("#enterBtn");
 const bar        = $("#bar");
@@ -652,16 +872,6 @@ const appEl      = $("#app");
 
 const state = { all:[], q:"", subject:"All", type:"All", sort:"sheet" };
 let ready = false;
-
-const esc = s => String(s == null ? "" : s)
-  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-
-function hueOf(s){
-  let h = 0;
-  for(let i = 0; i < (s||"").length; i++) h = (h*31 + s.charCodeAt(i)) % 360;
-  return h;
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   Snake.init($("#snake"), $("#score"), $("#best"));
@@ -679,7 +889,6 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#reload").addEventListener("click", retry);
 
   searchEl.addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
-
   sortEl.addEventListener("change", e => { state.sort = e.target.value; render(); });
 
   $("#typeSeg").addEventListener("click", e => {
@@ -697,10 +906,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   content.addEventListener("click", e => {
-    const b = e.target.closest(".more-btn"); if(!b) return;
-    const card = b.closest(".card");
-    card.classList.toggle("expanded");
-    b.textContent = card.classList.contains("expanded") ? "Show less ▴" : "Show more ▾";
+    // Action buttons (Class / Slides)
+    const actionBtn = e.target.closest("[data-action]");
+    if(actionBtn){
+      const action = actionBtn.dataset.action;
+      const url    = actionBtn.dataset.url;
+      const title  = actionBtn.dataset.title;
+      if(action === "class")  openClassModal(url, title);
+      if(action === "slide")  openSlideModal(url, title);
+      return;
+    }
+    // Show more
+    const moreBtn = e.target.closest(".more-btn");
+    if(moreBtn){
+      const card = moreBtn.closest(".card");
+      card.classList.toggle("expanded");
+      moreBtn.textContent = card.classList.contains("expanded") ? "Show less ▴" : "Show more ▾";
+    }
   });
 
   window.addEventListener("keydown", e => {
@@ -720,19 +942,15 @@ async function loadData(){
   try{
     const rows = await fetchSheet();
     state.all = rows;
-
     bar.className = "bar";
     bar.style.width = "100%";
-
     buildChips();
     render();
-
     loadStatus.innerHTML = '<span class="dot"></span> ' + rows.length + " entries loaded ✓";
     enterBtn.disabled = false;
     enterBtn.classList.add("ready");
     enterBtn.textContent = "Enter Portal →";
     ready = true;
-
   } catch(err){
     bar.className = "bar";
     bar.style.width = "100%";
@@ -798,17 +1016,46 @@ function getFiltered(){
   return list;
 }
 
+/* ── CARD ── */
+const ICONS = {
+  play:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  slides:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>',
+  exam:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'
+};
+
 function cardHTML(r){
   const hue = hueOf(r.subject);
   const typeClass = (r.type || "other").toLowerCase();
-  const hasLink = /^https?:\/\//i.test(r.link || "");
 
-  /*  "Open Exam" uses the EXACT Exam Link from the sheet cell  */
-  const linkHTML = hasLink
-    ? `<a class="open-btn" href="${esc(r.link)}" target="_blank" rel="noopener noreferrer">
-         Open Exam <span class="arw">↗</span>
-       </a>`
-    : `<span class="open-btn disabled">Link coming soon</span>`;
+  const hasClass = /^https?:\/\//i.test(r.classLink || "");
+  const hasSlide = /^https?:\/\//i.test(r.slideLink || "");
+  const hasExam  = /^https?:\/\//i.test(r.examLink  || "");
+
+  const buttons = [];
+  if(hasClass){
+    buttons.push(
+      `<button class="action-btn class-btn" data-action="class"
+        data-url="${esc(r.classLink)}" data-title="${esc(r.index)}">
+        ${ICONS.play} Class
+      </button>`);
+  }
+  if(hasSlide){
+    buttons.push(
+      `<button class="action-btn slide-btn" data-action="slide"
+        data-url="${esc(r.slideLink)}" data-title="${esc(r.index)}">
+        ${ICONS.slides} Slides
+      </button>`);
+  }
+  if(hasExam){
+    buttons.push(
+      `<a class="action-btn exam-btn" href="${esc(r.examLink)}"
+        target="_blank" rel="noopener noreferrer">
+        ${ICONS.exam} Test
+      </a>`);
+  }
+  if(!buttons.length){
+    buttons.push(`<span class="action-btn disabled">Coming soon</span>`);
+  }
 
   return `
     <article class="card" style="--h:${hue}">
@@ -818,7 +1065,7 @@ function cardHTML(r){
       </div>
       <p class="syllabus">${esc(r.syllabus || "—")}</p>
       <button class="more-btn" type="button">Show more ▾</button>
-      <div class="card-foot">${linkHTML}</div>
+      <div class="card-foot">${buttons.join("")}</div>
     </article>`;
 }
 
