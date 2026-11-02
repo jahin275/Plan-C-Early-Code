@@ -1,0 +1,124 @@
+# ─── root ───────────────────────────────────
+/                         /index.html           200
+
+# ─── top-level pages ────────────────────────
+/duiba                    /duiba.html           200
+/duiba/                   /duiba.html           200
+
+/emmock                   /emmock.html          200
+/emmock/                  /emmock.html          200
+
+/juiba                    /juiba.html           200
+/juiba/                   /juiba.html           200
+
+/plancem                  /plancem.html         200
+/plancem/                 /plancem.html         200
+
+/results                  /results.html         200
+/results/                 /results.html         200
+
+/vocabjam                 /vocabjam.html        200
+/vocabjam/                /vocabjam.html        200
+
+# ─── tca26 catalogue / exam ─────────────────
+/tca26catalogue           /tca26catalogue.html  200
+/tca26catalogue/          /tca26catalogue.html  200
+
+/tca26exam                /tca26exam.html       200
+/tca26exam/               /tca26exam.html       200
+
+# ─── tca26b* ────────────────────────────────
+/tca26b3                  /tca26b3.html         200
+/tca26b3/                 /tca26b3.html         200
+/tca26b4                  /tca26b4.html         200
+/tca26b4/                 /tca26b4.html         200
+/tca26b5                  /tca26b5.html         200
+/tca26b5/                 /tca26b5.html         200
+/tca26b6                  /tca26b6.html         200
+/tca26b6/                 /tca26b6.html         200
+
+# ─── tca26e* ────────────────────────────────
+/tca26e3                  /tca26e3.html         200
+/tca26e3/                 /tca26e3.html         200
+/tca26e4                  /tca26e4.html         200
+/tca26e4/                 /tca26e4.html         200
+/tca26e5                  /tca26e5.html         200
+/tca26e5/                 /tca26e5.html         200
+/tca26e6                  /tca26e6.html         200
+/tca26e6/                 /tca26e6.html         200
+
+# ─── tca26ec* ───────────────────────────────
+/tca26ec2                 /tca26ec2.html        200
+/tca26ec2/                /tca26ec2.html        200
+/tca26ec3                 /tca26ec3.html        200
+/tca26ec3/                /tca26ec3.html        200
+/tca26ec4                 /tca26ec4.html        200
+/tca26ec4/                /tca26ec4.html        200
+/tca26ec5                 /tca26ec5.html        200
+/tca26ec5/                /tca26ec5.html        200
+/tca26ec6                 /tca26ec6.html        200
+/tca26ec6/                /tca26ec6.html        200
+/tca26ec7                 /tca26ec7.html        200
+/tca26ec7/                /tca26ec7.html        200
+
+# ─── tca26hm* ───────────────────────────────
+/tca26hm3                 /tca26hm3.html        200
+/tca26hm3/                /tca26hm3.html        200
+/tca26hm4                 /tca26hm4.html        200
+/tca26hm4/                /tca26hm4.html        200
+/tca26hm5                 /tca26hm5.html        200
+/tca26hm5/                /tca26hm5.html        200
+/tca26hm6                 /tca26hm6.html        200
+/tca26hm6/                /tca26hm6.html        200
+/tca26hm7                 /tca26hm7.html        200
+/tca26hm7/                /tca26hm7.html        200
+/tca26hm8                 /tca26hm8.html        200
+/tca26hm8/                /tca26hm8.html        200
+/tca26hm9                 /tca26hm9.html        200
+/tca26hm9/                /tca26hm9.html        200
+/tca26hm10                /tca26hm10.html       200
+/tca26hm10/               /tca26hm10.html       200
+/tca26hm11                /tca26hm11.html       200
+/tca26hm11/               /tca26hm11.html       200
+
+# ─── tca26i* ────────────────────────────────
+/tca26i2                  /tca26i2.html         200
+/tca26i2/                 /tca26i2.html         200
+/tca26i3                  /tca26i3.html         200
+/tca26i3/                 /tca26i3.html         200
+/tca26i4                  /tca26i4.html         200
+/tca26i4/                 /tca26i4.html         200
+/tca26i5                  /tca26i5.html         200
+/tca26i5/                 /tca26i5.html         200
+
+# ─── tca26mn* ───────────────────────────────
+/tca26mn1                 /tca26mn1.html        200
+/tca26mn1/                /tca26mn1.html        200
+
+# ─── tca26s* ────────────────────────────────
+/tca26s3                  /tca26s3.html         200
+/tca26s3/                 /tca26s3.html         200
+/tca26s4                  /tca26s4.html         200
+/tca26s4/                 /tca26s4.html         200
+/tca26s5                  /tca26s5.html         200
+/tca26s5/                 /tca26s5.html         200
+/tca26s6                  /tca26s6.html         200
+/tca26s6/                 /tca26s6.html         200
+
+# ─── tca26st* ───────────────────────────────
+/tca26st2                 /tca26st2.html        200
+/tca26st2/                /tca26st2.html        200
+
+# ─── tca26wk* ───────────────────────────────
+/tca26wk1                 /tca26wk1.html        200
+/tca26wk1/                /tca26wk1.html        200
+/tca26wk2                 /tca26wk2.html        200
+/tca26wk2/                /tca26wk2.html        200
+/tca26wk3                 /tca26wk3.html        200
+/tca26wk3/                /tca26wk3.html        200
+/tca26wk4                 /tca26wk4.html        200
+/tca26wk4/                /tca26wk4.html        200
+/tca26wk5                 /tca26wk5.html        200
+/tca26wk5/                /tca26wk5.html        200
+/tca26wk6                 /tca26wk6.html        200
+/tca26wk6/                /tca26wk6.html        200
