@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Econ 8 Model Test – Plan C Academy</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Noto Sans Bengali',Tahoma,Geneva,Verdana,sans-serif}
+    body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px}
+    .container{background:#fff;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.15);width:100%;max-width:760px;margin:auto;animation:fadeIn .45s ease-out;position:relative}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    .bn, .q-text, .option-text, .review-q, .review-line, .review-exp, .rules{
+        font-family:'Segoe UI','Noto Sans Bengali',Tahoma,sans-serif;
+        line-height:1.85;
+    }
+
+    .header{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);padding:28px 20px;text-align:center;color:#fff;border-radius:20px 20px 0 0}
+    .logos{display:flex;justify-content:center;gap:18px;margin-bottom:16px}
+    .logo{width:58px;height:58px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px rgba(0,0,0,.2);font-size:1.5rem;color:#0ea5e9}
+    .logo.alt{color:#6a11cb}
+    .title{font-size:1.75rem;font-weight:700;margin-bottom:6px;text-shadow:1px 1px 3px rgba(0,0,0,.2)}
+    .subtitle{font-size:.95rem;opacity:.92}
+
+    .content{padding:28px}
+    .input-group{margin-bottom:18px}
+    .input-label{display:block;font-size:.95rem;color:#333;margin-bottom:8px;font-weight:600}
+    .input-wrapper{position:relative;width:100%}
+    .input-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#0ea5e9;font-size:1.05rem}
+    .input-wrapper input{width:100%;padding:13px 14px 13px 44px;font-size:1rem;border:2px solid #e0e0e0;border-radius:10px;outline:none;transition:.25s}
+    .input-wrapper input:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+
+    .search-btn{background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);color:#fff;border:none;padding:15px 30px;font-size:1.05rem;font-weight:600;border-radius:10px;cursor:pointer;width:100%;transition:.3s;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.4px}
+    .search-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(14,165,233,.35)}
+    .search-btn:active{transform:translateY(0)}
+    .search-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+    .rules{background:#f8f9fa;border-left:4px solid #0ea5e9;border-radius:10px;padding:16px 18px;margin-bottom:22px;font-size:.92rem;color:#444;line-height:1.85}
+    .rules b{color:#0ea5e9}
+    .footer{text-align:center;padding:18px;color:#666;font-size:.85rem;background:#f8f9fa;border-top:1px solid #eee;border-radius:0 0 20px 20px}
+
+    .sticky-bar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#0ea5e9 0%,#6a11cb 100%);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-radius:20px 20px 0 0;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+    .bar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .bar-title{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px}
+    .bar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+    .timer{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:8px 14px;border-radius:30px;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums}
+    .timer.warn{background:rgba(234,67,53,.9);border-color:#ea4335;animation:pulse 1s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+    .tab-pill{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 12px;border-radius:30px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:6px}
+    .tab-pill.alert{background:rgba(234,67,53,.9);border-color:#ea4335}
+
+    .top-submit{background:#fff;color:#0ea5e9;border:none;padding:9px 16px;border-radius:30px;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s}
+    .top-submit:hover{background:#f0f9ff;transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,0,0,.18)}
+
+    .progress-bar{height:5px;background:#e9ecf5;width:100%}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,#6a11cb);transition:width .3s}
+
+    .tab-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#fef3c7;color:#92400e;padding:10px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.18);font-size:.88rem;font-weight:700;z-index:300;display:none;border-left:4px solid #f59e0b}
+    .tab-toast.show{display:block;animation:slideDown .3s ease-out}
+    @keyframes slideDown{from{opacity:0;transform:translate(-50%,-10px)}to{opacity:1;transform:translate(-50%,0)}}
+
+    .exam-body{padding:22px 22px 10px}
+    .q-card{background:#fcfdff;border:1px solid #eef0f6;border-left:4px solid #0ea5e9;border-radius:12px;padding:18px 18px 8px;margin-bottom:18px;scroll-margin-top:90px;transition:.2s}
+    .q-card.answered{border-left-color:#16a34a}
+    .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+    .q-num{font-weight:700;color:#0ea5e9;font-size:.92rem}
+    .q-status{font-size:.74rem;padding:3px 11px;border-radius:20px;background:#eef0f6;color:#777;font-weight:600}
+    .q-status.answered{background:#e6f4ea;color:#137333}
+    .q-text{font-size:1.02rem;line-height:1.85;color:#1f2430;margin-bottom:14px;font-weight:500}
+
+    .option{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid #e5e7eb;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:.18s;background:#fff}
+    .option:hover{border-color:#7dd3fc;background:#f0f9ff;transform:translateX(3px)}
+    .option.selected{border-color:#0ea5e9;background:#e0f2fe;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+    .option-letter{width:30px;height:30px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0ea5e9;flex-shrink:0;transition:.18s}
+    .option.selected .option-letter{background:#0ea5e9;color:#fff}
+    .option-text{font-size:.96rem;color:#2b3140;word-break:break-word;line-height:1.75}
+
+    .end-submit-wrap{padding:10px 22px 26px}
+    .back-top{position:fixed;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#6a11cb);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 6px 18px rgba(14,165,233,.4);z-index:150}
+    .back-top.show{display:flex}
+    .back-top:hover{transform:translateY(-2px)}
+
+    .score-ring{width:170px;height:170px;border-radius:50%;background:conic-gradient(#0ea5e9 var(--p,0%),#e9ecf5 0);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;transition:background .6s}
+    .score-inner{width:138px;height:138px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 2px 10px rgba(0,0,0,.07)}
+    .score-big{font-size:1.9rem;font-weight:800;color:#2b3140;line-height:1}
+    .score-pct{font-size:.9rem;color:#7a8194;margin-top:5px;font-weight:600}
+    .verdict{text-align:center;font-size:1.15rem;font-weight:700;margin-bottom:22px;color:#0ea5e9}
+    .verdict small{display:block;font-weight:500;font-size:.85rem;color:#7a8194;margin-top:5px}
+
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:10px;margin-bottom:22px}
+    .stat{background:#f8f9fa;border-radius:12px;padding:14px 8px;text-align:center;border:1px solid #eef0f6}
+    .stat .v{font-size:1.35rem;font-weight:800;line-height:1}
+    .stat .l{font-size:.72rem;color:#7a8194;margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+    .stat.g .v{color:#16a34a}.stat.r .v{color:#ea4335}.stat.y .v{color:#f59e0b}.stat.b .v{color:#0ea5e9}.stat.p .v{color:#6a11cb}
+
+    .save-status{text-align:center;font-size:.9rem;color:#555;background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:20px}
+    .section-title{font-size:1.02rem;font-weight:700;color:#2b3140;margin:24px 0 12px;display:flex;align-items:center;gap:9px}
+    .section-title i{color:#0ea5e9}
+
+    .lb-table{width:100%;border-collapse:collapse;font-size:.88rem;border-radius:12px;overflow:hidden}
+    .lb-table th{background:#0ea5e9;color:#fff;padding:11px 9px;text-align:left;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+    .lb-table td{padding:10px 9px;border-bottom:1px solid #eef0f6;color:#3a4152}
+    .lb-table tr:nth-child(even) td{background:#fafbff}
+    .lb-table tr.me td{background:#e0f2fe;font-weight:700}
+    .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#eef0f6;color:#0ea5e9;font-weight:700;font-size:.8rem}
+    .rank-badge.g1{background:#ffd54f;color:#7a5c00}
+    .rank-badge.g2{background:#cfd8dc;color:#455a64}
+    .rank-badge.g3{background:#ffcc9c;color:#7a4200}
+    .lb-empty{text-align:center;color:#8b93a7;padding:24px;font-size:.9rem}
+
+    .review-item{border:1px solid #eef0f6;border-left:5px solid #cbd2e0;border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fcfdff}
+    .review-item.ok{border-left-color:#16a34a}
+    .review-item.bad{border-left-color:#ea4335}
+    .review-item.skip{border-left-color:#f59e0b}
+    .review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+    .review-num{font-weight:800;color:#0ea5e9;font-size:.85rem}
+    .review-time{font-size:.72rem;color:#8b93a7;font-weight:600}
+    .review-badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+    .review-badge.ok{background:#e6f4ea;color:#137333}
+    .review-badge.bad{background:#fce8e6;color:#c5221f}
+    .review-badge.skip{background:#fef3c7;color:#92400e}
+    .review-q{font-size:.95rem;color:#2b3140;margin-bottom:9px;line-height:1.85;font-weight:500}
+    .review-line{font-size:.85rem;color:#5a6274;margin-bottom:4px;line-height:1.75}
+    .review-line b{color:#3a4152}
+    .review-exp{font-size:.83rem;color:#4a5568;background:#f0f9ff;border-radius:8px;padding:9px 11px;margin-top:8px;line-height:1.8}
+    .review-exp i{color:#f59e0b;margin-right:5px}
+
+    .btn-row{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+    .btn-row .search-btn{flex:1;min-width:150px}
+    .btn-outline{background:#fff;border:2px solid #0ea5e9;color:#0ea5e9;padding:15px 24px;border-radius:10px;font-weight:600;cursor:pointer;flex:1;min-width:150px;transition:.2s;font-size:1rem}
+    .btn-outline:hover{background:#f0f9ff}
+
+    @media(max-width:520px){
+        body{padding:10px}
+        .container{border-radius:14px}
+        .content{padding:20px 16px}
+        .exam-body{padding:16px 14px 10px}
+        .end-submit-wrap{padding:10px 14px 22px}
+        .title{font-size:1.4rem}
+        .sticky-bar{border-radius:14px 14px 0 0;padding:10px 12px}
+        .bar-title{font-size:.82rem}
+        .timer{font-size:.9rem;padding:7px 11px}
+        .top-submit{font-size:.78rem;padding:8px 12px}
+        .option{padding:11px 12px}
+        .option-text{font-size:.9rem;line-height:1.75}
+        .q-text{font-size:.96rem;line-height:1.85}
+    }
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ================= START SCREEN ================= -->
+    <section id="startScreen">
+        <div class="header">
+            <div class="logos">
+                <div class="logo"><i class="fas fa-infinity"></i></div>
+                <div class="logo alt"><i class="fas fa-square-root-variable"></i></div>
+            </div>
+            <h1 class="title">Econ 8 – Model Test</h1>
+            <p class="subtitle" id="startSubtitle">—</p>
+        </div>
+        <div class="content">
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-user"></i> Full Name</label>
+                <div class="input-wrapper"><i class="fas fa-user input-icon"></i>
+                    <input type="text" id="nameInput" placeholder="e.g. Rahim Uddin" maxlength="60" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-building-columns"></i> College</label>
+                <div class="input-wrapper"><i class="fas fa-building-columns input-icon"></i>
+                    <input type="text" id="collegeInput" placeholder="e.g. Dhaka College" maxlength="100" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-envelope"></i> Email</label>
+                <div class="input-wrapper"><i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="emailInput" placeholder="e.g. rahim@example.com" maxlength="80" autocomplete="off"></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label"><i class="fas fa-phone"></i> Contact No.</label>
+                <div class="input-wrapper"><i class="fas fa-phone input-icon"></i>
+                    <input type="text" id="numberInput" placeholder="e.g. 01712345678" maxlength="20" autocomplete="off"></div>
+            </div>
+
+            <div class="rules">
+                <b><i class="fas fa-circle-info"></i> Instructions</b><br>
+                • Total <b id="ruleTotal">—</b> MCQ questions, each carries <b>1</b> mark.<br>
+                • <b>Negative marking:</b> −0.25 for each wrong answer. Skipped = 0.<br>
+                • Time limit is <b id="ruleTime">—</b> — the exam auto-submits when time is up.<br>
+                • All questions are on one page — just scroll and answer.<br>
+                • ⚠️ <b>Tab switching is monitored</b> and recorded with your result.<br>
+                • Your score will be saved to the <b id="ruleSheet">—</b> leaderboard automatically.
+            </div>
+
+            <button class="search-btn" onclick="startExam()">
+                <i class="fas fa-play"></i> Start Exam
+            </button>
+        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | Econ 8 Model Test Portal</p></div>
+    </section>
+
+    <!-- ================= EXAM SCREEN ================= -->
+    <section id="examScreen" style="display:none">
+        <div class="sticky-bar" id="stickyBar">
+            <div class="bar-left">
+                <span class="bar-title"><i class="fas fa-file-pen"></i> Econ 8 • Model Test</span>
+                <span class="tab-pill" id="tabPill"><i class="fas fa-eye"></i> Tabs: <span id="tabCount">0</span></span>
+            </div>
+            <div class="bar-right">
+                <div class="timer" id="timer"><i class="fas fa-clock"></i> <span id="timerText">—</span></div>
+                <button class="top-submit" onclick="confirmSubmit()"><i class="fas fa-paper-plane"></i> Submit</button>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <div class="exam-body" id="examBody"></div>
+
+        <div class="end-submit-wrap">
+            <button class="search-btn" onclick="confirmSubmit()">
+                <i class="fas fa-paper-plane"></i> Submit Exam
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= RESULT SCREEN ================= -->
+    <section id="resultScreen" style="display:none">
+        <div class="header">
+            <h1 class="title" style="font-size:1.45rem">Exam Completed</h1>
+            <p class="subtitle" id="resultUser">—</p>
+        </div>
+        <div class="content">
+            <div class="score-ring" id="scoreRing" style="--p:0%">
+                <div class="score-inner">
+                    <div class="score-big" id="scoreBig">0/0</div>
+                    <div class="score-pct" id="scorePct">0%</div>
+                </div>
+            </div>
+            <div class="verdict" id="verdict"></div>
+
+            <div class="stats">
+                <div class="stat g"><div class="v" id="statCorrect">0</div><div class="l">Correct</div></div>
+                <div class="stat r"><div class="v" id="statWrong">0</div><div class="l">Wrong</div></div>
+                <div class="stat y"><div class="v" id="statSkipped">0</div><div class="l">Skipped</div></div>
+                <div class="stat b"><div class="v" id="statTime">0:00</div><div class="l">Time</div></div>
+                <div class="stat p"><div class="v" id="statTabs">0</div><div class="l">Tab Switch</div></div>
+            </div>
+
+            <div class="save-status" id="saveStatus"><i class="fas fa-spinner fa-spin"></i> Saving your score…</div>
+
+            <div class="section-title"><i class="fas fa-trophy"></i> <span id="boardTitle">Leaderboard</span></div>
+            <div id="leaderboard"><div class="lb-empty">Loading leaderboard…</div></div>
+
+            <div class="section-title"><i class="fas fa-list-check"></i> Answer Review</div>
+            <div id="review"></div>
+
+            <div class="btn-row">
+                <button class="search-btn" onclick="location.reload()"><i class="fas fa-rotate-right"></i> Retake Exam</button>
+                <button class="btn-outline" onclick="refreshLeaderboard()"><i class="fas fa-arrows-rotate"></i> Refresh Board</button>
+            </div>
+        </div>
+        <div class="footer"><p>© 2024 Plan C Academy | Econ 8 Model Test Portal</p></div>
+    </section>
+
+</div>
+
+<div class="tab-toast" id="tabToast">
+    <i class="fas fa-triangle-exclamation"></i> Tab switch detected — this is being recorded.
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+/* ================= CONFIG ================= */
+const CONFIG = {
+    WEB_APP_URL: "https://script.google.com/macros/s/AKfycbxbmCQXPqhWmKTIlQ8yZFCK4_ruWNj_UMaMWubMgXupw44BGYHrLrjxzbo0ZhN6i0TR/exec",
+    SHEET_NAME: "Econ 8",
+    EXAM_NAME: "Econ 8",
+    EXAM_MINUTES: 24,
+    LEADERBOARD_LIMIT: 20,
+    NEGATIVE_MARK: 0.25
+};
+
+/* ================= QUESTION BANK (DAILY TEST 08) ================= */
+const QUESTIONS = [
+  {q:"শ্রমের যোগান রেখা (Supply Curve of Labour) মজুরির একটি নির্দিষ্ট স্তরের পর বামদিকে বেঁকে যায় (Backward-bending) কেন? (Why does the supply curve of labour bend backward after a certain wage level?)",
+   opts:["আয় প্রভাব পরিবর্তক প্রভাবকে ছাড়িয়ে যায় বলে (Income effect outweighs substitution effect)",
+         "পরিবর্তক প্রভাব আয় প্রভাবকে ছাড়িয়ে যায় বলে (Substitution effect outweighs income effect)",
+         "শ্রমের প্রান্তিক উৎপাদনশীলতা শূন্য হয় বলে (Marginal productivity of labour becomes zero)",
+         "মজুরি ও কাজের সময়ের মধ্যে ধনাত্মক সম্পর্ক থাকায় (Positive relationship between wage and work hours)"], ans:0,
+   exp:"উচ্চ মজুরি স্তরে শ্রমিকের কাছে অবসর (leisure) বেশি মূল্যবান হয়ে ওঠে; তখন আয় প্রভাব পরিবর্তক প্রভাবকে ছাড়িয়ে যায়, ফলে কাজের ঘণ্টা কমে যায় এবং যোগান রেখা পেছনে বাঁকে।"},
+
+  {q:"প্রান্তিক উৎপাদনশীলতা তত্ত্ব অনুযায়ী পূর্ণ প্রতিযোগিতামূলক শ্রমবাজারে ফার্মের ভারসাম্য মজুরি (W) কোনটির সমান হয়? (According to the Marginal Productivity Theory, equilibrium wage (W) in a competitive labour market equals:)",
+   opts:["শ্রমের গড় উৎপাদন মূল্য (Value of Average Product - VAP)",
+         "শ্রমের প্রান্তিক উৎপাদন মূল্য (Value of Marginal Product - VMP)",
+         "মোট উৎপাদন ব্যয় (Total Cost of Production - TC)",
+         "শূন্য (Zero)"], ans:1,
+   exp:"পূর্ণ প্রতিযোগিতায় ফার্ম মজুরি = শ্রমের প্রান্তিক উৎপাদন মূল্য (VMP = MP × P) পর্যন্ত শ্রম নিয়োগ করে; এখানেই ভারসাম্য মজুরি নির্ধারিত হয়।"},
+
+  {q:"নামিক মজুরি (Nominal Wage) স্থির থেকে সাধারণ দামস্তর বৃদ্ধি পেলে প্রকৃত মজুরির (Real Wage) কী পরিবর্তন ঘটে? (If nominal wage remains constant while the general price level rises, what happens to real wage?)",
+   opts:["বৃদ্ধি পায় (Increases)","অপরিবর্তিত থাকে (Remains unchanged)","হ্রাস পায় (Decreases)","দ্বিগুণ হয় (Doubles)"], ans:2,
+   exp:"প্রকৃত মজুরি = নামিক মজুরি ÷ সাধারণ দামস্তর। নামিক মজুরি স্থির থাকলে দামস্তর বাড়ার সাথে সাথে ক্রয়ক্ষমতা কমে, তাই প্রকৃত মজুরি হ্রাস পায়।"},
+
+  {q:"মূলধন গঠনের (Capital Formation) সর্বপ্রথম ও অপরিহার্য শর্ত কোনটি? (Which is the first and essential condition for capital formation?)",
+   opts:["ভোগ ব্যয় বৃদ্ধি (Increase in consumption expenditure)",
+         "বৈদেশিক ঋণ গ্রহণ (Taking foreign loans)",
+         "জনসংখ্যা বৃদ্ধি (Increase in population)",
+         "সঞ্চয় সৃষ্টি (Creation of savings)"], ans:3,
+   exp:"সঞ্চয়ই মূলধন গঠনের প্রথম ও অপরিহার্য শর্ত — সঞ্চয় থেকে বিনিয়োগ এবং বিনিয়োগ থেকে মূলধন সৃষ্টি হয়।"},
+
+  {q:"মোট বিনিয়োগ (Gross Investment) থেকে মূলধনের অবচয়জনিত ব্যয় (Depreciation) বাদ দিলে কী পাওয়া যায়? (What is obtained by subtracting depreciation from Gross Investment?)",
+   opts:["নিট বিনিয়োগ (Net Investment)","স্বয়ম্ভূত বিনিয়োগ (Autonomous Investment)",
+         "প্ররোচিত বিনিয়োগ (Induced Investment)","মানব মূলধন (Human Capital)"], ans:0,
+   exp:"নিট বিনিয়োগ = মোট বিনিয়োগ − অবচয় (Depreciation)।"},
+
+  {q:"যৌথ মূলধনী কোম্পানির (Joint Stock Company) শেয়ারহোল্ডারদের দায় কীরূপ হয়ে থাকে? (What is the nature of liability of shareholders in a Joint Stock Company?)",
+   opts:["অসীম দায় (Unlimited liability)",
+         "শেয়ারের মূল্য দ্বারা সীমাবদ্ধ দায় (Limited to the face value of shares held)",
+         "দায়হীন (Zero liability)",
+         "ব্যক্তিগত সম্পত্তি দ্বারা পরিশোধযোগ্য দায় (Payable from personal assets)"], ans:1,
+   exp:"যৌথ মূলধনী কোম্পানিতে শেয়ারহোল্ডারদের দায় সীমিত — তাদের অধিকৃত শেয়ারের অভিহিত মূল্য পর্যন্তই দায় বহন করতে হয়।"},
+
+  {q:"সমবায় সমিতির (Cooperative Society) মূল আদর্শ বা নীতি কী? (What is the core principle of a Cooperative Society?)",
+   opts:["সর্বাধিক মুনাফা অর্জন (Maximizing profit)",
+         "একচেটিয়া বাজার নিয়ন্ত্রণ (Monopolistic market control)",
+         "সকলের তরে সকলে আমরা বা পারস্পরিক কল্যাণ (Each for all and all for each / mutual welfare)",
+         "রাষ্ট্রীয় মালিকানা প্রতিষ্ঠা (Establishing state ownership)"], ans:2,
+   exp:"সমবায় সমিতির মূলনীতি হলো 'সকলের তরে সকলে আমরা' — পারস্পরিক সহযোগিতা ও কল্যাণ; মুনাফা সর্বোচ্চ করা এর লক্ষ্য নয়।"},
+
+  {q:"ডেভিড রিকার্ডোর মতে, জমির খাজনা (Rent) উদ্ভবের মূল কারণ কী? (According to David Ricardo, what is the primary cause of the emergence of land rent?)",
+   opts:["জমির অসীম যোগান (Unlimited supply of land)",
+         "কৃষিপণ্যের নিম্ন দাম (Low prices of agricultural goods)",
+         "শ্রমের দক্ষতার পার্থক্য (Differences in labour efficiency)",
+         "জমির অস্থিতিস্থাপক যোগান ও উর্বরতার পার্থক্য (Inelastic supply and fertility differences of land)"], ans:3,
+   exp:"রিকার্ডোর মতে জমির যোগান স্থির/অস্থিতিস্থাপক এবং জমির উর্বরতার পার্থক্য আছে — এই দুই কারণেই খাজনার উদ্ভব হয়।"},
+
+  {q:"প্রান্তিক জমি (Marginal Land) বলতে কোন ধরনের জমিকে বোঝায়? (What type of land is referred to as 'Marginal Land'?)",
+   opts:["যে জমিতে মোট আয় ও মোট ব্যয় সমান এবং কোনো খাজনা উদ্ভূত হয় না (No-rent land where total revenue equals total cost)",
+         "সর্বোচ্চ উর্বর ও অধিক খাজনা প্রদানকারী জমি (Most fertile land yielding highest rent)",
+         "চাষাবাদের সম্পূর্ণ অনুপযোগী পতিত জমি (Barren land completely unsuitable for cultivation)",
+         "শহরের কেন্দ্রস্থলে অবস্থিত বাণিজ্যিক জমি (Commercial land in city centers)"], ans:0,
+   exp:"প্রান্তিক জমিতে উৎপাদন ব্যয় = উৎপাদন আয়; তাই এখানে কোনো অর্থনৈতিক খাজনা (economic rent) উদ্ভূত হয় না।"},
+
+  {q:"আধুনিক খাজনা তত্ত্ব অনুযায়ী নিম-খাজনা (Quasi-Rent) কী? (According to modern rent theory, what is 'Quasi-Rent'?)",
+   opts:["দীর্ঘকালে ভূমির ওপর প্রাপ্ত স্থায়ী উদ্বৃত্ত আয় (Permanent surplus earned on land in the long run)",
+         "স্বল্পকালে মানবসৃষ্ট স্থির উপকরণের (যেমন যন্ত্রপাতি) যোগান অস্থিতিস্থাপক হওয়ায় প্রাপ্ত উদ্বৃত্ত আয় (Short-run surplus earned by man-made fixed appliances due to inelastic supply)",
+         "ব্যাংক ঋণের ওপর প্রদেয় অতিরিক্ত সুদ (Extra interest paid on bank loans)",
+         "শ্রমিকের ন্যূনতম জীবনধারণ মজুরি (Subsistence wage of workers)"], ans:1,
+   exp:"স্বল্পকালে যন্ত্রপাতির মতো মানবসৃষ্ট স্থির উপকরণের যোগান অস্থিতিস্থাপক থাকে; এ সময়ে অর্জিত অতিরিক্ত উদ্বৃত্ত আয়কেই নিম-খাজনা বলা হয়।"},
+
+  {q:"বাংলাদেশের মোট দেশজ উৎপাদনে (GDP) বর্তমানে কোন খাতের অবদান সবচেয়ে বেশি? (Which sector currently contributes the most to Bangladesh's Gross Domestic Product (GDP)?)",
+   opts:["কৃষি খাত (Agriculture sector)","শিল্প খাত (Industry sector)",
+         "সেবা খাত (Service sector)","খনিজ ও খনন খাত (Mining and quarrying sector)"], ans:2,
+   exp:"বাংলাদেশের GDP-তে সেবা খাতের অবদান সর্বাধিক (৫০%-এর বেশি); এরপর শিল্প এবং তারপর কৃষি খাত।"},
+
+  {q:"বাংলাদেশের অর্থনৈতিক সমুদ্রসীমা (Exclusive Economic Zone) উপকূল থেকে কত নটিক্যাল মাইল পর্যন্ত বিস্তৃত? (Up to how many nautical miles from the coast does Bangladesh's Exclusive Economic Zone (EEZ) extend?)",
+   opts:["১২ নটিক্যাল মাইল (12 nautical miles)","১০০ নটিক্যাল মাইল (100 nautical miles)",
+         "৩৫০ নটিক্যাল মাইল (350 nautical miles)","২০০ নটিক্যাল মাইল (200 nautical miles)"], ans:3,
+   exp:"EEZ উপকূল থেকে ২০০ নটিক্যাল মাইল পর্যন্ত; ১২ নটিক্যাল মাইল হলো আঞ্চলিক জলসীমা (Territorial Sea)।"},
+
+  {q:"প্রাকৃতিক পরিবেশের ভারসাম্য রক্ষার জন্য একটি দেশের মোট আয়তনের ন্যূনতম কত শতাংশ বনভূমি থাকা প্রয়োজন? (What minimum percentage of a country's total land area should be forested to maintain ecological balance?)",
+   opts:["২৫% (25%)","১৫% (15%)","১৭.৬২% (17.62%)","৩৫% (35%)"], ans:0,
+   exp:"পরিবেশগত ভারসাম্য রক্ষার জন্য একটি দেশের মোট আয়তনের ন্যূনতম ২৫% বনভূমি থাকা প্রয়োজন।"},
+
+  {q:"একই জমিতে বছরের বিভিন্ন সময়ে একটি মাত্র ফসলের পরিবর্তে একাধিক ফসল উৎপাদন করার কৌশলকে কী বলে? (What is the practice of growing multiple crops instead of a single crop on the same land over the year called?)",
+   opts:["একক চাষ বা মনোকালচার (Monoculture)","শস্য বহুমুখীকরণ (Crop diversification)",
+         "জুম চাষ (Shifting cultivation)","সমবায় চাষাবাদ (Cooperative farming)"], ans:1,
+   exp:"একই জমিতে বছরে একাধিক ফসল উৎপাদন করাকে শস্য বহুমুখীকরণ (Crop diversification) বলে।"},
+
+  {q:"বাংলাদেশের কৃষিঋণের আনুষ্ঠানিক (Formal) উৎস কোনটি? (Which of the following is a formal source of agricultural credit in Bangladesh?)",
+   opts:["গ্রাম্য মহাজন (Village moneylenders)","আত্মীয়-স্বজন ও বন্ধুবান্ধব (Relatives and friends)",
+         "বাংলাদেশ কৃষি ব্যাংক ও তফসিলি বাণিজ্যিক ব্যাংক (Bangladesh Krishi Bank and scheduled commercial banks)",
+         "ফড়িয়া ও বেপারি (Middlemen and local traders)"], ans:2,
+   exp:"বাংলাদেশ কৃষি ব্যাংক, তফসিলি বাণিজ্যিক ব্যাংক, BRAC-এর মতো প্রতিষ্ঠান আনুষ্ঠানিক উৎস; মহাজন, আত্মীয় ও ফড়িয়া অনানুষ্ঠানিক উৎস।"},
+
+  {q:"যেসব শিল্প দেশীয় বাজারে আমদানিকৃত বিদেশি পণ্যের বিকল্প পণ্য উৎপাদন করে বৈদেশিক মুদ্রা সাশ্রয় করে, তাদের কী বলে? (What are industries that produce domestic substitutes for imported foreign goods to save foreign exchange called?)",
+   opts:["রপ্তানিমুখী শিল্প (Export-oriented industries)","ভারী ও মূলধনি শিল্প (Heavy and capital industries)",
+         "কুটির শিল্প (Cottage industries)","আমদানি বিকল্প শিল্প (Import-substituting industries)"], ans:3,
+   exp:"আমদানিকৃত পণ্যের দেশীয় বিকল্প উৎপাদনকারী শিল্পকে আমদানি বিকল্প শিল্প (Import-substituting industries) বলে।"},
+
+  {q:"বাংলাদেশে রপ্তানি প্রক্রিয়াকরণ অঞ্চল (EPZ) পরিচালনার দায়িত্বে নিয়োজিত সরকারি সংস্থা কোনটি? (Which government authority is responsible for managing Export Processing Zones (EPZs) in Bangladesh?)",
+   opts:["বেপজা (BEPZA)","বিডা (BIDA)","বিসিক (BSCIC)","বিএডিসি (BADC)"], ans:0,
+   exp:"BEPZA (Bangladesh Export Processing Zones Authority) বাংলাদেশের রপ্তানি প্রক্রিয়াকরণ অঞ্চলসমূহ পরিচালনা করে।"},
+
+  {q:"খাদ্য নিরাপত্তার (Food Security) তিনটি মৌলিক স্তম্ভ কী কী? (What are the three fundamental pillars of Food Security?)",
+   opts:["খাদ্য আমদানি, রপ্তানি ও মজুদ (Food import, export, and stock)",
+         "খাদ্যের প্রাপ্যতা, ক্রয়ক্ষমতা বা প্রবেশগম্যতা এবং সদ্ব্যবহার (Food availability, accessibility, and utilization)",
+         "কৃষি ভর্তুকি, সেচ ও সার বিতরণ (Agricultural subsidy, irrigation, and fertilizer distribution)",
+         "রেশনিং, খোলা বাজারে বিক্রি ও খাদ্য গুদামজাতকরণ (Rationing, OMS, and food warehousing)"], ans:1,
+   exp:"খাদ্য নিরাপত্তার তিনটি স্তম্ভ — Availability (প্রাপ্যতা), Accessibility (প্রবেশগম্যতা) ও Utilization (সদ্ব্যবহার)।"},
+
+  {q:"ভোক্তাদের নিরাপদ খাদ্য নিশ্চিতকরণ ও ভেজাল রোধে বাংলাদেশে কোন আইন প্রচলিত রয়েছে? (Which law is enforced in Bangladesh to ensure safe food for consumers and prevent adulteration?)",
+   opts:["ভোক্তা অধিকার সংরক্ষণ আইন-২০০৯ (Consumers' Right Protection Act 2009)",
+         "অত্যাবশ্যকীয় পণ্য নিয়ন্ত্রণ আইন-১৯৫৬ (Control of Essential Commodities Act 1956)",
+         "নিরাপদ খাদ্য আইন-২০১৩ (Food Safety Act 2013)",
+         "কৃষি বিপণন আইন-২০১৮ (Agricultural Marketing Act 2018)"], ans:2,
+   exp:"নিরাপদ খাদ্য আইন-২০১৩ ভোক্তার জন্য নিরাপদ ও মানসম্মত খাদ্য নিশ্চিতকরণ এবং ভেজাল প্রতিরোধে বলবৎ আছে।"},
+
+  {q:"বাংলাদেশের মুদ্রাবাজার (Money Market) ও ব্যাংকিং খাতের সর্বোচ্চ নিয়ন্ত্রক সংস্থা কোনটি? (Which institution is the apex regulatory authority of Bangladesh's money market and banking sector?)",
+   opts:["বাংলাদেশ সিকিউরিটিজ অ্যান্ড এক্সচেঞ্জ কমিশন (BSEC)","সোনালী ব্যাংক পিএলসি (Sonali Bank PLC)",
+         "ইনভেস্টমেন্ট কর্পোরেশন অব বাংলাদেশ (ICB)","বাংলাদেশ ব্যাংক (Bangladesh Bank)"], ans:3,
+   exp:"বাংলাদেশ ব্যাংক কেন্দ্রীয় ব্যাংক হিসেবে মুদ্রাবাজার ও ব্যাংকিং খাতের সর্বোচ্চ নিয়ন্ত্রক সংস্থা।"},
+
+  {q:"দীর্ঘমেয়াদি মূলধন ও শেয়ার-বন্ড কেনাবেচার বাজারকে অর্থনীতিতে কী বলা হয়? (What is the market for long-term capital and trading of shares and bonds called?)",
+   opts:["পুঁজিবাজার বা মূলধন বাজার (Capital Market)","মুদ্রাবাজার (Money Market)",
+         "বৈদেশিক মুদ্রা বাজার (Foreign Exchange Market)","পণ্যবাজার (Commodity Market)"], ans:0,
+   exp:"দীর্ঘমেয়াদি মূলধন এবং শেয়ার-বন্ড কেনাবেচার বাজারকে পুঁজিবাজার বা মূলধন বাজার (Capital Market) বলে।"},
+
+  {q:"বাংলাদেশের ২০২৬-২৭ অর্থবছরের (চলতি অর্থবছর) প্রস্তাবিত জাতীয় বাজেটের মোট আকার কত কোটি টাকা? (What is the total size of Bangladesh's national budget for the current fiscal year (FY2026–27) in crore Taka?)",
+   opts:["৭,৯৭,০০০ কোটি টাকা (Tk. 7,97,000 crore)","৯,৩৮,০০০ কোটি টাকা (Tk. 9,38,000 crore)",
+         "৮,৫০,৫০০ কোটি টাকা (Tk. 8,50,500 crore)","১০,১২,০০০ কোটি টাকা (Tk. 10,12,000 crore)"], ans:1,
+   exp:"২০২৬-২৭ অর্থবছরের প্রস্তাবিত জাতীয় বাজেটের মোট আকার ৯,৩৮,০০০ কোটি টাকা।"},
+
+  {q:"জাতিসংঘ সাধারণ পরিষদের (UNGA) সিদ্ধান্ত অনুযায়ী বাংলাদেশ কোন সালে স্বল্পোন্নত দেশের (LDC) তালিকা থেকে উত্তরণ ঘটবে? (Following the UN General Assembly's decision, in which year is Bangladesh set to graduate from Least Developed Country (LDC) status?)",
+   opts:["নভেম্বর ২০২৬ (November 2026)","নভেম্বর ২০২৭ (November 2027)",
+         "নভেম্বর ২০২৯ (November 2029)","নভেম্বর ২০৩০ (November 2030)"], ans:2,
+   exp:"বাংলাদেশের এলডিসি উত্তরণের সময়সূচি ২০২৬ সালের নভেম্বর থেকে পিছিয়ে ২০২৯ সালের নভেম্বরে নির্ধারিত হয়েছে।"},
+
+  {q:"বাংলাদেশের প্রেক্ষিত পরিকল্পনা ২০২১–২০৪১ (Perspective Plan 2021–2041)-এর চূড়ান্ত লক্ষ্য কী? (What is the ultimate goal of Bangladesh's Perspective Plan 2021–2041?)",
+   opts:["নিম্ন-মধ্যম আয়ের দেশে উন্নীত হওয়া (Graduating to lower-middle-income status)",
+         "কেবল কৃষিনির্ভর অর্থনীতি প্রতিষ্ঠা করা (Establishing a purely agrarian economy)",
+         "শতভাগ রাষ্ট্রীয় মালিকানাধীন শিল্পায়ন বাস্তবায়ন (Implementing 100% state-owned industrialization)",
+         "দারিদ্র্য নির্মূল ও উচ্চ আয়ের উন্নত দেশে রূপান্তর (Eradicating poverty and transforming into a high-income developed country)"], ans:3,
+   exp:"প্রেক্ষিত পরিকল্পনা ২০২১–২০৪১-এর চূড়ান্ত লক্ষ্য — দারিদ্র্য নির্মূল করে ২০৪১ সালের মধ্যে উচ্চ আয়ের উন্নত দেশে রূপান্তর।"}
+];
+
+/* ================= STATE & HELPERS ================= */
+const TOTAL = QUESTIONS.length;
+const LETTERS = ['A','B','C','D'];
+let state = {};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function showScreen(id){['startScreen','examScreen','resultScreen'].forEach(s=>{document.getElementById(s).style.display=(s===id)?'block':'none';});window.scrollTo({top:0,behavior:'smooth'});}
+function fmtTime(sec){const m=Math.floor(Math.max(sec,0)/60);const s=Math.max(sec,0)%60;return m+':'+String(s).padStart(2,'0');}
+
+/* ================= EXAM FLOW ================= */
+function startExam(){
+    const name=document.getElementById('nameInput').value.trim();
+    const college=document.getElementById('collegeInput').value.trim();
+    const email=document.getElementById('emailInput').value.trim();
+    const number=document.getElementById('numberInput').value.trim();
+
+    if(name.length<2){alert('Please enter your full name.');return;}
+    if(college.length<2){alert('Please enter your college name.');return;}
+    if(email.length<5||!email.includes('@')){alert('Please enter a valid email address.');return;}
+    if(number.length<5){alert('Please enter your contact number.');return;}
+
+    state={
+        name,email,college,number,
+        answers:new Array(TOTAL).fill(null),
+        answerTimes:new Array(TOTAL).fill(null),
+        current:0,
+        timeLeft:CONFIG.EXAM_MINUTES*60,
+        startTime:Date.now(),
+        timerId:null,
+        tabSwitches:0,
+        submitted:false
+    };
+
+    document.getElementById('tabCount').textContent='0';
+    document.getElementById('tabPill').classList.remove('alert');
+    showScreen('examScreen');
+    renderAllQuestions();
+    updateProgress();
+    startTimer();
+}
+
+function startTimer(){
+    clearInterval(state.timerId);
+    updateTimerDisplay();
+    state.timerId=setInterval(()=>{
+        state.timeLeft--;
+        updateTimerDisplay();
+        if(state.timeLeft<=0){clearInterval(state.timerId);submitExam(true);}
+    },1000);
+}
+
+function updateTimerDisplay(){
+    document.getElementById('timerText').textContent=fmtTime(state.timeLeft);
+    document.getElementById('timer').classList.toggle('warn',state.timeLeft<=60);
+}
+
+function renderAllQuestions(){
+    const body=document.getElementById('examBody');
+    body.innerHTML=QUESTIONS.map((q,qi)=>`
+        <div class="q-card" id="q${qi}" data-qi="${qi}">
+            <div class="q-header">
+                <span class="q-num">Question ${qi+1} of ${TOTAL}</span>
+                <span class="q-status" id="qStatus${qi}">Not answered</span>
+            </div>
+            <div class="q-text">${esc(q.q)}</div>
+            <div class="options" id="opts${qi}">
+                ${q.opts.map((opt,oi)=>`
+                    <div class="option" data-qi="${qi}" data-oi="${oi}" onclick="selectOption(${qi},${oi})">
+                        <span class="option-letter">${LETTERS[oi]}</span>
+                        <span class="option-text">${esc(opt)}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function selectOption(qi,oi){
+    if(state.submitted) return;
+    if(state.answerTimes[qi]===null){
+        state.answerTimes[qi]=Math.round((Date.now()-state.startTime)/1000);
+    }
+    state.answers[qi]=oi;
+    document.querySelectorAll(`#opts${qi} .option`).forEach((el,idx)=>{
+        el.classList.toggle('selected',idx===oi);
+    });
+    const st=document.getElementById(`qStatus${qi}`);
+    st.textContent='Answered';
+    st.className='q-status answered';
+    document.getElementById(`q${qi}`).classList.add('answered');
+    updateProgress();
+}
+
+function updateProgress(){
+    const done=state.answers.filter(a=>a!==null).length;
+    document.getElementById('progressFill').style.width=(done/TOTAL*100)+'%';
+}
+
+function confirmSubmit(){
+    const done=state.answers.filter(a=>a!==null).length;
+    const left=TOTAL-done;
+    let msg=left===0?'Are you sure you want to submit your exam?':`You have ${left} unanswered question(s). Submit anyway?`;
+    if(state.tabSwitches>0) msg+=`\n\n⚠️ Tab switches recorded: ${state.tabSwitches}`;
+    if(confirm(msg)) submitExam(false);
+}
+
+/* ================= SCROLL SPY ================= */
+function updateScrollSpy(){
+    const cards=document.querySelectorAll('.q-card');
+    if(!cards.length) return;
+    const barH=document.getElementById('stickyBar').offsetHeight;
+    let closest=0,minDist=Infinity;
+    cards.forEach((el,i)=>{
+        const rect=el.getBoundingClientRect();
+        const dist=Math.abs(rect.top-barH-8);
+        if(dist<minDist){minDist=dist;closest=i;}
+    });
+    state.current=closest;
+}
+window.addEventListener('scroll',()=>{ if(state.answers) updateScrollSpy(); },{passive:true});
+
+window.addEventListener('scroll',()=>{
+    const btn=document.getElementById('backTop');
+    if(btn) btn.classList.toggle('show',window.scrollY>600);
+},{passive:true});
+
+/* ================= TAB SWITCH ================= */
+document.addEventListener('visibilitychange',function(){
+    if(!state||!state.answers||state.submitted) return;
+    if(document.getElementById('examScreen').style.display==='none') return;
+    if(document.hidden){
+        state.tabSwitches++;
+        document.getElementById('tabCount').textContent=state.tabSwitches;
+        document.getElementById('tabPill').classList.add('alert');
+    } else {
+        const t=document.getElementById('tabToast');
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'),4000);
+    }
+});
+
+/* ================= SUBMIT ================= */
+function submitExam(auto){
+    if(state.submitted) return;
+    state.submitted=true;
+    clearInterval(state.timerId);
+
+    let correct=0,wrong=0,skipped=0;
+    state.answers.forEach((a,i)=>{
+        if(a===null) skipped++;
+        else if(a===QUESTIONS[i].ans) correct++;
+        else wrong++;
+    });
+
+    const rawScore=correct-(CONFIG.NEGATIVE_MARK*wrong);
+    const score=Math.round(rawScore*100)/100;
+    const timeTaken=auto?CONFIG.EXAM_MINUTES*60:Math.min(CONFIG.EXAM_MINUTES*60,Math.round((Date.now()-state.startTime)/1000));
+
+    renderResult(correct,wrong,skipped,timeTaken,auto,score);
+    showScreen('resultScreen');
+
+    saveToSheet({
+        exam:CONFIG.EXAM_NAME,
+        name:state.name,
+        college:state.college,
+        email:state.email,
+        number:state.number,
+        score:score,
+        correct:correct,
+        wrong:wrong,
+        skipped:skipped,
+        total:TOTAL,
+        timeTaken:timeTaken,
+        timeTakenText:fmtTime(timeTaken),
+        tabSwitches:state.tabSwitches,
+        autoSubmitted:auto,
+        answers:state.answers,
+        answersText:answersText(),
+        qTime:state.answerTimes,
+        qTimeText:state.answerTimes.map(t=>t===null?'-':t+'s').join('|')
+    });
+}
+
+function answersText(){
+    return state.answers.map((a,i)=>(i+1)+':'+(a===null?'-':LETTERS[a])).join(', ');
+}
+
+function renderResult(correct,wrong,skipped,timeTaken,auto,score){
+    const pct=Math.round((score/TOTAL)*100);
+    document.getElementById('resultUser').textContent=state.name+'  •  '+state.college+'  •  '+state.number;
+    document.getElementById('scoreRing').style.setProperty('--p',Math.max(0,pct)+'%');
+    document.getElementById('scoreBig').textContent=score+'/'+TOTAL;
+    document.getElementById('scorePct').textContent=pct+'%';
+
+    let verdict,sub;
+    if(pct>=80){verdict='🏆 Outstanding!';sub='Excellent command over the Econ 8 syllabus.';}
+    else if(pct>=60){verdict='🎯 Very Good!';sub='Strong performance — keep it up.';}
+    else if(pct>=40){verdict='📈 Good Effort';sub='Review the weak areas and try again.';}
+    else{verdict='📚 Needs Practice';sub='Go through the explanations below carefully.';}
+    if(auto) sub+=' (Time expired — auto submitted.)';
+    if(state.tabSwitches>0) sub+=` Tab switches: ${state.tabSwitches}.`;
+    document.getElementById('verdict').innerHTML=verdict+'<small>'+esc(sub)+'</small>';
+
+    document.getElementById('statCorrect').textContent=correct;
+    document.getElementById('statWrong').textContent=wrong;
+    document.getElementById('statSkipped').textContent=skipped;
+    document.getElementById('statTime').textContent=fmtTime(timeTaken);
+    document.getElementById('statTabs').textContent=state.tabSwitches;
+
+    document.getElementById('review').innerHTML=buildReview();
+}
+
+function buildReview(){
+    return QUESTIONS.map((q,i)=>{
+        const ua=state.answers[i];
+        const isCorrect=ua===q.ans;
+        const cls=ua===null?'skip':(isCorrect?'ok':'bad');
+        const label=ua===null?'Skipped':(isCorrect?'Correct':'Wrong');
+        const t=state.answerTimes[i];
+        const spent=t===null?'—':'answered at '+fmtTime(t);
+        return `
+            <div class="review-item ${cls}">
+                <div class="review-head">
+                    <span class="review-num">Q${i+1}</span>
+                    <span class="review-time"><i class="fas fa-stopwatch"></i> ${spent}</span>
+                    <span class="review-badge ${cls}">${label}</span>
+                </div>
+                <div class="review-q">${esc(q.q)}</div>
+                <div class="review-line"><b>Your answer:</b> ${ua===null?'—':LETTERS[ua]+'. '+esc(q.opts[ua])}</div>
+                <div class="review-line"><b>Correct answer:</b> ${LETTERS[q.ans]}. ${esc(q.opts[q.ans])}</div>
+                <div class="review-exp"><i class="fas fa-lightbulb"></i>${esc(q.exp)}</div>
+            </div>`;
+    }).join('');
+}
+
+/* ================= GOOGLE SHEETS ================= */
+async function saveToSheet(payload){
+    const el=document.getElementById('saveStatus');
+    el.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving your score…';
+    try{
+        const res=await fetch(CONFIG.WEB_APP_URL,{
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body:JSON.stringify(payload),
+            redirect:'follow'
+        });
+        const data=await res.json();
+        if(data.success){
+            el.innerHTML=`<i class="fas fa-check-circle" style="color:#16a34a"></i> Score saved to ${CONFIG.SHEET_NAME} sheet! Your rank: <b>#${data.rank}</b>`;
+        }else{
+            el.innerHTML='<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Could not save score.';
+        }
+    }catch(err){
+        console.error(err);
+        el.innerHTML='<i class="fas fa-exclamation-triangle" style="color:#ea4335"></i> Network error — score not saved.';
+    }
+    loadLeaderboard();
+}
+
+async function loadLeaderboard(){
+    const box=document.getElementById('leaderboard');
+    box.innerHTML='<div class="lb-empty">Loading leaderboard…</div>';
+    try{
+        const res=await fetch(CONFIG.WEB_APP_URL+'?action=leaderboard&limit='+CONFIG.LEADERBOARD_LIMIT);
+        const data=await res.json();
+        if(!data.success||!data.leaderboard||data.leaderboard.length===0){
+            box.innerHTML='<div class="lb-empty">No entries yet. Be the first!</div>';
+            return;
+        }
+        let html=`<table class="lb-table">
+            <thead><tr>
+                <th style="width:52px">#</th><th>Name</th><th>College</th><th>Contact</th>
+                <th style="width:70px">Score</th><th style="width:80px">Time</th>
+            </tr></thead><tbody>`;
+        data.leaderboard.forEach((r,i)=>{
+            const rank=i+1;
+            const medal=rank===1?'g1':rank===2?'g2':rank===3?'g3':'';
+            const isMe=(String(r.number)===String(state.number)&&r.name===state.name);
+            const t=Number(r.time)||0;
+            html+=`<tr class="${isMe?'me':''}">
+                <td><span class="rank-badge ${medal}">${rank}</span></td>
+                <td>${esc(r.name)}</td>
+                <td>${esc(r.college)}</td>
+                <td>${esc(r.number)}</td>
+                <td><b>${r.score}/${r.total}</b></td>
+                <td>${fmtTime(t)}</td>
+            </tr>`;
+        });
+        html+='</tbody></table>';
+        box.innerHTML=html;
+    }catch(err){
+        console.error(err);
+        box.innerHTML='<div class="lb-empty">Could not load leaderboard. Tap “Refresh Board”.</div>';
+    }
+}
+
+function refreshLeaderboard(){loadLeaderboard();}
+
+/* ================= INPUT HELPERS ================= */
+document.getElementById('numberInput').addEventListener('input',function(){
+    this.value=this.value.replace(/[^0-9+\-()\s]/g,'');
+});
+
+document.addEventListener('keydown',function(e){
+    if(!state||!state.answers) return;
+    if(document.getElementById('examScreen').style.display==='none') return;
+    if(['1','2','3','4'].includes(e.key)){
+        selectOption(state.current,parseInt(e.key)-1);
+        const card=document.getElementById('q'+state.current);
+        if(card) card.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+});
+
+window.addEventListener('beforeunload',function(e){
+    if(state&&!state.submitted&&document.getElementById('examScreen').style.display!=='none'){
+        e.preventDefault();e.returnValue='';
+    }
+});
+
+/* ================= DYNAMIC LABELS ================= */
+document.getElementById('startSubtitle').textContent =
+    `Model Test • ${TOTAL} Questions • ${CONFIG.EXAM_MINUTES} Minutes`;
+document.getElementById('ruleTotal').textContent = TOTAL;
+document.getElementById('ruleTime').textContent = CONFIG.EXAM_MINUTES + ' minutes';
+document.getElementById('ruleSheet').textContent = CONFIG.SHEET_NAME;
+document.getElementById('boardTitle').textContent = CONFIG.SHEET_NAME + ' Leaderboard';
+document.getElementById('timerText').textContent = fmtTime(CONFIG.EXAM_MINUTES*60);
+</script>
+</body>
+</html>
