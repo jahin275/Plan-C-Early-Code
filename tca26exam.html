@@ -293,6 +293,25 @@ main{max-width:1400px;margin:0 auto;padding:22px 18px 80px}
 }
 .card-foot{margin-top:auto;display:flex;align-items:center;gap:10px;flex-direction:column}
 
+/* ATTEMPT MARK */
+.attempt-note{
+  display:inline-flex;align-items:center;gap:6px;align-self:flex-start;
+  font-size:11px;font-weight:800;letter-spacing:.35px;
+  padding:5px 11px;border-radius:8px;
+  color:#6ee7b7;
+  background:rgba(52,211,153,.10);
+  border:1px solid rgba(52,211,153,.3);
+  font-variant-numeric:tabular-nums;
+}
+.attempt-note small{color:#8a99b8;font-weight:700;font-size:10.5px}
+.card.attempted{
+  border-color:rgba(52,211,153,.32);
+}
+.card.attempted:hover{
+  border-color:rgba(52,211,153,.6);
+  box-shadow:0 18px 42px rgba(0,0,0,.45), 0 0 0 1px rgba(52,211,153,.16);
+}
+
 /* LIVE BANNER */
 .live-banner{
   width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
@@ -644,13 +663,13 @@ img{ -webkit-user-drag:none; pointer-events:auto; }
 /* ═══════════════════════════════════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════════════════════════════════ */
-const API_URL = "https://script.google.com/macros/s/AKfycbw8Y6JUXLxV9kfmW6RJyJnpA7dMyUNzL2ZL95n-zOZki9K8lEESoVTHoe9PQ3lzoELv8A/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxydm6dUoaUB1ZNCCZiy8nVNrVgsMhM4VLRKCmuDipD-ZiXUV7vGzqIK66-QdZTNYm7/exec";
 const LIVE_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 /* ═══════════════════════════════════════════════════════════════════
    STATE
    ═══════════════════════════════════════════════════════════════════ */
-const state = { all:[], q:"", subject:"All", type:"All", sort:"sheet", user:null };
+const state = { all:[], q:"", subject:"All", type:"All", sort:"sheet", user:null, attempts:{} };
 let ready = false;
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -692,6 +711,21 @@ function parseDate(str){
   if(m) return new Date(+m[1], +m[2]-1, +m[3]);
   const d = new Date(str);
   return isNaN(d) ? null : d;
+}
+
+function relTime(iso){
+  if(!iso) return "";
+  const t = new Date(iso).getTime();
+  if(isNaN(t)) return "";
+  const diff = Date.now() - t;
+  if(diff < 60e3)       return "just now";
+  const m = Math.floor(diff / 60e3);
+  if(m < 60)            return m + "m ago";
+  const h = Math.floor(m / 60);
+  if(h < 24)            return h + "h ago";
+  const d = Math.floor(h / 24);
+  if(d < 7)             return d + "d ago";
+  return new Date(t).toLocaleDateString();
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -745,7 +779,7 @@ function normalizeRow(raw, i){
   const startRaw = g(raw, "Exam Start", "Exam Starts", "exam start", "starts", "start");
   const starts   = parseDate(startRaw);
 
-  return { index, syllabus, link, subject, type, num, starts, order:i };
+  return { index, syllabus, link, subject, type, num, starts, order:i, attempt:null };
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -1039,7 +1073,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ── Sign out ── */
   $("#signOut").addEventListener("click", () => {
-    state.user = null; state.all = []; ready = false;
+    state.user = null; state.all = []; state.attempts = {}; ready = false;
     location.reload();
   });
 
@@ -1059,6 +1093,12 @@ document.addEventListener("DOMContentLoaded", () => {
     state.subject = c.dataset.subject;
     [...chipsEl.children].forEach(x => x.classList.toggle("active", x === c));
     render();
+  });
+
+  /* ── Attempt tracking: record click on Practice / Start / Resume ── */
+  content.addEventListener("click", e => {
+    const a = e.target.closest("a.open-btn[data-index]");
+    if(a) markAttempt(a.dataset.index);   // do NOT preventDefault — link still opens
   });
 
   content.addEventListener("click", e => {
@@ -1101,6 +1141,10 @@ async function doLogin(email, code, silent){
     const json = await login(email, code);
     state.user = { email: json.email, code };
     state.all  = (json.exams || []).map(normalizeRow).filter(Boolean);
+
+    /* ── per-user attempt history ── */
+    state.attempts = json.attempts || {};
+    state.all.forEach(r => { r.attempt = state.attempts[r.index] || null; });
 
     bar.className = "bar";
     bar.style.width = "100%";
@@ -1185,12 +1229,24 @@ function getFiltered(){
 /* ═══════════════════════════════════════════════════════════════════
    CARD
    ═══════════════════════════════════════════════════════════════════ */
+function attemptNoteHTML(a){
+  const bits = ["Attempted"];
+  if(a.count > 1) bits.push(a.count + "×");
+  const rel = relTime(a.last);
+  if(rel) bits.push(rel);
+  return `<div class="attempt-note">✓ <span>${bits[0]}</span>` +
+         bits.slice(1).map(b => `<small>· ${esc(b)}</small>`).join("") +
+         `</div>`;
+}
+
 function cardHTML(r){
   const hue = hueOf(r.subject);
   const typeClass = (r.type || "other").toLowerCase();
   const hasLink = /^https?:\/\//i.test(r.link || "");
-  const st = examState(r);
+  const st  = examState(r);
   const now = Date.now();
+  const att = r.attempt || null;
+  const idxAttr = esc(r.index);
 
   let footHTML = "";
 
@@ -1201,42 +1257,118 @@ function cardHTML(r){
       </span>`;
   } else if(st === "live"){
     const endMs = r.starts.getTime() + LIVE_WINDOW_MS;
-    const left = endMs - now;
-    const live = `<div class="live-banner">
+    const left  = endMs - now;
+    const live  = `<div class="live-banner">
         <span class="live-dot"></span> LIVE NOW · ends in <span class="cd" data-end="${endMs}">${fmtDuration(left)}</span>
       </div>`;
     const btn = hasLink
-      ? `<a class="open-btn" href="${esc(r.link)}" target="_blank" rel="noopener noreferrer">
-           Start Exam <span class="arw">↗</span>
+      ? `<a class="open-btn" data-index="${idxAttr}" href="${esc(r.link)}" target="_blank" rel="noopener noreferrer">
+           ${att ? "Resume Exam" : "Start Exam"} <span class="arw">↗</span>
          </a>`
       : `<span class="open-btn disabled">Link coming soon</span>`;
     footHTML = live + btn;
   } else {
     const btn = hasLink
-      ? `<a class="open-btn practice" href="${esc(r.link)}" target="_blank" rel="noopener noreferrer">
-           Practice <span class="arw">↗</span>
+      ? `<a class="open-btn practice" data-index="${idxAttr}" href="${esc(r.link)}" target="_blank" rel="noopener noreferrer">
+           ${att ? "Practice again" : "Practice"} <span class="arw">↗</span>
          </a>`
       : `<span class="open-btn disabled">Link coming soon</span>`;
     footHTML = btn;
   }
 
   return `
-    <article class="card ${st}" style="--h:${hue}">
+    <article class="card ${st}${att ? " attempted" : ""}" data-index="${idxAttr}" style="--h:${hue}">
       <div class="card-top">
-        <span class="badge ${typeClass}">${esc(r.index || "—")}</span>
+        <span class="badge ${typeClass}">${att ? "✓ " : ""}${esc(r.index || "—")}</span>
         <span class="subject">${esc(r.subject || "General")}</span>
       </div>
       <p class="syllabus">${esc(r.syllabus || "—")}</p>
       <button class="more-btn" type="button">Show more ▾</button>
-      <div class="card-foot">${footHTML}</div>
+      <div class="card-foot">
+        ${att ? attemptNoteHTML(att) : ""}
+        ${footHTML}
+      </div>
     </article>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ATTEMPT TRACKING
+   ═══════════════════════════════════════════════════════════════════ */
+function refreshCard(index){
+  const row = state.all.find(r => r.index === index);
+  if(!row) return;
+  const el = [...content.querySelectorAll(".card")].find(c => c.dataset.index === index);
+  if(!el) return;
+
+  const wasExpanded = el.classList.contains("expanded");
+
+  const tmp = document.createElement("div");
+  tmp.innerHTML = cardHTML(row);
+  const fresh = tmp.firstElementChild;
+  if(!fresh) return;
+
+  el.replaceWith(fresh);
+
+  if(wasExpanded){
+    fresh.classList.add("expanded");
+    const mb = fresh.querySelector(".more-btn");
+    if(mb) mb.textContent = "Show less ▴";
+  }
+
+  const syl = fresh.querySelector(".syllabus");
+  if(syl && syl.scrollHeight > syl.clientHeight + 6) fresh.classList.add("has-more");
+}
+
+function markAttempt(index){
+  if(!state.user || !index) return;
+
+  /* 1 — optimistic local update (instant UI) */
+  const cur = state.attempts[index] || { count:0, first:null, last:null };
+  const nowIso = new Date().toISOString();
+  const rec = {
+    count: (cur.count || 0) + 1,
+    first: cur.first || nowIso,
+    last:  nowIso
+  };
+  state.attempts[index] = rec;
+  const row = state.all.find(r => r.index === index);
+  if(row) row.attempt = rec;
+  refreshCard(index);
+
+  /* 2 — persist to the sheet (fire & forget, never blocks the click) */
+  fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      action: "markAttempt",
+      email: state.user.email,
+      code:  state.user.code,
+      index: index
+    }),
+    redirect: "follow",
+    keepalive: true
+  })
+  .then(r => r.text())
+  .then(t => {
+    try{
+      const j = JSON.parse(t);
+      if(j.ok && j.attempt){
+        state.attempts[index] = j.attempt;
+        if(row) row.attempt = j.attempt;
+        refreshCard(index);
+      }
+    }catch(e){ /* ignore */ }
+  })
+  .catch(() => { /* offline / blocked — local mark already applied */ });
 }
 
 function render(){
   const list = getFiltered();
 
+  const doneCount = list.filter(r => r.attempt).length;
   metaEl.innerHTML =
-    `<span>Showing <b>${list.length}</b> of <b>${state.all.length}</b> entries</span>` +
+    `<span>Showing <b>${list.length}</b> of <b>${state.all.length}</b> entries · ` +
+    `<b>${doneCount}</b> attempted</span>` +
     `<span>${state.subject === "All" ? "All subjects" : esc(state.subject)}</span>`;
 
   if(!list.length){
