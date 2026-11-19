@@ -452,7 +452,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="comp-icon" id="compIcon">⏳</div>
     <div class="comp-text">
       <div class="comp-title" id="compTitle">VOCAB JAM COMPETITION 1.0</div>
-      <div class="comp-sub" id="compSub">STARTS 21 NOV 12:01 AM BDT</div>
+      <div class="comp-sub" id="compSub">STARTS 20 NOV 12:01 AM BDT</div>
     </div>
     <div class="comp-arrow" id="compArrow">🔒</div>
   </a>
@@ -547,10 +547,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 var API_URL = 'https://script.google.com/macros/s/AKfycbxpyBIkycTk0Lqlitn5Zd9_oWQzCvrJOdCVWlo-HFG8vnx8GAsGTjm_4rSEDWYWx7HB3w/exec';
 var DECK_SIZE = 80;
 
-/* Competition window (21 Nov 2026 BDT = UTC+6) */
+/* Competition window (20 Nov 2026 BDT = UTC+6) */
 var COMP_URL        = 'https://plan-c-early-code.onrender.com/vj26';
-var COMP_START_UTC  = Date.UTC(2026, 10, 20, 18,  1,  0); // 21 Nov 00:01 BDT
-var COMP_END_UTC    = Date.UTC(2026, 10, 21, 17, 59, 59); // 21 Nov 23:59:59 BDT
+var COMP_START_UTC  = Date.UTC(2026, 10, 19, 18,  1,  0); // 20 Nov 00:01 BDT
+var COMP_END_UTC    = Date.UTC(2026, 10, 20, 17, 59, 59); // 20 Nov 23:59:59 BDT
 
 /* ============================================================
    UTILS
@@ -604,7 +604,7 @@ function updateCompetitionBanner() {
     banner.setAttribute('aria-disabled', 'true');
     banner.onclick = function(e) {
       e.preventDefault();
-      showToast('⏰ COMPETITION STARTS 21 NOV 12:01 AM BDT');
+      showToast('⏰ COMPETITION STARTS 20 NOV 12:01 AM BDT');
     };
     icon.textContent  = '⏳';
     title.textContent = 'VOCAB JAM COMPETITION 1.0';
@@ -620,7 +620,7 @@ function updateCompetitionBanner() {
     if (msLeft <= 3600 * 1000) {
       sub.innerHTML = 'LIVE · ENDS IN <b>' + formatCountdown(msLeft) + '</b>';
     } else {
-      sub.innerHTML = 'LIVE UNTIL 21 NOV 11:59 PM BDT · <b>TAP TO JOIN</b>';
+      sub.innerHTML = 'LIVE UNTIL 20 NOV 11:59 PM BDT · <b>TAP TO JOIN</b>';
     }
     arrow.textContent = '▶';
   } else {
