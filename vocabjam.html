@@ -97,6 +97,27 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .hdr-pill-val{font-family:var(--font-pixel);font-size:14px;color:var(--gold);
   text-shadow:1px 1px 0 #000}
 
+/* ===== COMPETITION BANNER ===== */
+.comp-banner{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:12px;
+  background:linear-gradient(135deg,rgba(255,204,0,.18),rgba(255,153,0,.08)),var(--panel);
+  border:3px solid #000;box-shadow:inset 0 0 0 3px var(--gold2),0 4px 0 rgba(0,0,0,.5);
+  text-decoration:none;color:var(--text);cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .15s,filter .15s}
+.comp-banner:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.comp-banner::after{content:'';position:absolute;left:-60%;top:0;bottom:0;width:60%;
+  background:linear-gradient(90deg,transparent,rgba(255,204,0,.18),transparent);
+  animation:shine 3.2s ease-in-out infinite;pointer-events:none}
+@keyframes shine{0%,100%{left:-60%}50%{left:120%}}
+.comp-icon{font-size:26px;flex-shrink:0;filter:drop-shadow(0 2px 0 #000)}
+.comp-text{flex:1;min-width:0}
+.comp-title{font-family:var(--font-pixel);font-size:9px;color:var(--gold);
+  text-shadow:1px 1px 0 #000;letter-spacing:.5px;margin-bottom:5px;line-height:1.4}
+.comp-sub{font-family:var(--font-pixel);font-size:7px;color:var(--text-dim);
+  letter-spacing:.3px;line-height:1.6}
+.comp-sub b{color:var(--hp)}
+.comp-arrow{font-family:var(--font-pixel);font-size:14px;color:var(--gold);
+  flex-shrink:0;text-shadow:1px 1px 0 #000}
+
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
 .stat{background:var(--panel);border:3px solid #000;
   box-shadow:inset 0 0 0 3px var(--border-dark);padding:8px 10px}
@@ -104,6 +125,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   letter-spacing:.5px;display:block;margin-bottom:5px}
 .stat-val{font-family:var(--font-pixel);font-size:14px;color:var(--gold);
   text-shadow:1px 1px 0 #000;display:inline-block}
+.stat.streak .stat-val{color:#ff8c42}
 .bar{height:8px;background:#000;margin-top:6px;border:2px solid var(--border-dark);overflow:hidden}
 .bar-fill{height:100%;background:linear-gradient(180deg,var(--hp),var(--hp-dark));
   width:0;transition:width .4s ease;box-shadow:inset 0 2px 0 rgba(255,255,255,.3)}
@@ -250,7 +272,18 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .my-breakdown b{color:var(--gold);font-size:12px;display:block;margin-bottom:2px;
   text-shadow:1px 1px 0 #000}
 
-.lb-header,.lb-row{display:grid;grid-template-columns:44px 1fr 70px;gap:8px;
+/* ===== RANK SUB-TABS ===== */
+.rank-tabs{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:14px;
+  border:3px solid #000;box-shadow:inset 0 0 0 3px var(--border-dark);background:var(--panel2)}
+.rank-tab{font-family:var(--font-pixel);font-size:8px;padding:12px 4px;border:none;
+  background:transparent;color:var(--text-dim);cursor:pointer;transition:.15s;
+  text-transform:uppercase;letter-spacing:.3px}
+.rank-tab + .rank-tab{border-left:2px solid var(--border-dark)}
+.rank-tab:hover{color:var(--text)}
+.rank-tab.active{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#000;
+  text-shadow:1px 1px 0 rgba(255,255,255,.3)}
+
+.lb-header,.lb-row{display:grid;grid-template-columns:44px 1fr 76px;gap:8px;
   padding:8px 10px;font-size:12px;align-items:center}
 .lb-header{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);
   border-bottom:2px solid var(--border-dark);letter-spacing:.5px}
@@ -261,6 +294,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .lb-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lb-pts{font-family:var(--font-pixel);font-size:9px;color:var(--gold);text-align:right;
   text-shadow:1px 1px 0 #000}
+.lb-row .lb-pts.streak{color:#ff8c42}
 
 .result{text-align:center;padding:20px 10px}
 .result-title{font-family:var(--font-pixel);font-size:clamp(16px,4vw,22px);color:var(--gold);
@@ -299,6 +333,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   .my-stats{grid-template-columns:1fr 1fr;gap:10px}
   .my-rank-num,.my-points-val{font-size:22px}
   .deck-grid{grid-template-columns:repeat(2,1fr)}
+  .comp-title{font-size:8px}
+  .comp-sub{font-size:6px}
+  .comp-icon{font-size:20px}
+  .rank-tab{font-size:7px;padding:10px 2px}
+  .lb-header,.lb-row{grid-template-columns:36px 1fr 62px;font-size:11px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
@@ -343,6 +382,16 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
   </header>
 
+  <!-- ===== COMPETITION BANNER ===== -->
+  <a class="comp-banner" href="https://plan-c-early-code.onrender.com/vj26" target="_blank" rel="noopener">
+    <div class="comp-icon">🏆</div>
+    <div class="comp-text">
+      <div class="comp-title">VOCAB JAM COMPETITION 1.0</div>
+      <div class="comp-sub">STARTS 21 NOV 12:01 AM · ENDS 21 NOV 11:59 PM</div>
+    </div>
+    <div class="comp-arrow">▶</div>
+  </a>
+
   <div class="stats">
     <div class="stat"><span class="stat-label">MASTERED</span><span class="stat-val" id="sMaster">0</span>
       <div class="bar"><div class="bar-fill" id="barMaster" style="width:0%"></div></div>
@@ -350,6 +399,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="stat"><span class="stat-label">DUE</span><span class="stat-val" id="sDue">0</span></div>
     <div class="stat"><span class="stat-label">NEW</span><span class="stat-val" id="sNew">0</span></div>
     <div class="stat"><span class="stat-label">TOTAL</span><span class="stat-val" id="sTotal">0</span></div>
+    <div class="stat streak"><span class="stat-label">STREAK</span><span class="stat-val" id="sStreak">0</span></div>
   </div>
 
   <nav class="tabs" role="tablist">
@@ -405,7 +455,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       </div>
     </div>
     <div class="panel">
-      <div class="panel-heading">TODAY'S LEADERBOARD</div>
+      <div class="rank-tabs">
+        <button class="rank-tab active" data-board="daily">DAILY</button>
+        <button class="rank-tab" data-board="alltime">ALL TIME</button>
+        <button class="rank-tab" data-board="streak">🔥 STREAK</button>
+      </div>
       <div id="leaderboardView">
         <div class="empty"><span class="icon">✦</span><div>LOADING…</div></div>
       </div>
@@ -719,6 +773,7 @@ function checkDayRollover() {
     today = newToday();
     saveToday();
     updateHeader();
+    loadMyStats();
   }
 }
 
@@ -899,7 +954,8 @@ function bootApp() {
   renderQuizIdle();
   updateHeader();
   setTimeout(function(){
-    if (pendingEvents.length) flushEvents();
+    var p = pendingEvents.length ? flushEvents() : Promise.resolve();
+    p.then(function(){ loadMyStats(); }).catch(function(){ loadMyStats(); });
   }, 1500);
 }
 
@@ -996,7 +1052,7 @@ function renderDeckGrid() {
 }
 
 /* ============================================================
-   STUDY (flashcards per deck) — AGAIN requeues indefinitely
+   STUDY (flashcards per deck)
    ============================================================ */
 var IV = { 1: 0, 2: 1, 3: 2, 4: 4, 5: 8 }, DAY = 86400000;
 var queue = [], current = null, revealed = false;
@@ -1382,14 +1438,30 @@ function startQuiz() {
 }
 
 /* ============================================================
-   RANK TAB
+   RANK TAB (Daily / All-Time / Streak)
    ============================================================ */
 var rankRefreshTimer = null;
+var activeBoard = 'daily';
+
+document.querySelectorAll('.rank-tab').forEach(function(t) {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.rank-tab').forEach(function(x) { x.classList.remove('active'); });
+    t.classList.add('active');
+    activeBoard = t.dataset.board;
+    loadBoard();
+  });
+});
+
+function loadBoard() {
+  if (activeBoard === 'daily') loadLeaderboard();
+  else if (activeBoard === 'alltime') loadAllTimeLeaderboard();
+  else if (activeBoard === 'streak') loadStreakLeaderboard();
+}
 
 function refreshRankTab() {
   flushEvents().then(function() {
     setTimeout(function() {
-      loadLeaderboard();
+      loadBoard();
       loadMyStats();
     }, 300);
   });
@@ -1403,10 +1475,11 @@ function refreshRankTabSilent() {
     if (rankRefreshTimer) { clearInterval(rankRefreshTimer); rankRefreshTimer = null; }
     return;
   }
-  loadLeaderboard();
+  loadBoard();
   loadMyStats();
 }
 
+/* -------- DAILY -------- */
 function loadLeaderboard() {
   var url = API_URL + '?action=leaderboard&date=' + encodeURIComponent(today.date);
   fetch(url, { method: 'GET', mode: 'cors' })
@@ -1422,20 +1495,7 @@ function loadLeaderboard() {
           '<div>' + esc(String(list && list.error || list)) + '</div></div>';
         return;
       }
-      if (!list.length) {
-        var wc = Object.keys(today.wordsLearned).length;
-        var localPts = wc * 10 + today.quizzesPlayed * 5 + today.marks * 2;
-        if (localPts > 0) {
-          $('leaderboardView').innerHTML =
-            '<div class="empty"><span class="icon">⏳</span>' +
-            '<span class="big">SERVER HASN\'T SEEN YOUR EVENTS YET</span>' +
-            '<div>YOUR LOCAL: ' + localPts + ' PTS</div>' +
-            '<div style="font-size:7px;opacity:.7;margin-top:8px">' +
-            'TAP REFRESH IN A FEW SECONDS</div></div>';
-          return;
-        }
-      }
-      renderLeaderboard(list);
+      renderLeaderboard(list, 'daily');
     })
     .catch(function(err){
       $('leaderboardView').innerHTML =
@@ -1447,13 +1507,138 @@ function loadLeaderboard() {
     });
 }
 
+/* -------- ALL TIME -------- */
+function loadAllTimeLeaderboard() {
+  var url = API_URL + '?action=allTimeLeaderboard';
+  fetch(url, { method: 'GET', mode: 'cors' })
+    .then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(list){
+      if (!Array.isArray(list)) {
+        $('leaderboardView').innerHTML =
+          '<div class="empty"><span class="icon">⚠</span>' +
+          '<span class="big">BAD RESPONSE FROM SERVER</span></div>';
+        return;
+      }
+      renderLeaderboard(list, 'alltime');
+    })
+    .catch(function(err){
+      $('leaderboardView').innerHTML =
+        '<div class="empty"><span class="icon">⚠</span>' +
+        '<span class="big">FETCH FAILED</span>' +
+        '<div>' + esc(err.message) + '</div></div>';
+    });
+}
+
+/* -------- STREAK -------- */
+function loadStreakLeaderboard() {
+  var url = API_URL + '?action=streakLeaderboard';
+  fetch(url, { method: 'GET', mode: 'cors' })
+    .then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(list){
+      if (!Array.isArray(list)) {
+        $('leaderboardView').innerHTML =
+          '<div class="empty"><span class="icon">⚠</span>' +
+          '<span class="big">BAD RESPONSE FROM SERVER</span></div>';
+        return;
+      }
+      renderStreakLeaderboard(list);
+    })
+    .catch(function(err){
+      $('leaderboardView').innerHTML =
+        '<div class="empty"><span class="icon">⚠</span>' +
+        '<span class="big">FETCH FAILED</span>' +
+        '<div>' + esc(err.message) + '</div></div>';
+    });
+}
+
+/* -------- RENDERERS -------- */
+function renderLeaderboard(list, mode) {
+  mode = mode || 'daily';
+  if (!list || !list.length) {
+    if (mode === 'daily') {
+      var wc = Object.keys(today.wordsLearned).length;
+      var localPts = wc * 10 + today.quizzesPlayed * 5 + today.marks * 2;
+      if (localPts > 0) {
+        $('leaderboardView').innerHTML =
+          '<div class="empty"><span class="icon">⏳</span>' +
+          '<span class="big">SERVER HASN\'T SEEN YOUR EVENTS YET</span>' +
+          '<div>YOUR LOCAL: ' + localPts + ' PTS</div>' +
+          '<div style="font-size:7px;opacity:.7;margin-top:8px">' +
+          'TAP REFRESH IN A FEW SECONDS</div></div>';
+        return;
+      }
+    }
+    $('leaderboardView').innerHTML = '<div class="empty">' +
+      '<span class="icon">🏆</span><div>' +
+      (mode === 'alltime' ? 'NO PLAYERS YET' : 'NO PLAYERS TODAY') + '</div>' +
+      '<div style="margin-top:8px;font-size:7px;opacity:.7">BE THE FIRST!</div></div>';
+    return;
+  }
+  var html = '<div class="lb-header">' +
+    '<div class="lb-rank">#</div>' +
+    '<div class="lb-name">PLAYER</div>' +
+    '<div class="lb-pts">PTS</div>' +
+    '</div>';
+  var myEmail = (user.email || '').toLowerCase();
+  for (var i = 0; i < list.length; i++) {
+    var u = list[i];
+    var isMe = (u.email || '').toLowerCase() === myEmail;
+    var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+    html += '<div class="lb-row' + (isMe ? ' me' : '') + '">' +
+      '<div class="lb-rank">' + (medal || u.rank) + '</div>' +
+      '<div class="lb-name">' + esc(u.name || '(no name)') + (isMe ? ' ⬅' : '') + '</div>' +
+      '<div class="lb-pts">' + (u.points || 0) + '</div>' +
+      '</div>';
+  }
+  $('leaderboardView').innerHTML = html;
+}
+
+function renderStreakLeaderboard(list) {
+  if (!list || !list.length) {
+    $('leaderboardView').innerHTML =
+      '<div class="empty"><span class="icon">🔥</span>' +
+      '<span class="big">NO STREAKS YET</span>' +
+      '<div>LEARN A WORD TODAY TO START ONE!</div></div>';
+    return;
+  }
+  var html = '<div class="lb-header">' +
+    '<div class="lb-rank">#</div>' +
+    '<div class="lb-name">PLAYER</div>' +
+    '<div class="lb-pts">STREAK</div>' +
+    '</div>';
+  var myEmail = (user.email || '').toLowerCase();
+  for (var i = 0; i < list.length; i++) {
+    var u = list[i];
+    var isMe = (u.email || '').toLowerCase() === myEmail;
+    var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+    html += '<div class="lb-row' + (isMe ? ' me' : '') + '">' +
+      '<div class="lb-rank">' + (medal || u.rank) + '</div>' +
+      '<div class="lb-name">' + esc(u.name || '(no name)') + (isMe ? ' ⬅' : '') + '</div>' +
+      '<div class="lb-pts streak">' + (u.current || 0) + '🔥</div>' +
+      '</div>';
+  }
+  $('leaderboardView').innerHTML = html;
+}
+
+/* -------- MY STATS (with streak) -------- */
 function loadMyStats() {
+  if (!user) return;
   var url = API_URL + '?action=myStats&email=' +
     encodeURIComponent(user.email) + '&date=' + encodeURIComponent(today.date);
   fetch(url, { method: 'GET', mode: 'cors' })
     .then(function(r){ return r.json(); })
     .then(function(stats){
       renderMyStats(stats || {});
+      if (stats && typeof stats.currentStreak === 'number') {
+        var el = $('sStreak');
+        if (el) el.textContent = stats.currentStreak;
+      }
     })
     .catch(function(){
       renderMyStatsLocal();
@@ -1467,6 +1652,9 @@ function renderMyStats(s) {
   var words = s.words || 0;
   var quizzes = s.quizzes || 0;
   var marks = s.marks || 0;
+  var curStreak = s.currentStreak || 0;
+  var bestStreak = s.longestStreak || 0;
+  var activeDays = s.totalActiveDays || 0;
 
   var done = 0, nDecks = totalDecks();
   for (var i = 0; i < nDecks; i++) if (isDeckComplete(i)) done++;
@@ -1492,9 +1680,11 @@ function renderMyStats(s) {
       '<div><b>' + marks + '</b>MARKS<br><span style="color:var(--text)">' + (marks * 2) + ' PTS</span></div>' +
     '</div>' +
     '<div style="margin-top:14px;padding:10px;background:var(--bg);border:2px solid var(--border-dark);' +
-      'font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);line-height:1.8">' +
+      'font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);line-height:1.9">' +
       '<div>DECKS: <b style="color:var(--gold)">' + done + '/' + nDecks + ' COMPLETE</b></div>' +
       '<div>WORDS MASTERED: <b style="color:var(--hp)">' + mastered + '/' + WORDS.length + '</b></div>' +
+      '<div>STREAK: <b style="color:#ff8c42">' + curStreak + '🔥</b> CURRENT · <b style="color:var(--gold)">' + bestStreak + '</b> BEST</div>' +
+      '<div>ACTIVE DAYS: <b style="color:var(--hp)">' + activeDays + '</b></div>' +
     '</div>';
 
   $('myStatsView').innerHTML = html;
@@ -1505,34 +1695,9 @@ function renderMyStatsLocal() {
   renderMyStats({
     words: wc, quizzes: today.quizzesPlayed, marks: today.marks,
     points: wc * 10 + today.quizzesPlayed * 5 + today.marks * 2,
-    rank: null, totalPlayers: 0
+    rank: null, totalPlayers: 0,
+    currentStreak: 0, longestStreak: 0, totalActiveDays: 0
   });
-}
-
-function renderLeaderboard(list) {
-  if (!list || !list.length) {
-    $('leaderboardView').innerHTML = '<div class="empty">' +
-      '<span class="icon">🏆</span><div>NO PLAYERS TODAY</div>' +
-      '<div style="margin-top:8px;font-size:7px;opacity:.7">BE THE FIRST!</div></div>';
-    return;
-  }
-  var html = '<div class="lb-header">' +
-    '<div class="lb-rank">#</div>' +
-    '<div class="lb-name">PLAYER</div>' +
-    '<div class="lb-pts">PTS</div>' +
-    '</div>';
-  var myEmail = user.email.toLowerCase();
-  for (var i = 0; i < list.length; i++) {
-    var u = list[i];
-    var isMe = (u.email || '').toLowerCase() === myEmail;
-    var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
-    html += '<div class="lb-row' + (isMe ? ' me' : '') + '">' +
-      '<div class="lb-rank">' + (medal || u.rank) + '</div>' +
-      '<div class="lb-name">' + esc(u.name || '(no name)') + (isMe ? ' ⬅' : '') + '</div>' +
-      '<div class="lb-pts">' + (u.points || 0) + '</div>' +
-      '</div>';
-  }
-  $('leaderboardView').innerHTML = html;
 }
 
 /* ============================================================
@@ -1557,6 +1722,20 @@ $('loginEmail').addEventListener('keypress', function(e){ if(e.key === 'Enter') 
 $('qStart').addEventListener('click', startQuiz);
 
 setInterval(function(){ checkDayRollover(); }, 60000);
+
+/* Light periodic streak refresh so the header stays accurate */
+setInterval(function(){
+  if (!user || $('app').classList.contains('hidden')) return;
+  fetch(API_URL + '?action=myStats&email=' + encodeURIComponent(user.email) +
+        '&date=' + encodeURIComponent(today.date), {method:'GET',mode:'cors'})
+    .then(function(r){ return r.json(); })
+    .then(function(s){
+      if (s && typeof s.currentStreak === 'number') {
+        var el = $('sStreak');
+        if (el) el.textContent = s.currentStreak;
+      }
+    }).catch(function(){});
+}, 180000);
 </script>
 </body>
 </html>
