@@ -333,14 +333,69 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 if (!/^\d+$/.test(EXAM_ID)) {
-  // no valid ?exam= parameter — bounce back to portal
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('startScreen').innerHTML =
-      '<h1 class="neon-title">Plan C</h1>' +
-      '<div class="card text-center" style="color:var(--neon-red);font-weight:bold;">' +
-      'Invalid exam link. Please open the exam from the portal.' +
-      '</div>';
-  });
+  document.addEventListener('DOMContentLoaded', showExamPicker);
+}
+
+function parseDateValue(v) {
+  if (!v) return null;
+  if (v instanceof Date) return v;
+  const s = String(v).trim();
+  const m1 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m1) return new Date(+m1[3], +m1[1] - 1, +m1[2]);
+  const m2 = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m2) return new Date(+m2[1], +m2[2] - 1, +m2[3]);
+  const d = new Date(s);
+  return isNaN(d) ? null : d;
+}
+
+async function showExamPicker() {
+  const start = document.getElementById('startScreen');
+  start.innerHTML =
+    '<img src="C.png" alt="C Logo" class="logo">' +
+    '<h1 class="neon-title">Plan C</h1>' +
+    '<p class="text-center" style="font-size:1rem;color:var(--neon-cyan);margin-bottom:1.5rem;font-weight:bold;">SELECT AN EXAM</p>' +
+    '<div class="card" id="examPickerCard">' +
+      '<div class="loading-status"><span class="spinner"></span><span>LOADING EXAMS…</span></div>' +
+    '</div>';
+
+  const card = document.getElementById('examPickerCard');
+  try {
+    const data = await apiGet('exams');
+    const rows = (data.exams || []).filter(r => /[?&]exam=\d+/.test(String(r['Exam Link'] || '')));
+
+    if (!rows.length) {
+      card.innerHTML = '<p style="color:var(--neon-red);font-weight:bold;text-align:center;">No scheduled exams found. Check the Exam sheet.</p>';
+      return;
+    }
+
+    const now = Date.now();
+    card.innerHTML = rows.map(r => {
+      const m      = String(r['Exam Link'] || '').match(/[?&]exam=(\d+)/);
+      const n      = m ? m[1] : '';
+      const name   = r['Index'] || ('Exam ' + n);
+      const startR = r['Exam Start'] || '';
+      const d      = parseDateValue(startR);
+      const locked = d && now < d.getTime();
+      const badge  = locked
+        ? '🔒 Opens ' + d.toLocaleDateString()
+        : '▶ Start';
+      const href   = locked ? '#' : '?exam=' + n;
+      const style  = locked
+        ? 'opacity:.45;pointer-events:none;text-decoration:none;padding:.6rem 1rem;border:2px solid var(--border);color:var(--neon-red);border-radius:6px;font-weight:bold;font-size:.85rem;'
+        : 'text-decoration:none;padding:.6rem 1rem;border:2px solid var(--neon-green);color:var(--neon-green);border-radius:6px;font-weight:bold;font-size:.85rem;';
+      return (
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.9rem 0;border-bottom:1px dashed var(--border);">' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="font-weight:bold;color:var(--neon-cyan);">' + escapeHtml(name) + '</div>' +
+            '<div style="font-size:.8rem;opacity:.7;">' + escapeHtml(String(r['Syllabus'] || '')) + ' · ' + escapeHtml(startR) + '</div>' +
+          '</div>' +
+          '<a href="' + href + '" style="' + style + '">' + badge + '</a>' +
+        '</div>'
+      );
+    }).join('');
+  } catch (err) {
+    card.innerHTML = '<p style="color:var(--neon-red);font-weight:bold;text-align:center;">Failed to load exams: ' + escapeHtml(err.message) + '</p>';
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
