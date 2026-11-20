@@ -399,10 +399,10 @@ async function showExamPicker() {
     }).join('');
     box.innerHTML = '<div class="card">' + list + '</div>';
   } catch (err) {
-    box.innerHTML = `<div class="card">
-      <p style="color:var(--neon-red);font-weight:bold;margin-bottom:.8rem;">Failed to load exams: ${escapeHtml(err.message)}</p>
-      <p style="font-size:.85rem;color:var(--neon-cyan);">Tip: open <code>${escapeHtml(API_URL)}?action=ping</code> in your browser. It should return <code>{"success":true,"version":"v3-2026",...}</code>. If it returns "Unknown action", the Apps Script deployment is stale — go to Apps Script → Deploy → Manage deployments → edit → New version → Deploy, then reload this page.</p>
-    </div>`;
+    document.getElementById('syncBadge').className = 'sync-badge error';
+    document.getElementById('syncText').textContent =
+      'SYNC FAILED: ' + (err && err.message ? err.message : String(err)).slice(0, 120);
+    console.error('Sync failed:', err);
   }
 }
 
