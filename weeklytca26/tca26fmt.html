@@ -647,6 +647,7 @@ async function doSubmit(auto) {
     answerKeyMap[k] = (q.ansKey || '').toString().trim().toUpperCase();
   });
   const payload = {
+    action: 'submit',
     exam: EXAM_ID, examName: EXAM_NAME,
     name: studentInfo.name, college: studentInfo.college,
     email: studentInfo.email, contact: studentInfo.phone,
