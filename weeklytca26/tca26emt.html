@@ -224,7 +224,6 @@ window.MathJax = {
       </div>
     </div>
     <div class="section-breakdown" id="sectionBreakdown"></div>
-    <div class="disq-warning hidden" id="disqWarning">⚠ DISQUALIFIED: You answered multiple optional sections.</div>
   </div>
   <div class="review-wrap">
     <h2 class="review-title">◤ ANSWER REVIEW ◢</h2>
@@ -249,6 +248,32 @@ const QUESTION_FILE = 'tca26e' + EXAM_ID + '.js';
 let   EXAM_NAME     = 'Exam ' + (EXAM_ID || '?');
 
 /* ═══════════════════════════════════════════════════════════════════
+   SUBJECTS
+   ═══════════════════════════════════════════════════════════════════ */
+const SECTION_LABELS = {
+  English:         'English',
+  AdvEnglish:      'Adv. English',
+  BusinessStudies: 'Business Studies',
+  Econ:            'Economics',
+  HMath:           'Higher Math',
+  Accounting:      'Accounting'
+};
+const SUBJECT_RANGES = [
+  { name: 'English',         from: 1,  to: 16 },
+  { name: 'AdvEnglish',      from: 17, to: 28 },
+  { name: 'BusinessStudies', from: 29, to: 44 },
+  { name: 'Econ',            from: 45, to: 60 },
+  { name: 'HMath',           from: 61, to: 76 },
+  { name: 'Accounting',      from: 77, to: 92 }
+];
+function subjectOfIndex(idx) {
+  const n = Number(idx);
+  for (const r of SUBJECT_RANGES) if (n >= r.from && n <= r.to) return r.name;
+  return 'Other';
+}
+const ADV_ENG_PASS_MIN = 5;
+
+/* ═══════════════════════════════════════════════════════════════════
    STATE
    ═══════════════════════════════════════════════════════════════════ */
 let QUESTIONS = [];
@@ -261,11 +286,10 @@ let studentInfo = {};
 let examStartTime = null;
 let examEndTime = null;
 let timeTakenSeconds = 0;
-let MANDATORY = ['Bangla', 'English', 'ICT'];
-let OPTIONAL  = ['HM', 'Econ'];
+let MANDATORY = ['English', 'AdvEnglish'];
+let OPTIONAL  = ['BusinessStudies', 'Econ', 'HMath', 'Accounting'];
 let DURATION_MIN = 45;
 let SECTION_RANGES = {};
-const SECTION_LABELS = { Bangla:'বাংলা', English:'English', ICT:'ICT', HM:'Math', Stat:'⚠ Statistics', Econ:'Economics' };
 
 /* ═══════════════════════════════════════════════════════════════════
    ANTI-CHEAT
@@ -339,10 +363,9 @@ function renderStartForm() {
       <ul style="font-size:.95rem;line-height:2;padding-left:1.2rem;">
         <li>45 Minutes | Full Syllabus</li>
         <li>+1 correct | −0.25 wrong | 0 skipped</li>
-        <li>Mandatory: Bangla, English, ICT</li>
-        <li>Choose ONLY ONE optional: Math / Economics</li>
-        <li>Multiple optionals = DISQUALIFIED</li>
-        <li><span style="color:var(--neon-red);font-weight:bold;">⚠ Statistics is NOT in the current circular — do not attempt.</span></li>
+        <li>Mandatory: English (1–16), Adv. English (17–28)</li>
+        <li>Optional: Business Studies (29–44), Economics (45–60), Higher Math (61–76), Accounting (77–92)</li>
+        <li><span class="highlight">Adv. English: need 5/12 correct to pass</span></li>
         <li>Tab switches are counted and reported</li>
       </ul>
     </div>
@@ -401,7 +424,7 @@ async function showExamPicker() {
   } catch (err) {
     box.innerHTML = `<div class="card">
       <p style="color:var(--neon-red);font-weight:bold;margin-bottom:.8rem;">Failed to load exams: ${escapeHtml(err.message)}</p>
-      <p style="font-size:.85rem;color:var(--neon-cyan);">Tip: open <code>${escapeHtml(API_URL)}?action=ping</code> in your browser. It should return <code>{"success":true,"version":"v5-emt",...}</code>.</p>
+      <p style="font-size:.85rem;color:var(--neon-cyan);">Tip: open <code>${escapeHtml(API_URL)}?action=ping</code> in your browser. It should return <code>{"success":true,"version":"v6-emt",...}</code>.</p>
     </div>`;
   }
 }
@@ -496,9 +519,10 @@ function onQuestionsLoaded(questions) {
   examStartTime = Date.now();
   SECTION_RANGES = {};
   QUESTIONS.forEach((q, i) => {
-    if (!q.subject) return;
-    if (!SECTION_RANGES[q.subject]) SECTION_RANGES[q.subject] = { start:i, end:i };
-    else SECTION_RANGES[q.subject].end = i;
+    const idx  = q.index != null ? q.index : (i + 1);
+    const subj = subjectOfIndex(idx);
+    if (!SECTION_RANGES[subj]) SECTION_RANGES[subj] = { start:i, end:i };
+    else SECTION_RANGES[subj].end = i;
   });
   document.getElementById('timerDisplay').textContent = String(DURATION_MIN).padStart(2,'0') + ':00';
   document.getElementById('loadingScreen').classList.add('hidden');
@@ -561,7 +585,8 @@ function renderAllQuestions() {
   QUESTIONS.forEach((q, idx) => {
     const block = document.createElement('div');
     block.className = 'question-block'; block.id = 'qblock-' + idx;
-    block.innerHTML = `<div class="q-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[q.subject] || q.subject)}</span></div>`;
+    const _subj = subjectOfIndex(q.index != null ? q.index : (idx + 1));
+    block.innerHTML = `<div class="q-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[_subj] || _subj)}</span></div>`;
     const qt = document.createElement('div');
     qt.className = 'question-text'; qt.textContent = q.question; block.appendChild(qt);
     ['A','B','C','D'].forEach(L => {
@@ -601,26 +626,28 @@ function formatDuration(seconds) {
    ═══════════════════════════════════════════════════════════════════ */
 function computeLocalResult() {
   let correct = 0, wrong = 0, skipped = 0;
-  const sectionScores = {};
-  [...MANDATORY, ...OPTIONAL].forEach(s => sectionScores[s] = 0);
-  const attemptedOptional = new Set();
+  const stats = {};
+  [...MANDATORY, ...OPTIONAL].forEach(s => stats[s] = { c: 0, w: 0 });
   QUESTIONS.forEach((q, i) => {
+    const idx  = q.index != null ? q.index : (i + 1);
+    const subj = subjectOfIndex(idx);
     const chosen = (answers[i] || '').toString().trim().toUpperCase();
     const key    = (q.ansKey || '').toString().trim().toUpperCase();
-    if (!chosen) skipped++;
-    else if (chosen === key) { correct++; if (sectionScores[q.subject] !== undefined) sectionScores[q.subject]++; }
-    else wrong++;
-    if (chosen && OPTIONAL.includes(q.subject)) attemptedOptional.add(q.subject);
+    if (!chosen) { skipped++; return; }
+    if (chosen === key) { correct++; if (stats[subj]) stats[subj].c++; }
+    else                { wrong++;   if (stats[subj]) stats[subj].w++; }
   });
   const totalScore = correct - wrong * 0.25;
-  const status = totalScore >= 35 ? 'MISSION PASSED ++ CREDIT'
-               : totalScore >= 24 ? 'PASSED but your written Scripts won\'t be evaluated'
-               : 'FAILED, Please Contact your Instructors';
+  const advPass = stats.AdvEnglish.c >= ADV_ENG_PASS_MIN;
+  const status = !advPass
+    ? 'FAILED (AdvEnglish < ' + ADV_ENG_PASS_MIN + '/12)'
+    : totalScore >= 35 ? 'MISSION PASSED ++ CREDIT'
+    : totalScore >= 24 ? 'PASSED but your written Scripts won\'t be evaluated'
+    : 'FAILED, Please Contact your Instructors';
   return {
     totalScore: Number(totalScore.toFixed(2)), correct, wrong, skipped,
     tabSwitches, timeTakenSeconds, status,
-    disqualified: attemptedOptional.size > 1,
-    attemptedOptional: Array.from(attemptedOptional)
+    advEnglishPass: advPass
   };
 }
 function confirmSubmit() {
@@ -685,22 +712,32 @@ function showResult(result) {
   document.getElementById('rTabs').textContent    = result.tabSwitches;
   const tSec = result.timeTakenSeconds != null ? result.timeTakenSeconds : timeTakenSeconds;
   document.getElementById('rTimeTaken').textContent = formatDuration(tSec);
+
   const sectionMarks = {};
   [...MANDATORY, ...OPTIONAL].forEach(s => sectionMarks[s] = { c:0, w:0 });
   QUESTIONS.forEach((q, i) => {
+    const idx  = q.index != null ? q.index : (i + 1);
+    const subj = subjectOfIndex(idx);
     const chosen = (answers[i] || '').toString().toUpperCase();
     const key = (q.ansKey || '').toString().toUpperCase();
-    if (!chosen || !sectionMarks[q.subject]) return;
-    if (chosen === key) sectionMarks[q.subject].c++; else sectionMarks[q.subject].w++;
+    if (!chosen || !sectionMarks[subj]) return;
+    if (chosen === key) sectionMarks[subj].c++; else sectionMarks[subj].w++;
   });
-  let html = '<strong>◤ SECTION‑WISE ◢</strong><br>';
-  Object.keys(sectionMarks).forEach(sec => {
-    const mark = sectionMarks[sec].c - 0.25 * sectionMarks[sec].w;
+  let html = '<strong>◤ SUBJECT‑WISE SCORES ◢</strong><br>';
+  [...MANDATORY, ...OPTIONAL].forEach(sec => {
+    const st = sectionMarks[sec];
+    const mark = st.c - 0.25 * st.w;
     const tag = OPTIONAL.includes(sec) ? ' <span style="color:var(--neon-purple);">[optional]</span>' : '';
-    html += `${SECTION_LABELS[sec] || sec}${tag}: <strong style="color:${mark>=0?'var(--neon-green)':'var(--neon-red)'};">${mark.toFixed(2)}</strong><br>`;
+    let extra = '';
+    if (sec === 'AdvEnglish') {
+      extra = st.c >= ADV_ENG_PASS_MIN
+        ? ' <span style="color:var(--neon-green);font-weight:bold;">✓ PASS</span>'
+        : ' <span style="color:var(--neon-red);font-weight:bold;">✗ FAIL (need 5/12)</span>';
+    }
+    html += `${SECTION_LABELS[sec] || sec}${tag}: <strong style="color:${mark>=0?'var(--neon-green)':'var(--neon-red)'};">${mark.toFixed(2)}</strong> <span style="opacity:.7;">(${st.c} correct)</span>${extra}<br>`;
   });
   document.getElementById('sectionBreakdown').innerHTML = html;
-  if (result.disqualified) document.getElementById('disqWarning').classList.remove('hidden');
+
   renderReview();
   wireFilters();
 }
@@ -714,7 +751,8 @@ function renderReview() {
     const block = document.createElement('div');
     block.className = 'review-block ' + status; block.dataset.status = status;
     const label = status === 'correct' ? '✓ CORRECT' : status === 'wrong' ? '✗ WRONG' : '— SKIPPED';
-    block.innerHTML = `<div class="review-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[q.subject] || q.subject)}</span><span class="review-status ${status}">${label}</span></div>`;
+    const _subj = subjectOfIndex(q.index != null ? q.index : (idx + 1));
+    block.innerHTML = `<div class="review-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[_subj] || _subj)}</span><span class="review-status ${status}">${label}</span></div>`;
     const qt = document.createElement('div'); qt.className = 'review-q'; qt.textContent = q.question; block.appendChild(qt);
     ['A','B','C','D'].forEach(L => {
       if (!q[L]) return;
