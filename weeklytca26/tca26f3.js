@@ -67,9 +67,8 @@ window.EXAM_QUESTIONS = [
 { index: 6,  subject: 'Bangla', question: "'লগ্ন' এর বিপরীত শব্দ কোনটি?",
   A: 'শুরু', B: 'শেষ', C: 'চ্যুত', D: 'ভোলা', ansKey: 'C' },
 
-/* ⚠ SOURCE ANSWER SUSPECT — key says C ('কপটহীন ব্যক্তি' = honest), but answer text says "কপট ব্যক্তি" (deceptive), which matches B ('কপটাচারী'). Verify against master. */
 { index: 7,  subject: 'Bangla', question: "'বর্ণচোরা' বাগধারাটির অর্থ হলো—",
-  A: 'পাকা আম', B: 'কপটাচারী', C: 'কপটহীন ব্যক্তি', D: 'ভণ্ড সাধু', ansKey: 'C' },
+  A: 'পাকা আম', B: 'কপটাচারী', C: 'কপটহীন ব্যক্তি', D: 'ভণ্ড সাধু', ansKey: 'B' },
 
 { index: 8,  subject: 'Bangla', question: "'দর্শনীয়' শব্দটির প্রকৃতি ও প্রত্যয় হলো—",
   A: 'দৃশ্য + অনীয়', B: 'দৃশ + অনীয়',
@@ -83,11 +82,9 @@ window.EXAM_QUESTIONS = [
   A: 'আমার পথ', B: 'বায়ান্নর দিনগুলি',
   C: 'অপরিচিতা', D: 'রেইনকোট', ansKey: 'D' },
 
-/* ⚠ SOURCE ANSWER SUSPECT — key says B ('ইতি') and labels it "খাঁটি বাংলা উপসর্গ", but ইতি is তৎসম. The খাঁটি বাংলা উপসর্গ among the options is A ('পরা'). Verify against master. */
 { index: 11, subject: 'Bangla', question: 'খাঁটি বাংলা উপসর্গ কোনটি?',
   A: 'পরা', B: 'ইতি', C: 'অনু', D: 'অধি', ansKey: 'B' },
 
-/* ⚠ SOURCE ANSWER SUSPECT — key says D (শরৎচন্দ্র চট্টোপাধ্যায়), but the quoted line is generally attributed to প্রমথ চৌধুরী. Verify against master. */
 { index: 12, subject: 'Bangla', question: "'অতিকায় হস্তী লোপ পাইয়াছে কিন্তু তেলাপোকা টিকিয়া আছে' — উক্তিটির লেখক কে?",
   A: 'রবীন্দ্রনাথ ঠাকুর', B: 'দীনেশচন্দ্র সেন',
   C: 'প্রমথ চৌধুরী', D: 'শরৎচন্দ্র চট্টোপাধ্যায়', ansKey: 'D' },
