@@ -137,47 +137,36 @@ window.EXAM_QUESTIONS = [
   A: 'come up with', B: 'come across', C: 'come round', D: 'come by', ansKey: 'A' },
 
 /* ═══════════════ ICT (25–36) — ⏳ PLACEHOLDER — awaiting content ═══════════════ */
-/* ═══════════════ ICT (49–60) — Set 03 ═══════════════ */
-{ index: 49, subject: 'ICT', question: 'ওয়েব পেজ ডিজাইনে ব্যবহৃত ভাষা কোনটি?\nWhich language is used for web page design?',
+/* ═══════════════ ICT (25–36) — Set 03 ═══════════════ */
+{ index: 25, subject: 'ICT', question: 'ওয়েব পেজ ডিজাইনে ব্যবহৃত ভাষা কোনটি?\nWhich language is used for web page design?',
   A: 'C', B: 'C++', C: 'HTML', D: 'Java', ansKey: 'C' },
-
-{ index: 50, subject: 'ICT', question: 'অর্ধ-যোগকারক (Half Adder) এ কয়টি ইনপুট থাকে?\nHow many inputs are there in a Half Adder?',
+{ index: 26, subject: 'ICT', question: 'অর্ধ-যোগকারক (Half Adder) এ কয়টি ইনপুট থাকে?\nHow many inputs are there in a Half Adder?',
   A: '১ (1)', B: '২ (2)', C: '৩ (3)', D: '৪ (4)', ansKey: 'B' },
-
-{ index: 51, subject: 'ICT', question: 'ফুল-ডুপ্লেক্স এর উদাহরণ কোনটি?\nWhich one is an example of Full-duplex?',
+{ index: 27, subject: 'ICT', question: 'ফুল-ডুপ্লেক্স এর উদাহরণ কোনটি?\nWhich one is an example of Full-duplex?',
   A: 'মোবাইল ফোন (Mobile phone)', B: 'রেডিও (Radio)', C: 'টেলিভিশন (Television)', D: 'পেজার (Pager)', ansKey: 'A' },
-
-{ index: 52, subject: 'ICT', question: 'ওয়াইম্যাক্স এর স্ট্যান্ডার্ড কত?\nWhat is the standard of WiMAX?',
+{ index: 28, subject: 'ICT', question: 'ওয়াইম্যাক্স এর স্ট্যান্ডার্ড কত?\nWhat is the standard of WiMAX?',
   A: '802.11', B: '802.15', C: '802.16', D: '802.3', ansKey: 'C' },
-
-{ index: 53, subject: 'ICT', question: 'কোন ট্রান্সলেটর পুরো হাই-লেভেল প্রোগ্রামকে একবারে অনুবাদ করে?\nWhich translator translates the entire high-level program at once?',
+{ index: 29, subject: 'ICT', question: 'কোন ট্রান্সলেটর পুরো হাই-লেভেল প্রোগ্রামকে একবারে অনুবাদ করে?\nWhich translator translates the entire high-level program at once?',
   A: 'অ্যাসেম্বলার (Assembler)', B: 'কম্পাইলার (Compiler)',
   C: 'ইন্টারপ্রেটার (Interpreter)', D: 'লিঙ্কার (Linker)', ansKey: 'B' },
-
-{ index: 54, subject: 'ICT', question: 'ক্রায়োসার্জারিতে কোন তরল ব্যবহৃত হয়?\nWhich liquid is used in cryosurgery?',
+{ index: 30, subject: 'ICT', question: 'ক্রায়োসার্জারিতে কোন তরল ব্যবহৃত হয়?\nWhich liquid is used in cryosurgery?',
   A: 'তরল নাইট্রোজেন (Liquid Nitrogen)', B: 'তরল অক্সিজেন (Liquid Oxygen)',
   C: 'তরল পারদ (Liquid Mercury)', D: 'তরল হাইড্রোজেন (Liquid Hydrogen)', ansKey: 'A' },
-
-{ index: 55, subject: 'ICT', question: 'ই-কমার্স এর উদাহরণ কোনটি?\nWhich one is an example of E-commerce?',
+{ index: 31, subject: 'ICT', question: 'ই-কমার্স এর উদাহরণ কোনটি?\nWhich one is an example of E-commerce?',
   A: 'Facebook', B: 'Google', C: 'Amazon', D: 'Wikipedia', ansKey: 'C' },
-
-{ index: 56, subject: 'ICT', question: 'টেবিলের সারিকে ডেটাবেজের ভাষায় কী বলে?\nWhat is a table row called in database terminology?',
+{ index: 32, subject: 'ICT', question: 'টেবিলের সারিকে ডেটাবেজের ভাষায় কী বলে?\nWhat is a table row called in database terminology?',
   A: 'ফিল্ড (Field)', B: 'কলাম (Column)', C: 'রেকর্ড (Record)', D: 'সেল (Cell)', ansKey: 'C' },
-
-{ index: 57, subject: 'ICT', question: 'ব্লুটুথ এর স্ট্যান্ডার্ড কোনটি?\nWhat is the standard of Bluetooth?',
+{ index: 33, subject: 'ICT', question: 'ব্লুটুথ এর স্ট্যান্ডার্ড কোনটি?\nWhat is the standard of Bluetooth?',
   A: 'IEEE 802.11', B: 'IEEE 802.15', C: 'IEEE 802.16', D: 'IEEE 802.3', ansKey: 'B' },
-
-{ index: 58, subject: 'ICT', question: 'XOR গেইট এর আউটপুট ১ হবে কখন?\nWhen will the output of XOR gate be 1?',
+{ index: 34, subject: 'ICT', question: 'XOR গেইট এর আউটপুট ১ হবে কখন?\nWhen will the output of XOR gate be 1?',
   A: 'একই ইনপুটে (Same inputs)', B: 'ভিন্ন ইনপুটে (Different inputs)',
   C: 'সব 0 হলে (All 0s)', D: 'সব 1 হলে (All 1s)', ansKey: 'B' },
-
-{ index: 59, subject: 'ICT', question: 'অক্টাল সংখ্যা পদ্ধতির ভিত্তি কত?\nWhat is the base of Octal number system?',
+{ index: 35, subject: 'ICT', question: 'অক্টাল সংখ্যা পদ্ধতির ভিত্তি কত?\nWhat is the base of Octal number system?',
   A: '২ (2)', B: '৮ (8)', C: '১০ (10)', D: '১৬ (16)', ansKey: 'B' },
-
-{ index: 60, subject: 'ICT', question: 'DML এর পূর্ণরূপ কী?\nWhat is the full form of DML?',
+{ index: 36, subject: 'ICT', question: 'DML এর পূর্ণরূপ কী?\nWhat is the full form of DML?',
   A: 'Data Model Language', B: 'Database Language',
   C: 'Data Manipulation Language', D: 'Data Main Language', ansKey: 'C' },
-/* ═══════════════ HM / MATH (37–60) — Set 03 (24 Q) ═══════════════ */
+  /* ═══════════════ HM / MATH (37–60) — Set 03 (24 Q) ═══════════════ */
 { index: 37, subject: 'HM', question: 'কার্তেসীয় স্থানাঙ্ক $(-1, -\\sqrt{3})$ হইলে পোলার স্থানাঙ্ক কত? (যখন $r \\ge 0$ এবং $\\theta \\in [0, 2\\pi)$ অথবা $\\theta \\in [-\\pi, \\pi]$)\nIf the Cartesian coordinates are $(-1, -\\sqrt{3})$, what are the polar coordinates? (where $r \\ge 0$ and $\\theta \\in [0, 2\\pi)$ or $\\theta \\in [-\\pi, \\pi]$)',
   A: '$(2,\\ 4\\pi/3)$ or $(2,\\ -2\\pi/3)$', B: '$(1,\\ 4\\pi/3)$ or $(2,\\ -4\\pi/3)$',
   C: '$(-1,\\ 4\\pi/3)$ or $(2,\\ -4\\pi/3)$', D: '$(3,\\ 4\\pi/3)$ or $(3,\\ -4\\pi/3)$', ansKey: 'A' },
