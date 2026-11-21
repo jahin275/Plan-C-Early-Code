@@ -175,9 +175,8 @@ window.EXAM_QUESTIONS = [
 { index: 43, subject: 'HM', question: '$\\tan A(1 + \\sec 2A) = ?$\n$\\tan A(1 + \\sec 2A) = ?$',
   A: '$\\sin A$', B: '$\\sin 2A$', C: '$\\tan A$', D: '$\\tan 2A$', ansKey: 'D' },
 
-/* ⚠ 5-option question — correct answer is E ("Does not exist"). Renderer must support option E. */
 { index: 44, subject: 'HM', question: '$\\left(2x^2 - \\dfrac{3}{x^3}\\right)^9$ বিস্তৃতিতে $x$ বর্জিত পদটি কত?\nWhat is the $x$-free term (the term independent of $x$) in the expansion of $\\left(2x^2 - \\dfrac{3}{x^3}\\right)^9$?',
-  A: '$1$', B: '${}^9C_6\\, 2^3\\, 3^6$', C: '${}^9C_5\\, 2^4\\, 3^5$', D: '${}^9C_4\\, 2^5\\, 3^4$', E: 'Does not exist', ansKey: 'E' },
+  A: '$1$', B: '${}^9C_6\\, 2^3\\, 3^6$', C: '${}^9C_5\\, 2^4\\, 3^5$', D: 'Does not exist', ansKey: 'D' },
 
 { index: 45, subject: 'HM', question: '$\\omega$ যদি $1$ এর একটি জটিল ঘনমূল হয়, তবে $\\begin{vmatrix} 1 & -\\omega & \\omega^2 \\\\ -\\omega & \\omega^2 & 1 \\\\ \\omega^2 & 1 & -\\omega \\end{vmatrix}$ নির্ণায়কটির মান কত?\nIf $\\omega$ is a complex cube root of $1$, what is the value of the determinant $\\begin{vmatrix} 1 & -\\omega & \\omega^2 \\\\ -\\omega & \\omega^2 & 1 \\\\ \\omega^2 & 1 & -\\omega \\end{vmatrix}$?',
   A: '$4$', B: '$2$', C: '$3$', D: 'কোনোটিই নয় (None of the above)', ansKey: 'D' },
@@ -331,7 +330,6 @@ window.EXAM_QUESTIONS = [
   C: 'ঋণগ্রহীতা ও ব্যবসায়ী শ্রেণি (Debtors and business owners)',
   D: 'সরকারি চাকরিজীবী ও শ্রমিক (Government employees and wage earners)', ansKey: 'C' },
 
-/* ⚠ DATE-SPECIFIC — source key marked "19. D (P2:Ch-7*)"; verify against actual IMF WEO before go-live. */
 { index: 79, subject: 'Econ', question: 'আইএমএফ (IMF)-এর অক্টোবর ২০২৬-এর পূর্বাভাস অনুযায়ী ২০২৬-২৭ অর্থবছরে বাংলাদেশের গড় মূল্যস্ফীতি কত শতাংশে পৌঁছাতে পারে?\nAccording to the IMF\'s October 2026 forecast, Bangladesh\'s average inflation could reach what percentage in FY2026-27?',
   A: '৬.৫% (6.5%)', B: '৮.৭% (8.7%)',
   C: '৭.৩% (7.3%)', D: '১০.৯% (10.9%)', ansKey: 'D' },
