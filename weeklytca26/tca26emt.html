@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Plan C — EMT Exam</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+:root{
+  --main-font:Arial, sans-serif;
+  --neon-pink:#c62828;--neon-cyan:#3b7cbf;--neon-yellow:#ef6c00;
+  --neon-green:#2e7d32;--neon-purple:#6a4c93;--neon-red:#c62828;
+  --bg-dark:#f5f2eb;--bg-card:#ffffff;--bg-card-alt:#f9f7f2;
+  --text:#2e3b4e;--border:#d8d4c8;--exam-header-h:140px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:var(--main-font),Arial,sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent}
+.neon-title{font-size:clamp(1.8rem,6vw,3.2rem);text-align:center;color:var(--neon-cyan);letter-spacing:.1em;margin:.5rem 0;font-weight:bold}
+.container{max-width:1000px;margin:0 auto;padding:1rem}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.9rem;color:var(--neon-cyan);margin-bottom:.4rem;font-weight:bold}
+.form-group input,.form-group select{width:100%;padding:.8rem;background:var(--bg-card-alt);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:1rem;outline:none}
+.form-group input:focus,.form-group select:focus{border-color:var(--neon-cyan);box-shadow:0 0 0 2px rgba(59,124,191,.15)}
+.btn{font-family:inherit;font-size:1rem;padding:.9rem 1.5rem;border:2px solid var(--neon-cyan);background:transparent;color:var(--neon-cyan);border-radius:6px;cursor:pointer;letter-spacing:.05em;transition:all .2s;font-weight:bold}
+.btn:hover,.btn:active{background:var(--neon-cyan);color:#fff}
+.btn-primary{border-color:var(--neon-green);color:var(--neon-green);width:100%}
+.btn-primary:hover,.btn-primary:active{background:var(--neon-green);color:#fff}
+.btn-danger{border-color:var(--neon-pink);color:var(--neon-pink)}
+.btn-danger:hover,.btn-danger:active{background:var(--neon-pink);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+#examScreen{min-height:100vh}
+.exam-sticky{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(245,242,235,.98);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.exam-header{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;gap:.8rem;max-width:1000px;margin:0 auto}
+.timer-box{display:flex;flex-direction:column;gap:.15rem}
+.timer{font-size:1.8rem;color:var(--neon-yellow);font-weight:bold}
+.timer.warning{color:var(--neon-red);animation:pulse .8s infinite}
+@keyframes pulse{50%{opacity:.6}}
+.timer-label{font-size:.75rem;color:var(--neon-cyan);font-weight:bold}
+.submit-btn-header{font-size:.95rem !important;padding:.7rem 1.2rem !important;flex-shrink:0}
+.exam-info{padding:.5rem 1rem .75rem;border-top:1px solid var(--border);max-width:1000px;margin:0 auto}
+.info-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-size:.85rem;gap:.5rem;flex-wrap:wrap;font-weight:bold}
+.tab-counter{color:var(--neon-pink)}.tab-counter span{color:var(--neon-red);font-size:1rem}
+.q-counter{color:var(--neon-purple)}
+.progress-bar{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:.6rem}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-green));transition:width .3s;border-radius:4px}
+.section-pills{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.2rem;scrollbar-width:none}
+.section-pills::-webkit-scrollbar{display:none}
+.pill{padding:.4rem .8rem;border:1px solid var(--border);border-radius:20px;font-size:.8rem;cursor:pointer;white-space:nowrap;flex-shrink:0;background:var(--bg-card)}
+.pill:hover,.pill.active{border-color:var(--neon-cyan);background:rgba(59,124,191,.1);color:var(--neon-cyan)}
+.pill.optional{border-color:var(--neon-purple)}
+.exam-content{padding:1rem;padding-top:calc(var(--exam-header-h) + .75rem);max-width:1000px;margin:0 auto}
+.question-block{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:1rem}
+.question-block.answered{border-color:rgba(46,125,50,.4)}
+.q-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;gap:.5rem}
+.q-badge{font-size:.85rem;color:var(--neon-cyan);background:rgba(59,124,191,.08);padding:.3rem .6rem;border-radius:4px;font-weight:bold}
+.q-subject{font-size:.8rem;color:var(--neon-purple);padding:.3rem .6rem;border:1px solid var(--neon-purple);border-radius:4px;font-weight:bold}
+.question-text{font-size:1.05rem;line-height:1.65;margin-bottom:1rem;color:#1a1a1a;word-break:break-word}
+.option{display:flex;align-items:flex-start;gap:.8rem;padding:.75rem 1rem;margin-bottom:.5rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:var(--bg-card-alt)}
+.option:hover{border-color:var(--neon-cyan)}
+.option.selected{border-color:var(--neon-green);background:rgba(46,125,50,.08);box-shadow:0 0 0 2px rgba(46,125,50,.1)}
+.option-letter{font-size:1rem;color:var(--neon-cyan);min-width:1.5rem;font-weight:bold}
+.option.selected .option-letter{color:var(--neon-green)}
+.option-text{font-size:1rem;line-height:1.55;flex:1;word-break:break-word}
+#loadingScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1rem}
+#loadingScreen.hidden{display:none !important}
+.loading-container{max-width:1000px;width:100%;margin:0 auto}
+.loading-status{display:flex;align-items:center;justify-content:center;gap:.8rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;margin-bottom:1rem;font-size:.95rem;color:var(--neon-cyan);text-align:center}
+.loading-status.ready{color:var(--neon-green);border-color:var(--neon-green)}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--neon-cyan);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.game-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;text-align:center}
+.game-title{font-size:.9rem;color:var(--neon-yellow);letter-spacing:.1em;margin-bottom:.6rem;font-weight:bold}
+.game-title .accent{color:var(--neon-purple)}
+.game-wrapper{position:relative;width:100%;max-width:480px;margin:0 auto;border:2px solid var(--neon-purple);border-radius:8px;overflow:hidden;touch-action:manipulation}
+#flappyCanvas{display:block;width:100%;height:auto;background:#e8e4d9;cursor:pointer}
+.game-hint{font-size:.7rem;color:var(--neon-cyan);margin-top:.6rem}
+.instruction-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem}
+.instruction-card h2{font-size:1.2rem;color:var(--neon-yellow);margin-bottom:1rem;text-align:center;font-weight:bold}
+.instruction-card h3{font-size:1rem;color:var(--neon-cyan);margin:1.2rem 0 .6rem;font-weight:bold}
+.instruction-card ul{list-style:none;padding:0}
+.instruction-card li{font-size:.95rem;line-height:1.8;padding-left:1.2rem;position:relative;margin-bottom:.4rem}
+.instruction-card li::before{content:'▸';position:absolute;left:0;color:var(--neon-pink)}
+.highlight{color:var(--neon-green);font-weight:bold}
+.warn{color:var(--neon-red);font-weight:bold}
+.em{color:var(--neon-yellow);font-weight:bold}
+.rule-row{display:flex;justify-content:space-between;gap:.5rem;padding:.5rem 0;border-bottom:1px dashed var(--border);font-size:.9rem;line-height:1.7}
+.rule-row:last-child{border-bottom:none}
+.rule-row .k{color:var(--neon-cyan);flex-shrink:0;font-weight:bold}
+.rule-row .v{text-align:right}
+#resultScreen{min-height:100vh;padding-bottom:3rem}
+.result-top{max-width:1000px;margin:0 auto;padding:1rem}
+.result-score-card{text-align:center;padding:1.5rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;margin-bottom:1rem;position:relative}
+.sync-badge{position:absolute;top:.8rem;right:.8rem;font-size:.7rem;color:var(--neon-cyan);padding:.2rem .5rem;border:1px solid var(--neon-cyan);border-radius:4px;background:rgba(59,124,191,.08);display:flex;align-items:center;gap:.3rem;max-width:70%;word-break:break-word}
+.sync-badge.synced{color:var(--neon-green);border-color:var(--neon-green);background:rgba(46,125,50,.08)}
+.sync-badge.error{color:var(--neon-red);border-color:var(--neon-red);background:rgba(198,40,40,.08)}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-cyan);animation:blink 1s infinite;flex-shrink:0}
+.sync-badge.synced .sync-dot{background:var(--neon-green);animation:none}
+.sync-badge.error .sync-dot{background:var(--neon-red);animation:none}
+@keyframes blink{50%{opacity:.3}}
+.score-big{font-size:clamp(3rem,10vw,5rem);margin:.5rem 0;line-height:1;font-weight:bold}
+.score-big.pass{color:var(--neon-green)}.score-big.mid{color:var(--neon-yellow)}.score-big.fail{color:var(--neon-red)}
+.score-label{font-size:.9rem;color:var(--neon-cyan);letter-spacing:.1em;margin-bottom:.4rem;font-weight:bold}
+.result-status{font-size:1rem;line-height:1.7;margin:1rem 0 0}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-top:1.2rem}
+.stat-item{background:var(--bg-card-alt);border:1px solid var(--border);border-radius:8px;padding:.8rem;text-align:center}
+.stat-item .label{font-size:.75rem;color:var(--neon-cyan);margin-bottom:.4rem;font-weight:bold}
+.stat-item .value{font-size:1.4rem;color:#1a1a1a;font-weight:bold}
+.time-taken-row{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:.8rem;padding:.8rem 1rem;background:rgba(59,124,191,.06);border:2px solid var(--neon-cyan);border-radius:8px}
+.time-taken-row .label{font-size:.85rem;color:var(--neon-cyan);font-weight:bold}
+.time-taken-row .value{font-size:1.4rem;color:var(--neon-cyan);font-weight:bold}
+.disq-warning{border:2px solid var(--neon-red);background:rgba(198,40,40,.08);padding:1rem;border-radius:8px;margin:1rem 0;font-size:.95rem;color:var(--neon-red);line-height:1.6;font-weight:bold}
+.section-breakdown{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:.95rem;line-height:2}
+.review-wrap{max-width:1000px;margin:0 auto;padding:0 1rem}
+.review-title{font-size:1.1rem;color:var(--neon-yellow);text-align:center;margin:1.5rem 0 1rem;font-weight:bold}
+.review-filters{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:1rem}
+.filter-pill{padding:.5rem 1rem;border:1px solid var(--border);border-radius:20px;font-size:.85rem;cursor:pointer;background:var(--bg-card);font-weight:bold}
+.filter-pill.active{border-color:var(--neon-cyan);background:rgba(59,124,191,.1);color:var(--neon-cyan)}
+.filter-pill.active[data-filter="correct"]{border-color:var(--neon-green);background:rgba(46,125,50,.1);color:var(--neon-green)}
+.filter-pill.active[data-filter="wrong"]{border-color:var(--neon-red);background:rgba(198,40,40,.1);color:var(--neon-red)}
+.filter-pill.active[data-filter="skipped"]{border-color:var(--neon-yellow);background:rgba(239,108,0,.1);color:var(--neon-yellow)}
+.review-block{background:var(--bg-card);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.8rem}
+.review-block.correct{border-left-color:var(--neon-green)}
+.review-block.wrong{border-left-color:var(--neon-red)}
+.review-block.skipped{border-left-color:var(--neon-yellow);opacity:.9}
+.review-block.hide{display:none}
+.review-head{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap}
+.review-status{font-size:.8rem;padding:.3rem .6rem;border-radius:4px;font-weight:bold}
+.review-status.correct{color:var(--neon-green);border:1px solid var(--neon-green);background:rgba(46,125,50,.08)}
+.review-status.wrong{color:var(--neon-red);border:1px solid var(--neon-red);background:rgba(198,40,40,.08)}
+.review-status.skipped{color:var(--neon-yellow);border:1px solid var(--neon-yellow);background:rgba(239,108,0,.08)}
+.review-q{font-size:1.05rem;line-height:1.65;color:#1a1a1a;margin-bottom:.8rem}
+.review-opt{display:flex;align-items:flex-start;gap:.8rem;padding:.6rem .8rem;margin-bottom:.4rem;border:1px solid var(--border);border-radius:8px;font-size:.95rem;line-height:1.55;background:var(--bg-card-alt)}
+.review-opt .option-letter{font-size:1rem;min-width:1.5rem;color:var(--neon-cyan);font-weight:bold}
+.review-opt .option-text{flex:1}
+.review-opt.correct-opt{border-color:var(--neon-green);background:rgba(46,125,50,.06)}
+.review-opt.user-wrong{border-color:var(--neon-red);background:rgba(198,40,40,.06)}
+.review-opt.user-correct{border-color:var(--neon-green);background:rgba(46,125,50,.12)}
+.review-ans-summary{margin-top:.6rem;font-size:.85rem;color:var(--neon-cyan);padding-top:.5rem;border-top:1px dashed var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
+.review-ans-summary b{color:#1a1a1a}
+.hidden{display:none !important}
+.text-center{text-align:center}
+.mt-1{margin-top:1rem}
+.logo{display:block;max-width:80px;margin:0 auto .5rem}
+.exam-pick-item{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.9rem 0;border-bottom:1px dashed var(--border)}
+.exam-pick-item:last-child{border-bottom:none}
+.exam-pick-item .pick-name{font-weight:bold;color:var(--neon-cyan)}
+.exam-pick-item .pick-meta{font-size:.8rem;opacity:.7}
+.exam-pick-item a{padding:.55rem 1rem;border-radius:6px;font-weight:bold;font-size:.85rem;text-decoration:none;border:2px solid var(--neon-green);color:var(--neon-green);white-space:nowrap}
+.exam-pick-item a.locked{border-color:var(--border);color:var(--neon-red);opacity:.55;pointer-events:none}
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+
+<div id="startScreen" class="container">
+  <img src="C.png" alt="C Logo" class="logo">
+  <h1 class="neon-title">Plan C</h1>
+  <p class="text-center" style="font-size:1rem;color:var(--neon-cyan);margin-bottom:1.5rem;font-weight:bold;" id="examTitleLine">LOADING…</p>
+  <div id="startContent"></div>
+</div>
+
+<div id="loadingScreen" class="hidden">
+  <div class="loading-container">
+    <img src="C.png" alt="C Logo" class="logo">
+    <h1 class="neon-title">Plan C</h1>
+    <div class="loading-status" id="loadingStatus">
+      <span class="spinner" id="loadingSpinner"></span>
+      <span id="loadingText">LOADING QUESTIONS…</span>
+    </div>
+    <div class="game-card">
+      <div class="game-title">◤ <span class="accent">TAP TO FLAP</span> ◢</div>
+      <div class="game-wrapper"><canvas id="flappyCanvas" width="480" height="270"></canvas></div>
+      <div class="game-hint">CLICK / TAP / SPACE TO JUMP</div>
+    </div>
+  </div>
+</div>
+
+<div id="examScreen" class="hidden">
+  <div class="exam-sticky" id="examSticky">
+    <div class="exam-header">
+      <div class="timer-box">
+        <div class="timer-label">TIME LEFT</div>
+        <div class="timer" id="timerDisplay">45:00</div>
+      </div>
+      <button class="btn btn-danger submit-btn-header" id="submitBtn" onclick="confirmSubmit()">■ SUBMIT</button>
+    </div>
+    <div class="exam-info">
+      <div class="info-row">
+        <span class="tab-counter">TAB SWITCHES: <span id="tabCount">0</span></span>
+        <span class="q-counter" id="questionCounter">0/0 ANSWERED</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="section-pills" id="sectionPills"></div>
+    </div>
+  </div>
+  <div class="exam-content"><div id="questionsList"></div></div>
+</div>
+
+<div id="resultScreen" class="hidden">
+  <div class="result-top">
+    <h1 class="neon-title" style="font-size:2rem;">RESULT</h1>
+    <div class="result-score-card">
+      <div class="sync-badge" id="syncBadge"><span class="sync-dot"></span><span id="syncText">SYNCING…</span></div>
+      <div class="score-label">YOUR SCORE</div>
+      <div class="score-big" id="finalScore">0</div>
+      <div class="result-status" id="finalStatus"></div>
+      <div class="stat-grid">
+        <div class="stat-item"><div class="label">CORRECT</div><div class="value" id="rCorrect">0</div></div>
+        <div class="stat-item"><div class="label">WRONG</div><div class="value" id="rWrong">0</div></div>
+        <div class="stat-item"><div class="label">SKIPPED</div><div class="value" id="rSkipped">0</div></div>
+        <div class="stat-item"><div class="label">TAB SWITCHES</div><div class="value" id="rTabs">0</div></div>
+      </div>
+      <div class="time-taken-row" id="timeTakenRow">
+        <span class="label">⏱ TIME TAKEN</span>
+        <span class="value" id="rTimeTaken">00:00</span>
+      </div>
+    </div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
+    <div class="disq-warning hidden" id="disqWarning">⚠ DISQUALIFIED: You answered multiple optional sections.</div>
+  </div>
+  <div class="review-wrap">
+    <h2 class="review-title">◤ ANSWER REVIEW ◢</h2>
+    <div class="review-filters" id="reviewFilters">
+      <div class="filter-pill active" data-filter="all">ALL</div>
+      <div class="filter-pill" data-filter="correct">✓ CORRECT</div>
+      <div class="filter-pill" data-filter="wrong">✗ WRONG</div>
+      <div class="filter-pill" data-filter="skipped">— SKIPPED</div>
+    </div>
+    <div id="reviewList"></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   CONFIG — EMT backend
+   ═══════════════════════════════════════════════════════════════════ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbyY5VhQyiosD2VSZHM1LWZbxblUX45L6C9I3AnIqB-bGWJWpmWvKZM7s3QX0rjzNPsj/exec';
+
+const EXAM_ID       = (new URLSearchParams(location.search).get('exam') || '').trim();
+const QUESTION_FILE = 'tca26e' + EXAM_ID + '.js';
+let   EXAM_NAME     = 'Exam ' + (EXAM_ID || '?');
+
+/* ═══════════════════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════════════════ */
+let QUESTIONS = [];
+let answers = [];
+let tabSwitches = 0;
+let timeLeft = 45 * 60;
+let timerInterval = null;
+let examActive = false;
+let studentInfo = {};
+let examStartTime = null;
+let examEndTime = null;
+let timeTakenSeconds = 0;
+let MANDATORY = ['Bangla', 'English', 'ICT'];
+let OPTIONAL  = ['HM', 'Econ'];
+let DURATION_MIN = 45;
+let SECTION_RANGES = {};
+const SECTION_LABELS = { Bangla:'বাংলা', English:'English', ICT:'ICT', HM:'Math', Stat:'⚠ Statistics', Econ:'Economics' };
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANTI-CHEAT
+   ═══════════════════════════════════════════════════════════════════ */
+['contextmenu','copy','paste','cut','dragstart'].forEach(evt => {
+  document.addEventListener(evt, e => { e.preventDefault(); return false; });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && ['U','S','P','A'].includes(e.key))) {
+    e.preventDefault(); return false;
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (!examActive) return;
+  if (document.hidden) { tabSwitches++; const el = document.getElementById('tabCount'); if (el) el.textContent = tabSwitches; }
+});
+let blurDebounce = null;
+window.addEventListener('blur', () => {
+  if (!examActive) return;
+  clearTimeout(blurDebounce);
+  blurDebounce = setTimeout(() => {
+    if (!document.hasFocus() && !document.hidden) {
+      tabSwitches++;
+      const el = document.getElementById('tabCount'); if (el) el.textContent = tabSwitches;
+    }
+  }, 120);
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   API
+   ═══════════════════════════════════════════════════════════════════ */
+async function apiGet(action) {
+  const url = API_URL + '?action=' + encodeURIComponent(action) + '&_=' + Date.now();
+  const res  = await fetch(url, { method:'GET', redirect:'follow' });
+  const text = await res.text();
+  if (text.trim().startsWith('<')) throw new Error('Backend returned HTML. Redeploy Apps Script (Execute as Me, Anyone, New version).');
+  let data; try { data = JSON.parse(text); } catch(_) { throw new Error('Invalid JSON: ' + text.slice(0, 80)); }
+  if (!data.success) throw new Error(data.error || 'API error');
+  return data;
+}
+async function apiSubmit(payload) {
+  const res  = await fetch(API_URL, {
+    method:'POST',
+    headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload),
+    redirect:'follow'
+  });
+  const text = await res.text();
+  if (text.trim().startsWith('<')) throw new Error('Backend returned HTML on submit.');
+  let data; try { data = JSON.parse(text); } catch(_) { throw new Error('Invalid JSON: ' + text.slice(0, 80)); }
+  if (!data.success) throw new Error(data.error || 'API error');
+  return data;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BOOT
+   ═══════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  document.title = EXAM_ID ? 'Plan C — ' + EXAM_NAME : 'Plan C — Select Exam';
+  const titleLine = document.getElementById('examTitleLine');
+  if (EXAM_ID) titleLine.textContent = 'EXAM ' + EXAM_ID + ' — THE C UNIT ARC EMT';
+  else titleLine.textContent = 'SELECT AN EXAM';
+  if (EXAM_ID) renderStartForm();
+  else showExamPicker();
+});
+
+function renderStartForm() {
+  document.getElementById('startContent').innerHTML = `
+    <div class="card">
+      <p style="font-size:1rem;line-height:1.8;margin-bottom:1rem;color:var(--neon-yellow);font-weight:bold;">⚠ QUICK INFO:</p>
+      <ul style="font-size:.95rem;line-height:2;padding-left:1.2rem;">
+        <li>45 Minutes | Full Syllabus</li>
+        <li>+1 correct | −0.25 wrong | 0 skipped</li>
+        <li>Mandatory: Bangla, English, ICT</li>
+        <li>Choose ONLY ONE optional: Math / Economics</li>
+        <li>Multiple optionals = DISQUALIFIED</li>
+        <li><span style="color:var(--neon-red);font-weight:bold;">⚠ Statistics is NOT in the current circular — do not attempt.</span></li>
+        <li>Tab switches are counted and reported</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="form-group"><label for="name">Full Name</label><input id="name" placeholder="Enter your name" autocomplete="name"></div>
+      <div class="form-group"><label for="college">College</label><input id="college" placeholder="Enter college name"></div>
+      <div class="form-group"><label for="email">Email</label><input id="email" type="email" placeholder="Enter email" autocomplete="email"></div>
+      <div class="form-group"><label for="phone">Contact Number</label><input id="phone" type="tel" placeholder="Enter contact number" autocomplete="tel"></div>
+      <div class="form-group"><label for="fontSelect">Font Style</label>
+        <select id="fontSelect">
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="'Press Start 2P', monospace">Press Start 2P (Pixel)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="startBtn" onclick="startExam()">▶ START EXAM</button>
+    </div>`;
+}
+
+function parseDateValue(v) {
+  if (!v) return null;
+  if (v instanceof Date) return v;
+  const s = String(v).trim();
+  const m1 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m1) return new Date(+m1[3], +m1[1] - 1, +m1[2]);
+  const m2 = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m2) return new Date(+m2[1], +m2[2] - 1, +m2[3]);
+  const d = new Date(s); return isNaN(d) ? null : d;
+}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+async function showExamPicker() {
+  const box = document.getElementById('startContent');
+  box.innerHTML = '<div class="card"><div class="loading-status"><span class="spinner"></span><span>LOADING EXAMS…</span></div></div>';
+  try {
+    const data = await apiGet('exams');
+    const rows = (data.exams || []).filter(r => /[?&]exam=\d+/.test(String(r['Exam Link'] || '')));
+    if (!rows.length) { box.innerHTML = '<div class="card"><p style="color:var(--neon-red);font-weight:bold;text-align:center;">No scheduled exams found in the Exam sheet.</p></div>'; return; }
+    const now = Date.now();
+    const list = rows.map(r => {
+      const m    = String(r['Exam Link']).match(/[?&]exam=(\d+)/);
+      const n    = m ? m[1] : '';
+      const name = r['Index'] || ('Exam ' + n);
+      const d    = parseDateValue(r['Exam Start']);
+      const locked = d && now < d.getTime();
+      const label = locked ? '🔒 ' + d.toLocaleDateString() : '▶ Start';
+      return `<div class="exam-pick-item">
+        <div style="flex:1;min-width:0;">
+          <div class="pick-name">${escapeHtml(name)}</div>
+          <div class="pick-meta">${escapeHtml(String(r['Syllabus']||''))} · ${escapeHtml(String(r['Exam Start']||''))}</div>
+        </div>
+        <a href="${locked ? '#' : '?exam=' + n}" class="${locked ? 'locked' : ''}">${label}</a>
+      </div>`;
+    }).join('');
+    box.innerHTML = '<div class="card">' + list + '</div>';
+  } catch (err) {
+    box.innerHTML = `<div class="card">
+      <p style="color:var(--neon-red);font-weight:bold;margin-bottom:.8rem;">Failed to load exams: ${escapeHtml(err.message)}</p>
+      <p style="font-size:.85rem;color:var(--neon-cyan);">Tip: open <code>${escapeHtml(API_URL)}?action=ping</code> in your browser. It should return <code>{"success":true,"version":"v5-emt",...}</code>.</p>
+    </div>`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXAM LOADING
+   ═══════════════════════════════════════════════════════════════════ */
+function loadQuestionScript(src) {
+  return new Promise((resolve, reject) => {
+    if (window.__loadedExamFile === src && Array.isArray(window.EXAM_QUESTIONS) && window.EXAM_QUESTIONS.length) return resolve();
+    const s = document.createElement('script');
+    s.src = src; s.async = false;
+    s.onload  = () => { window.__loadedExamFile = src; resolve(); };
+    s.onerror = () => reject(new Error('Could not load ' + src + ' — check the file exists in the same folder.'));
+    document.body.appendChild(s);
+  });
+}
+
+async function startExam() {
+  if (!/^\d+$/.test(EXAM_ID)) { alert('Invalid exam link.'); return; }
+  const name    = document.getElementById('name').value.trim();
+  const college = document.getElementById('college').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const phone   = document.getElementById('phone').value.trim();
+  const font    = document.getElementById('fontSelect').value;
+  if (!name || !college || !email || !phone) { alert('Please fill in all fields.'); return; }
+  if (!/^\S+@\S+\.\S+$/.test(email))          { alert('Please enter a valid email.'); return; }
+
+  document.documentElement.style.setProperty('--main-font', font);
+  studentInfo = { name, college, email, phone };
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  const status = document.getElementById('loadingStatus');
+  const text   = document.getElementById('loadingText');
+  const spin   = document.getElementById('loadingSpinner');
+  status.classList.remove('ready');
+  spin.style.display = 'inline-block';
+  text.textContent = 'LOADING QUESTIONS…';
+  text.style.color = '';
+  const existingRetry = document.getElementById('retryBtn'); if (existingRetry) existingRetry.remove();
+  startFlappy();
+
+  try {
+    await loadQuestionScript(QUESTION_FILE);
+    const questions = window.EXAM_QUESTIONS || [];
+    if (!Array.isArray(questions) || questions.length === 0) throw new Error(QUESTION_FILE + ' did not define window.EXAM_QUESTIONS.');
+
+    try {
+      const ex = await apiGet('exams');
+      if (ex && Array.isArray(ex.exams)) {
+        for (const row of ex.exams) {
+          const m = String(row['Exam Link'] || '').match(/[?&]exam=(\d+)/);
+          if (m && m[1] === EXAM_ID) { EXAM_NAME = String(row['Index'] || EXAM_NAME).trim(); break; }
+        }
+      }
+    } catch (_) {}
+
+    try {
+      const cData = await apiGet('config');
+      if (cData && cData.config) {
+        MANDATORY    = cData.config.mandatory       || MANDATORY;
+        OPTIONAL     = cData.config.optional        || OPTIONAL;
+        DURATION_MIN = cData.config.durationMinutes || DURATION_MIN;
+      }
+    } catch (_) {}
+
+    status.classList.add('ready');
+    spin.style.display = 'none';
+    text.textContent = '✓ ' + EXAM_NAME + ' LOADED — STARTING…';
+    setTimeout(() => { stopFlappy(); onQuestionsLoaded(questions); }, 700);
+  } catch (err) {
+    status.classList.remove('ready');
+    spin.style.display = 'none';
+    text.textContent = '✗ FAILED — ' + err.message;
+    text.style.color = 'var(--neon-red)';
+    const btn = document.createElement('button');
+    btn.id = 'retryBtn';
+    btn.className = 'btn btn-danger mt-1';
+    btn.style.width = '100%'; btn.style.marginTop = '1rem';
+    btn.textContent = '◀ BACK';
+    btn.onclick = () => { stopFlappy(); document.getElementById('loadingScreen').classList.add('hidden'); document.getElementById('startScreen').classList.remove('hidden'); text.style.color=''; };
+    status.parentNode.insertBefore(btn, status.nextSibling);
+  }
+}
+
+function onQuestionsLoaded(questions) {
+  QUESTIONS = questions;
+  answers = new Array(QUESTIONS.length).fill(null);
+  timeLeft = DURATION_MIN * 60;
+  examStartTime = Date.now();
+  SECTION_RANGES = {};
+  QUESTIONS.forEach((q, i) => {
+    if (!q.subject) return;
+    if (!SECTION_RANGES[q.subject]) SECTION_RANGES[q.subject] = { start:i, end:i };
+    else SECTION_RANGES[q.subject].end = i;
+  });
+  document.getElementById('timerDisplay').textContent = String(DURATION_MIN).padStart(2,'0') + ':00';
+  document.getElementById('loadingScreen').classList.add('hidden');
+  document.getElementById('examScreen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  examActive = true;
+  buildSectionPills();
+  renderAllQuestions();
+  updateProgress();
+  startTimer();
+  updateHeaderHeight();
+  setTimeout(updateHeaderHeight, 300);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TIMER
+   ═══════════════════════════════════════════════════════════════════ */
+function startTimer() {
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--; updateTimerDisplay();
+    if (timeLeft <= 300) document.getElementById('timerDisplay').classList.add('warning');
+    if (timeLeft <= 0) { clearInterval(timerInterval); autoSubmit(); }
+  }, 1000);
+}
+function updateTimerDisplay() {
+  const m = Math.max(0, Math.floor(timeLeft / 60)).toString().padStart(2,'0');
+  const s = Math.max(0, timeLeft % 60).toString().padStart(2,'0');
+  document.getElementById('timerDisplay').textContent = m + ':' + s;
+}
+function autoSubmit() { examActive = false; clearInterval(timerInterval); doSubmit(true); }
+
+function updateHeaderHeight() {
+  const h = document.getElementById('examSticky');
+  if (h) document.documentElement.style.setProperty('--exam-header-h', h.offsetHeight + 'px');
+}
+window.addEventListener('resize', () => { if (!document.getElementById('examScreen').classList.contains('hidden')) updateHeaderHeight(); });
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════════════════════════ */
+function buildSectionPills() {
+  const c = document.getElementById('sectionPills'); c.innerHTML = '';
+  Object.keys(SECTION_RANGES).forEach(sec => {
+    const p = document.createElement('div');
+    p.className = 'pill' + (OPTIONAL.includes(sec) ? ' optional' : '');
+    p.textContent = SECTION_LABELS[sec] || sec;
+    p.onclick = () => {
+      const r = SECTION_RANGES[sec]; if (!r) return;
+      const el = document.getElementById('qblock-' + r.start);
+      const header = document.getElementById('examSticky');
+      if (el && header) window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - header.offsetHeight - 8), behavior: 'smooth' });
+    };
+    c.appendChild(p);
+  });
+}
+function renderAllQuestions() {
+  const c = document.getElementById('questionsList'); c.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  QUESTIONS.forEach((q, idx) => {
+    const block = document.createElement('div');
+    block.className = 'question-block'; block.id = 'qblock-' + idx;
+    block.innerHTML = `<div class="q-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[q.subject] || q.subject)}</span></div>`;
+    const qt = document.createElement('div');
+    qt.className = 'question-text'; qt.textContent = q.question; block.appendChild(qt);
+    ['A','B','C','D'].forEach(L => {
+      if (!q[L]) return;
+      const opt = document.createElement('div');
+      opt.className = 'option'; opt.dataset.letter = L;
+      opt.innerHTML = `<span class="option-letter">${L}</span><span class="option-text">${escapeHtml(q[L])}</span>`;
+      opt.onclick = () => selectOption(idx, L);
+      block.appendChild(opt);
+    });
+    frag.appendChild(block);
+  });
+  c.appendChild(frag);
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([c]).catch(()=>{});
+}
+function selectOption(qIdx, letter) {
+  answers[qIdx] = letter;
+  const block = document.getElementById('qblock-' + qIdx); if (!block) return;
+  block.querySelectorAll('.option').forEach(o => o.classList.toggle('selected', o.dataset.letter === letter));
+  block.classList.toggle('answered', !!letter);
+  updateProgress();
+}
+function updateProgress() {
+  const total = QUESTIONS.length;
+  const done  = answers.filter(a => a !== null).length;
+  document.getElementById('progressFill').style.width = (total ? done / total * 100 : 0) + '%';
+  document.getElementById('questionCounter').textContent = done + '/' + total + ' ANSWERED';
+}
+function formatDuration(seconds) {
+  seconds = Math.max(0, Math.floor(seconds));
+  const m = Math.floor(seconds / 60), s = seconds % 60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SUBMIT
+   ═══════════════════════════════════════════════════════════════════ */
+function computeLocalResult() {
+  let correct = 0, wrong = 0, skipped = 0;
+  const sectionScores = {};
+  [...MANDATORY, ...OPTIONAL].forEach(s => sectionScores[s] = 0);
+  const attemptedOptional = new Set();
+  QUESTIONS.forEach((q, i) => {
+    const chosen = (answers[i] || '').toString().trim().toUpperCase();
+    const key    = (q.ansKey || '').toString().trim().toUpperCase();
+    if (!chosen) skipped++;
+    else if (chosen === key) { correct++; if (sectionScores[q.subject] !== undefined) sectionScores[q.subject]++; }
+    else wrong++;
+    if (chosen && OPTIONAL.includes(q.subject)) attemptedOptional.add(q.subject);
+  });
+  const totalScore = correct - wrong * 0.25;
+  const status = totalScore >= 35 ? 'MISSION PASSED ++ CREDIT'
+               : totalScore >= 24 ? 'PASSED but your written Scripts won\'t be evaluated'
+               : 'FAILED, Please Contact your Instructors';
+  return {
+    totalScore: Number(totalScore.toFixed(2)), correct, wrong, skipped,
+    tabSwitches, timeTakenSeconds, status,
+    disqualified: attemptedOptional.size > 1,
+    attemptedOptional: Array.from(attemptedOptional)
+  };
+}
+function confirmSubmit() {
+  const done = answers.filter(a => a !== null).length;
+  if (confirm(`Answered ${done}/${QUESTIONS.length}.\n\nSubmit now?`)) {
+    examActive = false; clearInterval(timerInterval); doSubmit(false);
+  }
+}
+async function doSubmit(auto) {
+  examEndTime = Date.now();
+  if (examStartTime) {
+    timeTakenSeconds = Math.floor((examEndTime - examStartTime) / 1000);
+    const max = DURATION_MIN * 60;
+    if (timeTakenSeconds < 0) timeTakenSeconds = 0;
+    if (timeTakenSeconds > max) timeTakenSeconds = max;
+  }
+  const local = computeLocalResult();
+  showResult(local);
+
+  const answersMap = {}, answerKeyMap = {};
+  QUESTIONS.forEach((q, i) => {
+    const k = String(q.index);
+    answersMap[k]   = (answers[i] || '-').toString().trim().toUpperCase() || '-';
+    answerKeyMap[k] = (q.ansKey || '').toString().trim().toUpperCase();
+  });
+  const payload = {
+    action: 'submit',
+    exam: EXAM_ID, examName: EXAM_NAME,
+    name: studentInfo.name, college: studentInfo.college,
+    email: studentInfo.email, contact: studentInfo.phone,
+    answers: answersMap, answerKey: answerKeyMap,
+    tabSwitches, timeTaken: timeTakenSeconds,
+    timeTakenText: formatDuration(timeTakenSeconds),
+    autoSubmitted: !!auto
+  };
+  try {
+    const data = await apiSubmit(payload);
+    const result = data.result || local;
+    if (result.timeTakenSeconds == null) result.timeTakenSeconds = timeTakenSeconds;
+    showResult(result);
+    document.getElementById('syncBadge').className = 'sync-badge synced';
+    document.getElementById('syncText').textContent = 'SYNCED ✓ ' + EXAM_NAME;
+  } catch (err) {
+    document.getElementById('syncBadge').className = 'sync-badge error';
+    document.getElementById('syncText').textContent = 'SYNC FAILED: ' + (err && err.message ? err.message : String(err)).slice(0, 120);
+    console.error('Sync failed:', err);
+  }
+}
+function showResult(result) {
+  document.getElementById('examScreen').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  const s = document.getElementById('finalScore');
+  s.textContent = result.totalScore;
+  s.className = 'score-big' + (result.totalScore >= 35 ? ' pass' : result.totalScore >= 24 ? ' mid' : ' fail');
+  const color = result.totalScore >= 35 ? 'var(--neon-green)' : result.totalScore >= 24 ? 'var(--neon-yellow)' : 'var(--neon-red)';
+  document.getElementById('finalStatus').innerHTML = `<span style="color:${color};">${result.status}</span>`;
+  document.getElementById('rCorrect').textContent = result.correct;
+  document.getElementById('rWrong').textContent   = result.wrong;
+  document.getElementById('rSkipped').textContent = result.skipped;
+  document.getElementById('rTabs').textContent    = result.tabSwitches;
+  const tSec = result.timeTakenSeconds != null ? result.timeTakenSeconds : timeTakenSeconds;
+  document.getElementById('rTimeTaken').textContent = formatDuration(tSec);
+  const sectionMarks = {};
+  [...MANDATORY, ...OPTIONAL].forEach(s => sectionMarks[s] = { c:0, w:0 });
+  QUESTIONS.forEach((q, i) => {
+    const chosen = (answers[i] || '').toString().toUpperCase();
+    const key = (q.ansKey || '').toString().toUpperCase();
+    if (!chosen || !sectionMarks[q.subject]) return;
+    if (chosen === key) sectionMarks[q.subject].c++; else sectionMarks[q.subject].w++;
+  });
+  let html = '<strong>◤ SECTION‑WISE ◢</strong><br>';
+  Object.keys(sectionMarks).forEach(sec => {
+    const mark = sectionMarks[sec].c - 0.25 * sectionMarks[sec].w;
+    const tag = OPTIONAL.includes(sec) ? ' <span style="color:var(--neon-purple);">[optional]</span>' : '';
+    html += `${SECTION_LABELS[sec] || sec}${tag}: <strong style="color:${mark>=0?'var(--neon-green)':'var(--neon-red)'};">${mark.toFixed(2)}</strong><br>`;
+  });
+  document.getElementById('sectionBreakdown').innerHTML = html;
+  if (result.disqualified) document.getElementById('disqWarning').classList.remove('hidden');
+  renderReview();
+  wireFilters();
+}
+function renderReview() {
+  const c = document.getElementById('reviewList'); c.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  QUESTIONS.forEach((q, idx) => {
+    const userAns = answers[idx];
+    const correctAns = (q.ansKey || '').toString().toUpperCase();
+    const status = !userAns ? 'skipped' : (userAns === correctAns ? 'correct' : 'wrong');
+    const block = document.createElement('div');
+    block.className = 'review-block ' + status; block.dataset.status = status;
+    const label = status === 'correct' ? '✓ CORRECT' : status === 'wrong' ? '✗ WRONG' : '— SKIPPED';
+    block.innerHTML = `<div class="review-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[q.subject] || q.subject)}</span><span class="review-status ${status}">${label}</span></div>`;
+    const qt = document.createElement('div'); qt.className = 'review-q'; qt.textContent = q.question; block.appendChild(qt);
+    ['A','B','C','D'].forEach(L => {
+      if (!q[L]) return;
+      let cls = 'review-opt';
+      if (L === correctAns && L === userAns) cls += ' user-correct correct-opt';
+      else if (L === correctAns) cls += ' correct-opt';
+      else if (L === userAns) cls += ' user-wrong';
+      const o = document.createElement('div'); o.className = cls;
+      o.innerHTML = `<span class="option-letter">${L}</span><span class="option-text">${escapeHtml(q[L])}</span>`;
+      block.appendChild(o);
+    });
+    const sum = document.createElement('div'); sum.className = 'review-ans-summary';
+    sum.innerHTML = `<span>YOUR: <b>${userAns || '—'}</b></span><span>CORRECT: <b>${correctAns || '?'}</b></span>`;
+    block.appendChild(sum);
+    frag.appendChild(block);
+  });
+  c.appendChild(frag);
+}
+function wireFilters() {
+  document.querySelectorAll('#reviewFilters .filter-pill').forEach(p => {
+    p.onclick = () => {
+      document.querySelectorAll('#reviewFilters .filter-pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      document.querySelectorAll('.review-block').forEach(b => {
+        b.classList.toggle('hide', p.dataset.filter !== 'all' && b.dataset.status !== p.dataset.filter);
+      });
+    };
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FLAPPY
+   ═══════════════════════════════════════════════════════════════════ */
+let flappy = null, flappyRAF = null;
+function startFlappy() {
+  const canvas = document.getElementById('flappyCanvas'); if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height, GROUND_H = 32, GRAVITY = 0.32, FLAP = -5.6;
+  const PIPE_W = 46, PIPE_GAP = 105, PIPE_SPACING = 180, PIPE_SPEED = 1.8;
+  const state = { bird:{ x:90, y:H/2, vy:0, r:11 }, pipes:[], score:0, best:Number(localStorage.getItem('flappy_best')||0), over:false, started:false, frame:0 };
+  flappy = state;
+  function reset() {
+    state.bird = { x:90, y:H/2, vy:0, r:11 };
+    state.pipes = []; state.score = 0; state.over = false; state.started = false; state.frame = 0;
+    for (let i = 0; i < 3; i++) state.pipes.push({ x:W+80+i*PIPE_SPACING, top:30+Math.random()*(H-GROUND_H-PIPE_GAP-60), passed:false });
+  }
+  function flap() { if (state.over) { reset(); return; } if (!state.started) state.started = true; state.bird.vy = FLAP; }
+  const onPointer = (e) => { e.preventDefault(); flap(); };
+  canvas.addEventListener('pointerdown', onPointer);
+  canvas.addEventListener('touchstart', onPointer, { passive:false });
+  const onKey = (e) => { if (e.code === 'Space' || e.key === ' ') { if (!document.getElementById('loadingScreen').classList.contains('hidden')) { e.preventDefault(); flap(); } } };
+  document.addEventListener('keydown', onKey);
+  state._cleanup = () => { canvas.removeEventListener('pointerdown', onPointer); canvas.removeEventListener('touchstart', onPointer); document.removeEventListener('keydown', onKey); };
+  function update() {
+    state.frame++;
+    if (!state.started || state.over) return;
+    state.bird.vy += GRAVITY; state.bird.y += state.bird.vy;
+    if (state.bird.y + state.bird.r > H - GROUND_H) { state.bird.y = H - GROUND_H - state.bird.r; state.over = true; if (state.score > state.best) { state.best = state.score; localStorage.setItem('flappy_best', String(state.best)); } }
+    if (state.bird.y - state.bird.r < 0) { state.bird.y = state.bird.r; state.bird.vy = 0; }
+    state.pipes.forEach(p => p.x -= PIPE_SPEED);
+    if (state.pipes[0] && state.pipes[0].x + PIPE_W < 0) {
+      const last = state.pipes[state.pipes.length - 1];
+      state.pipes.shift();
+      state.pipes.push({ x:last.x+PIPE_SPACING, top:30+Math.random()*(H-GROUND_H-PIPE_GAP-60), passed:false });
+    }
+    for (const p of state.pipes) {
+      const bx = state.bird.x, by = state.bird.y, r = state.bird.r;
+      if (bx + r > p.x && bx - r < p.x + PIPE_W && (by - r < p.top || by + r > p.top + PIPE_GAP)) {
+        state.over = true;
+        if (state.score > state.best) { state.best = state.score; localStorage.setItem('flappy_best', String(state.best)); }
+      }
+      if (!p.passed && p.x + PIPE_W < bx) { p.passed = true; state.score++; }
+    }
+  }
+  function draw() {
+    const g = ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#e8e4d9'); g.addColorStop(1,'#d8d4c8');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+    state.pipes.forEach(p => {
+      ctx.fillStyle = '#2e7d32';
+      ctx.fillRect(p.x, 0, PIPE_W, p.top);
+      ctx.fillRect(p.x, p.top + PIPE_GAP, PIPE_W, H - GROUND_H - (p.top + PIPE_GAP));
+      ctx.fillStyle = '#1b5e20';
+      ctx.fillRect(p.x - 3, p.top - 8, PIPE_W + 6, 8);
+      ctx.fillRect(p.x - 3, p.top + PIPE_GAP, PIPE_W + 6, 8);
+    });
+    ctx.fillStyle = '#d8d4c8'; ctx.fillRect(0, H - GROUND_H, W, GROUND_H);
+    const b = state.bird;
+    ctx.fillStyle = '#ef6c00'; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#1a1a1a'; ctx.beginPath(); ctx.arc(b.x + 3, b.y - 3, 2.5, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#1a1a1a'; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center'; ctx.fillText(state.score, W/2, 30);
+    if (!state.started && !state.over) {
+      ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = '#ef6c00'; ctx.font = 'bold 12px Arial'; ctx.fillText('TAP TO START', W/2, H/2);
+    } else if (state.over) {
+      ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = '#c62828'; ctx.font = 'bold 14px Arial'; ctx.fillText('GAME OVER', W/2, H/2 - 12);
+      ctx.fillStyle = '#1a1a1a'; ctx.font = 'bold 9px Arial'; ctx.fillText('SCORE ' + state.score, W/2, H/2 + 10);
+      ctx.fillStyle = '#3b7cbf'; ctx.font = '8px Arial'; ctx.fillText('TAP TO RETRY', W/2, H/2 + 32);
+    }
+  }
+  function loop() { update(); draw(); flappyRAF = requestAnimationFrame(loop); }
+  reset(); loop();
+}
+function stopFlappy() { if (flappyRAF) cancelAnimationFrame(flappyRAF); flappyRAF = null; if (flappy && flappy._cleanup) flappy._cleanup(); flappy = null; }
+</script>
+</body>
+</html>
