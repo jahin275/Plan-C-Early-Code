@@ -69,9 +69,8 @@ window.EXAM_QUESTIONS = [
 { index: 7,  subject: 'Bangla', question: "'ভিক্ষুককে ভিক্ষা দাও' বাক্যে 'ভিক্ষুককে' কোন কারকে ব্যবহৃত হয়েছে?",
   A: 'কর্মকারক', B: 'করণকারক', C: 'সম্প্রদান কারক', D: 'অপাদান কারক', ansKey: 'C' },
 
-/* ⚠ SOURCE ANSWER SUSPECT — key says B ('অপরাহ্ণ'), but standard correct spelling is 'অপরাহ্ন' (option A). Verify against master. */
 { index: 8,  subject: 'Bangla', question: 'নিচের কোন বানানটি শুদ্ধ?',
-  A: 'অপরাহ্ন', B: 'অপরাহ্ণ', C: 'অপরান্হ', D: 'অপরাহণ', ansKey: 'B' },
+  A: 'অপরাহ্ন', B: 'অপরাহ্ণ', C: 'অপরান্হ', D: 'অপরাহণ', ansKey: 'A' },
 
 { index: 9,  subject: 'Bangla', question: "'অপরিচিতা' গল্পের কথক কে?",
   A: 'কল্যাণী', B: 'অনুপম', C: 'শম্ভুনাথ সেন', D: 'হরিশ', ansKey: 'B' },
