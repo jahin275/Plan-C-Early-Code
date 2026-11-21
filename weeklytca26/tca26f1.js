@@ -116,21 +116,49 @@ window.EXAM_QUESTIONS = [
 { index: 24, subject: 'English', question: 'By the time the rescue team arrived, the villagers ---------- without food for three days.',
   A: 'waited', B: 'have waited', C: 'had been waiting', D: 'were waiting', ansKey: 'C' },
 
-/* ═══════════════ ICT (25–36) — ⏳ PLACEHOLDER — awaiting content ═══════════════ */
-{ index: 25, subject: 'ICT', question: '⏳ ICT Q1 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 26, subject: 'ICT', question: '⏳ ICT Q2 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 27, subject: 'ICT', question: '⏳ ICT Q3 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 28, subject: 'ICT', question: '⏳ ICT Q4 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 29, subject: 'ICT', question: '⏳ ICT Q5 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 30, subject: 'ICT', question: '⏳ ICT Q6 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 31, subject: 'ICT', question: '⏳ ICT Q7 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 32, subject: 'ICT', question: '⏳ ICT Q8 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 33, subject: 'ICT', question: '⏳ ICT Q9 — content pending update',  A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 34, subject: 'ICT', question: '⏳ ICT Q10 — content pending update', A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 35, subject: 'ICT', question: '⏳ ICT Q11 — content pending update', A: '', B: '', C: '', D: '', ansKey: 'A' },
-{ index: 36, subject: 'ICT', question: '⏳ ICT Q12 — content pending update', A: '', B: '', C: '', D: '', ansKey: 'A' },
+/* ═══════════════ ICT (25–36) — Set 01 ═══════════════ */
+{ index: 25, subject: 'ICT', question: 'ফাইবার অপটিক ক্যাবল এর কোর এর প্রতিসরণাঙ্ক ক্ল্যাডিং এর চেয়ে কেমন?\nHow is the refractive index of core compared to cladding in Fiber Optic?',
+  A: 'কম (Less)', B: 'সমান (Equal)', C: 'বেশি (Greater)', D: 'শূন্য (Zero)', ansKey: 'C' },
 
-/* ═══════════════ HM / MATH (37–60) — Set 01 (24 Q) ═══════════════ */
+{ index: 26, subject: 'ICT', question: 'স্মার্ট হোমে কোন প্রযুক্তি বেশি ব্যবহৃত হয়?\nWhich technology is mostly used in a smart home?',
+  A: 'VR', B: 'IoT', C: 'Bioinformatics', D: 'Nanotechnology', ansKey: 'B' },
+
+{ index: 27, subject: 'ICT', question: 'কোন গেইটকে সর্বজনীন গেইট বলা হয়?\nWhich gate is called a universal gate?',
+  A: 'AND', B: 'OR', C: 'NAND', D: 'XOR', ansKey: 'C' },
+
+{ index: 28, subject: 'ICT', question: 'কৃত্রিম বুদ্ধিমত্তার জনক কে?\nWho is the father of AI?',
+  A: 'অ্যালান টুরিং (Alan Turing)', B: 'জন ম্যাকার্থি (John McCarthy)',
+  C: 'চার্লস ব্যাবেজ (Charles Babbage)', D: 'ব্লেইজ প্যাসকেল (Blaise Pascal)', ansKey: 'B' },
+
+{ index: 29, subject: 'ICT', question: 'অর্ডারড লিস্ট এর জন্য কোন ট্যাগ ব্যবহৃত হয়?\nWhich tag is used for an ordered list?',
+  A: '&lt;ul&gt;', B: '&lt;ol&gt;', C: '&lt;li&gt;', D: '&lt;dl&gt;', ansKey: 'B' },
+
+{ index: 30, subject: 'ICT', question: 'C প্রোগ্রামে নতুন লাইন তৈরি করতে কোনটি ব্যবহৃত হয়?\nWhich is used to create a new line in C program?',
+  A: '\\t', B: '\\a', C: '\\n', D: '\\b', ansKey: 'C' },
+
+{ index: 31, subject: 'ICT', question: 'অ্যালগরিদম এর চিত্ররূপকে কী বলা হয়?\nWhat is the pictorial representation of an algorithm called?',
+  A: 'ফ্লোচার্ট (Flowchart)', B: 'সুডোকোড (Pseudocode)',
+  C: 'প্রোগ্রাম (Program)', D: 'গ্রাফ (Graph)', ansKey: 'A' },
+
+{ index: 32, subject: 'ICT', question: 'টেলিমেডিসিন সেবায় কোনটি আবশ্যক?\nWhich is essential in telemedicine service?',
+  A: 'হাসপাতাল (Hospital)', B: 'ইন্টারনেট (Internet)',
+  C: 'অ্যাম্বুলেন্স (Ambulance)', D: 'ওষুধ (Medicine)', ansKey: 'B' },
+
+{ index: 33, subject: 'ICT', question: 'নিচের কোনটি ফাঁকা ট্যাগ?\nWhich of the following is an empty tag?',
+  A: '&lt;b&gt;', B: '&lt;i&gt;', C: '&lt;u&gt;', D: '&lt;br&gt;', ansKey: 'D' },
+
+{ index: 34, subject: 'ICT', question: 'সিমপ্লেক্স মোডের উদাহরণ কোনটি?\nWhich one is an example of Simplex mode?',
+  A: 'মোবাইল (Mobile)', B: 'ওয়াকিটকি (Walkie-talkie)',
+  C: 'রেডিও (Radio)', D: 'টেলিফোন (Telephone)', ansKey: 'C' },
+
+{ index: 35, subject: 'ICT', question: 'মডেম এর কাজ কী?\nWhat is the function of a modem?',
+  A: 'মডুলেশন (Modulation)', B: 'ডিমডুলেশন (Demodulation)',
+  C: 'উভয়ই (Both)', D: 'কোনোটিই নয় (None)', ansKey: 'C' },
+
+{ index: 36, subject: 'ICT', question: 'A + A\' = ?',
+  A: '0', B: '1', C: 'A', D: 'A\'', ansKey: 'B' },
+  
+  /* ═══════════════ HM / MATH (37–60) — Set 01 (24 Q) ═══════════════ */
 { index: 37, subject: 'HM', question: 'একটি গাড়ি সমত্বরণে 30 km/hour আদি বেগে 100 km পথ অতিক্রম করে 50 km/hour চূড়ান্ত বেগ প্রাপ্ত হয়। গাড়িটির ত্বরণ কত?\nA car with uniform acceleration covers 100 km starting at 30 km/hour and reaches a final speed of 50 km/hour. What is the acceleration of the car?',
   A: '$8$ km/h$^2$', B: '$800$ km/h$^2$',
   C: '$16$ km/h$^2$', D: '$80$ km/h$^2$', ansKey: 'A' },
