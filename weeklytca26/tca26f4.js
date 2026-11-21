@@ -121,48 +121,37 @@ window.EXAM_QUESTIONS = [
   C: 'has worked', D: 'would work', ansKey: 'A' },
 
 /* ═══════════════ ICT (25–36) — ⏳ PLACEHOLDER — awaiting content ═══════════════ */
-/* ═══════════════ ICT (61–72) — Set 04 ═══════════════ */
-{ index: 61, subject: 'ICT', question: "for লুপের কয়টি অংশ থাকে?\nHow many parts does a 'for' loop have?",
+/* ═══════════════ ICT (25–36) — Set 04 ═══════════════ */
+{ index: 25, subject: 'ICT', question: "for লুপের কয়টি অংশ থাকে?\nHow many parts does a 'for' loop have?",
   A: '১ (1)', B: '২ (2)', C: '৩ (3)', D: '৪ (4)', ansKey: 'C' },
-
-{ index: 62, subject: 'ICT', question: 'কোনটি বায়োমেট্রিক্স প্রযুক্তি?\nWhich one is a biometrics technology?',
+{ index: 26, subject: 'ICT', question: 'কোনটি বায়োমেট্রিক্স প্রযুক্তি?\nWhich one is a biometrics technology?',
   A: 'আইরিশ স্ক্যান (Iris Scan)', B: 'ভার্চুয়াল রিয়েলিটি (Virtual Reality)',
   C: 'রোবটিক্স (Robotics)', D: 'জেনেটিক্স (Genetics)', ansKey: 'A' },
-
-{ index: 63, subject: 'ICT', question: 'ডেটাবেজ রিলেশন কত প্রকার?\nHow many types of database relations are there?',
+{ index: 27, subject: 'ICT', question: 'ডেটাবেজ রিলেশন কত প্রকার?\nHow many types of database relations are there?',
   A: '২ (2)', B: '৩ (3)', C: '৪ (4)', D: '৫ (5)', ansKey: 'C' },
-
-{ index: 64, subject: 'ICT', question: 'HTML এ ছবি যুক্ত করার ট্যাগ কোনটি?\nWhich tag is used to insert an image?',
+{ index: 28, subject: 'ICT', question: 'HTML এ ছবি যুক্ত করার ট্যাগ কোনটি?\nWhich tag is used to insert an image?',
   A: '&lt;pic&gt;', B: '&lt;img&gt;', C: '&lt;image&gt;', D: '&lt;src&gt;', ansKey: 'B' },
-
-{ index: 65, subject: 'ICT', question: 'কোন টপোলজিতে ডেটা রিং আকারে ঘোরে?\nIn which topology does data travel in a ring?',
+{ index: 29, subject: 'ICT', question: 'কোন টপোলজিতে ডেটা রিং আকারে ঘোরে?\nIn which topology does data travel in a ring?',
   A: 'বাস (Bus)', B: 'স্টার (Star)', C: 'রিং (Ring)', D: 'মেশ (Mesh)', ansKey: 'C' },
-
-{ index: 66, subject: 'ICT', question: 'NOT গেইট এর ইনপুট ১ হলে আউটপুট কত?\nIf the input of NOT gate is 1, what is the output?',
+{ index: 30, subject: 'ICT', question: 'NOT গেইট এর ইনপুট ১ হলে আউটপুট কত?\nIf the input of NOT gate is 1, what is the output?',
   A: '0', B: '1', C: 'Null', D: 'Undefined', ansKey: 'A' },
-
-{ index: 67, subject: 'ICT', question: '১ বাইট সমান কত বিট?\n1 Byte is equal to how many bits?',
+{ index: 31, subject: 'ICT', question: '১ বাইট সমান কত বিট?\n1 Byte is equal to how many bits?',
   A: '৪ (4)', B: '৮ (8)', C: '১৬ (16)', D: '৩২ (32)', ansKey: 'B' },
-
-{ index: 68, subject: 'ICT', question: 'বিশ্বগ্রামের ধারণাটি কে প্রবর্তন করেন?\nWho introduced the concept of Global Village?',
+{ index: 32, subject: 'ICT', question: 'বিশ্বগ্রামের ধারণাটি কে প্রবর্তন করেন?\nWho introduced the concept of Global Village?',
   A: 'টিম বার্নার্স লি (Tim Berners-Lee)', B: 'মার্শাল ম্যাকলুহান (Marshall McLuhan)',
   C: 'মার্ক জাকারবার্গ (Mark Zuckerberg)', D: 'বিল গেটস (Bill Gates)', ansKey: 'B' },
-
-{ index: 69, subject: 'ICT', question: 'ব্যান্ডউইথ মাপা হয় কোন এককে?\nWhich unit is used to measure bandwidth?',
+{ index: 33, subject: 'ICT', question: 'ব্যান্ডউইথ মাপা হয় কোন এককে?\nWhich unit is used to measure bandwidth?',
   A: 'Hz', B: 'Bps', C: 'Meter', D: 'Watt', ansKey: 'B' },
-
-{ index: 70, subject: 'ICT', question: 'ডেটাবেজে সর্টিং (Sorting) মানে কী?\nWhat does sorting mean in a database?',
+{ index: 34, subject: 'ICT', question: 'ডেটাবেজে সর্টিং (Sorting) মানে কী?\nWhat does sorting mean in a database?',
   A: 'ডেটা মুছে ফেলা (Deleting data)', B: 'ডেটা সাজানো (Arranging data)',
   C: 'ডেটা ইনসার্ট করা (Inserting data)', D: 'ডেটা খোঁজা (Searching data)', ansKey: 'B' },
-
-{ index: 71, subject: 'ICT', question: 'হাফ-ডুপ্লেক্স এর উদাহরণ কোনটি?\nWhich one is an example of Half-duplex?',
+{ index: 35, subject: 'ICT', question: 'হাফ-ডুপ্লেক্স এর উদাহরণ কোনটি?\nWhich one is an example of Half-duplex?',
   A: 'টেলিভিশন (Television)', B: 'ওয়াকিটকি (Walkie-talkie)',
   C: 'মোবাইল (Mobile phone)', D: 'রেডিও (Radio)', ansKey: 'B' },
-
-{ index: 72, subject: 'ICT', question: "অন্যের লেখা নিজের নামে চালিয়ে দেওয়াকে কী বলে?\nWhat is claiming someone else's writing as your own called?",
+{ index: 36, subject: 'ICT', question: "অন্যের লেখা নিজের নামে চালিয়ে দেওয়াকে কী বলে?\nWhat is claiming someone else's writing as your own called?",
   A: 'হ্যাকিং (Hacking)', B: 'প্লেজিয়ারিজম (Plagiarism)',
   C: 'ফিশিং (Phishing)', D: 'স্প্যামিং (Spamming)', ansKey: 'B' },
-
+  
 /* ═══════════════ HM / MATH (37–60) — Set 04 (24 Q) ═══════════════ */
 { index: 37, subject: 'HM', question: '$(1 + i)(x + iy) = 2 + 4i$ হলে $5x$ এর মান কোনটি?\nIf $(1 + i)(x + iy) = 2 + 4i$, what is the value of $5x$?',
   A: '$11$', B: '$13$', C: '$14$', D: '$15$', ansKey: 'D' },
