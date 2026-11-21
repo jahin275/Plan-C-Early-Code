@@ -119,47 +119,35 @@ window.EXAM_QUESTIONS = [
 
 /* ═══════════════ ICT (25–36) — ⏳ PLACEHOLDER — awaiting content ═══════════════ */
 /* ═══════════════ ICT (37–48) — Set 02 ═══════════════ */
-{ index: 37, subject: 'ICT', question: 'নিচের কোনটি ডেটাবেজ সফটওয়্যার নয়?\nWhich is not a database software?',
+/* ═══════════════ ICT (25–36) — Set 02 ═══════════════ */
+{ index: 25, subject: 'ICT', question: 'নিচের কোনটি ডেটাবেজ সফটওয়্যার নয়?\nWhich is not a database software?',
   A: 'Oracle', B: 'MS Access', C: 'MySQL', D: 'MS Word', ansKey: 'D' },
-
-{ index: 38, subject: 'ICT', question: 'বায়োইনফরমেটিক্স এর প্রধান কাজ কী?\nWhat is the main task of bioinformatics?',
+{ index: 26, subject: 'ICT', question: 'বায়োইনফরমেটিক্স এর প্রধান কাজ কী?\nWhat is the main task of bioinformatics?',
   A: 'ডেটা ট্রান্সমিশন (Data transmission)', B: 'বায়োলজিক্যাল ডেটা বিশ্লেষণ (Biological data analysis)',
   C: 'নেটওয়ার্কিং (Networking)', D: 'ওয়েব ডিজাইন (Web design)', ansKey: 'B' },
-
-{ index: 39, subject: 'ICT', question: 'IP Address (IPv4) কত বিটের?\nHow many bits are in an IPv4 Address?',
+{ index: 27, subject: 'ICT', question: 'IP Address (IPv4) কত বিটের?\nHow many bits are in an IPv4 Address?',
   A: '16', B: '32', C: '64', D: '128', ansKey: 'B' },
-
-{ index: 40, subject: 'ICT', question: 'ওয়েব হোস্টিং কী?\nWhat is Web Hosting?',
+{ index: 28, subject: 'ICT', question: 'ওয়েব হোস্টিং কী?\nWhat is Web Hosting?',
   A: 'ব্রাউজার (Browser)', B: 'সার্ভারে স্পেস ভাড়া নেওয়া (Renting space on a server)',
   C: 'কোডিং (Coding)', D: 'ডোমেইন নাম (Domain name)', ansKey: 'B' },
-
-{ index: 41, subject: 'ICT', question: '(10)₁₀ এর বাইনারি মান কত?\nWhat is the binary value of (10)₁₀?',
+{ index: 29, subject: 'ICT', question: '(10)₁₀ এর বাইনারি মান কত?\nWhat is the binary value of (10)₁₀?',
   A: '1010', B: '1001', C: '1100', D: '1111', ansKey: 'A' },
-
-{ index: 42, subject: 'ICT', question: 'কোন টপোলজিতে কেন্দ্রীয় হাব থাকে?\nWhich topology has a central hub?',
+{ index: 30, subject: 'ICT', question: 'কোন টপোলজিতে কেন্দ্রীয় হাব থাকে?\nWhich topology has a central hub?',
   A: 'বাস (Bus)', B: 'রিং (Ring)', C: 'স্টার (Star)', D: 'মেশ (Mesh)', ansKey: 'C' },
-
-{ index: 43, subject: 'ICT', question: 'একই ধরনের ডেটার সমাবেশকে কী বলে?\nWhat is a collection of similar types of data called?',
+{ index: 31, subject: 'ICT', question: 'একই ধরনের ডেটার সমাবেশকে কী বলে?\nWhat is a collection of similar types of data called?',
   A: 'ফাংশন (Function)', B: 'পয়েন্টার (Pointer)', C: 'অ্যারে (Array)', D: 'লুপ (Loop)', ansKey: 'C' },
-
-{ index: 44, subject: 'ICT', question: 'EBCDIC কোড কত বিটের?\nHow many bits is the EBCDIC code?',
+{ index: 32, subject: 'ICT', question: 'EBCDIC কোড কত বিটের?\nHow many bits is the EBCDIC code?',
   A: '৪ (4)', B: '৭ (7)', C: '৮ (8)', D: '১৬ (16)', ansKey: 'C' },
-
-/* ⚠ SOURCE ERROR — Option 1 & 2 and the answer column all read "#ERROR!" in the source.
-   Cannot determine correct answer. Options below are placeholders — FIX BEFORE GO-LIVE. */
-{ index: 45, subject: 'ICT', question: 'নিচের কোনটি রিলেশনাল অপারেটর?\nWhich of the following is a relational operator?',
-  A: '+ [+]', B: '== [==]',
-  C: '&&', D: '!', ansKey: 'A' },
-
-{ index: 46, subject: 'ICT', question: 'প্রোগ্রামের ভুল ত্রুটি খুঁজে বের করাকে কী বলে?\nWhat is finding and fixing errors in a program called?',
+{ index: 33, subject: 'ICT', question: 'নিচের কোনটি রিলেশনাল অপারেটর?\nWhich of the following is a relational operator?',
+  A: '+ [+]', B: '== [==]', C: '&&', D: '!', ansKey: 'A' },
+{ index: 34, subject: 'ICT', question: 'প্রোগ্রামের ভুল ত্রুটি খুঁজে বের করাকে কী বলে?\nWhat is finding and fixing errors in a program called?',
   A: 'কোডিং (Coding)', B: 'ডিবাগিং (Debugging)', C: 'কম্পাইলিং (Compiling)', D: 'রানিং (Running)', ansKey: 'B' },
-
-{ index: 47, subject: 'ICT', question: 'কোনটি সার্চ ইঞ্জিন?\nWhich one is a search engine?',
+{ index: 35, subject: 'ICT', question: 'কোনটি সার্চ ইঞ্জিন?\nWhich one is a search engine?',
   A: 'Google Chrome', B: 'Mozilla', C: 'Google', D: 'Opera', ansKey: 'C' },
-
-{ index: 48, subject: 'ICT', question: 'DBMS এর কাজ কী?\nWhat is the function of DBMS?',
+{ index: 36, subject: 'ICT', question: 'DBMS এর কাজ কী?\nWhat is the function of DBMS?',
   A: 'ডেটা বিশ্লেষণ (Data Analysis)', B: 'ডেটা স্টোরেজ ও ম্যানেজমেন্ট (Data Storage and Management)',
   C: 'ডেটা ট্রান্সমিশন (Data Transmission)', D: 'ওয়েব ব্রাউজিং (Web Browsing)', ansKey: 'B' },
+
 /* ═══════════════ HM / MATH (37–60) — Set 02 (24 Q) ═══════════════ */
 { index: 37, subject: 'HM', question: '$\\cos 2\\theta = \\dfrac{24}{25}$ হলে $\\tan\\theta$ এর মান কত?\nIf $\\cos 2\\theta = \\dfrac{24}{25}$, what is the value of $\\tan\\theta$?',
   A: '$\\pm 7$', B: '$\\pm \\dfrac{5}{7}$',
