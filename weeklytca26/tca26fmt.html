@@ -91,10 +91,10 @@ html,body{font-family:var(--main-font),Arial,sans-serif;background:var(--bg-dark
 #resultScreen{min-height:100vh;padding-bottom:3rem}
 .result-top{max-width:1000px;margin:0 auto;padding:1rem}
 .result-score-card{text-align:center;padding:1.5rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;margin-bottom:1rem;position:relative}
-.sync-badge{position:absolute;top:.8rem;right:.8rem;font-size:.7rem;color:var(--neon-cyan);padding:.2rem .5rem;border:1px solid var(--neon-cyan);border-radius:4px;background:rgba(59,124,191,.08);display:flex;align-items:center;gap:.3rem}
+.sync-badge{position:absolute;top:.8rem;right:.8rem;font-size:.7rem;color:var(--neon-cyan);padding:.2rem .5rem;border:1px solid var(--neon-cyan);border-radius:4px;background:rgba(59,124,191,.08);display:flex;align-items:center;gap:.3rem;max-width:70%;word-break:break-word}
 .sync-badge.synced{color:var(--neon-green);border-color:var(--neon-green);background:rgba(46,125,50,.08)}
 .sync-badge.error{color:var(--neon-red);border-color:var(--neon-red);background:rgba(198,40,40,.08)}
-.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-cyan);animation:blink 1s infinite}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-cyan);animation:blink 1s infinite;flex-shrink:0}
 .sync-badge.synced .sync-dot{background:var(--neon-green);animation:none}
 .sync-badge.error .sync-dot{background:var(--neon-red);animation:none}
 @keyframes blink{50%{opacity:.3}}
@@ -224,7 +224,7 @@ window.MathJax = {
       </div>
     </div>
     <div class="section-breakdown" id="sectionBreakdown"></div>
-    <div class="disq-warning hidden" id="disqWarning">⚠ DISQUALIFIED: You answered multiple optional sections.</div>
+    <div class="disq-warning hidden" id="disqWarning">⚠ DISQUALIFIED: You answered multiple optional sections (HM / Econ).</div>
   </div>
   <div class="review-wrap">
     <h2 class="review-title">◤ ANSWER REVIEW ◢</h2>
@@ -249,6 +249,30 @@ const QUESTION_FILE = 'tca26f' + EXAM_ID + '.js';
 let   EXAM_NAME     = 'Exam ' + (EXAM_ID || '?');
 
 /* ═══════════════════════════════════════════════════════════════════
+   SUBJECTS
+   ═══════════════════════════════════════════════════════════════════ */
+const SECTION_LABELS = {
+  Bangla:  'বাংলা',
+  English: 'English',
+  ICT:     'ICT',
+  HM:      'Higher Math',
+  Econ:    'Economics'
+};
+const SUBJECT_RANGES = [
+  { name: 'Bangla',  from: 1,  to: 12 },
+  { name: 'English', from: 13, to: 24 },
+  { name: 'ICT',     from: 25, to: 36 },
+  { name: 'HM',      from: 37, to: 60 },
+  { name: 'Econ',    from: 61, to: 84 }
+];
+function subjectOfIndex(idx) {
+  const n = Number(idx);
+  for (const r of SUBJECT_RANGES) if (n >= r.from && n <= r.to) return r.name;
+  return 'Other';
+}
+const ENG_PASS_MIN = 5;
+
+/* ═══════════════════════════════════════════════════════════════════
    STATE
    ═══════════════════════════════════════════════════════════════════ */
 let QUESTIONS = [];
@@ -265,7 +289,6 @@ let MANDATORY = ['Bangla', 'English', 'ICT'];
 let OPTIONAL  = ['HM', 'Econ'];
 let DURATION_MIN = 45;
 let SECTION_RANGES = {};
-const SECTION_LABELS = { Bangla:'বাংলা', English:'English', ICT:'ICT', HM:'Math', Stat:'⚠ Statistics', Econ:'Economics' };
 
 /* ═══════════════════════════════════════════════════════════════════
    ANTI-CHEAT
@@ -339,10 +362,11 @@ function renderStartForm() {
       <ul style="font-size:.95rem;line-height:2;padding-left:1.2rem;">
         <li>45 Minutes | Full Syllabus</li>
         <li>+1 correct | −0.25 wrong | 0 skipped</li>
-        <li>Mandatory: Bangla, English, ICT</li>
-        <li>Choose ONLY ONE optional: Math / Economics</li>
-        <li>Multiple optionals = DISQUALIFIED</li>
-        <li><span style="color:var(--neon-red);font-weight:bold;">⚠ Statistics is NOT in the current circular — do not attempt.</span></li>
+        <li>Mandatory: Bangla (1–12), English (13–24), ICT (25–36)</li>
+        <li>Optional: Higher Math (37–60), Economics (61–84)</li>
+        <li>Choose ONLY ONE optional section</li>
+        <li><span class="highlight">English: need 5/12 correct to pass</span></li>
+        <li><span style="color:var(--neon-red);font-weight:bold;">Multiple optionals = DISQUALIFIED</span></li>
         <li>Tab switches are counted and reported</li>
       </ul>
     </div>
@@ -399,10 +423,10 @@ async function showExamPicker() {
     }).join('');
     box.innerHTML = '<div class="card">' + list + '</div>';
   } catch (err) {
-    document.getElementById('syncBadge').className = 'sync-badge error';
-    document.getElementById('syncText').textContent =
-      'SYNC FAILED: ' + (err && err.message ? err.message : String(err)).slice(0, 120);
-    console.error('Sync failed:', err);
+    box.innerHTML = `<div class="card">
+      <p style="color:var(--neon-red);font-weight:bold;margin-bottom:.8rem;">Failed to load exams: ${escapeHtml(err.message)}</p>
+      <p style="font-size:.85rem;color:var(--neon-cyan);">Tip: open <code>${escapeHtml(API_URL)}?action=ping</code> in your browser. It should return <code>{"success":true,"version":"v7",...}</code>.</p>
+    </div>`;
   }
 }
 
@@ -496,9 +520,10 @@ function onQuestionsLoaded(questions) {
   examStartTime = Date.now();
   SECTION_RANGES = {};
   QUESTIONS.forEach((q, i) => {
-    if (!q.subject) return;
-    if (!SECTION_RANGES[q.subject]) SECTION_RANGES[q.subject] = { start:i, end:i };
-    else SECTION_RANGES[q.subject].end = i;
+    const idx  = q.index != null ? q.index : (i + 1);
+    const subj = subjectOfIndex(idx);
+    if (!SECTION_RANGES[subj]) SECTION_RANGES[subj] = { start:i, end:i };
+    else SECTION_RANGES[subj].end = i;
   });
   document.getElementById('timerDisplay').textContent = String(DURATION_MIN).padStart(2,'0') + ':00';
   document.getElementById('loadingScreen').classList.add('hidden');
@@ -561,7 +586,8 @@ function renderAllQuestions() {
   QUESTIONS.forEach((q, idx) => {
     const block = document.createElement('div');
     block.className = 'question-block'; block.id = 'qblock-' + idx;
-    block.innerHTML = `<div class="q-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[q.subject] || q.subject)}</span></div>`;
+    const _subj = subjectOfIndex(q.index != null ? q.index : (idx + 1));
+    block.innerHTML = `<div class="q-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[_subj] || _subj)}</span></div>`;
     const qt = document.createElement('div');
     qt.className = 'question-text'; qt.textContent = q.question; block.appendChild(qt);
     ['A','B','C','D'].forEach(L => {
@@ -601,25 +627,34 @@ function formatDuration(seconds) {
    ═══════════════════════════════════════════════════════════════════ */
 function computeLocalResult() {
   let correct = 0, wrong = 0, skipped = 0;
-  const sectionScores = {};
-  [...MANDATORY, ...OPTIONAL].forEach(s => sectionScores[s] = 0);
+  const stats = {};
+  [...MANDATORY, ...OPTIONAL].forEach(s => stats[s] = { c: 0, w: 0 });
   const attemptedOptional = new Set();
   QUESTIONS.forEach((q, i) => {
+    const idx  = q.index != null ? q.index : (i + 1);
+    const subj = subjectOfIndex(idx);
     const chosen = (answers[i] || '').toString().trim().toUpperCase();
     const key    = (q.ansKey || '').toString().trim().toUpperCase();
-    if (!chosen) skipped++;
-    else if (chosen === key) { correct++; if (sectionScores[q.subject] !== undefined) sectionScores[q.subject]++; }
-    else wrong++;
-    if (chosen && OPTIONAL.includes(q.subject)) attemptedOptional.add(q.subject);
+    if (!chosen) { skipped++; return; }
+    if (chosen === key) { correct++; if (stats[subj]) stats[subj].c++; }
+    else                { wrong++;   if (stats[subj]) stats[subj].w++; }
+    if (OPTIONAL.includes(subj)) attemptedOptional.add(subj);
   });
-  const totalScore = correct - wrong * 0.25;
-  const status = totalScore >= 35 ? 'MISSION PASSED ++ CREDIT'
-               : totalScore >= 24 ? 'PASSED but your written Scripts won\'t be evaluated'
-               : 'FAILED, Please Contact your Instructors';
+  const totalScore   = correct - wrong * 0.25;
+  const engPass      = stats.English.c >= ENG_PASS_MIN;
+  const disqualified = attemptedOptional.size > 1;
+  const status = disqualified
+    ? 'DISQUALIFIED (multiple optionals)'
+    : !engPass
+      ? 'FAILED (English < ' + ENG_PASS_MIN + '/12)'
+      : totalScore >= 35 ? 'MISSION PASSED ++ CREDIT'
+      : totalScore >= 24 ? 'PASSED but your written Scripts won\'t be evaluated'
+      : 'FAILED, Please Contact your Instructors';
   return {
     totalScore: Number(totalScore.toFixed(2)), correct, wrong, skipped,
     tabSwitches, timeTakenSeconds, status,
-    disqualified: attemptedOptional.size > 1,
+    engPass,
+    disqualified,
     attemptedOptional: Array.from(attemptedOptional)
   };
 }
@@ -665,7 +700,7 @@ async function doSubmit(auto) {
     document.getElementById('syncText').textContent = 'SYNCED ✓ ' + EXAM_NAME;
   } catch (err) {
     document.getElementById('syncBadge').className = 'sync-badge error';
-    document.getElementById('syncText').textContent = 'SYNC FAILED: ' + err.message;
+    document.getElementById('syncText').textContent = 'SYNC FAILED: ' + (err && err.message ? err.message : String(err)).slice(0, 120);
     console.error('Sync failed:', err);
   }
 }
@@ -685,21 +720,32 @@ function showResult(result) {
   document.getElementById('rTabs').textContent    = result.tabSwitches;
   const tSec = result.timeTakenSeconds != null ? result.timeTakenSeconds : timeTakenSeconds;
   document.getElementById('rTimeTaken').textContent = formatDuration(tSec);
+
   const sectionMarks = {};
   [...MANDATORY, ...OPTIONAL].forEach(s => sectionMarks[s] = { c:0, w:0 });
   QUESTIONS.forEach((q, i) => {
+    const idx  = q.index != null ? q.index : (i + 1);
+    const subj = subjectOfIndex(idx);
     const chosen = (answers[i] || '').toString().toUpperCase();
     const key = (q.ansKey || '').toString().toUpperCase();
-    if (!chosen || !sectionMarks[q.subject]) return;
-    if (chosen === key) sectionMarks[q.subject].c++; else sectionMarks[q.subject].w++;
+    if (!chosen || !sectionMarks[subj]) return;
+    if (chosen === key) sectionMarks[subj].c++; else sectionMarks[subj].w++;
   });
-  let html = '<strong>◤ SECTION‑WISE ◢</strong><br>';
-  Object.keys(sectionMarks).forEach(sec => {
-    const mark = sectionMarks[sec].c - 0.25 * sectionMarks[sec].w;
+  let html = '<strong>◤ SUBJECT‑WISE SCORES ◢</strong><br>';
+  [...MANDATORY, ...OPTIONAL].forEach(sec => {
+    const st = sectionMarks[sec];
+    const mark = st.c - 0.25 * st.w;
     const tag = OPTIONAL.includes(sec) ? ' <span style="color:var(--neon-purple);">[optional]</span>' : '';
-    html += `${SECTION_LABELS[sec] || sec}${tag}: <strong style="color:${mark>=0?'var(--neon-green)':'var(--neon-red)'};">${mark.toFixed(2)}</strong><br>`;
+    let extra = '';
+    if (sec === 'English') {
+      extra = st.c >= ENG_PASS_MIN
+        ? ' <span style="color:var(--neon-green);font-weight:bold;">✓ PASS</span>'
+        : ' <span style="color:var(--neon-red);font-weight:bold;">✗ FAIL (need 5/12)</span>';
+    }
+    html += `${SECTION_LABELS[sec] || sec}${tag}: <strong style="color:${mark>=0?'var(--neon-green)':'var(--neon-red)'};">${mark.toFixed(2)}</strong> <span style="opacity:.7;">(${st.c} correct)</span>${extra}<br>`;
   });
   document.getElementById('sectionBreakdown').innerHTML = html;
+
   if (result.disqualified) document.getElementById('disqWarning').classList.remove('hidden');
   renderReview();
   wireFilters();
@@ -714,7 +760,8 @@ function renderReview() {
     const block = document.createElement('div');
     block.className = 'review-block ' + status; block.dataset.status = status;
     const label = status === 'correct' ? '✓ CORRECT' : status === 'wrong' ? '✗ WRONG' : '— SKIPPED';
-    block.innerHTML = `<div class="review-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[q.subject] || q.subject)}</span><span class="review-status ${status}">${label}</span></div>`;
+    const _subj = subjectOfIndex(q.index != null ? q.index : (idx + 1));
+    block.innerHTML = `<div class="review-head"><span class="q-badge">Q ${idx + 1}</span><span class="q-subject">${escapeHtml(SECTION_LABELS[_subj] || _subj)}</span><span class="review-status ${status}">${label}</span></div>`;
     const qt = document.createElement('div'); qt.className = 'review-q'; qt.textContent = q.question; block.appendChild(qt);
     ['A','B','C','D'].forEach(L => {
       if (!q[L]) return;
