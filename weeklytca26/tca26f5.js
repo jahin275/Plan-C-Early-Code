@@ -100,7 +100,6 @@ window.EXAM_QUESTIONS = [
 { index: 17, subject: 'English', question: 'The company, once a market leader, is now bereft ---------- fresh ideas.',
   A: 'in', B: 'with', C: 'from', D: 'of', ansKey: 'D' },
 
-/* ⚠ E-OPTION SHIFT — original E "Profligate" moved into C; ansKey 'C'. Original C ("Charitable") displaced. */
 { index: 18, subject: 'English', question: 'Parsimonious : Miserly :: Prodigal : ?',
   A: 'Thrifty', B: 'Generous', C: 'Profligate', D: 'Wealthy', ansKey: 'C' },
 
@@ -116,7 +115,6 @@ window.EXAM_QUESTIONS = [
 { index: 22, subject: 'English', question: 'Identify the misspelt word:',
   A: 'Supersede', B: 'Inoculate', C: 'Impressario', D: 'Mellifluous', ansKey: 'C' },
 
-/* ⚠ E-OPTION SHIFT — original E "thorough" moved into C; ansKey 'C'. Original C ("casual") displaced. */
 { index: 23, subject: 'English', question: "The antonym of 'perfunctory' is -",
   A: 'cursory', B: 'hasty', C: 'thorough', D: 'superficial', ansKey: 'C' },
 
@@ -206,7 +204,6 @@ window.EXAM_QUESTIONS = [
 { index: 51, subject: 'HM', question: '$\\displaystyle\\lim_{x \\to 0} \\dfrac{e^x - e^{-x}}{x}$ এর মান কোনটি?\nWhat is the value of $\\displaystyle\\lim_{x \\to 0} \\dfrac{e^x - e^{-x}}{x}$?',
   A: '$2$', B: '$-2$', C: '$0$', D: '$\\infty$', ansKey: 'A' },
 
-/* ⚠ E-OPTION SHIFT — original E "cos(π/3)+i·sin(π/3)" moved into C; ansKey 'C'. Original C ("(−1 + i√3)/2") displaced. */
 { index: 52, subject: 'HM', question: 'কোনটি $x^3 = 1$ এর সমাধান নয়?\nWhich of the following is not a solution of $x^3 = 1$?',
   A: '$1$', B: '$\\dfrac{-1 - i\\sqrt{3}}{2}$',
   C: '$\\cos(\\pi/3) + i\\sin(\\pi/3)$', D: '$\\cos(2\\pi/3) + i\\sin(2\\pi/3)$', ansKey: 'C' },
